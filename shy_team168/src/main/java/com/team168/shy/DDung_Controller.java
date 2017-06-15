@@ -21,6 +21,9 @@ public class DDung_Controller {
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
     public String goMainTimeline(HttpServletRequest req) {
     	
+		
+		System.out.println("성민 접속확인?");
+		
 		return "ddung/mainLine.tiles";
     	
     }
