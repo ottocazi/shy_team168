@@ -1,0 +1,192 @@
+
+
+@CHARSET "UTF-8";
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+#shy{
+  font-family: 'Lato', sans-serif;
+}
+
+
+.letter{
+  display: inline-block;
+  font-weight: 900;
+  font-size: 3em;
+  margin: 0.05em;
+  position: relative;
+  color: #00B4F1;
+  transform-style: preserve-3d;
+  perspective: 500;
+  z-index: 1;
+}
+.letter:before, .letter:after{
+  position:absolute;
+  content: attr(data-letter);
+  transform-origin: top left;
+  top:0;
+  left:0;
+}
+.letter, .letter:before, .letter:after{
+  transition: all 0.3s ease-in-out;
+}
+.letter:before{
+  color: #fff;
+  text-shadow: 
+    -1px 0px 1px rgba(255,255,255,.8),
+    1px 0px 1px rgba(0,0,0,.8);
+  z-index: 3;
+  transform:
+    rotateX(0deg)
+    rotateY(-15deg)
+    rotateZ(0deg);
+}
+.letter:after{
+  color: rgba(0,0,0,.11);
+  z-index:2;
+  transform:
+    scale(1.08,1)
+    rotateX(0deg)
+    rotateY(0deg)
+    rotateZ(0deg)
+    skew(0deg,1deg);
+}
+.letter:hover:before{
+  color: #fafafa;
+  transform:
+    rotateX(0deg)
+    rotateY(-40deg)
+    rotateZ(0deg);
+}
+
+.letter:hover:after{
+  transform:
+    scale(1.08,1)
+    rotateX(0deg)
+    rotateY(40deg)
+    rotateZ(0deg)
+    skew(0deg,22deg);
+}
+
+
+
+html,body {
+   font-family: "Noto Sans KR", sans-serif;
+   height: 100%; 
+   margin: 0; 
+   padding: 0;
+}
+
+body {
+	
+    background:url(open.jpg) no-repeat center top;
+    background-position: center;
+   /* background-image: #FAFAFAurl("index.jpg");
+   background-size: 100% 100%; */
+}
+
+#main {
+   margin: 0 auto;
+   width:100%;
+   /* -webkit-filter:blur(10px);
+     -ms-filter: blur(10px);
+     -o-filter: blur(10px);
+     filter:blur(10px); */
+}
+
+#login {
+   float: right;
+   display: block;
+   margin-top: 100px;
+   margin-right: 350px;
+}
+
+#intro {
+   float: right;
+   margin-top: 150px
+}
+
+#signin {
+   width: 200px;
+   border: 1px solid #e0e0e0;
+   margin: 50px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+   padding: 70px;
+   position: relative;
+   overflow: hidden;
+   background-color: #fff
+}
+
+#joinus{
+   width: 200px;
+   border: 1px solid #e0e0e0;
+   margin: 50px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+   padding: 70px;
+   position: relative;
+   overflow: hidden;
+   background-color: #fff
+}
+
+#signin .form-title, #joinus .form-title {
+   font: 500 16px/1 'Roboto', sans-serif;
+   color: #000;
+   text-align: center;
+   margin: 5px 0;
+}
+
+#signin .form-input, #joinus .form-input{
+   padding: 10px;
+   /* position: absolute; */
+}
+
+#signin .form-input input , #joinus .form-input input{
+   margin-top:15px;
+   height:35px;
+   border:none;
+   border-bottom: 1px solid #606060;
+}
+
+input::-webkit-input-placeholder { color: #C3C2C2; }
+
+#signin .forgot-pw {
+   font: 600 14px/1 'Roboto', sans-serif;
+   color: #575756;
+   text-decoration: none;
+   margin: 20px;
+   display: inline-block;
+}
+
+#signin button.login, #joinus button.login{
+   /* min-height: 30px; */
+   font: 500 16px/1 'Roboto', sans-serif;
+   width: 100%;
+   padding: 20px;
+   display: block;
+   background: #FFE699;
+   color: #000;
+   border: none;
+   outline: 0;
+   cursor: pointer;
+   position: absolute;
+   left: 0;
+   bottom: 0;
+}
+
+#register, #sign{
+   text-align:center;
+   border: 1px solid #e0e0e0;
+   margin: 50px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+   padding: 10px;
+   position: relative;
+   overflow: hidden;
+   background-color: #fff
+}
+
+#register a, #sign a{
+   color: #575756;
+   font-weight: bold;
+   text-decoration: none;
+   padding: 10px;
+}

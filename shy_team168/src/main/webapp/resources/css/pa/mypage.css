@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+html,body {
+   font-family: "Noto Sans KR", sans-serif;
+   height: 100%; 
+   margin: 0; 
+   padding: 0;
+}
+
+#mypage{
+   margin: 0 auto;
+   width:100%;
+   position: static;
+   font-family: "Noto Sans KR", sans-serif;
+}
+
+#mypage .myProfile{
+   margin-top: 15px;
+   margin-left: 300px;
+   width:50%;
+   border: solid 1px #8c8c8c;
+}
+
+#mypage .pimg img{
+   width: 150px;
+   height: 150px;
+   float: left;
+   display: inline-block;
+   margin:35px 
+}
+
+#mypage .myProfile .myIntro{
+   margin:15px
+}
+
+#mypage .myProfile .myIntro .proedit{
+   background-color: #fff;
+   border: 1px solid gray;
+   color: gray;
+}
+
+#mypage .showMypage{
+   margin-left: 300px;
+   margin-top: 20px;
+   width:50%;
+   min-height: 300px;
+}
+
+#mypage .well{
+   background-color: #fff;
+   min-height: 300px;
+}
