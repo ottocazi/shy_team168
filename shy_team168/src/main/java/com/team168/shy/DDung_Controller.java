@@ -21,8 +21,13 @@ public class DDung_Controller {
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
     public String goMainTimeline(HttpServletRequest req) {
     	
+<<<<<<< HEAD
 		
 		System.out.println("성민 접속확인?");
+=======
+		System.out.println("test");
+		System.out.println("test2");
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 		
 		return "ddung/mainLine.tiles";
     	
