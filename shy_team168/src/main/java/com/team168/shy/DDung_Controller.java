@@ -20,11 +20,7 @@ public class DDung_Controller {
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
     public String goMainTimeline(HttpServletRequest req) {
-    	
-		System.out.println("test");
-		System.out.println("test2");
-		System.out.println("junhotest");
-		System.out.println("yyyyy");
+
 		return "ddung/mainLine.tiles";
     	
     }
