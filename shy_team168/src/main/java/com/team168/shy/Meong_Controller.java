@@ -69,7 +69,7 @@ public class Meong_Controller {
 		   req.setAttribute("type", type);
 		   req.setAttribute("title", title);
 		   
-    	return "msg.notiles";
+    	return "Meong_msg.notiles";
     }
 	
 
