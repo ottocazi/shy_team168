@@ -22,6 +22,7 @@ public class DDung_Controller {
     public String goMainTimeline(HttpServletRequest req) {
     	
 		System.out.println("test");
+		System.out.println("test2");
 		
 		return "ddung/mainLine.tiles";
     	
