@@ -34,7 +34,7 @@ body {
 #shy_sidebtn {
   position: absolute;
   top: 0;
-  /* margin-top: 50px; */
+  margin-top: 50px;
   right: 0;
   border: 0;
   width: 50px;

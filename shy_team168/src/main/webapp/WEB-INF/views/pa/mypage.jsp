@@ -6,21 +6,10 @@
 <title>MyPage</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/mypage.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/navtab.css">
+<%-- <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/navtab.css"> --%>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-   $('#myTabs a').click(function (e) {
-     e.preventDefault()
-     $(this).tab('show')
-   });
-   
-   $('#myTabs a[href="#shy"]').tab('show'); // Select tab by name
-   $('#myTabs a:first').tab('show'); // Select first tab
-   $('#myTabs a:last').tab('show'); // Select last tab
+
 </script>
 <style type="text/css">
 .bt a:hover {
@@ -51,22 +40,6 @@
       </div>
       
       <div class="showMypage">
-          <ul id="myTab" class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active">
-              <a data-target="#shy" id="shy-tab" role="tab" data-toggle="tab" aria-controls="shy" aria-expanded="true">
-              <span class="glyphicons glyphicons-star" aria-hidden="true"></span>
-              <div class="hidden-xs">내 shy</div></a></li>
-              
-              <li role="presentation" class="">
-              <a data-target="#bank" role="tab" id="bank-tab" data-toggle="tab" aria-controls="bank" aria-expanded="false">
-              <span class="glyphicons glyphicons-piggy-bank" aria-hidden="true"></span>
-              <div class="hidden-xs">내 bank</div></a></li>
-              
-              <li role="presentation" class="">
-              <a data-target="#about" role="tab" id="about-tab" data-toggle="tab" aria-controls="about" aria-expanded="false">
-              <span class="glyphicons glyphicons-list-alt" aria-hidden="true"></span>
-              <div class="hidden-xs">About</div></a></li>
-          </ul>
 
           <div id="myTabContent" class="tab-content">
                <div role="tabpanel" class="tab-pane fade active in" id="shy" aria-labelledby="#tab1">
@@ -92,10 +65,6 @@
                </article>
 
              </div>
-               <div role="tabpanel" class="tab-pane fade" id="bank" aria-labelledby="#tab2">
-               </div>
-               <div role="tabpanel" class="tab-pane fade" id="about" aria-labelledby="#tab3">
-               </div>
           </div>
           
       </div>

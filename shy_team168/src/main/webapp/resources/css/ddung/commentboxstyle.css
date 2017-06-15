@@ -225,6 +225,12 @@
 		border-color: rgba(3, 161, 241, 1) !important;
 	}
 	
+	.input-group {
+    position: relative;
+    display: block;
+    border-collapse: separate;
+	}
+	
 	.input-group i {
 		color: rgba(65, 64, 66, 0.8);
 	}

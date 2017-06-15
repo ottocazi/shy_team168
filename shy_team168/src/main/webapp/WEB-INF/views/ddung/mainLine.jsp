@@ -222,9 +222,10 @@ Tapas Deluxe .card50 odd even
           <a class="bt-share" title="Share" href="#">
 					Share
 				</a>
-          <a class="bt-comment" title="Comment" href="">
-					Comment
-				</a>
+			
+					<span class="bt-comment" title="Comment">Comment</span>
+			
+				
         </p>
       </footer>
     </div>
@@ -267,9 +268,10 @@ Tapas Deluxe .card50 odd even
 					Share
 				</a>
 				
-          		<a class="bt-comment" title="Comment" href="#">
+          		<a class="bt-comment" title="Comment">
 					4
 				</a>
+				
         </p>
       </footer>
     </div>
@@ -278,9 +280,9 @@ Tapas Deluxe .card50 odd even
     
     
     <!-- CommentBox ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
-    <div class="card paper">
+    <!-- <div class="card paper"> -->
 		<details>
-			<summary style="padding:0.6em; padding-right: 2.5em; text-align: right; margin-bottom: 0;">3개 리뷰더보기</summary>
+			<summary style="padding:0.6em; padding-right: 2.5em; text-align: right; margin-bottom: 0;"><a class="bt-comment" title="Comment"></a><!-- 3개 리뷰더보기 --></summary>
 			<ul class="list-group">
 			  <li class="list-group-item ">
 				  <span class="circle">
@@ -352,7 +354,7 @@ Tapas Deluxe .card50 odd even
 			</fieldset>
 			
 		</form>	
-	</div>
+<!-- 	</div> -->
     
   </article>
 
@@ -364,8 +366,8 @@ Tapas Deluxe .card50 odd even
 
 		
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>  
+ <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
+  <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script> 
   
   </body>
 </html>
