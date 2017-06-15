@@ -23,7 +23,7 @@ public class DDung_Controller {
     	
 		System.out.println("test");
 		System.out.println("test2");
-		
+		System.out.println("junhotest");
 		return "ddung/mainLine.tiles";
     	
     }
