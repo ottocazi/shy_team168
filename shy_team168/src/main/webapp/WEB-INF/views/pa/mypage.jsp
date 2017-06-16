@@ -45,7 +45,7 @@
                <div role="tabpanel" class="tab-pane fade active in" id="shy" aria-labelledby="#tab1">
                <article class="card-50">
                   <figure>
-                     <img src="https://source.unsplash.com/XPvhzVIeETM/800x600">
+                     <!-- <img src="https://source.unsplash.com/XPvhzVIeETM/800x600"> -->
                   </figure>
                   <!-- end figure-->
                   <div class="flex-content">

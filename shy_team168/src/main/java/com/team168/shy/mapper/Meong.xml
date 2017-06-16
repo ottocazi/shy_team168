@@ -36,7 +36,7 @@
        , to_char(registerdate, 'yyyy-mm-dd') as registerdate
        , myimg, myintro, birthday, gender, phone
 	   from tbl_shymember
-	   where status = 1 and email = #{email}
+	   where status = 1 and email = #{email} 
 	</select>
 	
 	<!-- 로그인한 유저 로그기록 저장하기 -->
