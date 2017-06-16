@@ -19,7 +19,7 @@ public class Meong_Service implements Interface_CommonService  {
 		return n;
 	}
 
-	public int loginEnd(HashMap<String, String> map) {
+	public int loginEnd(HashMap<String, Object> map) {
 		int n = dao.loginEnd(map);
 		return n;
 	}
@@ -28,5 +28,12 @@ public class Meong_Service implements Interface_CommonService  {
 		ShyMemberVO loginuser = dao.getLoginMember(email);
 		return loginuser;
 	}
+
+	public void loginsert(HashMap<String, Object> map) {
+		dao.loginsert(map);
+		
+	}
+
+
 
 }

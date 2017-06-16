@@ -1,5 +1,7 @@
 package com.team168.shy;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,12 +77,12 @@ public class Meong_Controller {
 
     // 로그인 완료 요청 
     @RequestMapping(value="/loginEnd.shy", method={RequestMethod.POST})
-    public String loginEnd(HttpServletRequest req, ShyMemberVO loginuser, HttpSession session) {
+    public String loginEnd(HttpServletRequest req, ShyMemberVO loginuser, HttpSession session) throws UnknownHostException {
     	
     	String email = req.getParameter("email");
     	String pwd = req.getParameter("pwd");
     	
-    	HashMap<String, String> map = new HashMap<String, String>();
+    	HashMap<String, Object> map = new HashMap<String, Object>();
 
     	map.put("email", email);
     	map.put("pwd", pwd);
@@ -94,7 +96,18 @@ public class Meong_Controller {
     		session.setAttribute("loginuser", loginuser);
     	}
     	
-    	return "loginEnd.notiles";
+    	InetAddress inetAddress = InetAddress.getLocalHost();
+
+    	String user_ip = inetAddress.getHostAddress(); // 어디서(ip)
+    	int user_seq = loginuser.getIdx(); // 누가
+
+    	map.put("user_ip", user_ip);
+    	map.put("user_seq", user_seq);
+    	
+    	service.loginsert(map);
+    	
+    	return "ddung/mainLine.tiles";
+    	
     }
 	
 	
@@ -107,7 +120,7 @@ public class Meong_Controller {
     	return "logout.notiles";
     }
 	
-	
+    
 	
 	
 	
