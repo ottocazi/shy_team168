@@ -2,6 +2,8 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,9 +102,14 @@ public class Meong_Controller {
 
     	String user_ip = inetAddress.getHostAddress(); // 어디서(ip)
     	int user_seq = loginuser.getIdx(); // 누가
-
+/*    	
+    	Calendar cal = Calendar.getInstance();
+    	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+    	String sysdate = sdf1.format(cal.getTime());
+*/
     	map.put("user_ip", user_ip);
     	map.put("user_seq", user_seq);
+//    	map.put("datetime1", sysdate);
     	
     	service.loginsert(map);
     	
@@ -113,10 +120,15 @@ public class Meong_Controller {
 	
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
-    public String logout(HttpServletRequest req, HttpSession session) {
+    public String logout(HttpServletRequest req, HttpSession session) throws UnknownHostException {
 
     	session.invalidate();
-    	
+/*   	
+    	Calendar cal = Calendar.getInstance();
+    	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년MM월dd일 hh시mm분ss초");
+    	String datetime1 = sdf1.format(cal.getTime());
+    	System.out.println("--> " + datetime1);
+*/    	
     	return "logout.notiles";
     }
 	
