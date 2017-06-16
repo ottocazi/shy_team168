@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =====   mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- =====   루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="pa">
+
+	<!-- ===== 6. Ajax 로 검색어 입력시 자동글 완성하기 =====  -->
+	<resultMap type="java.util.HashMap" id="getSearchWordMap">
+		<result property="SEARCHDATA" column="searchdata" javaType="String" />
+	</resultMap>
+	<select id="searchWordgrpList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
+		<if test='colname.equals("gname")'>
+		    select gname as searchdata 
+		    from tbl_group
+		    where lower(gname) like '%' || lower(#{grpsearch}) || '%'
+		</if>
+		
+		<if test='colname.equals("gcontent")'>
+		    select substr(gcontent, instr(gcontent, #{grpsearch}, 1, 1), length(#{grpsearch}) + 5 )
+		           as searchdata    
+		    from tbl_grpboard
+		    where lower(gcontent) like '%' || lower(#{grpsearch}) || '%'
+		</if>
+	</select>
+	
+</mapper>	

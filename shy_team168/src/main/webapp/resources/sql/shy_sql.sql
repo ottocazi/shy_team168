@@ -1,6 +1,22 @@
 -------------------------------------------
 --파
+select *
+from tbl_grpboard;
 
+select (gcontent, instr(gcontent,'te', 1, 1))
+		           as searchdata    
+		    from tbl_grpboard
+		    where lower(gcontent) like '%' || lower('te') || '%';
+
+select V.*
+from
+(
+select A.groupno, A.gname, B.gpdetailno, B.gcontent
+from tbl_group A join tbl_grpboard B
+on A.groupno = B.grpboardseq
+)V
+where V.gcontent like '%'||'그'||'%';
+--where V.gname like '%'||'그'||'%';
 -------------------------------------------
 --용명
 
