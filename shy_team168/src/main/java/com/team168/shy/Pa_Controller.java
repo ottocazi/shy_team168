@@ -23,12 +23,9 @@ public class Pa_Controller {
 	@Autowired
 	private PaService service;
 	
-<<<<<<< HEAD
+
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
-	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
-=======
 	@RequestMapping(value="/mypages.shy", method={RequestMethod.GET})
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
     public String goMypage(HttpServletRequest req) {
     	
 		return "pa/mypage.tiles";
