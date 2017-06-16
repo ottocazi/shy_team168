@@ -1,0 +1,89 @@
+  <!--new댓글창  -->
+     <div class="shy_comments-app" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+  
+  
+  <!-- Form -->
+  <div class="shy_comment-form">
+    <!-- Comment Avatar -->
+    <div class="shy_comment-avatar">
+      <img src="http://lorempixel.com/200/200/people">
+    </div>
+
+    <form class="shy_form" name="form" ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
+      <div class="shy_form-row">
+        <textarea
+                  class="shy_input"
+                  ng-model="cmntCtrl.comment.text"
+                  placeholder="댓글로 이야기를 나눠보세요"
+                  required></textarea>
+      </div>
+<!-- 
+      <div class="shy_form-row">
+        <input
+               class="shy_input"
+               ng-class="shy_{ disabled: cmntCtrl.comment.anonymous }"
+               ng-disabled="cmntCtrl.comment.anonymous"
+               ng-model="cmntCtrl.comment.author"
+               ng-required="!cmntCtrl.comment.anonymous"
+               placeholder="Email"
+               type="email">
+      </div> -->
+
+      <!-- <div class="shy_form-row text-right">
+        <input
+               id="comment-anonymous"
+               ng-change="cmntCtrl.anonymousChanged()"
+               ng-model="cmntCtrl.comment.anonymous"
+               type="checkbox">
+        <label for="comment-anonymous">Anonymous</label>
+      </div> -->
+
+      <div class="shy_form-row">
+        <input type="submit" value="올리기">
+      </div>
+    </form>
+  </div>
+
+  <!-- Comments List -->
+  <div class="shy_comments">
+    <!-- Comment -->
+   
+
+    <!-- Comment - Dummy -->
+    <div class="shy_comment"><!-- for each 돌리는 div  -->
+      <!-- Comment Avatar -->
+      <div class="shy_comment-avatar">
+        <img src="" alt="프로필">
+      </div>
+
+      <!-- Comment Box -->
+      <div class="shy_comment-box">
+        <div class="shy_comment-text">짧은 댓글 test1</div>
+        <div class="shy_comment-footer">
+          <div class="shy_comment-info">
+            <span class="shy_comment-author">
+              <a href="">유저명</a>
+            </span>
+            <span class="shy_comment-date">댓글작성시간</span>
+          </div>
+
+          <div class="shy_comment-actions">
+            <a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" ></i></a>
+          </div>
+        </div>
+        
+
+      </div>
+	
+	               
+      
+    </div><!-- for each 돌리는 div끝  -->
+
+		<div align="center"><a class="button" href="#" >
+					read more
+				</a>
+   </div>
+  </div>
+</div>
+    <!--new댓글창 end  -->
+    

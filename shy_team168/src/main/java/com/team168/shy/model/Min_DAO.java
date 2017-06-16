@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Repository
-public class Meong_DAO{
+public class Min_DAO{
 
 	@Autowired
 	private SqlSessionTemplate sqlsession;
@@ -27,7 +27,7 @@ public class Meong_DAO{
 	}
 	
 	// 로그인 여부 알아오는 메소드
-	public int loginEnd(HashMap<String, Object> map) {
+	public int loginEnd(HashMap<String, String> map) {
 		int n = sqlsession.selectOne("mangu.loginEnd", map);
 		return n;
 	}
@@ -36,11 +36,6 @@ public class Meong_DAO{
 	public ShyMemberVO getLoginMember(String email) {
 		ShyMemberVO loginuser = sqlsession.selectOne("mangu.getLoginMember", email);
 		return loginuser;
-	}
-
-	public void loginsert(HashMap<String, Object> map) {
-		sqlsession.insert("mangu.loginsert", map);
-		
 	}
 
     

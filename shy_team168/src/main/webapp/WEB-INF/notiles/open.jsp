@@ -32,16 +32,7 @@
       
   
       $("#loginend").click(function(event){
-/* 		 
-    	  if(${sessionScope.loginuser != null}) {
-			 alert("이미 로그인을 하신 상태 입니다 !!");
-				 $("#email").val(""); 
-				 $("#pwd").val("");
-				 $("#email").focus();
-				 event.preventDefault();
-				 return; 
-		 }
-*/ 		 
+
  		 var email = $("#email").val(); 
 		 var pwd = $("#pwd").val(); 
 			
@@ -84,8 +75,6 @@
 </head>
 <body>
 <div id="main">
-
-<c:if test="${sessionScope.loginuser == null}">
   
   <div id="login">
      <div id="signin" style="min-height:385px;">
@@ -134,45 +123,6 @@
    <p style="color: #BBBBBB; font-size: 10pt">이미 회원이신가요? <a class="goLogin" style="cursor:pointer">로그인하기</a></p>
      </div>
   </div>
-
-</c:if>
-
-
-<c:if test="${sessionScope.loginuser != null}">
-  
-  <div id="login">
-     <div id="signin" style="min-height:385px;">
-   <div class="form-title">
-   
-   <span class="letter" id="shy" data-letter="s">s</span>
-   <span class="letter" id="shy" data-letter="h">h</span>
-   <span class="letter" id="shy" data-letter="y">y</span>
-   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
-   </div>
-   <br>
-   
-   				<c:if test="${sessionScope.loginuser != null}">
-				<li><a href="<%=request.getContextPath()%>/logout.shy">로그아웃</a></li>
-				</c:if>
-				
-   
-   </div>
-   <div id="joinus" style="min-height: 385px;">
-   <div class="form-title">
-   <span class="letter" id="shy" data-letter="s">s</span>
-   <span class="letter" id="shy" data-letter="h">h</span>
-   <span class="letter" id="shy" data-letter="y">y</span>
-   </div>
-   <p style="color: #BBBBBB; font-size: 10pt">가족, 친구와 함께하는 <br>즐거운 경제활동에 참여하세요 </p>
-
-   </div>
-  
-
-  </div>
-  
-</c:if>
-
   
   <div id="intro">
     
@@ -192,13 +142,6 @@
       		지인들과 즐거운 점심식사! 맛있게 먹고 밥값 정산 할 땐<br/>
       		계좌번호 묻지 않고 이젠 shy로 사이좋게 계산완료!<br/></span>
      </p>
-  
-  		<!-- ===== 로그인 성공한 사용자 성명 출력하기. ===== -->
-		<c:if test="${sessionScope.loginuser != null}">
-		<li style="margin-left:20%; margin-top: 1%;">
-		::: 환영합니다~ <span style="color: navy; font-weight: bold;">${sessionScope.loginuser.name}</span> 님  :::
-		</li>
-		</c:if>
      
   </div>
   

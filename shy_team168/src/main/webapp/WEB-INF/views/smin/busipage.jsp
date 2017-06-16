@@ -21,11 +21,7 @@
   
   <style>    
     /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
+   
     
     @import "compass/css3";
 
@@ -565,10 +561,6 @@ marker.setMap(map);
     <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
 </div>
 
-
-<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>
 
 </body>
 </html>

@@ -16,7 +16,7 @@
 			    type: 	"success" // 설명 :  warning, error, success, info and question
 			  },
 			  function(){
-			    window.location.href = "<%= request.getContextPath() %>/open.shy";
+			    window.location.href = "<%= request.getContextPath() %>/mainline.shy";
 			});
 		});	
 	</c:if>
