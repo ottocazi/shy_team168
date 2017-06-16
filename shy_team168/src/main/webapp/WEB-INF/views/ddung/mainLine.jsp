@@ -43,7 +43,7 @@
 
   
   <main role="main"><!--지우지 마세요  -->
-  
+  <!--forEach 본문  -->
   <article class="card-60 social">
     <figure>
       
@@ -192,6 +192,8 @@
     
     <!-- end .flex-content-->
   </article>
+  
+  <!--forEach 본문 end  -->
   
   
   <!-- post foreach 마무리  -->

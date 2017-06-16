@@ -45,7 +45,7 @@ public class DDung_Controller {
 		String idx = req.getParameter("userseq");
 		String content = req.getParameter("content");
 		String ftag = req.getParameter("ftag");
-		
+		String status = req.getParameter("status");
 		String ftagstatus = "0";
 		if(ftag!=null){
 			ftagstatus = "1";
@@ -57,6 +57,7 @@ public class DDung_Controller {
 		System.out.println("content = "+content);
 		System.out.println("idx= "+idx);
 		System.out.println("ftagstatus = "+ftagstatus);
+		System.out.println("status = "+status);
 		
 		HashMap<String, String> shyform = new HashMap<String, String>();
 		
