@@ -18,7 +18,7 @@ public class Min_Controller {
 	@Autowired
 	private DDung_Service serv100;
 	
-	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/myhpage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
     	
 		return "pa/mypage.tiles";
