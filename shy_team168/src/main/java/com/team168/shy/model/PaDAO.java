@@ -19,4 +19,16 @@ public class PaDAO {
 		List<HashMap<String, String>> grplist = sqlsession.selectList("pa.searchWordgrpList", map);
 		return grplist;
 	}
+
+	// ===== 그룹 만들기  =====
+	public int grpinsert(GroupVO grpvo) {
+		int n = sqlsession.insert("pa.grpinsert",grpvo);
+		return n;
+	}
+
+	// ===== 인기그룹 가져오기  =====
+	public List<GroupVO> hotGrpList() {
+		List<GroupVO> hotGrpList = sqlsession.selectList("pa.hotGrpList");
+		return hotGrpList;
+	}
 }

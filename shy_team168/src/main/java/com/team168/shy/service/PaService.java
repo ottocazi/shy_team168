@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team168.shy.model.GroupVO;
 import com.team168.shy.model.PaDAO;
 
 @Service
@@ -24,5 +25,17 @@ public class PaService {
 		else {
 			return null;
 		}
+	}
+
+	// ===== 그룹 만들기  =====	
+	public int grpinsert(GroupVO grpvo) {
+		int n = dao.grpinsert(grpvo);
+		return n;
+	}
+
+	// ===== 인기그룹 가져오기  =====
+	public List<GroupVO> gethotGroupList() {
+		List<GroupVO> hotGrpList = dao.hotGrpList();
+		return hotGrpList;
 	}
 }

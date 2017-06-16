@@ -38,9 +38,20 @@
 	background-color: #fff;
 	border: 1px solid gray;
 }
-
 </style>    
+<script>
+	function goInsert() {
+		var frm = document.makegrpFrm;
+		
+		frm.method = "POST";
+		frm.action = "mygroups_insertEnd.shy"
+		frm.submit();
+	}
+
+</script>
+
 <div id="insertGrp" align="center">
+<form name="makegrpFrm">
     <div class="grp_form" align="center">
         <div class="grp_form-title">
           그룹,<br/>
@@ -51,7 +62,7 @@
             <input type="text" placeholder="그룹명" name="gname" style="width: 400px;"/>
           </div>
           <div class="input-name">
-            <input type="text" value="loginUser_idx" name="fk_idx" readonly="readonly" style="width: 400px;"/>
+            <input type="text" value="33" name="fk_idx" readonly="readonly" style="width: 400px;"/>
           </div>
           <div class="input-status">
             <input type="radio" name="status" value="1"/>전체공개&nbsp;&nbsp;&nbsp;
@@ -67,8 +78,9 @@
           </div>
         </div>
         <div class="grp_btn">
-        	<button type="button">생성</button>
-        	<button type="button">취소</button>
+        	<button type="submit" onclick="goInsert();">생성</button>
+        	<button type="reset">취소</button>
         </div>
     </div>
+</form>    
 </div>

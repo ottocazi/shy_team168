@@ -1,9 +1,21 @@
 -------------------------------------------
 --파
-select *
-from tbl_grpboard;
+select fk_idx, to_char(groupdate, 'yyyy-mm-dd hh:mi:ss')
+from tbl_group;
 
-select (gcontent, instr(gcontent,'te', 1, 1))
+select *
+from tbl_group;
+
+select *
+from tbl_gmember;
+
+insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,GREGISTERDATE,status) 
+values(seq_tbl_gmember.nextval,2,33,default,1);
+
+select *
+from tbl_shymember;
+
+select substr(gcontent, instr(gcontent, 'te', 1, 1), length('te') + 5 )
 		           as searchdata    
 		    from tbl_grpboard
 		    where lower(gcontent) like '%' || lower('te') || '%';
