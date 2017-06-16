@@ -20,6 +20,7 @@
     <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css"> -->
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'> --> 
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
      
     <script>
     function openComment() {
@@ -39,8 +40,7 @@
   </head>
   <body>
   
-  
-  
+
   
   <main role="main"><!--지우지 마세요  -->
   
@@ -112,7 +112,7 @@
       <img src="http://lorempixel.com/200/200/people">
     </div>
 
-    <form class="shy_form" name="form" ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
+    <form class="shy_form" name="form" action="" method="" novalidate>
       <div class="shy_form-row">
         <textarea
                   class="shy_input"
@@ -153,9 +153,9 @@
    
 
     <!-- Comment - Dummy -->
-    <div class="shy_comment"><!-- for each 돌리는 div  -->
+    <div class="shy_comment"><!-- 댓글 양식 for each 돌리는 div  -->
       <!-- Comment Avatar -->
-      <div class="shy_comment-avatar">
+      <div class="shy_comment-avatar" style="margin-left:0;">
         <img src="" alt="프로필">
       </div>
 
