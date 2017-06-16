@@ -42,7 +42,7 @@
 	<!-- 로그인한 유저 로그기록 저장하기 -->
 	<insert id="loginsert" parameterType="java.util.HashMap">
 		insert into tbl_log(logno, fk_idx, status, logtime, logip) 
-		values(seq_tbl_log.nextval, #{user_seq}, 1, #{sysdate}, #{user_ip})
+		values(seq_tbl_log.nextval, #{user_seq}, 1, to_date(#{today}, 'yyyy-mm-dd hh24:mi:ss'), #{user_ip})
 	</insert>	
 		
 		
