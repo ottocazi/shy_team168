@@ -56,7 +56,20 @@
 			})
 	
 }; // shynow END
+	
+	
+	
 
+$(window).scroll(function() {
+	    if ($(this).scrollTop() > 50 ) {
+	        $('.scrolltop:hidden').stop(true, true).fadeIn();
+	    } else {
+	        $('.scrolltop').stop(true, true).fadeOut();
+	    }
+	});
+	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
+
+	
 
     
 </script>
@@ -149,6 +162,55 @@
 	background-color: #fff;
 }
 
+
+
+.scrolltop {
+	display:none;
+	width:100%;
+	margin:0 auto;
+	position:fixed;
+	bottom:20px;
+	right:10px;	
+}
+.scroll {
+	position:absolute;
+	right:20px;
+	bottom:20px;
+	background:#b2b2b2;
+	background:rgba(178,178,178,0.7);
+	padding:20px;
+	text-align: center;
+	margin: 0 0 0 0;
+	cursor:pointer;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover {
+	background:rgba(178,178,178,1.0);
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover .fa {
+	padding-top:-10px;
+}
+.scroll .fa {
+	font-size:30px;
+	margin-top:-5px;
+	margin-left:1px;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 	
+}
+    
+
+
+
+
 </style>
 
 
@@ -197,8 +259,16 @@
 </header>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
 
+<div class='thetop'></div>
 <div style="width:0; height: 0;" id="noexists">
 
 
+</div>
+
+
+
+
+<div class='scrolltop'>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
 </div>
     
