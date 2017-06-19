@@ -31,7 +31,7 @@ public class Pa_Controller {
 		return "pa/mypage.tiles";
     	
     }
-	
+
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
 	public String goMygroups(HttpServletRequest req) {
