@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===== #26. mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="ddung">
+
+	<!-- 회원가입 -->
+	<insert id="shyup" parameterType="java.util.HashMap">
+		insert into tbl_shymemo(SNSNO, FK_IDX, SCONTENT, STAGFOLLOW, SDATEDTIME, PUBLICYN, SIMAGE, STAGGEO, STATUS) 
+		values(seq_tbl_shymemo.nextval, #{fk_idx},#{scontent}, #{stagfollow}, default, 1, 1, 0, 1)  
+	</insert>
+	
+
+		
+</mapper>
+
+
+
+
+
+

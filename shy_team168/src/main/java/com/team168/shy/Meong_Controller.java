@@ -2,6 +2,7 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +43,6 @@ public class Meong_Controller {
     	int n = 0;
     	
     	n = service.addregistorEnd(map);
-//    	System.out.println("n 값은? == " + n);
-//    	n 값은? == 1
     	
 		   String msg = "";
 		   String loc = "";
@@ -81,36 +80,122 @@ public class Meong_Controller {
     	
     	String email = req.getParameter("email");
     	String pwd = req.getParameter("pwd");
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
     	
-    	HashMap<String, String> map = new HashMap<String, String>();
+    	HashMap<String, Object> map = new HashMap<String, Object>();
 
     	map.put("email", email);
     	map.put("pwd", pwd);
 
     	int n = service.loginEnd(map);
-
+    	
     	req.setAttribute("n", n);
     	
-    	if(n==1) {
+    	if(n == 1) {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
 
-    	return "loginEnd.notiles";
+    	else if(n == 0) {
+    		title = "암호가 틀립니다 !!";
+    		type = "error";
+    		msg = "아이디와 암호를 다시입력하세요~";
+    		loc = "javascript:history.back()";
+    		
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+			
+			return "Meong_msg.notiles";
+    	}
+    	else {
+    		title = "아이디가 존재하지 않습니다.!!";
+    		type = "error";
+    		msg = "회원가입부터 하세요~~";
+    		loc = "javascript:history.back()";
+
+			req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+			
+			return "Meong_msg.notiles";
+    	}
+   	
+    	InetAddress inetAddress = InetAddress.getLocalHost();
+
+    	String user_ip = inetAddress.getHostAddress();
+    	int user_seq = loginuser.getIdx();
+    	
+    	Date now = new Date();
+   	 	String today = String.format("%tF %tT", now, now);
+
+    	map.put("user_ip", user_ip);
+    	map.put("user_seq", user_seq);
+    	map.put("today", today);
+    	
+    	service.loginsert(map);
+    	
+    	req.setAttribute("loc", "mainline.shy");
+    	return "msg.notiles";
+    	
     }
 	
-	
+
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
-    public String logout(HttpServletRequest req, HttpSession session) {
+    public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
+    	/*    	
+    	String email = req.getParameter("email");
+		loginuser = service.getLoginMember(email);
+		session.setAttribute("loginuser", loginuser);
+    	*/
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	InetAddress inetAddress = InetAddress.getLocalHost();
+
+    	String user_ip = inetAddress.getHostAddress();
+    	int user_seq = loginuser.getIdx();
+    	
+    	Date now = new Date();
+   	 	String today = String.format("%tF %tT", now, now);
+    	
+   	 	map.put("user_ip", user_ip);
+   	 	System.out.println("user_ip 는 "+user_ip);
+   	 	map.put("user_seq", user_seq);
+   	 	System.out.println("user_seq 는 "+user_seq);
+   	 	map.put("today", today);
+   	 	System.out.println("today 는 "+today);
+   	 	
+   	 	service.logoutinsert(map);
 
     	session.invalidate();
     	
     	return "logout.notiles";
     }
 	
-	
-	
+    
+	// 관리자 페이지요청
+    @RequestMapping(value="/admin.shy", method={RequestMethod.GET})
+    public String admin(HttpServletRequest req, HttpSession session){
+    	
+    	String totaluser = service.gettotaluser();   // 총 사용자수
+    	String mentotal = service.getmentotal();     // 총 남자 사용자수
+    	String womantotal = service.getwomantotal(); // 총 여자 사용자수
+    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+    			
+    	req.setAttribute("totaluser", totaluser);
+    	req.setAttribute("mentotal", mentotal);
+    	req.setAttribute("womantotal", womantotal);
+    	req.setAttribute("todaytotal", todaytotal);
+
+    	return "admin.notiles";
+    }
+		
 	
 	
 	

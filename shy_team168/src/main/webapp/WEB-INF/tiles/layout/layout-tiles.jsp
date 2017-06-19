@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>tiles 를 사용한 메인(시작) 페이지 작성하기</title>
+<title>shy</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
  <%--  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/BootStrapStudy/css/bootstrap.css">

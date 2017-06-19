@@ -36,8 +36,45 @@
        , to_char(registerdate, 'yyyy-mm-dd') as registerdate
        , myimg, myintro, birthday, gender, phone
 	   from tbl_shymember
-	   where status = 1 and email = #{email}
+	   where status = 1 and email = #{email} 
 	</select>
+	
+	<!-- 로그인한 유저 로그기록 저장하기 -->
+	<insert id="loginsert" parameterType="java.util.HashMap">
+		insert into tbl_log(logno, fk_idx, status, logtime, logip) 
+		values(seq_tbl_log.nextval, #{user_seq}, 1, to_date(#{today}, 'yyyy-mm-dd hh24:mi:ss'), #{user_ip})
+	</insert>	
+
+	<!-- 로그아웃한 유저 로그기록 저장하기 -->
+	<insert id="logoutinsert" parameterType="java.util.HashMap">
+		insert into tbl_log(logno, fk_idx, status, logtime, logip) 
+		values(seq_tbl_log.nextval, #{user_seq}, 0, to_date(#{today}, 'yyyy-mm-dd hh24:mi:ss'), #{user_ip})
+	</insert>	
+		
+	<select id="gettotaluser" resultType="String">
+		select count(*)
+		from tbl_shymember
+	</select>
+		
+	<select id="getmentotal" resultType="String">
+		select count(*)
+		from tbl_shymember
+		where gender = '남자'
+	</select>
+		
+	<select id="getwomantotal" resultType="String">
+		select count(*)
+		from tbl_shymember
+		where gender = '여자'
+	</select>		
+		
+	<select id="gettodaytotal" resultType="String">
+		select distinct count(fk_idx) 
+		from tbl_log 
+		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx)
+	</select>		
+	
+	
 		
 </mapper>
 
