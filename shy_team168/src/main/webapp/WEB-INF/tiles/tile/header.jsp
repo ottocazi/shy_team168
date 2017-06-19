@@ -16,6 +16,9 @@
  <%-- <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.css"> --%>
 
 <script>/* 글쓰기 펑션  */
+
+
+ 
 	function shynow() {
 	
 		swal({
@@ -27,17 +30,18 @@
 			    '<option value="2">친구 공개</option>'+
 			    '<option value="0">나만 보기</option>'+
 			    '</select>'+
-			   	'<input type="hidden" name="userseq" value="${loginuser.idx}"/>'+
+			    '<input type="hidden" name="userseq" value="${loginuser.idx}"/>'+
 				'<textarea id="content" name="content" class="swal2-textarea" placeholder=""></textarea>'+
 				'<span style="font-size:10pt;">누구와 함께 계신가요? &nbsp;&nbsp;</span>'+ 
 				'<input id="ftag" name="ftag" placeholder=""/><br><br>'+
 				'<span style="font-size:10pt;">어디에 계신가요? &nbsp; &nbsp;</span>'+ 
 				'<input id="shyplace" name="shyplace" placeholder="배고파덕"/>' +
-				
+				'<br><br><input type="file" id="uploader" name="image" />'+
 				'</form></div>',
 			  width:'640px',
 			  showCloseButton:true,
 			  allowOutsideClick : false
+			  
 			  
 		      
 			  
@@ -54,10 +58,13 @@
 }; // shynow END
 
 
+    
 </script>
 
 
+
 <style>
+   
 
 #status {
  font-size : 10pt;
@@ -189,4 +196,9 @@
 
 </header>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
+
+<div style="width:0; height: 0;" id="noexists">
+
+
+</div>
     
