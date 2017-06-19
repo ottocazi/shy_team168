@@ -17,7 +17,7 @@ body {
   font-family: "Roboto", helvetica, arial, sans-serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
-  font-size: 62.5%;
+/*   font-size: 62.5%; */
 }
 
 body {
@@ -37,6 +37,7 @@ a,.user {
 }
 
 a:hover {
+  TEXT-DECORATION:none;
   color: #5b5;
 }
 
@@ -123,8 +124,8 @@ img[class*="avatar-"] {
 }
 
 img.avatar-32 {
-  width: 32px;
-  height: 32px;
+  width: 64px;
+  height: 64px;
 }
 
 /*=== Cards === */

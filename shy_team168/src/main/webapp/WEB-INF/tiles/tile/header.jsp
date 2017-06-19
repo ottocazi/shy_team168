@@ -7,12 +7,79 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" type="text/css">
  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/shy_top.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+ <script src="https://cdn.jsdelivr.net/sweetalert2/latest/sweetalert2.js"></script>
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css" rel="stylesheet"/>
+ <%-- <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.css"> --%>
+
+<script>/* 글쓰기 펑션  */
+
+
+ 
+	function shynow() {
+	
+		swal({
+			  html:
+			  '<div style="text-align: left;">'+
+			  '<form name="shynowform">'+
+			  '<span style="font-size:16pt; color:navy; ">${loginuser.email}</span>  님의 샤이 기록하기&nbsp;&nbsp;'+
+			  '<select name="status" id="status"> <option value="1">전체 공개</option>'+
+			    '<option value="2">친구 공개</option>'+
+			    '<option value="0">나만 보기</option>'+
+			    '</select>'+
+			    '<input type="hidden" name="userseq" value="${loginuser.idx}"/>'+
+				'<textarea id="content" name="content" class="swal2-textarea" placeholder=""></textarea>'+
+				'<span style="font-size:10pt;">누구와 함께 계신가요? &nbsp;&nbsp;</span>'+ 
+				'<input id="ftag" name="ftag" placeholder=""/><br><br>'+
+				'<span style="font-size:10pt;">어디에 계신가요? &nbsp; &nbsp;</span>'+ 
+				'<input id="shyplace" name="shyplace" placeholder="배고파덕"/>' +
+				'<br><br><input type="file" id="uploader" name="image" />'+
+				'</form></div>',
+			  width:'640px',
+			  showCloseButton:true,
+			  allowOutsideClick : false
+			  
+			  
+		      
+			  
+			}).then(function (content) {
+			  if (content) {
+			    /*formData 추가?  */
+				  document.shynowform.method = "post";
+				  document.shynowform.action = "shynow.shy";
+				  document.shynowform.submit();
+				  
+			  }
+			})
+	
+}; // shynow END
+
+
+    
+</script>
+
+
+
 <style>
+   
 
+#status {
+ font-size : 10pt;
+ border-left: hidden; 
+ border-right:hidden;
+ border-top : hidden;
+ border-bottom: hidden;
+}
 
+#ftag, #shyplace{
+ 
+ border-left: hidden; 
+ border-right:hidden;
+ border-top : hidden;
+}
 
 #shy{
   font-family: 'Lato', sans-serif;
@@ -85,6 +152,7 @@
 </style>
 
 
+
 </head>
 
 <!-- <body id="page-top"> -->
@@ -103,6 +171,7 @@
     </div>
     
     <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
+    <li><a href="javascript:shynow();"><i class="fa fa-pencil fa-2x" aria-hidden="true" style="color:red;"></i></a></li>
       <li><a href="#"><i class="fa fa-street-view fa-2x" aria-hidden="true" style="color:#98DDDE;"></i></a></li>
       <li><a href="#"><i class="fa fa-heartbeat fa-2x" aria-hidden="true" style="color:#F7786B;"></i></a></li>
       <li><a href="#"><i class="fa fa-bolt fa-2x" aria-hidden="true" style="color:#FAE03C;"></i></a></li>
@@ -120,9 +189,16 @@
       <input type="hidden" class="shy_top_btn"  id="search" onclick="goSearch();"><!-- style="border: hidden;" -->
       <label for="search" style="cursor: pointer;"><i class='fa fa-search'></i></label> 
     </form>
-  </div>
+  </div >
+  
+  
 </nav>
 
 </header>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
+
+<div style="width:0; height: 0;" id="noexists">
+
+
+</div>
     
