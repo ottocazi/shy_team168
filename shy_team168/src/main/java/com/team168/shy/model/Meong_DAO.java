@@ -20,7 +20,6 @@ public class Meong_DAO{
 	private SqlSessionTemplate sqlsession;
 	
 	// 회원가입 인서트 해주는 메소드
-
 	public int addregistorEnd(HashMap<String, String> map) {
 		int n = sqlsession.insert("mangu.addregistorEnd", map);
 		return n;
@@ -37,11 +36,41 @@ public class Meong_DAO{
 		ShyMemberVO loginuser = sqlsession.selectOne("mangu.getLoginMember", email);
 		return loginuser;
 	}
-
+	
+	// 로그인한 회원 로그기록 인서트해주는 메소드
 	public void loginsert(HashMap<String, Object> map) {
 		sqlsession.insert("mangu.loginsert", map);
 		
 	}
+	
+	// 로그아웃한 회원 로그기록 인서트해주는 메소드
+	public void logoutinsert(HashMap<String, Object> map) {
+		sqlsession.insert("mangu.logoutinsert", map);
+		
+	}
+	
+	// 관리자페이지 총사용자수 보여주는 메소드
+	public String gettotaluser() {
+		String totaluser = sqlsession.selectOne("mangu.gettotaluser");
+		return totaluser;
+	}
+	
+	// 관리자페이지 남성 총 사용자수 보여주는 메소드
+	public String getmentotal() {
+		String mentotal = sqlsession.selectOne("mangu.getmentotal");
+		return mentotal;
+	}
+
+	public String getwomantotal() {
+		String womantotal = sqlsession.selectOne("mangu.getwomantotal");
+		return womantotal;
+	}
+
+	public String gettodaytotal() {
+		String todaytotal = sqlsession.selectOne("mangu.gettodaytotal");
+		return todaytotal;
+	}
+
 
     
     
