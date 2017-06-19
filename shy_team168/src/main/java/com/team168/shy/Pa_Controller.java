@@ -25,14 +25,6 @@ public class Pa_Controller {
 	
 
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
-	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
-
-
-    public String goMypage(HttpServletRequest req) {
-    	
-		return "pa/mypage.tiles";
-    	
-    }
 	
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
