@@ -145,6 +145,10 @@ function goMakegrp() {
 }
 </script>
 <style>
+a, a:hover{
+text-decoration: none;
+}
+
 #mygroups{
 	margin: 0 auto;
 	width: 80%;
@@ -206,6 +210,7 @@ function goMakegrp() {
 
 .mygrp .mygrp_list, .mygrp .mygrp_hotgrp, .mygrp .mygrp_newgrp{
 	position: relative;
+	display: inline-block;
 }
 
 .mygrp_types{
@@ -222,22 +227,30 @@ function goMakegrp() {
 }
 
 /* hot,신규그룹 layout */
-.grp_box { 
+/* .grp_box { 
 	width: 660px; 
 	margin: 40px auto; 
 	position: relative; 
-}
+	
+} */
 
 .grp_box { 
 	overflow: hidden;
-	width:320px;
+	width:220px;
+	height:auto;
 	text-align:left;
-	display:inline-block;
 	position:relative;
 	border: 1px solid #ddd;
 	border-bottom: 1px solid #bbb;
 	background: #fff;
 	border-radius: 3px;
+	margin: 2px;
+}
+
+.grp_box:hover{
+  background: #A9A8A8;
+  border-color: #919191;
+  box-shadow: 0 1px 40px rgba(0, 0, 0, 0.15);
 }
 
 .grp_fa { 
@@ -251,9 +264,10 @@ function goMakegrp() {
     text-align: right;
 }
 .grp_fa:hover { color: #666; }
-.grp_h { margin-top: 20%;display:block; color:#999; font-weight: bold; }
-.grp_inner { text-align: center; display: grid; padding: 5px;}
+.grp_h { margin-top: 20%;display:block; color:#999; font-weight: bold;}
+.grp_inner { text-align: center; display: grid; padding: 10px;}
 .grp_boxImage { border-top-left-radius:3px; border-top-right-radius:3px; width:100%; }
+.grp_boxImage:hover{background-color: #A9A8A8;opacity: inherit;}
 
 .grp_buddy {
   position:absolute; z-index:2;
@@ -360,38 +374,47 @@ function goMakegrp() {
 		<!-- 내 그룹-->
 			<h3 class="mygrp_types">내가 만든 그룹</h3>
 			<button type="button" class="mygrp_register" onclick="goMakegrp();">그룹만들기</button>
+			<c:if test="${myGrpList!=null }">
+			<c:forEach var="gvo" items="${myGrpList }">
 			 <div class="mygrp_clearfix">
 		      <img src="https://i.imgur.com/TkSNOpF.jpg" class="mygrp_img" width="225" height="260">
 		      <div class="mygrp_details">
-		        <h3 class="mygrp_name">그룹명</h3>
-		        <p class="mygrp_member">그룹회원 수</p>
-		        <p class="mygrp_desc">그룹설명 그룹설…&nbsp;<a href="#">더 보기</a></p>
+		        <h3 class="mygrp_name">${gvo.gname }</h3>
+		        <p class="mygrp_member">${gvo.gcount }명</p>
+		        <p class="mygrp_desc">${gvo.description }…&nbsp;<a href="#">더 보기</a></p>
 		      </div>
 	    	 </div>
-	    
+	    	
 		    <ul class="mygrp mygrp_clearfix">
 		      <li>
 		        <img src="https://i.imgur.com/TkSNOpF.jpg" alt="Johnny Appleseed" width="130" height="150" class="mygrp_gimg">
-		        <span class="gcontent name">President/CEO</span>
-		        <span class="gcontent member">5명</span>
-		        <span class="gcontent desc">Just a bunch of random text here explaining details about the person. You could include history, job responsibilities, time at the company, and maybe stuff they like to do for fun. Or make fun of them... your call.</span>
+		        <span class="gcontent name">${gvo.gname }</span>
+		        <span class="gcontent member">${gvo.gcount }명</span>
+		        <span class="gcontent desc">${gvo.description }</span>
 		      </li>
-		       <li>
-		        <img src="https://i.imgur.com/TkSNOpF.jpg" alt="Mr. What Zit Tooya" width="130" height="150" class="mygrp_gimg">
-		        <span class="gcontent name">Project Manager</span>
-		        <span class="gcontent member">6명</span>
-		        <p class="gcontent desc">These are pretty flexible and we could even include <strong>real HTML tags</strong>! Which also means the potential to include <a href="https://twitter.com/" target="_blank">social networking</a> links.</p>
-      		   </li>
 		   	 </ul>
+		   	 </c:forEach>
+		   	 </c:if>
+		   	 <c:if test="${myGrpList==null }">
+		   	 <div class="mygrp_clearfix">
+		   	 	<span style="text-align: center; font-weight: bold; font-size: 15pt;"> 내가 만든 그룹이 없습니다.</span>
+		   	 </div>
+		   	 </c:if>
 		</div>
 	
-		<div class="mygrp mygrp_hotgrp" style="display: inline-block;">
+		<h3 class="mygrp_types">HOT 그룹</h3>
+		<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+		
 		<!-- HOT한 그룹  -->
-   		  <h3 class="mygrp_types">HOT 그룹</h3>
    		  <c:if test="${hotGrpList!=null }">
+   		  <c:forEach var="gvo" items="${hotGrpList }">
 		  <div class="grp_box">
-		  <c:forEach var="gvo" items="${hotGrpList }">
-		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">
+		    <c:if test="${gvo.gimg!=null}">
+		    <img class="grp_boxImage" src="${gvo.gimg}"><%-- img가져오기 --%>
+		    </c:if>
+		    <c:if test="${gvo.gimg==null}">
+		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg"><%-- 기본이미지 --%>
+		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
 		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
@@ -409,24 +432,37 @@ function goMakegrp() {
 		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
 		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
 		    </div> -->
-		     </c:forEach>
 		  </div>
+		  </c:forEach>
 		  </c:if>
+		   <c:if test="${hotGrpList==null }">
+		   <div class="grp_box">
+		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 인기 그룹이 없습니다.</span>
+		    </div>
+		   </c:if>
 		</div>
 		
-		<div class="mygrp mygrp_newgrp">
+		<h3 class="mygrp_types">신규 그룹</h3>
+		<div class="mygrp mygrp_newgrp" style="display: inline-flex; flex-wrap: nowrap;">
+		
 		<!-- 신규 그룹 -->
-		 <h3 class="mygrp_types">신규 그룹</h3>
-		 <div class="grp_box">
-		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">
+		 <c:if test="${newGrpList!=null }">
+   		  <c:forEach var="gvo" items="${newGrpList }">
+		  <div class="grp_box">
+		    <c:if test="${gvo.gimg!=null}">
+		    <img class="grp_boxImage" src="${gvo.gimg}"><%-- img가져오기 --%>
+		    </c:if>
+		    <c:if test="${gvo.gimg==null}">
+		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg"><%-- 기본이미지 --%>
+		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">그룹명</a></h4>
-		      <i class="grp_fa fa-eye"> 회원 수</i>
-		      <span class="grp_desc">그룹 설명 그룹 설명 그룹 설명</span>
+		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
+		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      <span class="grp_desc"> ${gvo.description }</span>
 		      <!-- <i class="btn openPop">Popular photos</i> -->
 		    </div>
-		    
+		   
 		    <!-- <div class="pop">
 		      <i class="close">&times;</i>
 		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
@@ -436,8 +472,14 @@ function goMakegrp() {
 		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
 		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
 		    </div> -->
-		    
 		  </div>
+		  </c:forEach>
+		  </c:if>
+		   <c:if test="${newGrpList==null }">
+		   <div class="grp_box">
+		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 신규 그룹이 없습니다.</span>
+		    </div>
+		   </c:if>
 		   
 		</div>
 	

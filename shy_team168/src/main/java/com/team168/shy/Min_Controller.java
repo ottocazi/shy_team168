@@ -18,10 +18,16 @@ public class Min_Controller {
 	@Autowired
 	private DDung_Service serv100;
 	
-	@RequestMapping(value="/myhpage.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
     	
-		return "pa/mypage.tiles";
+		return "smin/busipage.tiles";
     	
     }
+	
+	
+	
+	
+	
+	
 }

@@ -37,7 +37,7 @@
 		 var pwd = $("#pwd").val(); 
 			
 			 if(email.trim()=="") {
-				swal({title: "아이디를 입력하세요!!",type: "error"},		  
+				swal({title: "아이디를 입력하세요!!",type: "warning"},		  
 				function(){
 				    window.location.href = "";
 				});

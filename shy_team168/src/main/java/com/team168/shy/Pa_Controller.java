@@ -1,10 +1,14 @@
 package com.team168.shy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.team168.shy.model.GroupVO;
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.PaService;
@@ -37,17 +40,38 @@ public class Pa_Controller {
 	
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
-	public String goMygroups(HttpServletRequest req) {
+	public String goMygroups(HttpServletRequest req,HttpServletResponse res) {
 	    	
-		/*List<String> myGroupList = service.getmyGroupList(session.loginUser);
+		HttpSession session = req.getSession();
     	
-    	req.setAttribute("myGroupList", myGroupList);*/
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
 		
-		// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-		List<GroupVO> hotGrpList = service.gethotGroupList();
-    	req.setAttribute("hotGrpList", hotGrpList);
+		
+		if(loginuser == null) {
     	
+	    		String msg = "♥ 먼저 로그인 하세요~~ ♥";
+	    		String loc = "open.shy";
+	    		
+	    		req.setAttribute("msg", msg);
+	    		req.setAttribute("loc", loc);
+	    		
+	    		return "Meong_msg.notiles";
+    		
+		}else{
+    			int fk_idx = loginuser.getIdx();
+				
+				List<GroupVO> myGrpList = service.getmyGroupList(fk_idx);
+		    	req.setAttribute("myGrpList", myGrpList);
+				
+				// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
+				List<GroupVO> hotGrpList = service.gethotGroupList();
+		    	req.setAttribute("hotGrpList", hotGrpList);
+		    	
+		    	// 신규그룹 목록 
+		    	List<GroupVO> newGrpList = service.getnewGroupList();
+		    	req.setAttribute("newGrpList", newGrpList);
 		
+		}
 		return "pa/mygroups.tiles";
 	    	
 	}
@@ -115,34 +139,31 @@ public class Pa_Controller {
     		
     		if(grpvo!=null){
     			
-    			grpvo = service.getGroup();
+    			grpvo = service.getGroup(); // 제일 최근 insert된 tbl_group을 가져온다.
     			
-    			int fk_groupno = grpvo.getGroupno();
-    			
+    			int fk_groupno = grpvo.getGroupno(); 
         		System.out.println("fk_groupno="+fk_groupno);
+        		
         		String fk_groupidx = grpvo.getFk_idx();
+        		
+        		HashMap<String, Object> map = new HashMap<String, Object>();
+            	map.put("fk_groupno", fk_groupno);
+            	map.put("fk_groupidx", fk_groupidx);
+            	
+            	service.gmemberinsert(map);
     		}
-    		/*grpvo = service.getGroups();
-    		
-    		fk_groupno = grpvo.getGroupno();
-    		String fk_groupidx = grpvo.getFk_idx();
-    		
-    		System.out.println("fk_groupno2"+fk_groupno);
-    		
-    		HashMap<String, Object> map = new HashMap<String, Object>();
-        	map.put("fk_groupno", fk_groupno);
-        	map.put("fk_groupidx", fk_groupidx);
-        	
-    		service.gmemberinsert(map);*/
-    		
+    		req.setAttribute("title", "그룹만들기");
+    		req.setAttribute("type", "success");
     		req.setAttribute("msg", "그룹생성!");
     		req.setAttribute("loc", "mygroups.shy");
     	}else{
+    		req.setAttribute("title", "그룹만들기");
+    		req.setAttribute("type", "error");
     		req.setAttribute("msg", "그룹생성실패!");
     		req.setAttribute("loc", "mygroups_insertFrm.shy");
     	}
     	
-    	return "msg.notiles";
+    	return "Meong_msg.notiles";
     	
     }
 }

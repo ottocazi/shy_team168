@@ -8,13 +8,45 @@ order by rank;
 select *
 from tbl_group;
 
+delete from tbl_group where groupno=11;
+
 select *
-from tbl_gmember;
+from tbl_gmember
+order by gpdetailno;
 --where fk_groupno=2
+
+--내가 만든 그룹
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 1; -- 10,12,13,14
+
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 33; -- 2
+
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 32; -- 없음
+
+--내가 가입한 그룹
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 1; --10,12,13,14
+
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 33; --2
+
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 32; --2
 
 select *
 from tbl_group
-order by groupdate desc;
+where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
+
+insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status) 
+		values(seq_tbl_gmember.nextval,10,1,default,default);
 
 commit;
 update tbl_group set gcount=gcount+1

@@ -43,5 +43,17 @@ public class PaDAO {
 		return gvo;
 	}
 
+	// ===== 신규그룹 가져오기  =====
+	public List<GroupVO> newGrpList() {
+		List<GroupVO> newGrpList = sqlsession.selectList("pa.newGrpList");
+		return newGrpList;
+	}
+
+	// ===== 내그룹 가져오기  =====
+	public List<GroupVO> myGrpList(int fk_idx) {
+		List<GroupVO> myGrpList = sqlsession.selectList("pa.myGrpList",fk_idx);
+		return myGrpList;
+	}
+
 
 }

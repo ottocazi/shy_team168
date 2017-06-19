@@ -62,7 +62,8 @@
             <input type="text" placeholder="그룹명" name="gname" style="width: 400px;"/>
           </div>
           <div class="input-name">
-            <input type="text" value="1" name="fk_idx" readonly="readonly" style="width: 400px;"/>
+            <input type="text" value="${sessionScope.loginuser.name}" name="name" readonly="readonly" style="width: 400px;"/>
+            <input type="hidden" value="${sessionScope.loginuser.idx}" name="fk_idx" style="width: 400px;"/>
           </div>
           <div class="input-status">
             <input type="radio" name="status" value="1"/>전체공개&nbsp;&nbsp;&nbsp;

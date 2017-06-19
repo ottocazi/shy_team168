@@ -45,11 +45,26 @@
 		 order by rank
 	</select>
 	
-	<!-- ===== 인기그룹 가져오기 =====  -->
+	<!-- ===== 그룹 가져오기 =====  -->
 	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO"> 
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
 		 from tbl_group
-		 order by groupno desc
+		 where to_char(groupdate,'yyyy-mm-dd hh:mi:ss') = to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
 	</select>
+	
+	<!-- ===== 신규그룹 가져오기 =====  -->
+	<select id="newGrpList" resultType="com.team168.shy.model.GroupVO"> 
+		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+		 from tbl_group
+		 order by groupdate desc
+	</select>
+	
+	<!-- ===== 내그룹 가져오기(내가 만든것) =====  -->
+	<select id="myGrpList" parameterType="int" resultType="com.team168.shy.model.GroupVO"> 
+		 select  *
+		 from tbl_group
+		 where fk_idx=#{fk_idx}
+	</select>
+	
 	
 </mapper>	

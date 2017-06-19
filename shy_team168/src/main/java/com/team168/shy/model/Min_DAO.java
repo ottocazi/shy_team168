@@ -19,24 +19,14 @@ public class Min_DAO{
 	@Autowired
 	private SqlSessionTemplate sqlsession;
 	
-	// 회원가입 인서트 해주는 메소드
-
-	public int addregistorEnd(HashMap<String, String> map) {
-		int n = sqlsession.insert("mangu.addregistorEnd", map);
-		return n;
+	
+	// 메인글 남기기 메소드
+	public void Mainput(HashMap<String, Object> map) {
+		sqlsession.insert("min.Mainput", map);
+		
 	}
 	
-	// 로그인 여부 알아오는 메소드
-	public int loginEnd(HashMap<String, String> map) {
-		int n = sqlsession.selectOne("mangu.loginEnd", map);
-		return n;
-	}
 	
-	// 로그인한 회원정보 보여주는 메소드
-	public ShyMemberVO getLoginMember(String email) {
-		ShyMemberVO loginuser = sqlsession.selectOne("mangu.getLoginMember", email);
-		return loginuser;
-	}
 
     
     

@@ -192,6 +192,18 @@
 	});
 	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
   
+	
+	
+	
+	function getText(){
+		
+		var test = $("#firstarea").val();
+	
+
+		$("#secondarea").val(test);
+		
+
+	}
   </script>
   
 </head>
@@ -226,7 +238,7 @@
 		
 
         <div class="form-group">
-          <textarea class="form-control" rows="7" required></textarea>
+          <textarea class="form-control" rows="7"  required></textarea>
         </div>
  
 
@@ -258,7 +270,7 @@
 		
 
         <div class="form-group">
-          <textarea class="form-control" rows="7" required></textarea>
+          <textarea class="form-control" rows="7" id="secondarea"  required></textarea>
         </div>
  
 
@@ -293,37 +305,6 @@
 
 
 
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header" style="margin-left: 350px;">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">홈페이지</a>
-    </div>
-    
-    <div class="collapse navbar-collapse" id="myNavbar" style="margin-right: 320px;">
-     
-      <form class="navbar-form navbar-right" role="search">
-        <div class="form-group input-group">
-          <input type="text" class="form-control" placeholder="Search..">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </span>        
-        </div>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> OOO님 </a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-  
 <div class="container ">    
   <div class="row">
   
@@ -381,12 +362,15 @@ marker.setMap(map);
 
       <div>
       <h4>메인 글남기기</h4>
-      <form role="form">
+      <form role="form" name="gogo">
         <div class="form-group">
-          <textarea class="form-control" rows="7"  data-toggle="modal" data-target="#MainInput" required></textarea>
+          <textarea class="form-control" rows="7" id="firstarea"  required></textarea>
         </div>
         
       </form>
+      
+      	<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#MainInput" style="float: right;" OnClick="getText()">작성 시작하기</button>
+      
       <br><br>
       </div>
 
@@ -413,16 +397,12 @@ marker.setMap(map);
           <textarea class="form-control" rows="4"  data-toggle="modal" data-target="#my80sizeCenterModal" required></textarea>
         </div>
         
-        
+        <!-- 
         <div class="dropdown">
   <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"> 코멘트
   <span class="badge">2</span></button>
   <ul class="dropdown-menu">
     
-
-
-
-		 
       
       <div class="row">
         <div class="col-sm-2 text-center">
@@ -457,12 +437,8 @@ marker.setMap(map);
         </div>
         </div>
 
-
-
-
-
   </ul>
-</div>
+</div> -->
         
       </form>
       <br><br>

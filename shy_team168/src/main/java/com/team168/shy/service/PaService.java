@@ -50,5 +50,17 @@ public class PaService {
 		return gvo;
 	}
 
+	// ===== 신규그룹 가져오기  =====
+	public List<GroupVO> getnewGroupList() {
+		List<GroupVO> newGrpList = dao.newGrpList();
+		return newGrpList;
+	}
+
+	// ===== 내그룹 가져오기  =====
+	public List<GroupVO> getmyGroupList(int fk_idx) {
+		List<GroupVO> myGrpList = dao.myGrpList(fk_idx);
+		return myGrpList;
+	}
+
 	
 }
