@@ -397,16 +397,12 @@ marker.setMap(map);
           <textarea class="form-control" rows="4"  data-toggle="modal" data-target="#my80sizeCenterModal" required></textarea>
         </div>
         
-        
+        <!-- 
         <div class="dropdown">
   <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"> 코멘트
   <span class="badge">2</span></button>
   <ul class="dropdown-menu">
     
-
-
-
-		 
       
       <div class="row">
         <div class="col-sm-2 text-center">
@@ -441,12 +437,8 @@ marker.setMap(map);
         </div>
         </div>
 
-
-
-
-
   </ul>
-</div>
+</div> -->
         
       </form>
       <br><br>

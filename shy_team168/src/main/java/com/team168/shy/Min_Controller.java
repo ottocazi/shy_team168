@@ -24,4 +24,10 @@ public class Min_Controller {
 		return "smin/busipage.tiles";
     	
     }
+	
+	
+	
+	
+	
+	
 }
