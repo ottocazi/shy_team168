@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.DDung_Service;
 
@@ -21,6 +22,8 @@ public class DDung_Controller {
 
 	@Autowired
 	private DDung_Service service;
+	
+	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
     public String goMainTimeline(HttpServletRequest req, HttpSession session) {
@@ -47,11 +50,11 @@ public class DDung_Controller {
 		String ftag = req.getParameter("ftag");
 		String status = req.getParameter("status");
 		String ftagstatus = "0";
+		
+		
 		if(ftag!=null){
 			ftagstatus = "1";
 		}
-		
-		idx = "32";
 		
 		System.out.println("ftag = "+ftag);
 		System.out.println("content = "+content);
@@ -60,6 +63,19 @@ public class DDung_Controller {
 		System.out.println("status = "+status);
 		
 		HashMap<String, String> shyform = new HashMap<String, String>();
+		
+		try {
+			int iiidx = Integer.parseInt(idx);
+			
+			if (!(iiidx==iidx)){
+			 	
+			}
+			
+		} catch (NumberFormatException e) {
+			
+		}
+		
+		
 		
 		shyform.put("fk_idx", idx);
 		shyform.put("scontent", content);
