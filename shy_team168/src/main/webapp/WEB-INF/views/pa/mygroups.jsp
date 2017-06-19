@@ -117,7 +117,6 @@ $(document).ready(function(){
 function goGrpsearch(){
 	
 	var frm = document.searchFrm;
-	
 	var grpsearch = $("#grpsearch").val();
 	
 	if(grpsearch.trim() == "") {
@@ -136,6 +135,14 @@ function grpsearchKeep(){
 		$("#grpsearch").val("${grpsearch}");   // 검색어를 유지시켜 주겠다.
 	</c:if>
 }// end of grpsearchKeep() ----- 상단검색바 검색어 유지
+
+function goMakegrp() {
+	var frm = document.searchFrm;
+	
+	frm.action = "/shy/mygroups_insertFrm.shy";
+	frm.method = "GET";
+	frm.submit();
+}
 </script>
 <style>
 #mygroups{
@@ -378,19 +385,21 @@ function grpsearchKeep(){
 		   	 </ul>
 		</div>
 	
-		<div class="mygrp mygrp_hotgrp">
+		<div class="mygrp mygrp_hotgrp" style="display: inline-block;">
 		<!-- HOT한 그룹  -->
    		  <h3 class="mygrp_types">HOT 그룹</h3>
+   		  <c:if test="${hotGrpList!=null }">
 		  <div class="grp_box">
+		  <c:forEach var="gvo" items="${hotGrpList }">
 		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">그룹명</a></h4>
-		      <i class="grp_fa fa-eye"> 회원 수</i>
-		      <span class="grp_desc">그룹 설명 그룹 설명 그룹 설명</span>
+		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
+		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      <span class="grp_desc"> ${gvo.description }</span>
 		      <!-- <i class="btn openPop">Popular photos</i> -->
 		    </div>
-		    
+		   
 		    <!-- <div class="pop">
 		      <i class="close">&times;</i>
 		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
@@ -400,8 +409,9 @@ function grpsearchKeep(){
 		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
 		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
 		    </div> -->
-		    
+		     </c:forEach>
 		  </div>
+		  </c:if>
 		</div>
 		
 		<div class="mygrp mygrp_newgrp">

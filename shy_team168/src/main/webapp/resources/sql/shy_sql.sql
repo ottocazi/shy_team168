@@ -1,19 +1,33 @@
 -------------------------------------------
 --파
-select fk_idx, to_char(groupdate, 'yyyy-mm-dd hh:mi:ss')
-from tbl_group;
+select  groupno,
+        rank() over (order by gcount desc) as rank
+from tbl_group
+order by rank;
 
 select *
 from tbl_group;
 
 select *
 from tbl_gmember;
+--where fk_groupno=2
+
+select *
+from tbl_group
+order by groupdate desc;
+
+commit;
+update tbl_group set gcount=gcount+1
+where groupno=2;
 
 insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,GREGISTERDATE,status) 
-values(seq_tbl_gmember.nextval,2,33,default,1);
+values(seq_tbl_gmember.nextval,2,32,default,1);
 
 select *
 from tbl_shymember;
+
+select *
+from tbl_shymemo;
 
 select substr(gcontent, instr(gcontent, 'te', 1, 1), length('te') + 5 )
 		           as searchdata    
@@ -57,7 +71,7 @@ CREATE TABLE tbl_group (
 	gname VARCHAR2(20) NOT NULL, /* 그룹명 */
 	description VARCHAR2(40), /* 그룹설명 */
 	groupdate DATE DEFAULT sysdate NOT NULL, /* 그룹생성일자 */
---	gcount NUMBER DEFAULT 1, /* 그룹회원수 */
+	gcount NUMBER DEFAULT 1, /* 그룹회원수 */
 	status NUMBER DEFAULT 1 NOT NULL /* 그룹상태 */
 );
 
@@ -65,7 +79,13 @@ alter table tbl_group
 add gimg varchar2(100);  /* 그룹대표이미지 추가 */
 
 alter table tbl_group
-drop column gcount; /* 그룹회원수 삭제 */
+add gcount number;
+
+alter table tbl_group
+drop column gcount;
+
+alter table tbl_group
+add gcount number default 1;
 
 create sequence seq_tbl_group
 start with 1

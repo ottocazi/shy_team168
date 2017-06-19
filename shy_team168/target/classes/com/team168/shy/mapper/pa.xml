@@ -27,12 +27,29 @@
 	
 	<!-- ===== 그룹만들기 ===== -->	
 	<insert id="grpinsert" parameterType="com.team168.shy.model.GroupVO">
-		<if test="fk_idx!=null">
-		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate)
-		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, #{gimg}, #{status} , default)
-		</if>
+		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate,gcount)
+		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, #{gimg}, #{status} , default,default)
 	</insert>
 	
+	<!-- ===== 그룹멤버 insert ===== -->	
+	<insert id="gmemberinsert" parameterType="java.util.HashMap">
+		insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status) 
+		values(seq_tbl_gmember.nextval,#{fk_groupno},#{fk_groupidx},default,default)
+	</insert>
 	
+	<!-- ===== 인기그룹 가져오기 =====  -->
+	<select id="hotGrpList" resultType="com.team168.shy.model.GroupVO"> 
+		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
+				 rank() over (order by gcount desc) as rank
+		 from tbl_group
+		 order by rank
+	</select>
+	
+	<!-- ===== 인기그룹 가져오기 =====  -->
+	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO"> 
+		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+		 from tbl_group
+		 order by groupno desc
+	</select>
 	
 </mapper>	

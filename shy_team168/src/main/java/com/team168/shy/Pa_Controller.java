@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team168.shy.model.GroupVO;
+import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.PaService;
 
 
@@ -105,10 +108,33 @@ public class Pa_Controller {
     // ===== 그룹만들기 완료 요청 =====
     @RequestMapping(value="/mygroups_insertEnd.shy", method={RequestMethod.POST})
     public String goMakeGrp(GroupVO grpvo, HttpServletRequest req) {
-		
+    	
     	int n = service.grpinsert(grpvo);
     	
     	if(n>0){ 
+    		
+    		if(grpvo!=null){
+    			
+    			grpvo = service.getGroup();
+    			
+    			int fk_groupno = grpvo.getGroupno();
+    			
+        		System.out.println("fk_groupno="+fk_groupno);
+        		String fk_groupidx = grpvo.getFk_idx();
+    		}
+    		/*grpvo = service.getGroups();
+    		
+    		fk_groupno = grpvo.getGroupno();
+    		String fk_groupidx = grpvo.getFk_idx();
+    		
+    		System.out.println("fk_groupno2"+fk_groupno);
+    		
+    		HashMap<String, Object> map = new HashMap<String, Object>();
+        	map.put("fk_groupno", fk_groupno);
+        	map.put("fk_groupidx", fk_groupidx);
+        	
+    		service.gmemberinsert(map);*/
+    		
     		req.setAttribute("msg", "그룹생성!");
     		req.setAttribute("loc", "mygroups.shy");
     	}else{
