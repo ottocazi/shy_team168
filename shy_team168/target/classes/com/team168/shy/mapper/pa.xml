@@ -66,5 +66,4 @@
 		 where fk_idx=#{fk_idx}
 	</select>
 	
-	
 </mapper>	

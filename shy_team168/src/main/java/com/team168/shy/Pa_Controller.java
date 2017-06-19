@@ -160,4 +160,12 @@ public class Pa_Controller {
     	return "Meong_msg.notiles";
     	
     }
+    
+    // ===== 그룹 디테일 페이지 요청하기 ===== //
+ 	@RequestMapping(value="/mygroups_detail.shy", method={RequestMethod.GET})
+     public String goGrpDetail(HttpServletRequest req) {
+     	
+ 		return "pa/mygroups_detail.tiles";
+     	
+     }
 }
