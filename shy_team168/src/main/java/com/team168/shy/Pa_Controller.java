@@ -1,16 +1,11 @@
 package com.team168.shy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -29,15 +24,14 @@ public class Pa_Controller {
 	@Autowired
 	private PaService service;
 	
-
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
-	@RequestMapping(value="/mypages.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
     	
 		return "pa/mypage.tiles";
     	
     }
-	
+
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
 	public String goMygroups(HttpServletRequest req,HttpServletResponse res) {
