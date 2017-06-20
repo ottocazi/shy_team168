@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 
 <head>
@@ -24,7 +26,7 @@
 		swal({
 			  html:
 			  '<div style="text-align: left;">'+
-			  '<form name="shynowform">'+
+			  '<form name="shynowform" enctype="multipart/form-data">'+
 			  '<span style="font-size:16pt; color:navy; ">${loginuser.email}</span>  님의 샤이 기록하기&nbsp;&nbsp;'+
 			  '<select name="status" id="status"> <option value="1">전체 공개</option>'+
 			    '<option value="2">친구 공개</option>'+
@@ -168,6 +170,17 @@
    				<span class="letter" id="shy" data-letter="h">h</span>
    				<span class="letter" id="shy" data-letter="y">y</span>
       </a>
+      <c:if test="${loginuser!=null }">
+      
+      	<c:if test="${loginuser.name!=null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      	<c:if test="${loginuser.name==null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      </c:if>
     </div>
     
     <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
