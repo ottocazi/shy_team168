@@ -37,6 +37,15 @@ public class DDung_Controller {
 		ShyMemberVO smvo = (ShyMemberVO)loginuser;
 		session.setAttribute("loginuser", smvo);
 		
+		if(smvo==null){
+			
+			System.out.println("null이오");
+			req.setAttribute("type", "question");
+			req.setAttribute("msg", "활동이 감지되지 않아 로그아웃되었습니다.  :)");
+			req.setAttribute("loc", req.getContextPath()+"/");
+			return "ddung_alert.notiles";
+			
+		}
 		
 		// 로그인 유저의 팔로우 명단 가져오기 
 		List <String> followlist = service.followlist(smvo.getIdx());

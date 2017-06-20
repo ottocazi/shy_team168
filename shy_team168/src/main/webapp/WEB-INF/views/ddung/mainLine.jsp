@@ -180,7 +180,7 @@
       
     </div><!-- for each 돌리는 div끝  -->
 
-		<div align="center"><a class="button" href="#" >
+		<div align="center"><a class="button" href="#" style="color:white; ">
 					read more
 				</a>
    </div>
@@ -198,7 +198,10 @@
   	</c:forEach>
   </c:if>
   
-  
+  <div align="center"><a class="button" href="#" style="color:white; " >
+					더 읽기
+				</a><br><br>
+   </div>
   <!-- 
   <article class="card-60 social">
     <figure>
