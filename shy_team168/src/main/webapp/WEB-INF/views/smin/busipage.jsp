@@ -182,7 +182,7 @@
 		    });
 		  }
 		);
-  
+  /* 
   $(window).scroll(function() {
 	    if ($(this).scrollTop() > 50 ) {
 	        $('.scrolltop:hidden').stop(true, true).fadeIn();
@@ -192,7 +192,7 @@
 	});
 	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
   
-	
+	 */
 	
 	
 	function getText(){
@@ -213,9 +213,9 @@
 
 
 
-
+<!-- 
 <div class='thetop'></div>
-
+ -->
 
 
 			<!-- ******  인풋 (글남기기) 형식 *********  시작 -->
@@ -531,11 +531,11 @@ marker.setMap(map);
 
 
 
-
+<!-- 
 
 <div class='scrolltop'>
     <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
-</div>
+</div> -->
 
 
 </body>

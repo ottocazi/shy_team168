@@ -137,8 +137,6 @@ public class Meong_Controller {
     	map.put("user_seq", user_seq);
     	map.put("today", today);
     	
-    	System.out.println("sysdate : " + today);
-    	
     	service.loginsert(map);
     	
     	req.setAttribute("loc", "mainline.shy");
@@ -149,15 +147,54 @@ public class Meong_Controller {
 
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
-    public String logout(HttpServletRequest req, HttpSession session) throws UnknownHostException {
+    public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
+    	/*    	
+    	String email = req.getParameter("email");
+		loginuser = service.getLoginMember(email);
+		session.setAttribute("loginuser", loginuser);
+    	*/
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	InetAddress inetAddress = InetAddress.getLocalHost();
+
+    	String user_ip = inetAddress.getHostAddress();
+    	int user_seq = loginuser.getIdx();
+    	
+    	Date now = new Date();
+   	 	String today = String.format("%tF %tT", now, now);
+    	
+   	 	map.put("user_ip", user_ip);
+   	 	System.out.println("user_ip 는 "+user_ip);
+   	 	map.put("user_seq", user_seq);
+   	 	System.out.println("user_seq 는 "+user_seq);
+   	 	map.put("today", today);
+   	 	System.out.println("today 는 "+today);
+   	 	
+   	 	service.logoutinsert(map);
 
     	session.invalidate();
-
+    	
     	return "logout.notiles";
     }
 	
     
-	
+	// 관리자 페이지요청
+    @RequestMapping(value="/admin.shy", method={RequestMethod.GET})
+    public String admin(HttpServletRequest req, HttpSession session){
+    	
+    	String totaluser = service.gettotaluser();   // 총 사용자수
+    	String mentotal = service.getmentotal();     // 총 남자 사용자수
+    	String womantotal = service.getwomantotal(); // 총 여자 사용자수
+    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+    			
+    	req.setAttribute("totaluser", totaluser);
+    	req.setAttribute("mentotal", mentotal);
+    	req.setAttribute("womantotal", womantotal);
+    	req.setAttribute("todaytotal", todaytotal);
+
+    	return "admin.notiles";
+    }
+		
 	
 	
 	
