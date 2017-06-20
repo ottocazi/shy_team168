@@ -50,7 +50,8 @@
 		insert into tbl_log(logno, fk_idx, status, logtime, logip) 
 		values(seq_tbl_log.nextval, #{user_seq}, 0, to_date(#{today}, 'yyyy-mm-dd hh24:mi:ss'), #{user_ip})
 	</insert>	
-		
+	
+	<!-- 통계를 위한 셀렉트문 -->	
 	<select id="gettotaluser" resultType="String">
 		select count(*)
 		from tbl_shymember

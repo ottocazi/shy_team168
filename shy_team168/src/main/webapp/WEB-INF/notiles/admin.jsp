@@ -93,7 +93,7 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i>평균 사용시간</span>
-              <div class="count">60분</div>
+              <div class="count">00분</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> 지난주 대비 증가</span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -113,7 +113,7 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> 오늘 게시글수</span>
-              <div class="count">7,325</div>
+              <div class="count">00</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span>
             </div>
           </div>
