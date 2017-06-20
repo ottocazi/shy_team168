@@ -24,7 +24,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -68,7 +68,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">게시판</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">게시판</a></li>
                       <li><a href="#">###</a></li>
                     </ul>
                   </li>
