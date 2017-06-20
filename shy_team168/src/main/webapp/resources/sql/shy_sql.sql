@@ -6,7 +6,7 @@ from tbl_group
 order by rank;
 
 select *
-from tbl_group;
+from tbl_log;
 
 delete from tbl_group where groupno=11;
 
