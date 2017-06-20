@@ -21,8 +21,11 @@ public class DDung_DAO {
 
 	public HashMap<String, String> getshynow(String idx) {
 		
-		Object p_idx = (Object)idx;
-		HashMap <String,String> shynow = sqlsession.selectOne("ddung.getshynow", p_idx);
+		
+		
+		List<HashMap<String, String>> listoneshy = sqlsession.selectList("ddung.getshynow", idx);
+		
+		HashMap<String, String> shynow = listoneshy.get(0);
 		return shynow;
 		
 		
@@ -45,6 +48,12 @@ public class DDung_DAO {
 		List<HashMap<String, String>> shies = sqlsession.selectList("ddung.shies", followlist);
 		
 		return shies;
+	}
+
+	public String imgaddr(String snsno) {
+		
+		String imgaddr = sqlsession.selectOne("ddung.imgaddr", snsno);
+		return imgaddr;
 	}
 
 	

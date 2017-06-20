@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 
   
   
@@ -20,7 +20,6 @@
     <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css"> -->
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'> --> 
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
      
     <script>
     function openComment() {
@@ -40,14 +39,22 @@
   </head>
   <body>
   
-
+  
+  
   
   <main role="main"><!--지우지 마세요  -->
-  <!--forEach 본문  -->
-  <article class="card-60 social">
+  
+  <c:if test="${shies==null}">
+  	새 글을 써 보시거나, 친구를 추가해 보세요!
+  </c:if>
+  
+  <c:if test="${shies!=null}">
+  	<c:forEach items="${shies }" var="shies">
+  	
+  	<article class="card-60 social">
     <figure>
       
-      <img src="https://source.unsplash.com/GgEtIbD0hVo/800x600" alt="Nike Shoes">
+      <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
       
     </figure>
     <!-- end figure-->
@@ -58,13 +65,23 @@
            <a class="button follow" href="#" title="Follow">
                Follow
             </a>
-          <img class="avatar-32" src="http://jlantunez.com/imgs/avatar.jpg" alt="Avatar">
+          <img class="avatar-32" src="https://upload.wikimedia.org/wikipedia/en/7/7e/Patrick_Star.png" alt="Avatar">
           <strong>
                <a title="Full Name" href="#">
-                  <span style="font-size: 12pt; margin:0; color:black;">username</span>
+                  <span style="font-size: 12pt; margin:0; color:black;">
+	                  
+	                <c:if test="${shies.name!=null }">
+	                ${shies.name }
+	                </c:if> 
+                  
+                  	<c:if test="${shies.name==null }">
+                  	${shies.email }
+                  	</c:if>
+                  
+                  </span>
                </a>
             </strong>
-          <span>8 mins ago &middot; <a href="">@파파파</a> 님과 함께</span>
+          <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과 함께</span>
         </p>
       </header>
 
@@ -81,7 +98,7 @@
      
       
        <p>
-       	내가 이거신으면 호날두다!
+       	${shies.scontent }
 
       </p>
       <footer>
@@ -112,7 +129,7 @@
       <img src="http://lorempixel.com/200/200/people">
     </div>
 
-    <form class="shy_form" name="form" action="" method="" novalidate>
+    <form class="shy_form" name="form" ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
       <div class="shy_form-row">
         <textarea
                   class="shy_input"
@@ -120,26 +137,7 @@
                   placeholder="댓글로 이야기를 나눠보세요"
                   required></textarea>
       </div>
-<!-- 
-      <div class="shy_form-row">
-        <input
-               class="shy_input"
-               ng-class="shy_{ disabled: cmntCtrl.comment.anonymous }"
-               ng-disabled="cmntCtrl.comment.anonymous"
-               ng-model="cmntCtrl.comment.author"
-               ng-required="!cmntCtrl.comment.anonymous"
-               placeholder="Email"
-               type="email">
-      </div> -->
 
-      <!-- <div class="shy_form-row text-right">
-        <input
-               id="comment-anonymous"
-               ng-change="cmntCtrl.anonymousChanged()"
-               ng-model="cmntCtrl.comment.anonymous"
-               type="checkbox">
-        <label for="comment-anonymous">Anonymous</label>
-      </div> -->
 
       <div class="shy_form-row">
         <input type="submit" value="올리기">
@@ -153,9 +151,9 @@
    
 
     <!-- Comment - Dummy -->
-    <div class="shy_comment"><!-- 댓글 양식 for each 돌리는 div  -->
+    <div class="shy_comment"><!-- for each 돌리는 div  -->
       <!-- Comment Avatar -->
-      <div class="shy_comment-avatar" style="margin-left:0;">
+      <div class="shy_comment-avatar">
         <img src="" alt="프로필">
       </div>
 
@@ -193,10 +191,14 @@
     <!-- end .flex-content-->
   </article>
   
-  <!--forEach 본문 end  -->
-  
   
   <!-- post foreach 마무리  -->
+  	
+  	
+  	</c:forEach>
+  </c:if>
+  
+  
   <!-- 
   <article class="card-60 social">
     <figure>

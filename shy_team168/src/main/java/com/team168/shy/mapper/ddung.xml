@@ -33,7 +33,7 @@
 	
 		select *
 		from tbl_shymemo 
-		where rownum = 1 and fk_idx = #{p_idx}
+		where rownum = 1 and fk_idx = #{p_idx} order by snsno desc
 	
 	</select>
 	
@@ -48,7 +48,7 @@
 	
 		select fk_idxflwed
 		from tbl_follow
-		where fk_idxflw = #{idx} and status = 1
+		where 1=1 and fk_idxflw = #{idx} and status = 1
 		
 	
 	</select>	
@@ -67,18 +67,28 @@
 		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
 		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
 		<result property="status" 		column="STATUS" 		javaType="String"/>
-	
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		
 	</resultMap>
 	
 	<select id="shies" parameterType="java.util.List" resultMap="shies">
-		SELECT   *
-		FROM 	 TBL_SHYMEMO
-		WHERE	 1=1 AND
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
 				 FK_IDX IN
 				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
 					${item}
 				</foreach>
-		ORDER BY SDATEDTIME DESC
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<select id="imgaddr" parameterType="String" resultType="String">
+	
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
 	</select>
 </mapper>
 
