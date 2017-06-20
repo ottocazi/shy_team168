@@ -26,9 +26,34 @@ public class PaDAO {
 		return n;
 	}
 
+	// ===== 그룹멤버 insert  =====
+	public void gmemberinsert(HashMap<String, Object> map) {
+		sqlsession.insert("pa.gmemberinsert",map);
+	}
+	
 	// ===== 인기그룹 가져오기  =====
 	public List<GroupVO> hotGrpList() {
 		List<GroupVO> hotGrpList = sqlsession.selectList("pa.hotGrpList");
 		return hotGrpList;
 	}
+
+	// ===== 그룹 가져오기  =====
+	public GroupVO getGroup() {
+		GroupVO gvo = sqlsession.selectOne("pa.selectGvo");
+		return gvo;
+	}
+
+	// ===== 신규그룹 가져오기  =====
+	public List<GroupVO> newGrpList() {
+		List<GroupVO> newGrpList = sqlsession.selectList("pa.newGrpList");
+		return newGrpList;
+	}
+
+	// ===== 내그룹 가져오기  =====
+	public List<GroupVO> myGrpList(int fk_idx) {
+		List<GroupVO> myGrpList = sqlsession.selectList("pa.myGrpList",fk_idx);
+		return myGrpList;
+	}
+
+
 }
