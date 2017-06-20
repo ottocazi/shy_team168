@@ -33,9 +33,34 @@ public class PaService {
 		return n;
 	}
 
+	// ===== 그룹멤버 insert  =====
+	public void gmemberinsert(HashMap<String, Object> map) {
+		dao.gmemberinsert(map);
+	}
+	
 	// ===== 인기그룹 가져오기  =====
 	public List<GroupVO> gethotGroupList() {
 		List<GroupVO> hotGrpList = dao.hotGrpList();
 		return hotGrpList;
 	}
+
+	// ===== 그룹 가져오기  =====
+	public GroupVO getGroup() {
+		GroupVO gvo = dao.getGroup();
+		return gvo;
+	}
+
+	// ===== 신규그룹 가져오기  =====
+	public List<GroupVO> getnewGroupList() {
+		List<GroupVO> newGrpList = dao.newGrpList();
+		return newGrpList;
+	}
+
+	// ===== 내그룹 가져오기  =====
+	public List<GroupVO> getmyGroupList(int fk_idx) {
+		List<GroupVO> myGrpList = dao.myGrpList(fk_idx);
+		return myGrpList;
+	}
+
+	
 }
