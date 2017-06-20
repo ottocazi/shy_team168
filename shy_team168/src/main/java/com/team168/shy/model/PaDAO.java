@@ -55,5 +55,29 @@ public class PaDAO {
 		return myGrpList;
 	}
 
+	// ===== 그룹 디테일 페이지 요청하기 ===== //
+	public HashMap<String, String> getGroupDetail(int groupno) {
+		HashMap<String, String> grpvomap = sqlsession.selectOne("pa.groupDetail",groupno);
+		return grpvomap;
+	}
+
+	// ===== 그룹멤버 정보 가져오기 ===== //
+	public List<HashMap<String, String>> getGroupMember(int groupno) {
+		List<HashMap<String, String>> gmemberList = sqlsession.selectList("pa.gmemberList", groupno);
+		return gmemberList;
+	}
+
+	// ===== 그룹게시판 글쓰기  =====
+	public int gboardWrite(HashMap<String, Object> map) {
+		int n = sqlsession.insert("pa.gboardWrite",map);
+		return n;
+	}
+
+	// ===== 그룹글 목록 가져오기  =====
+	public List<HashMap<String, String>> getGroupBoard(int groupno) {
+		List<HashMap<String, String>> gboardList = sqlsession.selectList("pa.gboardList",groupno);
+		return gboardList;
+	}
+
 
 }

@@ -5,16 +5,57 @@ select  groupno,
 from tbl_group
 order by rank;
 
+ select name,email,myimg, groupno , gpdetailno, fk_groupidx, gregisterdate, status
+		 from
+		  (select C.name,C.email,C.myimg, V.*
+		  from tbl_shymember C join 
+		  (
+		   select A.groupno ,B.gpdetailno,B.fk_groupidx,B.gregisterdate,B.status
+		   from tbl_group A join tbl_gmember B 
+		   on A.groupno = B.fk_groupno
+		  )V
+		  on V.fk_groupidx=C.idx)T
+		 where T.groupno = 2;
+
 select *
 from tbl_log;
 
 delete from tbl_group where groupno=11;
+delete from tbl_shymember where name='junotest';
 
 select *
 from tbl_gmember
 order by gpdetailno;
 --where fk_groupno=2
+select T.*
+from
+(select C.name,C.email,C.myimg, V.*
+from tbl_shymember C join 
+(
+select A.groupno ,B.gpdetailno,B.fk_groupidx,B.gregisterdate,B.status as Bstatus
+from tbl_group A join tbl_gmember B 
+on A.groupno = B.fk_groupno
+)V
+on V.fk_groupidx=C.idx)T
+where T.groupno = 2;
+select V.*
+from
+(
+select A.groupno,A.fk_idx, A.gname,A.description,A.groupdate,A.status,A.gimg,A.gcount,C.name,C.email,C.myimg,C.myintro
+from tbl_group A join tbl_shymember C
+on A.fk_idx = C.idx)V
+where V.groupno = 2;
 
+create or replace view view_tbl_group
+as
+select V.*
+from
+(
+select A.groupno,A.fk_idx, A.gname,A.description,A.groupdate,A.status,A.gimg,A.gcount,C.name,C.email,C.myimg,C.myintro
+from tbl_group A join tbl_shymember C
+on A.fk_idx = C.idx)V
+;
+commit;
 --내가 만든 그룹
 select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
 from tbl_group 
@@ -476,13 +517,53 @@ CREATE TABLE tbl_grpboard (
 	gpdetailno NUMBER(30), /* 그룹상세seq */
 	gcontent CLOB, /* 내용 */
 	uploadfile VARCHAR2(40), /* 첨부파일 */
-	writedate DATE, /* 작성날짜 */
+	writedate DATE , /* 작성날짜 */
 	likecnt NUMBER, /* 좋아요수 */
 	cmtcnt NUMBER, /* 댓글수 */
-	readcnt NUMBER, /* 조회수 */
-	imgyn VARCHAR2(10), /* 이미지여부 */
+	imgyn NUMBER, /* 이미지여부 */
 	status NUMBER /* 삭제여부 */
 );
+alter table tbl_grpboard
+add imgyn NUMBER default 0;
+
+alter table tbl_grpboard
+add writedate date default sysdate;
+commit;
+
+alter table tbl_grpboard
+drop column imgyn;
+
+select *
+from tbl_grpboard;
+
+select T.*
+from
+(
+select C.name,C.email,C.myimg,V.*
+from tbl_shymember C join
+(
+select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+from tbl_gmember A join tbl_grpboard B
+on A.gpdetailno = B.gpdetailno)V
+on C.idx = V.fk_groupidx
+)T
+where T.fk_groupno=2;
+
+select name,email,myimg,fk_groupno,fk_groupidx,grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status
+		from
+		(
+		select C.name,C.email,C.myimg,V.*
+		from tbl_shymember C join
+		(
+		select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+		from tbl_gmember A join tbl_grpboard B
+		on A.gpdetailno = B.gpdetailno)V
+		on C.idx = V.fk_groupidx
+		)T
+		where T.fk_groupno=2;
+
+update tbl_grpboard set imgyn = 1
+where grpboardseq = 2;
 
 --drop sequence seq_tbl_grpboard 
 create sequence seq_tbl_grpboard
@@ -509,9 +590,9 @@ COMMENT ON COLUMN tbl_grpboard.likecnt IS '좋아요수';
 
 COMMENT ON COLUMN tbl_grpboard.cmtcnt IS '댓글수';
 
-COMMENT ON COLUMN tbl_grpboard.readcnt IS '조회수';
+--COMMENT ON COLUMN tbl_grpboard.readcnt IS '조회수';
 
-COMMENT ON COLUMN tbl_grpboard.imgyn IS '이미지여부';
+COMMENT ON COLUMN tbl_grpboard.imgyn IS '이미지여부 1: 존재 0: 없음';
 
 COMMENT ON COLUMN tbl_grpboard.status IS '1: 존재 0: 삭제';
 

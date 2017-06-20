@@ -35,47 +35,59 @@ public class Pa_Controller {
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
 	public String goMygroups(HttpServletRequest req,HttpServletResponse res) {
-	    	
+		ShyMemberVO loginuser = null;
+	    
 		HttpSession session = req.getSession();
-    	
-		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		loginuser = (ShyMemberVO)session.getAttribute("loginuser");
 		
-		
-		if(loginuser == null) {
-    	
-	    		String msg = "♥ 먼저 로그인 하세요~~ ♥";
-	    		String loc = "open.shy";
-	    		
-	    		req.setAttribute("msg", msg);
-	    		req.setAttribute("loc", loc);
-	    		
-	    		return "Meong_msg.notiles";
-    		
-		}else{
-    			int fk_idx = loginuser.getIdx();
+		if(loginuser != null) {
+    		int fk_idx = loginuser.getIdx();
 				
-				List<GroupVO> myGrpList = service.getmyGroupList(fk_idx);
-		    	req.setAttribute("myGrpList", myGrpList);
+			List<GroupVO> myGrpList = service.getmyGroupList(fk_idx);
+		    req.setAttribute("myGrpList", myGrpList);
 				
-				// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-				List<GroupVO> hotGrpList = service.gethotGroupList();
-		    	req.setAttribute("hotGrpList", hotGrpList);
+			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
+			List<GroupVO> hotGrpList = service.gethotGroupList();
+		    req.setAttribute("hotGrpList", hotGrpList);
 		    	
-		    	// 신규그룹 목록 
-		    	List<GroupVO> newGrpList = service.getnewGroupList();
-		    	req.setAttribute("newGrpList", newGrpList);
-		
+		    // 신규그룹 목록 
+		    List<GroupVO> newGrpList = service.getnewGroupList();
+		    req.setAttribute("newGrpList", newGrpList);
+		    
+		}else{
+			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
+			List<GroupVO> hotGrpList = service.gethotGroupList();
+	    	req.setAttribute("hotGrpList", hotGrpList);
+	    	
+	    	// 신규그룹 목록 
+	    	List<GroupVO> newGrpList = service.getnewGroupList();
+	    	req.setAttribute("newGrpList", newGrpList);
 		}
+		
 		return "pa/mygroups.tiles";
 	    	
 	}
 	
 	// ===== mygroups_insertFrm 페이지 요청하기 ===== //
-	@RequestMapping(value="/mygroups_insertFrm.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/mygroups_insertFrm.shy", method={RequestMethod.POST})
 	public String goGrpinsertFrm(HttpServletRequest req) {
-		    	
+		
+		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		
+		if(loginuser == null) {
+		String msg = "♥ 먼저 로그인 하세요 ♥";
+		String loc = "open.shy";
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("loc", loc);
+		
+		return "Meong_msg.notiles";
+		
+		}else{
+			
 		return "pa/mygroups_insertFrm.tiles";
-		    	
+		}    	
 	}
 	
 	// =====3.  Ajax 로 검색어 입력시 자동글 완성하기  =====
@@ -164,8 +176,73 @@ public class Pa_Controller {
     // ===== 그룹 디테일 페이지 요청하기 ===== //
  	@RequestMapping(value="/mygroups_detail.shy", method={RequestMethod.GET})
      public String goGrpDetail(HttpServletRequest req) {
-     	
- 		return "pa/mygroups_detail.tiles";
+ 		
+ 		String str_groupno = req.getParameter("groupno"); // 해당 그룹번호 가져오기
+ 		//System.out.println("str_groupno="+str_groupno); // 확인용
+ 		
+ 		if(str_groupno!=null){
+ 			int groupno = Integer.parseInt(str_groupno);
+ 			HashMap<String, String> grpvomap = service.getGroupDetail(groupno);
+ 			req.setAttribute("grpvomap", grpvomap);
+ 			
+ 			// ===== 그룹 가입멤버 가져오기  =====
+ 			List<HashMap<String, String>> gmemberList = service.getGroupMember(groupno);
+ 			req.setAttribute("gmemberList", gmemberList);
+ 			
+ 			// ===== 그룹글 목록 가져오기  =====
+ 			List<HashMap<String, String>> gboardList = service.getGroupBoard(groupno);
+ 			req.setAttribute("gboardList", gboardList);
+ 			
+ 			return "pa/mygroups_detail.tiles";
+ 			
+ 		}else{
+ 			req.setAttribute("title", "그룹보기");
+    		req.setAttribute("type", "error");
+    		req.setAttribute("msg", "잘못된 접근입니다!");
+    		req.setAttribute("loc", "mygroups.shy");
+    		
+    		return "Meong_msg.notiles";
+ 		}
      	
      }
+ 	
+ 	// ===== 그룹게시판 글쓰기  =====
+    @RequestMapping(value="/gboardWrite.shy", method={RequestMethod.POST})
+    public String goGboardWrite(HttpServletRequest req) {
+    	
+    	String str_gpdetailno = req.getParameter("gpdetailno");
+    	String str_groupno = req.getParameter("groupno");
+    	String uploadfile = req.getParameter("uploadfile");
+    	String gcontent = req.getParameter("gcontent");
+    	
+    	if(str_gpdetailno!=null){
+    		int gpdetailno = Integer.parseInt(str_gpdetailno);
+    		
+    		HashMap<String, Object> map = new HashMap<String, Object>();
+        	map.put("gpdetailno", gpdetailno);
+        	map.put("uploadfile", uploadfile);
+        	map.put("gcontent", gcontent);
+        	
+    		int n = service.gboardWrite(map);
+    		
+    		if(n>0){
+    			int groupno = Integer.parseInt(str_groupno);
+    			
+    			req.setAttribute("title", "그룹게시글쓰기");
+        		req.setAttribute("type", "success");
+        		req.setAttribute("msg", "글쓰기성공!");
+        		req.setAttribute("loc", "mygroups_detail.shy?groupno="+groupno);
+        		
+    		}else{
+        		req.setAttribute("title", "그룹게시글쓰기");
+        		req.setAttribute("type", "error");
+        		req.setAttribute("msg", "글쓰기실패!");
+        		req.setAttribute("loc", "javascript.location(0);");
+        	}
+    	}
+    	
+    	return "Meong_msg.notiles";
+    	
+    }
+    
 }

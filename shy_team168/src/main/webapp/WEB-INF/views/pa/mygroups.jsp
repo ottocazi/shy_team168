@@ -140,9 +140,18 @@ function goMakegrp() {
 	var frm = document.searchFrm;
 	
 	frm.action = "/shy/mygroups_insertFrm.shy";
+	frm.method = "POST";
+	frm.submit();
+}
+
+function goDetail(groupno) {
+	var frm = document.searchFrm;
+	
+	frm.action = "/shy/mygroups_detail.shy";
 	frm.method = "GET";
 	frm.submit();
 }
+
 </script>
 <style>
 a, a:hover{
@@ -379,7 +388,7 @@ text-decoration: none;
 			 <div class="mygrp_clearfix">
 		      <img src="https://i.imgur.com/TkSNOpF.jpg" class="mygrp_img" width="225" height="260">
 		      <div class="mygrp_details">
-		        <h3 class="mygrp_name">${gvo.gname }</h3>
+		        <h3 class="mygrp_name"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h3>
 		        <p class="mygrp_member">${gvo.gcount }명</p>
 		        <p class="mygrp_desc">${gvo.description }…&nbsp;<a href="#">더 보기</a></p>
 		      </div>
@@ -417,21 +426,11 @@ text-decoration: none;
 		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
 		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
 		      <span class="grp_desc"> ${gvo.description }</span>
-		      <!-- <i class="btn openPop">Popular photos</i> -->
 		    </div>
 		   
-		    <!-- <div class="pop">
-		      <i class="close">&times;</i>
-		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
-		        <img src="http://farm8.static.flickr.com/7390/12980175743_5cb04727f3_q.jpg">
-		        <img src="http://farm4.static.flickr.com/3679/12980129103_edbea2fca4_q.jpg">
-		        <img src="http://farm6.static.flickr.com/5497/14367491417_563fcbc6a9_q.jpg">
-		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
-		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
-		    </div> -->
 		  </div>
 		  </c:forEach>
 		  </c:if>
@@ -457,21 +456,10 @@ text-decoration: none;
 		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
 		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
 		      <span class="grp_desc"> ${gvo.description }</span>
-		      <!-- <i class="btn openPop">Popular photos</i> -->
 		    </div>
-		   
-		    <!-- <div class="pop">
-		      <i class="close">&times;</i>
-		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
-		        <img src="http://farm8.static.flickr.com/7390/12980175743_5cb04727f3_q.jpg">
-		        <img src="http://farm4.static.flickr.com/3679/12980129103_edbea2fca4_q.jpg">
-		        <img src="http://farm6.static.flickr.com/5497/14367491417_563fcbc6a9_q.jpg">
-		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
-		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
-		    </div> -->
 		  </div>
 		  </c:forEach>
 		  </c:if>
