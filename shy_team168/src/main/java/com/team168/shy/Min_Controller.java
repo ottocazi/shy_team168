@@ -1,6 +1,6 @@
 package com.team168.shy;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.board.model.BoardVO;
 import com.team168.shy.service.DDung_Service;
 
 
@@ -297,7 +298,7 @@ public class Min_Controller {
 	     
 	     이와같이 jackson JSON 라이브러리를 사용할때의 장점은 View 단이 필요없게 되므로 간단하게 작성하는 장점이 있다. 
 	*/
-    
+    /*
     @RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
     @ResponseBody
     public List<HashMap<String, Object>> wordSearchShow(HttpServletRequest req) { 
@@ -325,7 +326,7 @@ public class Min_Controller {
     	
     	return returnmapList;
     }
-    
+    */
     
 	
 	

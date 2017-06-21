@@ -20,7 +20,7 @@
 	
 	
 	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
-	<resultMap type="java.util.HashMap" id="getSearchWordMap">
+	<!-- <resultMap type="java.util.HashMap" id="getSearchWordMap">
 		<result property="SEARCHDATA" column="searchdata" javaType="String" />
 	</resultMap>
 	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
@@ -49,10 +49,10 @@
 	
 	
 	
- <!-- ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
+ ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
                     파일이 첨부된 답변형 게시판 목록
     	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
-    -->
+   
     <select id="searchlist" resultType="com.spring.board.model.BoardVO" parameterType="java.util.HashMap"  >
      select seq, userid, name, subject, readCount, regDate, commentCount  
           , groupno, fk_seq, depthno
@@ -85,7 +85,7 @@
 	 ) T
 	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
  </select>      
-     		
+     		 -->
 	
 	
 	
