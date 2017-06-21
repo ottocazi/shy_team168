@@ -210,39 +210,124 @@ public class Pa_Controller {
     @RequestMapping(value="/gboardWrite.shy", method={RequestMethod.POST})
     public String goGboardWrite(HttpServletRequest req) {
     	
-    	String str_gpdetailno = req.getParameter("gpdetailno");
-    	String str_groupno = req.getParameter("groupno");
-    	String uploadfile = req.getParameter("uploadfile");
-    	String gcontent = req.getParameter("gcontent");
+    	HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		
+		if(loginuser == null) {
+		String msg = "♥ 먼저 로그인 하세요 ♥";
+		String loc = "open.shy";
+		
+		req.setAttribute("msg", msg);
+		req.setAttribute("loc", loc);
+		
+		return "Meong_msg.notiles";
+		
+		}else{
+			int idx = loginuser.getIdx();
+			System.out.println("idx="+idx);
+			
+			// ===== gpdetailno 가져오기  =====
+			String str_gpdetailno = service.getGmemberidx(idx);
+			System.out.println("str_gpdetailno="+str_gpdetailno);
+	    	String str_groupno = req.getParameter("groupno");
+	    	String uploadfile = req.getParameter("uploadfile");
+	    	String gcontent = req.getParameter("gcontent");
+	    	
+	    	if(str_gpdetailno!=null){
+	    		int gpdetailno = Integer.parseInt(str_gpdetailno);
+	    		
+	    		HashMap<String, Object> map = new HashMap<String, Object>();
+	        	map.put("gpdetailno", gpdetailno);
+	        	map.put("uploadfile", uploadfile);
+	        	map.put("gcontent", gcontent);
+	        	
+	    		int n = service.gboardWrite(map);
+	    		
+	    		if(n>0){
+	    			int groupno = Integer.parseInt(str_groupno);
+	    			
+	    			req.setAttribute("title", "그룹게시글쓰기");
+	        		req.setAttribute("type", "success");
+	        		req.setAttribute("msg", "글쓰기성공!");
+	        		req.setAttribute("loc", "mygroups_detail.shy?groupno="+groupno);
+	        		
+	    		}else{
+	        		req.setAttribute("title", "그룹게시글쓰기");
+	        		req.setAttribute("type", "error");
+	        		req.setAttribute("msg", "글쓰기실패!");
+	        		req.setAttribute("loc", "javascript.location(0);");
+	        	}
+	    	}else if(str_gpdetailno==null){
+	    		String msg = "♥ 가입된 그룹회원만 글쓰기가 가능합니다. ♥";
+	    		String loc = "mygroups_detail.shy?groupno="+str_groupno;
+	    		
+	    		req.setAttribute("msg", msg);
+	    		req.setAttribute("loc", loc);
+	    		
+	    		return "Meong_msg.notiles";
+	    	}
     	
-    	if(str_gpdetailno!=null){
-    		int gpdetailno = Integer.parseInt(str_gpdetailno);
-    		
-    		HashMap<String, Object> map = new HashMap<String, Object>();
-        	map.put("gpdetailno", gpdetailno);
-        	map.put("uploadfile", uploadfile);
-        	map.put("gcontent", gcontent);
-        	
-    		int n = service.gboardWrite(map);
-    		
-    		if(n>0){
-    			int groupno = Integer.parseInt(str_groupno);
-    			
-    			req.setAttribute("title", "그룹게시글쓰기");
-        		req.setAttribute("type", "success");
-        		req.setAttribute("msg", "글쓰기성공!");
-        		req.setAttribute("loc", "mygroups_detail.shy?groupno="+groupno);
-        		
-    		}else{
-        		req.setAttribute("title", "그룹게시글쓰기");
-        		req.setAttribute("type", "error");
-        		req.setAttribute("msg", "글쓰기실패!");
-        		req.setAttribute("loc", "javascript.location(0);");
-        	}
-    	}
-    	
+		}
     	return "Meong_msg.notiles";
+    }
+    
+ // ===== 그룹가입하기 완료 요청 =====
+    @RequestMapping(value="/gmemberjoin.shy", method={RequestMethod.POST})
+    public String goGmemberjoin(GroupVO grpvo, HttpServletRequest req) {
     	
+    	int check = 0;
+    	
+		String groupno = req.getParameter("groupno");
+		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+
+		if (loginuser == null) {
+			String msg = "♥ 먼저 로그인 하세요 ♥";
+			String loc = "open.shy";
+
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+
+		} else {
+			int fk_groupidx = loginuser.getIdx();
+			System.out.println("idx=" + fk_groupidx);
+
+			if (groupno != null) {
+				int fk_groupno = Integer.parseInt(groupno);
+
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("fk_groupno", fk_groupno);
+				map.put("fk_groupidx", fk_groupidx);
+
+				// ===== 그룹회원인지 아닌지 먼저 확인  =====
+				check = service.gmemberCheck(map);
+				
+				if(check==0){ // 회원이 아니면 0
+					service.gmemberinsert(map);
+					
+					// ===== 그룹회원수 1증가하기  =====
+					service.gmemberUpdate(fk_groupno);
+					
+					req.setAttribute("title", "그룹가입하기");
+					req.setAttribute("type", "success");
+					req.setAttribute("msg", "그룹가입!");
+					req.setAttribute("loc", "mygroups_detail.shy?groupno=" + fk_groupno);
+				}else{ // 회원이면 1 
+					req.setAttribute("title", "그룹가입하기");
+					req.setAttribute("type", "warning");
+					req.setAttribute("msg", "이미 회원이십니다!");
+					req.setAttribute("loc", "mygroups_detail.shy?groupno=" + fk_groupno);
+				}
+				
+			} else {
+				req.setAttribute("title", "그룹가입하기");
+				req.setAttribute("type", "error");
+				req.setAttribute("msg", "그룹가입실패!");
+				req.setAttribute("loc", "mygroups_detail.shy?groupno=" + groupno);
+			}
+
+		}
+		return "Meong_msg.notiles";
     }
     
 }

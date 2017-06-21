@@ -13,6 +13,15 @@
 	frm.method = "POST";
 	frm.submit();
 }
+ 
+ function goGrpjoin(groupno) {
+	 var frm = document.gboardFrm;
+		
+	frm.action = "gmemberjoin.shy";
+	frm.groupno = groupno;
+	frm.method = "POST";
+	frm.submit();
+}
 </script>
 <form name="gboardFrm">
 <div class="grpdeatil_wrapper" align="center">
@@ -77,6 +86,7 @@
     
     <div class="grpdeatil_constructor">
         <h2 class="grpdeatil_headline">${grpvomap.GNAME }</h2>
+        <button type="button" onclick="goGrpjoin('groupno');">그룹가입</button>
         <input type="hidden" value="${grpvomap.GROUPNO }" name="groupno"/>
         <p><i class="fa fa-users" aria-hidden="true"></i><a href="#open">${grpvomap.GCOUNT }</a></p>
         <div class="followList" id="open">

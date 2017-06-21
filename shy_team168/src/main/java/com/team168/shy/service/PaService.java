@@ -85,6 +85,23 @@ public class PaService {
 		return gboardList;
 	}
 
+	// ===== gpdetailno 가져오기  =====
+	public String getGmemberidx(int idx) {
+		String str_gpdetailno = dao.getGmemberidx(idx);
+		return str_gpdetailno;
+	}
+
+	// ===== 그룹회원수 1증가하기  =====
+	public void gmemberUpdate(int fk_groupno) {
+		dao.gmemberUpdate(fk_groupno);
+	}
+
+	// ===== 그룹회원인지 아닌지 먼저 확인  =====
+	public int gmemberCheck(HashMap<String, Object> map) {
+		int check = dao.gmemberCheck(map);
+		return check;
+	}
+
 
 
 	

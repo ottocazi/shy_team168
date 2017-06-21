@@ -154,5 +154,40 @@
 		on C.idx = V.fk_groupidx
 		)T
 		where T.fk_groupno=#{groupno}
+		order by grpboardseq desc
 	</select>
+	
+	<!-- ===== 그룹 가져오기 =====  -->
+	<select id="gmemberidx" parameterType="int" resultType="String"> 
+		 select gpdetailno
+		 from
+		 (
+		  select C.idx,V.*
+		  from tbl_shymember C join
+		 (
+		  select A.groupno,B.gpdetailno ,B.fk_groupidx
+		  from tbl_group A join  tbl_gmember B
+		  on A.groupno = B.fk_groupno)V
+		  on C.idx = V.fk_groupidx
+		 )T
+		 where T.idx = #{idx}
+	</select>
+	
+	<!-- =====  그룹회원수 1증가하기 =====  -->
+	<update id="gmemberUpdate" parameterType="int">
+		update tbl_group set gcount = gcount+1
+		where groupno = #{fk_groupno}
+	</update>
+	
+	<!-- ===== 그룹회원인지 아닌지 먼저 확인 =====  -->
+	<select id="gmemberCheck" parameterType="java.util.HashMap" resultType="int"> 
+		select case( select count(*)
+	                 from tbl_gmember
+	                 where fk_groupidx=#{fk_groupidx} and fk_groupno=#{fk_groupno}  )
+	           when 1 then 1
+	           else 0
+	           end
+		from dual
+	</select>
+	
 </mapper>	

@@ -79,5 +79,22 @@ public class PaDAO {
 		return gboardList;
 	}
 
+	// ===== gpdetailno 가져오기  =====
+	public String getGmemberidx(int idx) {
+		String str_gpdetailno = sqlsession.selectOne("pa.gmemberidx",idx);
+		return str_gpdetailno;
+	}
+
+	// ===== 그룹회원수 1증가하기  =====
+	public void gmemberUpdate(int fk_groupno) {
+		sqlsession.update("pa.gmemberUpdate",fk_groupno);
+	}
+
+	// ===== 그룹회원인지 아닌지 먼저 확인  =====
+	public int gmemberCheck(HashMap<String, Object> map) {
+		int check =sqlsession.selectOne("pa.gmemberCheck", map);
+		return check;
+	}
+
 
 }

@@ -1,8 +1,66 @@
 -------------------------------------------
 --파
-select  groupno,
-        rank() over (order by gcount desc) as rank
-from tbl_group
+
+alter table tbl_grpboard
+add imgyn NUMBER default 0;
+
+alter table tbl_grpboard
+add writedate date default sysdate;
+commit;
+
+alter table tbl_grpboard
+drop column imgyn;
+
+select *
+from tbl_grpboard;
+
+select *
+from tbl_gmember;
+
+select T.*
+from
+(
+select C.name,C.email,C.myimg,V.*
+from tbl_shymember C join
+(
+select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+from tbl_gmember A join tbl_grpboard B
+on A.gpdetailno = B.gpdetailno)V
+on C.idx = V.fk_groupidx
+)T
+where T.fk_groupno=2;
+
+select name,email,myimg,fk_groupno,fk_groupidx,grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status
+		from
+		(
+		select C.name,C.email,C.myimg,V.*
+		from tbl_shymember C join
+		(
+		select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+		from tbl_gmember A join tbl_grpboard B
+		on A.gpdetailno = B.gpdetailno)V
+		on C.idx = V.fk_groupidx
+		)T
+		where T.fk_groupno=2;
+
+update tbl_grpboard set imgyn = 1
+where grpboardseq = 2;
+
+select gpdetailno
+from
+(
+select C.idx,V.*
+from tbl_shymember C join
+(
+select A.groupno,B.gpdetailno ,B.fk_groupidx
+from tbl_group A join  tbl_gmember B
+on A.groupno = B.fk_groupno)V
+on C.idx = V.fk_groupidx
+)T
+where T.idx = 33;
+
+select *
+from tbl_gmember
 order by rank;
 
  select name,email,myimg, groupno , gpdetailno, fk_groupidx, gregisterdate, status
@@ -523,47 +581,6 @@ CREATE TABLE tbl_grpboard (
 	imgyn NUMBER, /* 이미지여부 */
 	status NUMBER /* 삭제여부 */
 );
-alter table tbl_grpboard
-add imgyn NUMBER default 0;
-
-alter table tbl_grpboard
-add writedate date default sysdate;
-commit;
-
-alter table tbl_grpboard
-drop column imgyn;
-
-select *
-from tbl_grpboard;
-
-select T.*
-from
-(
-select C.name,C.email,C.myimg,V.*
-from tbl_shymember C join
-(
-select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
-from tbl_gmember A join tbl_grpboard B
-on A.gpdetailno = B.gpdetailno)V
-on C.idx = V.fk_groupidx
-)T
-where T.fk_groupno=2;
-
-select name,email,myimg,fk_groupno,fk_groupidx,grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status
-		from
-		(
-		select C.name,C.email,C.myimg,V.*
-		from tbl_shymember C join
-		(
-		select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
-		from tbl_gmember A join tbl_grpboard B
-		on A.gpdetailno = B.gpdetailno)V
-		on C.idx = V.fk_groupidx
-		)T
-		where T.fk_groupno=2;
-
-update tbl_grpboard set imgyn = 1
-where grpboardseq = 2;
 
 --drop sequence seq_tbl_grpboard 
 create sequence seq_tbl_grpboard
