@@ -18,4 +18,90 @@
 	 -->
 	
 	
-</mapper>	
+	
+	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
+	<resultMap type="java.util.HashMap" id="getSearchWordMap">
+		<result property="SEARCHDATA" column="searchdata" javaType="String" />
+	</resultMap>
+	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
+		<if test='colname.equals("subject")'>
+		    select subject as searchdata 
+		    from spring_tblBoard
+		    where lower(subject) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("content")'>
+		    select substr(content, instr(content, #{search}, 1, 1), length(#{search}) + 5 )
+		           as searchdata    
+		    from spring_tblBoard
+		    where lower(content) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("name")'>
+			select distinct name as searchdata 
+		    from spring_tblBoard
+		    where lower(name) like '%' || lower(#{search}) || '%'
+		</if> 
+		
+	</select>	
+	
+	
+	
+	
+	
+	
+ <!-- ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
+                    파일이 첨부된 답변형 게시판 목록
+    	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
+    -->
+    <select id="boardList" resultType="com.spring.board.model.BoardVO" parameterType="java.util.HashMap"  >
+     select seq, userid, name, subject, readCount, regDate, commentCount  
+          , groupno, fk_seq, depthno
+          , fileName, orgFilename, fileSize
+	 from 
+	 (
+		select rownum as RNO
+		     , V.seq, V.userid, V.name, V.subject, V.content, V.readCount, V.regDate, V.commentCount
+		     , V.groupno, V.fk_seq, V.depthno
+		     , V.fileName, V.orgFilename, V.fileSize
+		from 
+		(
+		    select seq, userid, name 
+		         , case when length(subject) > 20 then substr(subject, 1, 18)||'..'
+		           else subject end as subject
+		         , content , readCount
+		         , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
+		         , commentCount
+		         , groupno, fk_seq, depthno
+		         , fileName, orgFilename, fileSize
+		    from spring_tblBoard
+		    where status = 1
+		    <if test="colname != null and search != null">     
+		        and ${colname} like '%'|| #{search} ||'%'
+		    </if>
+		    start with fk_seq = 0
+    	    connect by prior seq = fk_seq
+		    order siblings by groupno desc, seq asc
+		) V
+	 ) T
+	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
+ </select>      
+     		
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+	
