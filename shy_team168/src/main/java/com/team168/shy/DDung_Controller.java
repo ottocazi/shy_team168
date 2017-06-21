@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -36,29 +37,59 @@ public class DDung_Controller {
 		ShyMemberVO smvo = (ShyMemberVO)loginuser;
 		session.setAttribute("loginuser", smvo);
 		
+		if(smvo==null){
+			
+			System.out.println("null이오");
+			req.setAttribute("type", "question");
+			req.setAttribute("msg", "활동이 감지되지 않아 로그아웃되었습니다.  :)");
+			req.setAttribute("loc", req.getContextPath()+"/");
+			return "ddung_alert.notiles";
+			
+		}
 		
-		// 로그인 유저의 팔로우 명단 가져오기
+		// 로그인 유저의 팔로우 명단 가져오기 
 		List <String> followlist = service.followlist(smvo.getIdx());
 		
+		
+		// 팔로워 명단에 내 계정도 추가해서 내 계정의 글들도 같이 볼수 있도록 하기
+		String myIdx = Integer.toString(smvo.getIdx());
+		System.out.println("myIdx = "+ myIdx);
+		followlist.add(myIdx);
+		
 		System.out.println("followlist의 사이즈 = "+followlist.size());
-		// 팔로워들의 샤이 가져오기
+		
+		// 팔로워들 + 나의 샤이 가져오기 , 유저정보 가져오기(join?), 
 		List <HashMap<String, String>> shies = service.getmainshy(followlist);
 		
-		for(int i =0 ; i<shies.size(); i++){
-			
-			if("1"==shies.get(i).get("simage")){
+		if(shies!=null){
+			for(int i =0 ; i<shies.size(); i++){
 				
-				String snsno = shies.get(i).get("snsno");	
-				shies.get(i).put("imageaddr", service.imgaddr(snsno));
 				
-			};
-			
-			if("0"==shies.get(i).get("simage")){
-				shies.get(i).put("imageaddr", null);
+				// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+				// 페이징 처리 미완성
+				if("1".equals(shies.get(i).get("simage"))){
+					
+					String snsno = shies.get(i).get("snsno");
+					System.out.println("snsno = "+snsno);
+					String imagefile = service.imgaddr(snsno);
+					
+					System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+					shies.get(i).put("imageaddr", imagefile);
+					
+				}
+				
+				else if("0".equals(shies.get(i).get("simage"))){
+					shies.get(i).put("imageaddr", null);
+				}
+				
+				System.out.println("shies.simage : "+shies.get(i).get("simage"));
+				System.out.println("shies에 들어간 imageaddr = " + shies.get(i).get("imageaddr"));
 			}
+		
 		}
 		
 		
+		req.setAttribute("shies", shies);
 		return "ddung/mainLine.tiles";
     	
     }
@@ -87,9 +118,19 @@ public class DDung_Controller {
 		
 		String rootpath = session.getServletContext().getRealPath("/");
 		String path = rootpath + "resources" + File.separator + "images/shydb";
+		path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
+		
+		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
+		
 		
 		System.out.println("rootpath : "+ rootpath);
 		System.out.println("path : " +  path);
+		System.out.println("req.getContextPath() : " + req.getContextPath());
+		
+		/*	/shy_team168/src/main/webapp/resources/images/shydb
+		    C:\github_shy_team168\shy_team168\shy_team168\src\main\webapp\resources\images\shydb
+			rootpath : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\
+			path : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\resources\images/shydb*/
 		
 		String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
 		newFilename += System.nanoTime();
@@ -119,7 +160,7 @@ public class DDung_Controller {
 			staggeo = "1";
 			
 			// geo 테이블에 위치값 insert
-		}
+		} 
 		
 		System.out.println("ftag = "+ftag);
 		System.out.println("content = "+content);
@@ -152,34 +193,37 @@ public class DDung_Controller {
 		shyform.put("simage" , simage);
 		shyform.put("staggeo", staggeo);
 		shyform.put("publicyn", publicyn);
+		
 		service.shyup(shyform);
 		
 		
 		HashMap<String, String> shynow = service.getshynow(idx); // 업로드한 shy 값 추출
 		System.out.println("저장된 scontent = "+shynow.get("scontent"));
-		
-		if(newFilename!=null){
+		System.out.println("simage ==="+simage);
+		if(simage.equals("1")){
 			
 			HashMap<String, String> parameters = new HashMap<String, String>();
 			parameters.put("snsno", shynow.get("snsno"));
+			System.out.println("이미지 테이블에 등록할 fk_snsno는  "+shynow.get("snsno"));
 			parameters.put("filename", newFilename);
+			System.out.println("등록할 이미지 파일명은 "+newFilename);
 			service.insert_tbl_image(parameters);
 			
 		}
 		
-		if(ftagstatus=="1"){
+		if(ftagstatus.equals("1")){
 
 			// 입력한 이름이 email 또는 이름과 같다면 fk_idx 로 없다면 그냥 일반 입력값으로 insert into
 		}
 		
-		if(staggeo=="1"){
+		if(staggeo.equals("1")){
 			// 위도값 경도값, 지정 이름(당산역)을 넣으세요
 		}
 		
 		
 		
-		/*req.setAttribute("loc ", "javascript:history.go(-1)");*/
-		return mainline(req, session);
+		req.setAttribute("loc", "mainline.shy");
+		return "msg.notiles";
 		
     	
     }

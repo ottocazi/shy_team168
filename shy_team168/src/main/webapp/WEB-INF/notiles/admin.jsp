@@ -24,7 +24,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -68,7 +68,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">게시판</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">게시판</a></li>
                       <li><a href="#">###</a></li>
                     </ul>
                   </li>
@@ -93,7 +93,7 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i>평균 사용시간</span>
-              <div class="count">60분</div>
+              <div class="count">00분</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> 지난주 대비 증가</span>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -113,7 +113,7 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> 오늘 게시글수</span>
-              <div class="count">7,325</div>
+              <div class="count">00</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span>
             </div>
           </div>
