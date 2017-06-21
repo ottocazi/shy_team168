@@ -27,7 +27,8 @@
 			  html:
 			  '<div style="text-align: left;">'+
 			  '<form name="shynowform" enctype="multipart/form-data">'+
-			  '<span style="font-size:16pt; color:navy; ">${loginuser.email}</span>  님의 샤이 기록하기&nbsp;&nbsp;'+
+			  '<span style="font-size:16pt; color:navy; "><c:if test="${loginuser.name!=null}">${loginuser.name}</c:if>'+
+			  '<c:if test="${loginuser.name==null}">${loginuser.email}</c:if></span>  님의 샤이 기록하기&nbsp;&nbsp;'+
 			  '<select name="status" id="status"> <option value="1">전체 공개</option>'+
 			    '<option value="2">친구 공개</option>'+
 			    '<option value="0">나만 보기</option>'+

@@ -24,23 +24,22 @@
 		<result property="SEARCHDATA" column="searchdata" javaType="String" />
 	</resultMap>
 	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
-		<if test='colname.equals("subject")'>
-		    select subject as searchdata 
-		    from spring_tblBoard
-		    where lower(subject) like '%' || lower(#{search}) || '%'
-		</if>
-		
-		<if test='colname.equals("content")'>
-		    select substr(content, instr(content, #{search}, 1, 1), length(#{search}) + 5 )
-		           as searchdata    
-		    from spring_tblBoard
-		    where lower(content) like '%' || lower(#{search}) || '%'
-		</if>
-		
 		<if test='colname.equals("name")'>
-			select distinct name as searchdata 
-		    from spring_tblBoard
+		    select name as searchdata 
+		    from tbl_shymember
 		    where lower(name) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("email")'>
+		    select email as searchdata    
+		    from tbl_shymember
+		    where lower(email) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("gname")'>
+			select distinct gname as searchdata 
+		    from tbl_group
+		    where lower(gname) like '%' || lower(#{search}) || '%'
 		</if> 
 		
 	</select>	
@@ -54,7 +53,7 @@
                     파일이 첨부된 답변형 게시판 목록
     	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
     -->
-    <select id="boardList" resultType="com.spring.board.model.BoardVO" parameterType="java.util.HashMap"  >
+    <select id="searchlist" resultType="com.spring.board.model.BoardVO" parameterType="java.util.HashMap"  >
      select seq, userid, name, subject, readCount, regDate, commentCount  
           , groupno, fk_seq, depthno
           , fileName, orgFilename, fileSize

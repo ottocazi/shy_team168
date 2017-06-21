@@ -48,8 +48,9 @@ public class DDung_Service {
 		}
 
 		public String imgaddr(String snsno) {
-			// TODO Auto-generated method stub
-			return null;
+			
+			String imgaddr = dao.imgaddr(snsno);
+			return imgaddr;
 		}
 		
 	
