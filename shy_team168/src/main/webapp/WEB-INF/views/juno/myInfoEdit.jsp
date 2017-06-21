@@ -7,143 +7,11 @@
 <meta charset="UTF-8">
 
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/juno/jquery-ui.js"></script> 
+
+<script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/juno/myInfoEdit.js"></script> 
+<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/juno/myInfoEdit.css"/> 
+
 <title>myInfoEdit</title>
-
-
-   
-
-
-
-<style type="text/css">
-
-
-/*** Table Styles **/
-.table td.colname {
-	font-weight: bold;
-}
-.table td span {
-	font-size: 11px;
-	color: grey;
-	line-height: 1px;
-}
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
-	padding:22px;
-}
-
-.table.nofill tr{
-	  border-top: 1px solid #C9D1D8;
-}
-
-.table.nofill tr:first-child{
-  	border-top: none;
-}
-
-.table tr:last-child{
-	border-bottom: 1px solid #C9D1D8;
-}
-
-.table td{
-	vertical-align: top;
-	color:#576475;
-	font-weight:400;
-	-webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-	transition: all 0.3s;
-	font-size: 16px;
-	background-color: white;
-	width:50px;
-}
-
-.table td img{
-	height: 120px;
-	width: 120px;
-}
-
-.table td .info_edit_btn{
-	background-color: white;
-	margin-top: 30px;
-	border: solid 1px grey;
-	border-radius: inherit;
-	font-weight: bold;
-	font-size: 14px;
-	width: 100px;
-	height: 30px;
-}
-
-.hiddenpart {
-	margin-top: 30px;
-}
-
-.table td .editend{
-	background-color: rgba(247,202,201, 1);
-}
-.table td:first-child{
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-
-.table td:last-child{
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	border-left: 1px solid #C9D1D8 !important;
-}
-
-.table-striped tbody > tr:nth-child(2n+2) > td, .table-striped tbody > tr:nth-child(2n+2) > th {
-	background-color:#fafafa;
-	border:none;
-}
-
-tbody.table-hover  tr:hover>td, .table-hover tbody tr:hover>th {
-  background-color: rgba(86, 98, 108, 0.1);
-}
-
-th.text-left {
-  text-align: left;
-}
-
-th.text-center {
-  text-align: center;
-}
-
-th.text-right {
-  text-align: right;
-}
-
-td.text-left {
-  text-align: left;
-}
-
-td.text-center {
-  text-align: center;
-}
-
-td.text-right {
-  text-align: right;
-}
-
-
-</style>
-
-<script type="text/javascript">
-
-	$(document).ready(function(){
-		/* 열고 닫기 */
-		$(".hiddenpart").hide();
-		
-		$(".show_more_btn").click(function(){
-			$(this).hide();
-			$(this).parent().find(".hiddenpart").show();
-		});
-		
-		$(".show_more_cancle_btn").click(function(){
-			$(this).parent().parent().find(".hiddenpart").hide();
-			$(this).parent().parent().find(".show_more_btn").show();
-		});
-	});
-	
-</script> 
 
 </head>
 
@@ -166,17 +34,29 @@ td.text-right {
 			    <table class="table nofill table-striped" style="width: 100%;">
 					
 					<tbody class="table-hover">
+						<form name="myimgFrm" id="myimgFrm" >
 						<tr class="fisrtcol" style="border-top:2px solid #27303e;">
 							<td class="text-left colname">프로필사진</td>
 							<td class="text-left">
-							<img class="img-responsive img-circle" src="http://eduncovered.com/wp-content/uploads/2014/06/sad-frog.jpg" >
-							<button type="button" class="info_edit_btn">사진변경</button>
+							<img class="img-responsive img-circle" src="" >
+							
+							<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+							<input type="hidden" name="column_name"  />
+			                <input type="hidden" name="edited_content" />
+			                
+							<input type="hidden" class="inputcol" id="id_myimg" name="myimg" value="${getMemberVO.myimg}" />
+							<button type="button" class="info_edit_btn editPRend">사진변경</button>
 							<button type="button" class="info_edit_btn">삭제</button>
+							 <input type="hidden" name="column_name"  />
+				             <input type="hidden" name="edited_content" />
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="emailFrm" id="emailFrm">
 						<tr>
 							<td class="text-left colname">이메일</td>
-							<td class="text-left">junorous@gmail.com
+							<td class="text-left">${getMemberVO.email}
 				                <br/><span>아이디, 비밀번호 찾기 등 본인확인이 필요한 경우 사용할 이메일 주소입니다.</span><br/>
 				                <input type="checkbox"><span style="margin-left: 10px;">shy의 이벤트 등 프로모션 관련 안내 메일을 수신하겠습니다.</span>
 				                <br/>
@@ -188,83 +68,150 @@ td.text-right {
 				                <div class="hiddenpart">
 				                변경할 이메일
 				                <br/><span>변경할 이메일 주소를 입력하세요. (예: abc@gmail.com)</span><br/>
-				                <input type="text" value="junorous@gmail.com" />
+				                
+				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="edited_content" />
+				                
+				                <input type="text" class="inputcol" id="id_email" name="email" value="${getMemberVO.email}" />
 				                <button type="button" class="info_edit_btn">인증메일발송</button><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
+				                
 				                </div>
-				                
-				                
-				                
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="nameFrm" id="nameFrm">
 						<tr>
 							<td class="text-left colname">사용자 이름</td>
-							<td class="text-left">임준호
+							<td class="text-left">
+								
+								${getMemberVO.name}
 				                <br/><span style="text-decoration: line-through;">개명으로 이름이 변경된 경우에 한하여 변경이 가능합니다.</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">이름변경</button>
+				                
 				                <div class="hiddenpart">
 				                변경할 이름
 				                <br/><span>변경할 이름을 입력하세요.</span><br/>
-				                <input type="text" value="임준호" />
+				                
+				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="edited_content" />
+				                
+				                <input type="text" class="inputcol" id="id_name" name="name" value="${getMemberVO.name}" />
 				                <button type="button" class="info_edit_btn">중복확인</button><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
+				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="edited_content" />
 				                </div>
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="pwdFrm" id="pwdFrm">
 						<tr>
 							<td class="text-left colname">비밀번호</td>
 							<td class="text-left"><span></span>
-				                <button type="button" class="info_edit_btn" style="margin-top: 0px;">수정</button>
+				                <button type="button" class="info_edit_btn show_more_btn" style="margin-top: 0px;">수정</button>
+				                <div class="hiddenpart" style="display: block;">
+				                	비밀번호 변경
+				                	<br/><span><a>안전한 비밀번호로 내정보를 보호</a>하세요</span>
+				                	<br/><span><span style="color: red;">다른 아이디/사이트에서 사용한적 없는 비밀번호<br/> 이전에 사용한 적 없는 비밀번호</span>가 안전합니다.</span><br/>
+				                	
+				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                	<input type="hidden" name="column_name"  />
+				                	<input type="hidden" name="edited_content" />
+				                	
+				                	<input placeholder="현재 비밀번호" type="password" value="${getMemberVO.pwd}"  tabindex="1"  autofocus style="margin-top: 30px;"> <br/>
+				                	<input placeholder="새 비밀번호" type="password" class="inputcol" id="id_pwd" name="pwd"  tabindex="2"  style="margin-top: 30px;"> <br/>
+				                	<input placeholder="새 비밀번호 확인" type="password" tabindex="2" > <br/>
+				                	<button type="button" class="info_edit_btn editend">확인</button>
+								    <button type="button" class="info_edit_btn show_more_cancle_btn">취소</button>
+								</div>
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="phoneFrm" id="phoneFrm">
 						<tr>
 							<td class="text-left colname">연락처</td>
-							<td class="text-left">010-8***-***2
+							<td class="text-left">${getMemberVO.phone}
 				                <br/><span>아이디, 비밀번호 찾기 등 본인확인이 필요한 경우 <br/>또는 유료 결제 등 shy로부터 알림을 받을 때 사용할 휴대전화입니다.</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
-				                <div class="hiddenpart">
+				                <div class="hiddenpart" style="max-width: 80%;">
 				                변경할 연락처
 				                <br/><span>변경할 연락처를 입력하세요. (예: 01087644212)</span><br/>
-				                <input type="text" value="01087644212" /><br/>
+				                
+				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="edited_content" />
+				                
+				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
 				                </div>
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="genderFrm" id="genderFrm">
 						<tr>
 							<td class="text-left colname">성별</td>
-							<td class="text-left">남
+							<td class="text-left">${getMemberVO.gender}
 				                <br/><span>성별이 변경된 경우에 한하여 변경이 가능합니다.</span>
-				                <br/><button type="button" class="info_edit_btn">수정</button>
+				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
+				                <div class="hiddenpart">
+				                변경할 성별
+				                <br/><span>변경할 성별을 고르세요</span><br/>
+				                <div id="">
+				                
+				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="edited_content" />
+				                
+				                <input type="radio" value="남" class="inputcol" name="gender" style="margin-top: 30px;"/>남&nbsp;&nbsp;
+				                <input type="radio" value="여" class="inputcol" name="gender" />여
+				                </div>
+				                <br/>
+				                <button type="button" class="info_edit_btn editend">수정완료</button>
+				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
+				                </div>
 			                </td>
 						</tr>
+						</form>
+						
+						<form name="myintroFrm" id="myintroFrm">
 						<tr class="lastcol" style="border-bottom:2px solid #27303e;">
 							<td class="text-left colname">자기소개</td>
-							<td class="text-left">^~^///
+							<td class="text-left">${getMemberVO.myintro}
 								<br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 								<div class="hiddenpart">
 				                변경할 자기소개
 				                <br/><span>변경할 자기소개를 입력하세요.</span><br/>
-				                <input type="text" value="^~^///"/><br/>
+				                <fieldset style="margin-top: 30px; width: 100%; height: 50px;">
+				                	
+				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                	<input type="hidden" name="column_name"  />
+			               			<input type="hidden" name="edited_content" />		
+			               			
+							    	<textarea cols="35" rows="4" class="inputcol" id="id_myintro" name="myintro" tabindex="5"  style="resize: none; width: 80%;">${getMemberVO.myintro}</textarea>
+							    </fieldset><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
 				                </div>
 							</td>
 						</tr>
+						</form>
 					</tbody>
 				</table>
 			</div>
-			
-			
         </div>
+        
     </div>
-    
-
-    
   </div>
-  
 </div>
 
 

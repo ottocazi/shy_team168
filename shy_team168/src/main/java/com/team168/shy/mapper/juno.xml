@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =====   mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- =====   루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="juno">
+
+	<!-- ===== 로그인 성공한 사용자 정보 가져오기 ===== -->	
+	<select id="getMemberVO" parameterType="int" resultType="com.team168.shy.model.ShyMemberVO">
+		select idx, name, email, pwd, registerdate, status, myimg, myintro, birthday, gender, phone
+	   	from tbl_shymember
+	   	where status = 1 and idx = #{idx}
+	</select>
+	
+	<!-- ===== 내정보 수정하기 ===== -->
+	<update id="myInfoEditEnd" parameterType="java.util.HashMap">
+		update tbl_shymember set ${column_name} = #{edited_content}
+	    where idx = #{idx}
+	</update>
+	
+</mapper>	

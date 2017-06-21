@@ -1,6 +1,9 @@
 package com.team168.shy;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.team168.common.FileManager;
-import com.team168.shy.service.DDung_Service;
+import com.team168.shy.model.ShyMemberVO;
+import com.team168.shy.service.Juno_Service;
 
 
 @Controller
@@ -17,18 +21,67 @@ import com.team168.shy.service.DDung_Service;
 public class Juno_Controller {
 
 	@Autowired
-	private DDung_Service serv100;
+	private Juno_Service service;
 	
-//  ===== #130. 파일업로드 및 파일다운로드를 해주는 FileManager 클래스 의존객체 주입하기(DI : Dependency Injection) =====
+	/*//  ===== #130. 파일업로드 및 파일다운로드를 해주는 FileManager 클래스 의존객체 주입하기(DI : Dependency Injection) =====
     @Autowired
-    private FileManager fileManager;
+    private FileManager fileManager;*/
     
+    
+    // == 마이페이지 불러오기 == 
 	@RequestMapping(value="/myInfoEdit.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
     	
+		HttpSession session = req.getSession();
+	       
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		System.out.println("loginuser의 이름 : " + loginuser.getName());
+		
+		int idx = loginuser.getIdx();
+		/*String str_idx = req.getParameter("idx");
+		int idx = Integer.parseInt(str_idx);
+		int idx = 33;*/
+		System.out.println("int idx : "+idx);
+		
+		// idx 로 memberVO 얻어오기 
+		ShyMemberVO getMemberVO = service.getMemberVO(idx);
+	       
+        req.setAttribute("getMemberVO", getMemberVO);
+	       
+        return "juno/myInfoEdit.tiles";
+
+    }
+	
+	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.POST})
+    public String myInfoEditEnd(ShyMemberVO mbrvo, HttpServletRequest req) {
+    	// 수정할 회원 idx 번호
+		String str_idx = req.getParameter("idx");
+		System.out.println("컨트롤에서 받은 idx : "+ str_idx);
+		
+		String column_name = req.getParameter("column_name");
+		System.out.println("컨트롤에서 받은 column_name : " + column_name);
+		
+		String edited_content = req.getParameter("edited_content");
+		System.out.println("컨트롤에서 받은 edited_content : " + edited_content);
+	
+		HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("idx", str_idx);
+    	map.put("column_name", column_name);
+    	map.put("edited_content", edited_content);
+    	
+		int n = service.myInfoEditEnd(map);
+		
+		// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+		// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+		req.setAttribute("n", n);
+		int idx = Integer.parseInt(str_idx);
+		ShyMemberVO getMemberVO = service.getMemberVO(idx);
+	       
+        req.setAttribute("getMemberVO", getMemberVO);
+	       
+        
+
 		return "juno/myInfoEdit.tiles";
     	
     }
-	
-
 }
