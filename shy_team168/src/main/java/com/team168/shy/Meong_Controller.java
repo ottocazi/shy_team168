@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -137,8 +138,6 @@ public class Meong_Controller {
     	map.put("user_seq", user_seq);
     	map.put("today", today);
     	
-    	System.out.println("sysdate : " + today);
-    	
     	service.loginsert(map);
     	
     	req.setAttribute("loc", "mainline.shy");
@@ -149,15 +148,146 @@ public class Meong_Controller {
 
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
-    public String logout(HttpServletRequest req, HttpSession session) throws UnknownHostException {
+    public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
+    	/*    	
+    	String email = req.getParameter("email");
+		loginuser = service.getLoginMember(email);
+		session.setAttribute("loginuser", loginuser);
+    	*/
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	InetAddress inetAddress = InetAddress.getLocalHost();
+
+    	String user_ip = inetAddress.getHostAddress();
+    	int user_seq = loginuser.getIdx();
+    	
+    	Date now = new Date();
+   	 	String today = String.format("%tF %tT", now, now);
+    	
+   	 	map.put("user_ip", user_ip);
+   	 	System.out.println("user_ip 는 "+user_ip);
+   	 	map.put("user_seq", user_seq);
+   	 	System.out.println("user_seq 는 "+user_seq);
+   	 	map.put("today", today);
+   	 	System.out.println("today 는 "+today);
+   	 	
+   	 	service.logoutinsert(map);
 
     	session.invalidate();
-
+    	
     	return "logout.notiles";
     }
 	
     
-	
+	// 관리자 페이지요청
+    @RequestMapping(value="/admin.shy", method={RequestMethod.GET})
+    public String admin(HttpServletRequest req, HttpSession session){
+    	
+    	String totaluser = service.gettotaluser();   // 총 사용자수
+    	String mentotal = service.getmentotal();     // 총 남자 사용자수
+    	String womantotal = service.getwomantotal(); // 총 여자 사용자수
+    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+    			
+    	req.setAttribute("totaluser", totaluser);
+    	req.setAttribute("mentotal", mentotal);
+    	req.setAttribute("womantotal", womantotal);
+    	req.setAttribute("todaytotal", todaytotal);
+
+    	return "admin.notiles";
+    }
+    
+    // 관리자 공지사항 페이지요청
+    @RequestMapping(value="/gesipan.shy", method={RequestMethod.GET})
+    public String gesipan(HttpServletRequest req, HttpSession session){
+
+    	String pageNo = req.getParameter("pageNo");
+    	
+    	int totalCount = 0;
+    	int sizePerPage = 5; 
+    	int currentShowPageNo = 1;
+    	int totalPage = 0; 
+    	
+    	int start = 0;
+    	int end = 0;
+    	int startPageNo = 0;
+
+    	int loop = 0;
+    	int blocksize = 5;
+    	
+    	if(pageNo == null) {
+    		currentShowPageNo = 1;    		
+    	}
+    	else {
+    		currentShowPageNo = Integer.parseInt(pageNo); 
+    	}
+   
+    	start = ((currentShowPageNo - 1) * sizePerPage) + 1;
+    	end = start + sizePerPage - 1;
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("start", String.valueOf(start) );
+    	map.put("end", String.valueOf(end) );
+    	
+    	List<HashMap<String, String>> shyList = service.getshyList(map); 
+   	
+			 for(int i=0; i<shyList.size(); i++){
+    		
+	    		 String idx = shyList.get(i).get("IDX");
+	    		 String result = service.memocount(idx);
+	    		 
+	    		 shyList.get(i).put("MEMOCOUNT", result);
+	    		 
+			 }
+    	
+    	totalCount = service.getTotalCount(map);
+    	totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+    	
+    	String pagebar = "";
+    	pagebar += "<ul>";
+    	
+        loop = 1;
+
+        startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
+    	
+        // **** 이전5페이지 만들기 ****
+        if(startPageNo == 1) {
+        	pagebar += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize);
+        }
+        else {
+        	pagebar += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, blocksize);		
+        }        
+            	
+        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
+        while( !(loop > blocksize ||
+        		 startPageNo > totalPage) ) {
+        	if(startPageNo == currentShowPageNo) {
+        		pagebar += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo);	
+        	}
+        	else {
+	        	pagebar += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo);
+        	}
+        	
+        	loop++;
+        	startPageNo++;
+        	
+        }// end of while--------------------
+                
+        // **** 다음5페이지 만들기 ****
+        if(startPageNo > totalPage) {
+        	pagebar += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize);
+        }
+        else {
+        	pagebar += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize);	
+        }
+        pagebar += "</ul>";
+    	
+        req.setAttribute("pagebar", pagebar);
+    	req.setAttribute("shyList", shyList);
+
+    	return "gesipan.notiles";
+    }    
+		
 	
 	
 	

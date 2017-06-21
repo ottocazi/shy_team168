@@ -9,11 +9,87 @@
 	<!-- 회원가입 -->
 	<insert id="shyup" parameterType="java.util.HashMap">
 		insert into tbl_shymemo(SNSNO, FK_IDX, SCONTENT, STAGFOLLOW, SDATEDTIME, PUBLICYN, SIMAGE, STAGGEO, STATUS) 
-		values(seq_tbl_shymemo.nextval, #{fk_idx},#{scontent}, #{stagfollow}, default, 1, 1, 0, 1)  
+		values(seq_tbl_shymemo.nextval, #{fk_idx},#{scontent}, #{stagfollow}, sysdate, #{publicyn}, #{simage}, #{staggeo}, 1)  
 	</insert>
 	
-
+	<resultMap type="java.util.HashMap" id="getshynow">
+	
+		<result property="snsno" 		column="SNSNO" javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" javaType="String"/>
+		<result property="simage" 		column="SIMAGE" javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" javaType="String"/>
+		<result property="status" 		column="STATUS" javaType="String"/>
 		
+		
+	</resultMap>
+	
+	<select id="getshynow" parameterType="Object" resultMap="getshynow">
+	
+		select *
+		from tbl_shymemo 
+		where rownum = 1 and fk_idx = #{p_idx} order by snsno desc
+	
+	</select>
+	
+	<insert id="insert_tbl_image" parameterType="java.util.HashMap">
+	
+		insert into tbl_image (IMAGESEQ, SNSNO, FILENAME, UPLOADTIME)
+		values (seq_tbl_image.nextval, #{snsno}, #{filename}, sysdate)
+	
+	</insert>
+
+	<select id="followlist" parameterType="int" resultType="String">
+	
+		select fk_idxflwed
+		from tbl_follow
+		where 1=1 and fk_idxflw = #{idx} and status = 1
+		
+	
+	</select>	
+	
+	
+	<resultMap type="java.util.HashMap" id="shies">
+	
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		
+	</resultMap>
+	
+	<select id="shies" parameterType="java.util.List" resultMap="shies">
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX IN
+				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<select id="imgaddr" parameterType="String" resultType="String">
+	
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
+	</select>
 </mapper>
 
 

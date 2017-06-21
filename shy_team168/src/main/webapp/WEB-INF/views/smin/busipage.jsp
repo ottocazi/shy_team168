@@ -26,20 +26,9 @@
     @import "compass/css3";
 
 
-.star,
-.rating:not(.vote-cast):hover .star:hover ~ .star,
-.rating.vote-cast .star.selected ~ .star
-{
-  /* normal state */
-  color: black;
-}
 
-.rating:hover .star,
-.rating.vote-cast .star
-{
-  /* highlighted state */
-  color: red;
-}
+
+
     
     
     
@@ -137,7 +126,19 @@
 }
 
 
-    
+.star_rating {font-size:0; letter-spacing:-4px;}
+.star_rating a {
+    font-size:22px;
+    letter-spacing:0;
+    display:inline-block;
+    margin-left:5px;
+    color:#ccc;
+    text-decoration:none;
+}
+.star_rating a:first-child {margin-left:0;}
+.star_rating a.on {color:#b30000;}
+
+
     
   </style>
   
@@ -166,6 +167,17 @@
           }
       });
 
+      
+      $( ".star_rating a" ).click(function() {
+    	     $(this).parent().children("a").removeClass("on");
+    	     $(this).addClass("on").prevAll("a").addClass("on");
+    	     return false;
+    	});
+
+
+      
+      
+      
 });
   
   
@@ -182,7 +194,7 @@
 		    });
 		  }
 		);
-  
+  /* 
   $(window).scroll(function() {
 	    if ($(this).scrollTop() > 50 ) {
 	        $('.scrolltop:hidden').stop(true, true).fadeIn();
@@ -192,7 +204,7 @@
 	});
 	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
   
-	
+	 */
 	
 	
 	function getText(){
@@ -204,6 +216,19 @@
 		
 
 	}
+	
+	
+	function goInput( ) {
+		  
+		    /*formData 추가?  */
+			  document.mainputfrm.method = "post";
+			  document.mainputfrm.action = "shynow.shy";
+			  document.mainputfrm.submit();
+			  
+		  
+		}
+	
+	
   </script>
   
 </head>
@@ -213,9 +238,9 @@
 
 
 
-
+<!-- 
 <div class='thetop'></div>
-
+ -->
 
 
 			<!-- ******  인풋 (글남기기) 형식 *********  시작 -->
@@ -254,7 +279,7 @@
 
 
 
-<form role="form">
+<form role="form" name="mainputfrm">
 <!-- 80%size Modal at Center -->
 <div class="modal modal-center fade" id="MainInput" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
   <div class="modal-dialog modal-80size modal-center" role="document">
@@ -277,7 +302,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-         <button type="submit" class="btn btn-success">Submit</button>
+         <button type="submit" class="btn btn-success" OnClick="goInput()">확인</button>
       </div>
     </div>
   </div>
@@ -325,18 +350,18 @@ marker.setMap(map);
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm5ys8Aqru_hi_-arUTuHNDxR0Gmx4HxU&callback=myMap"></script>
 
-<br><br><br>
-
-
-		<ul class="rating"  >
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left; margin-left: 7px;">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none;float: left; ">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none;float: left; ">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left;">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left;">&star;</li>
-</ul>        
 <br><br>
- 
+
+
+<p class="star_rating" align="center">
+    <a href="#" class="on">★</a>
+    <a href="#" class="on">★</a>
+    <a href="#" class="on">★</a>
+    <a href="#">★</a>
+    <a href="#">★</a>
+    <button type="button" class="btn btn-info" style="margin-left: 30px;"> 확인 </button>
+</p> 
+
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -531,11 +556,11 @@ marker.setMap(map);
 
 
 
-
+<!-- 
 
 <div class='scrolltop'>
     <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
-</div>
+</div> -->
 
 
 </body>

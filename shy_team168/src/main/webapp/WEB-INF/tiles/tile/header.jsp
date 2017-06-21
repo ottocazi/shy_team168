@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 
 <head>
@@ -24,8 +26,9 @@
 		swal({
 			  html:
 			  '<div style="text-align: left;">'+
-			  '<form name="shynowform">'+
-			  '<span style="font-size:16pt; color:navy; ">${loginuser.email}</span>  님의 샤이 기록하기&nbsp;&nbsp;'+
+			  '<form name="shynowform" enctype="multipart/form-data">'+
+			  '<span style="font-size:16pt; color:navy; "><c:if test="${loginuser.name!=null}">${loginuser.name}</c:if>'+
+			  '<c:if test="${loginuser.name==null}">${loginuser.email}</c:if></span>  님의 샤이 기록하기&nbsp;&nbsp;'+
 			  '<select name="status" id="status"> <option value="1">전체 공개</option>'+
 			    '<option value="2">친구 공개</option>'+
 			    '<option value="0">나만 보기</option>'+
@@ -56,7 +59,20 @@
 			})
 	
 }; // shynow END
+	
+	
+	
 
+$(window).scroll(function() {
+	    if ($(this).scrollTop() > 50 ) {
+	        $('.scrolltop:hidden').stop(true, true).fadeIn();
+	    } else {
+	        $('.scrolltop').stop(true, true).fadeOut();
+	    }
+	});
+	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
+
+	
 
     
 </script>
@@ -149,7 +165,181 @@
 	background-color: #fff;
 }
 
+
+
+.scrolltop {
+	display:none;
+	width:100%;
+	margin:0 auto;
+	position:fixed;
+	bottom:20px;
+	right:10px;	
+}
+.scroll {
+	position:absolute;
+	right:20px;
+	bottom:20px;
+	background:#b2b2b2;
+	background:rgba(178,178,178,0.7);
+	padding:20px;
+	text-align: center;
+	margin: 0 0 0 0;
+	cursor:pointer;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover {
+	background:rgba(178,178,178,1.0);
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 		
+}
+.scroll:hover .fa {
+	padding-top:-10px;
+}
+.scroll .fa {
+	font-size:30px;
+	margin-top:-5px;
+	margin-left:1px;
+	transition: 0.5s;
+	-moz-transition: 0.5s;
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s; 	
+}
+    
+
+
+
+
 </style>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	searchKeep();
+	
+//	===== #147. Ajax 로 검색어 입력시 자동글 완성하기 2 =====
+	$("#displayList").hide();
+
+    $("#search").keyup(function(){
+    	
+    	var form_data = { colname : $("#colname").val(),  // 키값 : 밸류값 
+    	       		      search  : $("#search").val()    // 키값 : 밸류값 
+    	       		    };
+    	
+    	$.ajax({
+    		url: "/shy/wordSearchShow.shy",
+    		type: "GET",
+    		data: form_data,  // url 요청페이지로 보내는 ajax 요청 데이터
+    		dataType: "JSON", 
+    		success: function(data){
+    			
+    		// ===== #152. Ajax 로 검색어 입력시 자동글 완성하기 7 ===== 
+    		   if(data.length > 0) {
+    			  // 검색된 데이터가 있는 경우.
+    			  // 조심할것은 if(data != null) 으로 하면 안된다.
+    			   var resultHTML = "";
+    			  
+    			   $.each(data, function(entryIndex, entry){
+    				   var wordstr = entry.RESULTDATA.trim();
+					    // 검색어 - 영주                    aj
+					    // 결과물 - 김영주 프로그래머     AJAX
+                        //         김영주바둑기사        ajax 프로그래밍
+                        //         영주사과
+                       
+                        var index = wordstr.toLowerCase().indexOf( $("#search").val().toLowerCase() ); 
+					    var len = $("#search").val().length;
+					    var result = "";
+					    
+					    result = "<span class='first' style='color: black;'>" +wordstr.substr(0, index)+ "</span>" + "<span class='second' style='color: red; font-weight: bold;'>" +wordstr.substr(index, len)+ "</span>" + "<span class='third' style='color: blue;'>" +wordstr.substr(index+len, wordstr.length - (index+len) )+ "</span>";        
+                       
+						resultHTML += "<span style='cursor: pointer;'>" + result + "</span><br/>"; 	   
+    			   });
+    			  
+    			   $("#displayList").html(resultHTML);
+    			   $("#displayList").show();
+    		   }
+    		   else {
+    			  // 검색된 데이터가 없는 경우.
+    			  // 조심할것은 if(data == null) 으로 하면 안된다.
+    			   $("#displayList").hide();
+    		   }
+    			
+    		},
+    		error: function(){
+   				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+   		    }
+    	});
+    	
+    }); // end of keyup(function(){})---------
+    
+    
+    // ===== #153. Ajax 로 검색어 입력시 자동글 완성하기 8 ===== 
+    $("#displayList").click(function(event){
+		var word = "";
+		
+		var $target = $(event.target);
+		
+		if($target.is(".first")) {
+			word = $target.text() + $target.next().text() + $target.next().next().text();
+		//	alert(word);
+		}
+		else if($target.is(".second")) {
+			word = $target.prev().text() + $target.text() + $target.next().text();
+		//	alert(word);
+		}
+		else if($target.is(".third")) {
+			word = $target.prev().prev().text() + $target.prev().text() + $target.text();
+		//	alert(word);
+		}
+		
+		$("#search").val(word); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
+		
+		$("#displayList").hide();
+		
+    });// end of $("#displayList").click()---------	
+    
+	
+	
+});// end of $(document).ready()----------------------
+
+
+function goSearch(){
+	
+	
+	var searchFrm = document.searchFrm;
+	
+	var search = $("#search").val();
+	
+	if(search.trim() == "") {
+		alert("검색어를 입력하세요!!");
+	}
+	else {
+		searchFrm.action = "/shy/searchlist.shy";
+		searchFrm.method = "GET";
+		searchFrm.submit();
+	}
+	
+}
+
+
+function searchKeep(){
+	<c:if test="${not empty colname && not empty search}">
+		$("#colname").val("${colname}"); // 검색어 컬럼명을 유지시켜 주겠다.
+		$("#search").val("${search}");   // 검색어를 유지시켜 주겠다.
+	</c:if>
+}
+
+
+
+
+</script>
+
+
 
 
 
@@ -168,6 +358,17 @@
    				<span class="letter" id="shy" data-letter="h">h</span>
    				<span class="letter" id="shy" data-letter="y">y</span>
       </a>
+      <c:if test="${loginuser!=null }">
+      
+      	<c:if test="${loginuser.name!=null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      	<c:if test="${loginuser.name==null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      </c:if>
     </div>
     
     <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
@@ -179,16 +380,27 @@
       <li><a href="#"><i class="fa fa-map-marker fa-2x" aria-hidden="true" style="color:#B76BA3;"></i></a></li>
       
     </ul>
+    <!-- ===== #103. 글검색 폼 추가하기 : 제목, 내용, 글쓴이로 검색하도록 한다. ===== -->
+	<form name="searchFrm" style="margin-top: 20px;">
+		<select name="colname" id="colname" 
+		style=" border-radius: 10px; width: 70px; height: 30px;" >
+			<option value="name">회원명</option>	<!-- tbl_shymember - name -->
+			<option value="email">이메일</option> <!-- tbl_shymember - email -->
+			<option value="gname">그룹명</option>	 <!-- tbl_group - gname -->
+		</select>
+		<input type="text" name="search" id="search" size="20px" 
+			style="border-radius: 10px; height: 30px; " />
+		<button type="button" class="btn btn-primary" onClick="goSearch();" 
+		style="width: 60px; height: 30px;" >검색</button>
+	</form>
     
-    <form class="shy_topnavbar-form">
-      <div class="shy_top_form-group">
-        <input  type="text" class="shy_top_form-control" placeholder="" style="border-radius: 10px;">&nbsp;
-       
-      </div>
-      
-      <input type="hidden" class="shy_top_btn"  id="search" onclick="goSearch();"><!-- style="border: hidden;" -->
-      <label for="search" style="cursor: pointer;"><i class='fa fa-search'></i></label> 
-    </form>
+    <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
+    <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
+	</div>
+    
+    
+    
+    
   </div >
   
   
@@ -197,8 +409,16 @@
 </header>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
 
+<div class='thetop'></div>
 <div style="width:0; height: 0;" id="noexists">
 
 
+</div>
+
+
+
+
+<div class='scrolltop'>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
 </div>
     
