@@ -22,7 +22,7 @@
   <div class="jumbotron" style="background-color: rgba(10,10,10, 0.05);">
     <h2 class="">회원정보수정</h1>
     <h6 class=""  style="margin-top: 2em;">
-    	<span>noward</span>님의 회원정보입니다.<br/>
+    	<span style="font-weight: bold;">${getMemberVO.name}</span>님의 회원정보입니다.<br/>
     	회원정보는 개인정보처리방침에 따라 안전하게 보호되며, 회원님의 명백한 동의 없이 공개 또는 제 3자에게 제공되지 않습니다.
     	<a>개인정보처리방침</a>
     </h6>

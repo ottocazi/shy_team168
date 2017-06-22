@@ -27,6 +27,13 @@
 
 	} 
      
+    function goEdit() {
+		var frm = document.mypageFrm;
+		
+		frm.action = "myInfoEdit.shy";
+		frm.method = "GET";
+		frm.submit();
+	}
 </script>
 <style type="text/css">
 .bt, .proedit {
@@ -61,32 +68,39 @@
 <body>
 <div id="mypage" align="center">
       
+      <form name="mypageFrm">
       <div class="myProfile" style="text-align: left">
          <div class="pimg">
+         <c:if test="${loginuser.myimg != null}">
+            <img src="<%=request.getContextPath() %>/resources/images/shydb/${loginuser.myimg }">
+         </c:if>
+         <c:if test="${loginuser.myimg == null}"> 
             <img src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
+         </c:if>
          </div>
          <div class="myIntro">
-            <h2 style="display: -webkit-inline-box;">${sessionScope.loginuser.email}</h2>
-            <button class="bt" title="Follow">
+            <h2 style="display: -webkit-inline-box;">${loginuser.email}</h2>
+            <button class="bt" title="Follow" onclick="goFollow();">
                Follow
             </button>
             <hr>
             <span>게시물&nbsp; 10개</span>&nbsp;&nbsp;
             <span>팔로우&nbsp; 6명</span>&nbsp;&nbsp;
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
-            <button class="proedit">프로필편집</button>
-            <c:if test="${sessionScope.loginuser.myintro != null}">
+            <button class="proedit" onclick="goEdit();">프로필편집</button>
+            <c:if test="${loginuser.myintro != null}">
             <p style="padding-top:30px;">
-                ${sessionScope.loginuser.myintro}
+                ${loginuser.myintro}
             </p>
             </c:if>
-            <c:if test="${sessionScope.loginuser.myintro == null}">
+            <c:if test="${loginuser.myintro == null}">
             <p style="padding-top:30px;">
                	 자기소개가 없습니다.
             </p>
             </c:if>
          </div>
       </div>
+      </form>
       
       <div class="showMypage">
 
@@ -101,7 +115,7 @@
   
   <c:if test="${myshyList!=null}">
   <c:forEach items="${myshyList }" var="shies">
-  	
+  <c:set var="myimg" value="${shies.myimg }"/>	
   	<article class="card-60 social">
     <figure>
       
@@ -113,8 +127,12 @@
        
  <header style="text-align: left">
         <p class="user">
-           
-          <img class="avatar-32" src="https://upload.wikimedia.org/wikipedia/en/7/7e/Patrick_Star.png" alt="Avatar">
+          <c:if test="${shies.myimg != null}">
+          <img class="avatar-32" src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }" alt="Avatar">
+          </c:if>
+          <c:if test="${shies.myimg == null}">
+          <img class="avatar-32" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif" alt="Avatar">
+          </c:if>
           <strong>
                <a title="Full Name" href="#">
                   <span style="font-size: 12pt; margin:0; color:black;">

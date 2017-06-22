@@ -48,6 +48,7 @@ public class Pa_Controller {
 			return "Meong_msg.notiles";
 		}else{
 			String myIdx = Integer.toString(loginuser.getIdx());
+			req.setAttribute("loginuser", loginuser);
 			
 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
 			List <HashMap<String, String>> myshyList = service.getMyshy(myIdx);

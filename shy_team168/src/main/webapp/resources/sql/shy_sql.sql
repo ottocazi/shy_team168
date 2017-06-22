@@ -437,7 +437,7 @@ CREATE TABLE tbl_shymember (
 	gender VARCHAR2(10), /* 성별 */
 	phone VARCHAR2(20) /* 연락처 */
 );
-
+alter table tbl_shymember modify(myimg varchar2(2000) default null);
 
 create sequence seq_tbl_shymember
 start with 1
@@ -484,22 +484,34 @@ ALTER TABLE tbl_shymember
 		);
 
 ------------------------------------------------------------------------
-
+insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status) 
+		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1);
+ select * from tbl_shymemo;
 /* 댓글 */
 CREATE TABLE tbl_comment (
 	cmtno NUMBER NOT NULL, /* 댓글seq */
-	snsno VARCHAR2(20) NOT NULL, /* FK_sns글seq */
-	grpboardseq NUMBER(20), /* FK_그룹게시물seq */
-	storeboardno NUMBER, /* FK_가게리뷰게시판seq */
+	snsno VARCHAR2(20) DEFAULT null, /* FK_sns글seq */
+	grpboardseq NUMBER(20) DEFAULT null, /* FK_그룹게시물seq */
+	storeboardno NUMBER DEFAULT null, /* FK_가게리뷰게시판seq */
 	cmtcontent VARCHAR2(100), /* 댓글내용 */
-	updatetime DATE DEFAULT sysdate NOT NULL, /* 댓글최근수정일시 */
-	likecnt NUMBER DEFAULT 0 NOT NULL, /* 좋아요회수 */
-	blamecnt NUMBER DEFAULT 0 NOT NULL, /* 신고회수 */
-	status NUMBER DEFAULT 0 NOT NULL /* 댓글삭제여부 */
+	updatetime DATE DEFAULT sysdate, /* 댓글최근수정일시 */
+	likecnt NUMBER DEFAULT 0, /* 좋아요회수 */
+	blamecnt NUMBER DEFAULT 0, /* 신고회수 */
+	status NUMBER DEFAULT 1 /* 댓글삭제여부 */
 );
-
+alter table tbl_comment modify(snsno VARCHAR2(20) DEFAULT null);
+alter table tbl_comment modify(grpboardseq NUMBER(20) DEFAULT null);
+alter table tbl_comment modify(storeboardno NUMBER DEFAULT null);
+alter table tbl_comment modify(updatetime DATE DEFAULT sysdate);
+alter table tbl_comment modify(likecnt NUMBER DEFAULT 0);
+alter table tbl_comment modify(blamecnt NUMBER DEFAULT 0);
+alter table tbl_comment modify(status NUMBER DEFAULT 1);
+alter table tbl_comment add fk_idx varchar2(20); --컬럼추가
+ALTER TABLE tbl_comment ADD CONSTRAINT FK_tbl_comment_idx foreign key(fk_idx) references tbl_shymember(idx); --제약조건 추가
+commit;
+--drop sequence seq_tbl_comment
 create sequence seq_tbl_comment
-start with 000000001
+start with 1
 increment by 1
 nomaxvalue
 nominvalue
