@@ -30,11 +30,15 @@ public class Pa_Controller {
 	
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
-    public String goMypage(ShyMemberVO loginuser,HttpServletRequest req) {
-		/*HttpSession session = req.getSession();
-		loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+    public String goMypage(HttpServletRequest req,HttpSession session) {
 		
-		if(loginuser != null) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		
+		System.out.println("loginuser="+loginuser);
+		//ShyMemberVO shymemvo = (ShyMemberVO)loginuser;
+		
+		
+		if(loginuser == null) {
 			String msg = "♥ 먼저 로그인 하세요 ♥";
 			String loc = "open.shy";
 			
@@ -43,11 +47,45 @@ public class Pa_Controller {
 			
 			return "Meong_msg.notiles";
 		}else{
-			*/
+			String myIdx = Integer.toString(loginuser.getIdx());
+			
+			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
+			List <HashMap<String, String>> myshyList = service.getMyshy(myIdx);
+			
+			
+			if(myshyList!=null){
+				for(int i =0 ; i<myshyList.size(); i++){
+					
+					
+					// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+					// 페이징 처리 미완성
+					if("1".equals(myshyList.get(i).get("simage"))){
+						
+						String snsno = myshyList.get(i).get("snsno");
+						System.out.println("snsno = "+snsno);
+						// 이미지 가져오기
+						String imgfile = service.getImgaddr(snsno);
+						
+						System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+						myshyList.get(i).put("imageaddr", imgfile);
+						
+					}
+					
+					else if("0".equals(myshyList.get(i).get("simage"))){
+						myshyList.get(i).put("imageaddr", null);
+					}
+					
+					System.out.println("shies.simage : "+myshyList.get(i).get("simage"));
+					System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
+				}
+			
+			}
+			req.setAttribute("myshyList", myshyList);
+			
 			return "pa/mypage.tiles";
 		
-		
-    }
+		}
+	}
 
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
@@ -170,7 +208,15 @@ public class Pa_Controller {
     	String description = req.getParameter("description");
     	int status = Integer.parseInt(req.getParameter("status"));
     	MultipartFile imgfile = req.getFile("gimg");
-    	System.out.println("gimg="+imgfile);
+    	byte[] byteImgfile = imgfile.getBytes(); 
+    	int imgfileSize = 0;
+    	System.out.println(imgfile.getBytes().toString()+"xxxxx");
+    	String filename = imgfile.getName();
+    	System.out.println("그룹파파파파파파파일명="+filename);
+    	
+		for (int i = 0; i < byteImgfile.length; i++) {
+			imgfileSize = (imgfileSize << 8) | byteImgfile[i];
+		}
     	
     	/*HashMap<String, Object> mapGrp = new HashMap<String, Object>();
     	mapGrp.put("fk_idx", fk_idx);
@@ -184,9 +230,8 @@ public class Pa_Controller {
     	grpvo.setDescription(description);
     	grpvo.setStatus(status);
     	
-    	String newgimg = null;
     	
-    	if(imgfile!=null){
+    	if(imgfileSize != 0){
 			String root = session.getServletContext().getRealPath("/"); 
 			String path = root + "resources"+File.separator+"files";
 			//path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
@@ -214,9 +259,11 @@ public class Pa_Controller {
 			
 			grpvo.setGimg(newFilename);
 			
-    	}else{
-    		grpvo.setGimg(newgimg);
+    	} else{
+    		grpvo.setGimg(null);
+    		System.out.println("null! : "+grpvo.getGimg());
     	}
+    	
     	
     	int n = service.grpinsert(grpvo);
     	

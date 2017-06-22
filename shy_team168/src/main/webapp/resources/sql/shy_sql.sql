@@ -157,7 +157,7 @@ from tbl_group
 where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
 
 insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status) 
-		values(seq_tbl_gmember.nextval,10,1,default,default);
+		values(seq_tbl_gmember.nextval,13,32,default,default);
 
 commit;
 update tbl_group set gimg='null'
@@ -218,7 +218,7 @@ CREATE TABLE tbl_group (
 	status NUMBER DEFAULT 1 NOT NULL /* 그룹상태 */
 );
 
-alter table tbl_group modify(gimg varchar2(2000));
+alter table tbl_group modify(gimg varchar2(2000) default null);
 
 alter table tbl_group
 add gimg varchar2(100);  /* 그룹대표이미지 추가 */

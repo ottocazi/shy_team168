@@ -15,7 +15,6 @@ public class PaService {
 	@Autowired
 	private PaDAO dao;
 
-<<<<<<< HEAD
 	/*// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
 =======
@@ -105,6 +104,18 @@ public class PaService {
 	public int gmemberCheck(HashMap<String, Object> map) {
 		int check = dao.gmemberCheck(map);
 		return check;
+	}
+
+	// ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
+	public List<HashMap<String, String>> getMyshy(String myIdx) {
+		List<HashMap<String, String>> myshyList = dao.getMyshy(myIdx);
+		return myshyList;
+	}
+
+	// ===== 이미지 가져오기 =====
+	public String getImgaddr(String snsno) {
+		String imgfile = dao.getImgaddr(snsno);
+		return imgfile;
 	}
 
 

@@ -96,5 +96,17 @@ public class PaDAO {
 		return check;
 	}
 
+	// ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
+	public List<HashMap<String, String>> getMyshy(String myIdx) {
+		List<HashMap<String, String>> myshyList = sqlsession.selectList("pa.myshyList",myIdx);
+		return myshyList;
+	}
+
+	// ===== 이미지 가져오기 =====
+	public String getImgaddr(String snsno) {
+		String imgfile = sqlsession.selectOne("pa.myshyImg",snsno);
+		return imgfile;
+	}
+
 
 }

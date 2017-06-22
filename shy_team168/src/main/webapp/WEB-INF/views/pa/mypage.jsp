@@ -7,31 +7,74 @@
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/mypage.css">
 
-<script type="text/javascript">
+ <!-- 타임라인소스 -->
+ <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/timelinestyle.css">
 
+ <!-- 코멘트박스 소스 -->
+ <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/commentboxstyle.css">
+
+<script>
+    function openComment() {
+	
+	   var commentbox = document.getElementById('commentbox');
+	   
+	
+	   if(commentbox.style.display=='none'){
+		   commentbox.style.display = 'block';
+	    }else{
+	        commentbox.style.display = 'none';
+	    }
+
+	} 
+     
 </script>
 <style type="text/css">
-.bt a:hover {
-   font-weight: bold;
-   background-color:#fff;
+.bt, .proedit {
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    background: #88d;
+    border: none;
+    color: #fff;
+    padding: 5px;
+}
+.bt:hover, .proedit:hover {
+    text-align: center;
+    padding: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    background: #fff;
+    color: #88d;
+}
+.readmore{
+    text-align: center;
+    padding: 14px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    background: #88d;
 }
 </style>
 </head>
 <body>
-<div id="mypage">
+<div id="mypage" align="center">
       
-      <div class="myProfile">
+      <div class="myProfile" style="text-align: left">
          <div class="pimg">
             <img src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
          </div>
          <div class="myIntro">
             <h2 style="display: -webkit-inline-box;">${sessionScope.loginuser.email}</h2>
-            <input type="button" class="proedit" value="Follow" />
+            <button class="bt" title="Follow">
+               Follow
+            </button>
             <hr>
             <span>게시물&nbsp; 10개</span>&nbsp;&nbsp;
             <span>팔로우&nbsp; 6명</span>&nbsp;&nbsp;
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
-            <input type="button" class="proedit" value="프로필편집" />
+            <button class="proedit">프로필편집</button>
             <c:if test="${sessionScope.loginuser.myintro != null}">
             <p style="padding-top:30px;">
                 ${sessionScope.loginuser.myintro}
@@ -48,29 +91,158 @@
       <div class="showMypage">
 
           <div id="myTabContent" class="tab-content">
-               <div role="tabpanel" class="tab-pane fade active in" id="shy" aria-labelledby="#tab1">
-               <article class="card-50">
-                  <figure>
-                     <!-- <img src="https://source.unsplash.com/XPvhzVIeETM/800x600"> -->
-                  </figure>
-                  <!-- end figure-->
-                  <div class="flex-content">
-                     <span style="font-size: 10pt; color: #BABABA; font-weight: bold; margin: 5px">32 mins ago · London</span>
-                     <p class="subinfo">
-                        <img class="avatar-32" src="http://jlantunez.com/imgs/avatar.jpg" alt="Avatar"> <span>와 함께</span>
-                     </p>
-                     <p>내용</p>
-                     <footer>
-                       <p class="bt"><a class="bt-love" title="Love" href="#">Love</a>
-                        <a class="bt-share" title="Share" href="#">Share</a>
-                            <a class="bt-comment" title="Comment" href="#">Comment</a>
-                        </p>
-                        </footer>   
-                  </div>
-                  <!-- end .flex-content-->
-               </article>
+               
+               <main role="main"><!--지우지 마세요  -->
+  
+  <c:if test="${myshyList==null}">
+  	아직 등록된 글이 없습니다.
+  	친구들에게 shy 해보세요!!
+  </c:if>
+  
+  <c:if test="${myshyList!=null}">
+  <c:forEach items="${myshyList }" var="shies">
+  	
+  	<article class="card-60 social">
+    <figure>
+      
+      <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
+      
+    </figure>
+    <!-- end figure-->
+    <div class="flex-content">
+       
+ <header style="text-align: left">
+        <p class="user">
+           
+          <img class="avatar-32" src="https://upload.wikimedia.org/wikipedia/en/7/7e/Patrick_Star.png" alt="Avatar">
+          <strong>
+               <a title="Full Name" href="#">
+                  <span style="font-size: 12pt; margin:0; color:black;">
+	                  
+	                <c:if test="${shies.name!=null }">
+	                ${shies.name }
+	                </c:if> 
+                  
+                  	<c:if test="${shies.name==null }">
+                  	${shies.email }
+                  	</c:if>
+                  
+                  </span>
+               </a>
+            </strong>
+          <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과 함께</span>
+        </p>
+      </header>
 
-             </div>
+      <p class="subinfo" style="text-align: left">
+             <a class="location" title="Location" href="" >
+               당산역 맥도날드 앞 사거리에서 shy
+         </a>
+        </p>
+       <p style="text-align: left">
+       	${shies.scontent }
+      </p>
+      <footer>
+        <p>
+          <a class="bt-love" title="Love" href="">
+               Love
+            </a>
+          <a class="bt-share" title="Share" href="#">
+               Share
+            </a>
+          <a href="javascript:openComment();"class="bt-comment" title="Comment" href="">
+               댓글(33)
+            </a>
+        </p>
+      </footer>
+    </div>
+    
+      <!--new댓글창  -->
+    
+      
+     <div id="commentbox" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+  
+  
+  <!-- Form -->
+  <div class="shy_comment-form">
+    <!-- Comment Avatar -->
+    <div class="shy_comment-avatar">
+      <img src="http://lorempixel.com/200/200/people">
+    </div>
+
+    <form class="shy_form" name="form" ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
+      <div class="shy_form-row">
+        <textarea class="shy_input" ng-model="cmntCtrl.comment.text"  placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+      </div>
+
+
+      <div class="shy_form-row">
+        <input type="submit" value="올리기">
+      </div>
+    </form>
+  </div>
+
+  <!-- Comments List -->
+  <div class="shy_comments">
+    <!-- Comment -->
+   
+
+    <!-- Comment - Dummy -->
+    <div class="shy_comment"><!-- for each 돌리는 div  -->
+      <!-- Comment Avatar -->
+      <div class="shy_comment-avatar">
+        <img src="" alt="프로필">
+      </div>
+
+      <!-- Comment Box -->
+      <div class="shy_comment-box">
+        <div class="shy_comment-text">짧은 댓글 test1</div>
+        <div class="shy_comment-footer">
+          <div class="shy_comment-info">
+            <span class="shy_comment-author">
+              <a href="">유저명</a>
+            </span>
+            <span class="shy_comment-date">댓글작성시간</span>
+          </div>
+
+          <div class="shy_comment-actions">
+            <a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" ></i></a>
+          </div>
+        </div>
+        
+
+      </div>
+	
+	               
+      
+    </div><!-- for each 돌리는 div끝  -->
+
+		<div align="center"><a class="button" href="#" style="color:white; ">
+					read more
+				</a>
+   </div>
+  </div>
+</div>
+    <!--new댓글창 end  -->
+    
+    <!-- end .flex-content-->
+  </article>
+  
+  
+  <!-- post foreach 마무리  -->
+  	
+  	
+  </c:forEach>
+  </c:if>
+  
+  <div align="center"><a class="readmore" href="#" style="color:white; " >
+					더 읽기
+				</a><br><br>
+   </div>
+	</main> <!-- 한 개의 shy 끝  -->
+               
+               
+               
           </div>
           
       </div>

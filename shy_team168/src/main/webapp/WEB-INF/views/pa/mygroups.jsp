@@ -374,10 +374,10 @@ text-decoration: none;
 			<c:if test="${myGrpList!=null }">
 			<c:forEach var="gvo" items="${myGrpList }">
 			 <div class="grp_box">
-		      <c:if test="${gvo.gimg ne 'null'}">
+		      <c:if test="${gvo.gimg != null}">
 		      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
 		      </c:if>
-		      <c:if test="${gvo.gimg eq 'null'}">
+		      <c:if test="${gvo.gimg == null}">
 		      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		      </c:if>
 		      	<img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
@@ -411,10 +411,10 @@ text-decoration: none;
    		  <c:if test="${hotGrpList!=null }">
    		  <c:forEach var="gvo" items="${hotGrpList }">
 		  <div class="grp_box">
-		    <c:if test="${gvo.gimg ne 'null'}">
+		    <c:if test="${gvo.gimg != null}">
 		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
 		    </c:if>
-		    <c:if test="${gvo.gimg eq 'null'}">
+		    <c:if test="${gvo.gimg == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
@@ -448,10 +448,10 @@ text-decoration: none;
 		 <c:if test="${newGrpList!=null }">
    		  <c:forEach var="gvo" items="${newGrpList }">
 		  <div class="grp_box">
-		    <c:if test="${gvo.gimg ne 'null'}">
+		    <c:if test="${gvo.gimg != null}">
 		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
 		    </c:if>
-		    <c:if test="${gvo.gimg eq 'null'}">
+		    <c:if test="${gvo.gimg == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
