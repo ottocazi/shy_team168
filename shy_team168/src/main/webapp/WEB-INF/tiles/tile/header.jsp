@@ -353,7 +353,7 @@ function searchKeep(){
 <nav class="shy_topnavbar shy_topnavbar-fixed-top " style="background-color: white;">
   <div class="shy_top_container-fluid">
     <div class="shy_topnavbar-header">
-      <a class="shy_topnavbar-brand" href="#">
+      <a class="shy_topnavbar-brand" href="<%= request.getContextPath() %>/mainline.shy">
        <span class="letter" id="shy" data-letter="s">s</span>
    				<span class="letter" id="shy" data-letter="h">h</span>
    				<span class="letter" id="shy" data-letter="y">y</span>
@@ -374,7 +374,7 @@ function searchKeep(){
     <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
     <li><a href="javascript:shynow();"><i class="fa fa-pencil fa-2x" aria-hidden="true" style="color:red;"></i></a></li>
       <li><a href="<%= request.getContextPath() %>/mygroups.shy"><i class="fa fa-street-view fa-2x" aria-hidden="true" style="color:#98DDDE;"></i></a></li>
-      <li><a href="#"><i class="fa fa-heartbeat fa-2x" aria-hidden="true" style="color:#F7786B;"></i></a></li>
+      <li><a href="<%= request.getContextPath() %>/mypage.shy?idx=${sessionScope.loginuser.idx}"><i class="fa fa-heartbeat fa-2x" aria-hidden="true" style="color:#F7786B;"></i></a></li>
       <li><a href="#"><i class="fa fa-bolt fa-2x" aria-hidden="true" style="color:#FAE03C;"></i></a></li>
       <li><a href="#"><i class="fa fa-credit-card fa-2x" aria-hidden="true" style="color:#F2552C;"></i></a></li>
       <li><a href="#"><i class="fa fa-map-marker fa-2x" aria-hidden="true" style="color:#B76BA3;"></i></a></li>

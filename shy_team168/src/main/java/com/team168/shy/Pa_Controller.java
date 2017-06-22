@@ -31,10 +31,8 @@ public class Pa_Controller {
 	
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
-    public String goMypage(HttpServletRequest req) {
-		ShyMemberVO loginuser = null;
-		
-		HttpSession session = req.getSession();
+    public String goMypage(ShyMemberVO loginuser,HttpServletRequest req) {
+		/*HttpSession session = req.getSession();
 		loginuser = (ShyMemberVO)session.getAttribute("loginuser");
 		
 		if(loginuser != null) {
@@ -43,11 +41,13 @@ public class Pa_Controller {
 			
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
-		}else{
 			
+			return "Meong_msg.notiles";
+		}else{
+			*/
 			return "pa/mypage.tiles";
-		}
-		return "Meong_msg.notiles";
+		
+		
     }
 
 	// ===== mygroups 페이지 요청하기 ===== //

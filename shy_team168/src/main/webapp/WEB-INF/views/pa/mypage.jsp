@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
 <meta charset="UTF-8">
 <title>MyPage</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/mypage.css">
-<%-- <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/navtab.css"> --%>
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/style.css">
+
 <script type="text/javascript">
 
 </script>
@@ -26,16 +25,23 @@
             <img src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
          </div>
          <div class="myIntro">
-            <h2 style="display: -webkit-inline-box;">userID@email.com</h2>
+            <h2 style="display: -webkit-inline-box;">${sessionScope.loginuser.email}</h2>
             <input type="button" class="proedit" value="Follow" />
             <hr>
             <span>게시물&nbsp; 10개</span>&nbsp;&nbsp;
             <span>팔로우&nbsp; 6명</span>&nbsp;&nbsp;
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
             <input type="button" class="proedit" value="프로필편집" />
+            <c:if test="${sessionScope.loginuser.myintro != null}">
             <p style="padding-top:30px;">
-                자기소개가 없습니다.
+                ${sessionScope.loginuser.myintro}
             </p>
+            </c:if>
+            <c:if test="${sessionScope.loginuser.myintro == null}">
+            <p style="padding-top:30px;">
+               	 자기소개가 없습니다.
+            </p>
+            </c:if>
          </div>
       </div>
       
