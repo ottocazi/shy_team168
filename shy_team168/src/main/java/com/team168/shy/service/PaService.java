@@ -15,8 +15,13 @@ public class PaService {
 	@Autowired
 	private PaDAO dao;
 
+<<<<<<< HEAD
 	/*// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
+=======
+	// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
+	/*public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 		if(!map.get("grpsearch").trim().isEmpty()) {
 			List<HashMap<String, String>> grplist = dao.searchWordGrpList(map);
 			return grplist;
