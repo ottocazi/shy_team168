@@ -1,6 +1,7 @@
 package com.team168.shy.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,21 @@ public class Meong_Service implements Interface_CommonService  {
 	public String gettodaytotal() {
 		String todaytotal = dao.gettodaytotal();
 		return todaytotal;
+	}
+
+	public List<HashMap<String, String>> getshyList(HashMap<String, String> map) {
+		List<HashMap<String, String>> shyList = dao.getshyList(map);
+		return shyList;	
+	}
+
+	public int getTotalCount(HashMap<String, String> map) {
+		int count = dao.getTotalCount(map);
+		return count;
+	}
+
+	public String memocount(String idx) {
+		String memocount = dao.getmemocount(idx);
+		return memocount;
 	}
 
 
