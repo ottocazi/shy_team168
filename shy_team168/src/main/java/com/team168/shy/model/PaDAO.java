@@ -14,11 +14,11 @@ public class PaDAO {
 	@Autowired
 	private SqlSessionTemplate sqlsession;
 
-	// ===== 5. Ajax 로 검색어 입력시 자동글 완성하기  =====	
+	/*// ===== 5. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
 		List<HashMap<String, String>> grplist = sqlsession.selectList("pa.searchWordgrpList", map);
 		return grplist;
-	}
+	}*/
 
 	// ===== 그룹 만들기  =====
 	public int grpinsert(GroupVO grpvo) {
@@ -80,8 +80,8 @@ public class PaDAO {
 	}
 
 	// ===== gpdetailno 가져오기  =====
-	public String getGmemberidx(int idx) {
-		String str_gpdetailno = sqlsession.selectOne("pa.gmemberidx",idx);
+	public String getGmemberidx(HashMap<String, Object> chckmap) {
+		String str_gpdetailno = sqlsession.selectOne("pa.gmemberidx",chckmap);
 		return str_gpdetailno;
 	}
 

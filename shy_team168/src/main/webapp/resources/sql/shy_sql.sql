@@ -4,8 +4,9 @@
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
 
-alter table tbl_grpboard
-add writedate date default sysdate;
+select * from tbl_group;
+delete from tbl_group where groupno=14;
+
 commit;
 
 alter table tbl_grpboard
@@ -15,7 +16,18 @@ select *
 from tbl_grpboard;
 
 select *
-from tbl_gmember;
+from tbl_gmember
+where fk_groupidx=33 and fk_groupno=1; 
+
+select case( select count(*)
+	                 from tbl_gmember
+	                 where fk_groupidx=53 and fk_groupno=2 )
+	           when 1 then 1
+                   else 0
+	           end as checkmember
+from dual;
+
+delete from tbl_gmember where gpdetailno=9;
 
 select T.*
 from
@@ -148,8 +160,8 @@ insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status)
 		values(seq_tbl_gmember.nextval,10,1,default,default);
 
 commit;
-update tbl_group set gcount=gcount+1
-where groupno=2;
+update tbl_group set gimg='null'
+where groupno=3;
 
 insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,GREGISTERDATE,status) 
 values(seq_tbl_gmember.nextval,2,32,default,1);
@@ -206,6 +218,8 @@ CREATE TABLE tbl_group (
 	status NUMBER DEFAULT 1 NOT NULL /* 그룹상태 */
 );
 
+alter table tbl_group modify(gimg varchar2(2000));
+
 alter table tbl_group
 add gimg varchar2(100);  /* 그룹대표이미지 추가 */
 
@@ -218,6 +232,7 @@ drop column gcount;
 alter table tbl_group
 add gcount number default 1;
 
+--drop sequence seq_tbl_group
 create sequence seq_tbl_group
 start with 1
 increment by 1
@@ -259,6 +274,7 @@ ALTER TABLE tbl_group
 ------------------------------------------------------------------------
 
 /* 그룹상세 */
+--drop table tbl_gmember
 CREATE TABLE tbl_gmember (
 	gpdetailno NUMBER(30) NOT NULL, /* 그룹상세seq */
 	fk_groupno NUMBER, /* FK_그룹seq */
@@ -568,7 +584,6 @@ ALTER TABLE tbl_follow
 ------------------------------------------------------------------------
 
 /* 그룹게시물 */
-
 --drop table tbl_grpboard 
 CREATE TABLE tbl_grpboard (
 	grpboardseq NUMBER(20) NOT NULL, /* 그룹게시물seq */
@@ -581,6 +596,7 @@ CREATE TABLE tbl_grpboard (
 	imgyn NUMBER, /* 이미지여부 */
 	status NUMBER /* 삭제여부 */
 );
+alter table tbl_grpboard modify(uploadfile varchar2(2000));
 
 --drop sequence seq_tbl_grpboard 
 create sequence seq_tbl_grpboard

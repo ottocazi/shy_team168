@@ -1,6 +1,9 @@
 package com.team168.shy;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import com.team168.common.FileManager;
 import com.team168.shy.model.GroupVO;
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.PaService;
@@ -27,9 +32,22 @@ public class Pa_Controller {
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
-    	
-		return "pa/mypage.tiles";
-    	
+		ShyMemberVO loginuser = null;
+		
+		HttpSession session = req.getSession();
+		loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		
+		if(loginuser != null) {
+			String msg = "♥ 먼저 로그인 하세요 ♥";
+			String loc = "open.shy";
+			
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+		}else{
+			
+			return "pa/mypage.tiles";
+		}
+		return "Meong_msg.notiles";
     }
 
 	// ===== mygroups 페이지 요청하기 ===== //
@@ -76,37 +94,23 @@ public class Pa_Controller {
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
 		
 		if(loginuser == null) {
-		String msg = "♥ 먼저 로그인 하세요 ♥";
-		String loc = "open.shy";
-		
-		req.setAttribute("msg", msg);
-		req.setAttribute("loc", loc);
-		
-		return "Meong_msg.notiles";
-		
+			String msg = "♥ 먼저 로그인 하세요 ♥";
+			String loc = "open.shy";
+			
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+			
 		}else{
 			
-		return "pa/mygroups_insertFrm.tiles";
-		}    	
+			return "pa/mygroups_insertFrm.tiles";
+		}
+		 
+		return "Meong_msg.notiles";
+		
 	}
 	
-	// =====3.  Ajax 로 검색어 입력시 자동글 완성하기  =====
+	/*// =====3.  Ajax 로 검색어 입력시 자동글 완성하기  =====
 	//  ==> jackson JSON 라이브러리와 함께 @ResponseBoady 사용하여 JSON 파싱하기 === //
-	
-    /*   @ResponseBody란?
-	      메소드에 @ResponseBody Annotation이 되어 있으면 return 되는 값은 View 단을 통해서 출력되는 것이 아니라 
-	     HTTP Response Body에 바로 직접 쓰여지게 된다. 
-		
-	     그리고 jackson JSON 라이브러리를 사용할때 주의해야할 점은 
-	     메소드의 리턴타입은 행이 1개 일경우 HashMap<K,V> 이거나 
-	                                    Map<K,V> 이고 
-		                    행이 2개 이상일 경우 List<HashMap<K,V>> 이거나
-		                                    List<Map<K,V>> 이어야 한다.
-		                    행이 2개 이상일 경우  ArrayList<HashMap<K,V>> 이거나
-		                                     ArrayList<Map<K,V>> 이면 안된다.!!!
-	     
-	     이와같이 jackson JSON 라이브러리를 사용할때의 장점은 View 단이 필요없게 되므로 간단하게 작성하는 장점이 있다. 
-	*/
     @RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
     @ResponseBody
     public List<HashMap<String, Object>> wordSearchShow(HttpServletRequest req) { 
@@ -133,11 +137,67 @@ public class Pa_Controller {
     	}
     	
     	return returnmapList;
-    }
+    }*/
     
     // ===== 그룹만들기 완료 요청 =====
     @RequestMapping(value="/mygroups_insertEnd.shy", method={RequestMethod.POST})
-    public String goMakeGrp(GroupVO grpvo, HttpServletRequest req) {
+    public String goMakeGrp(MultipartHttpServletRequest req,HttpSession session) throws IOException {
+    	
+    	GroupVO grpvo = new GroupVO();
+    	
+    	String fk_idx = req.getParameter("fk_idx");
+    	System.out.println("fk_idx"+fk_idx);
+    	String gname = req.getParameter("gname");
+    	String description = req.getParameter("description");
+    	int status = Integer.parseInt(req.getParameter("status"));
+    	MultipartFile imgfile = req.getFile("gimg");
+    	System.out.println("gimg="+imgfile);
+    	
+    	/*HashMap<String, Object> mapGrp = new HashMap<String, Object>();
+    	mapGrp.put("fk_idx", fk_idx);
+    	mapGrp.put("gname", gname);
+    	mapGrp.put("description", description);
+    	mapGrp.put("status", status);
+    	mapGrp.put("gimg", gimg);*/
+    	
+    	grpvo.setFk_idx(fk_idx);
+    	grpvo.setGname(gname);
+    	grpvo.setDescription(description);
+    	grpvo.setStatus(status);
+    	
+    	String newgimg = null;
+    	
+    	if(imgfile!=null){
+			String root = session.getServletContext().getRealPath("/"); 
+			String path = root + "resources"+File.separator+"files";
+			//path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
+			
+			path = req.getSession().getServletContext().getRealPath("/resources/images/shydb"); // 저장할 주소
+			System.out.println(path);
+			
+			String Orgfile = imgfile.getOriginalFilename(); // 실제파일명을 얻어옴
+			byte[] bytes = imgfile.getBytes();
+			
+			String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+			newFilename += System.nanoTime();
+			newFilename += Orgfile;
+			System.out.println("newFilename = "+ newFilename);
+			// 업로드할 경로가 존재하지 않는 경우 폴더를 생성 한다.
+			File dir = new File(path);
+			if(!dir.exists())
+				dir.mkdirs();
+
+			String pathname = path + File.separator + newFilename;
+
+			FileOutputStream fos = new FileOutputStream(pathname);
+			fos.write(bytes);
+			fos.close();
+			
+			grpvo.setGimg(newFilename);
+			
+    	}else{
+    		grpvo.setGimg(newgimg);
+    	}
     	
     	int n = service.grpinsert(grpvo);
     	
@@ -208,7 +268,7 @@ public class Pa_Controller {
  	
  	// ===== 그룹게시판 글쓰기  =====
     @RequestMapping(value="/gboardWrite.shy", method={RequestMethod.POST})
-    public String goGboardWrite(HttpServletRequest req) {
+    public String goGboardWrite(MultipartHttpServletRequest req) throws IOException {
     	
     	HttpSession session = req.getSession();
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
@@ -225,16 +285,45 @@ public class Pa_Controller {
 		}else{
 			int idx = loginuser.getIdx();
 			System.out.println("idx="+idx);
+			String str_groupno = req.getParameter("groupno");
 			
-			// ===== gpdetailno 가져오기  =====
-			String str_gpdetailno = service.getGmemberidx(idx);
+			HashMap<String, Object> chckmap = new HashMap<String, Object>();
+			chckmap.put("idx", idx);
+			chckmap.put("str_groupno", str_groupno);
+			
+	    	String str_gpdetailno = service.getGmemberidx(chckmap);
 			System.out.println("str_gpdetailno="+str_gpdetailno);
-	    	String str_groupno = req.getParameter("groupno");
-	    	String uploadfile = req.getParameter("uploadfile");
+	    	
+	    	MultipartFile uploadimg= req.getFile("uploadfile");
+	    	System.out.println("uploadfile="+uploadimg); //출력해보기
 	    	String gcontent = req.getParameter("gcontent");
 	    	
-	    	if(str_gpdetailno!=null){
+	    	if(str_gpdetailno!=null&&uploadimg!=null){
 	    		int gpdetailno = Integer.parseInt(str_gpdetailno);
+	    		
+	    		String root = session.getServletContext().getRealPath("/"); 
+				String path = root + "resources"+File.separator+"files";
+				
+				path = req.getSession().getServletContext().getRealPath("/resources/images/shydb"); // 저장할 주소
+				System.out.println(path);
+				
+				String Orgfile = uploadimg.getOriginalFilename(); // 실제파일명을 얻어옴
+				byte[] bytes = uploadimg.getBytes();
+				
+				String uploadfile = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+				uploadfile += System.nanoTime();
+				uploadfile += Orgfile;
+				System.out.println("newFilename = "+ uploadfile);
+				// 업로드할 경로가 존재하지 않는 경우 폴더를 생성 한다.
+				File dir = new File(path);
+				if(!dir.exists())
+					dir.mkdirs();
+
+				String pathname = path + File.separator + uploadfile;
+
+				FileOutputStream fos = new FileOutputStream(pathname);
+				fos.write(bytes);
+				fos.close();
 	    		
 	    		HashMap<String, Object> map = new HashMap<String, Object>();
 	        	map.put("gpdetailno", gpdetailno);
@@ -271,7 +360,7 @@ public class Pa_Controller {
     	return "Meong_msg.notiles";
     }
     
- // ===== 그룹가입하기 완료 요청 =====
+    // ===== 그룹가입하기 완료 요청 =====
     @RequestMapping(value="/gmemberjoin.shy", method={RequestMethod.POST})
     public String goGmemberjoin(GroupVO grpvo, HttpServletRequest req) {
     	

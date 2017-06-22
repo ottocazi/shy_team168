@@ -5,7 +5,29 @@
 <!-- <script src="https://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>  -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/groupsDetail.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<!-- include summernote css/js
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
+include summernote-ko-KR
+<script src="lang/summernote-ko-KR.js"></script> -->
 <script>
+/* $(document).ready(function() {
+
+	 $('#summernote').summernote({
+		 	onblur : function(e){
+		 		$('#gcontent').html($('#summernote').code());
+		 	},
+		 	width : 600,
+		    height : 100, // 에디터의 높이 
+		    minHeight : 100,
+		    maxHeight : null,
+		    focus : true,
+		    lang : 'ko-KR' // 기본 메뉴언어 US->KR로 변경
+		    });
+}); */
+
+	 
+
  function goGboard() {
 	var frm = document.gboardFrm;
 	
@@ -23,7 +45,7 @@
 	frm.submit();
 }
 </script>
-<form name="gboardFrm">
+<form name="gboardFrm" enctype="multipart/form-data">
 <div class="grpdeatil_wrapper" align="center">
 <!-- Material sidebar -->
 <aside id="grpdeatil_sidebar" class="grpdeatil_sidebar grpdeatil_sidebar-colored open" role="navigation">
@@ -115,7 +137,8 @@
 		              </div>
 		                <h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">${sessionScope.loginuser.name}</h5>
 		                <p class="grpdetail_marginTop5 cd-author">현재시각</p>
-		                <textarea name="gcontent" cols="80px" rows="5px" placeholder="그룹글 쓰기!"></textarea>
+		                <!-- <div id="summernote"></div> -->
+		                <textarea  id="gcontent" name="gcontent" cols="80px" rows="5px" placeholder="그룹글 쓰기!"></textarea>
 		                <input type="file" name="uploadfile" style="margin: 20px;"/>
 		                <div class="inrtGrpMemo_btn" align="left">
 		                <button onclick="goGboard();">submit</button>
@@ -136,7 +159,7 @@
 		                <img src="" />
 		                <h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">${gboard.NAME }</h5>
 		              </div>
-		                
+		                <img src="<%=request.getContextPath() %>/resources/images/shydb/${gboard.UPLOADFILE }" style="width: 500px; height: 300px;	">
 		                <p class="grpdetail_marginTop5 cd-author">${gboard.LIKECNT }/${gboard.CMTCNT } on ${gboard.WRITEDATE}</p>
 		                <p class="grpdetail_timelineText">${gboard.GCONTENT }</p>
 		        </section>

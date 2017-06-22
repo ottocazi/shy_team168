@@ -1,5 +1,7 @@
 package com.team168.shy.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class GroupVO {
 	private int groupno;
 	private String fk_idx;

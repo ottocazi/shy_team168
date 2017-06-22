@@ -373,7 +373,7 @@ function searchKeep(){
     
     <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
     <li><a href="javascript:shynow();"><i class="fa fa-pencil fa-2x" aria-hidden="true" style="color:red;"></i></a></li>
-      <li><a href="#"><i class="fa fa-street-view fa-2x" aria-hidden="true" style="color:#98DDDE;"></i></a></li>
+      <li><a href="<%= request.getContextPath() %>/mygroups.shy"><i class="fa fa-street-view fa-2x" aria-hidden="true" style="color:#98DDDE;"></i></a></li>
       <li><a href="#"><i class="fa fa-heartbeat fa-2x" aria-hidden="true" style="color:#F7786B;"></i></a></li>
       <li><a href="#"><i class="fa fa-bolt fa-2x" aria-hidden="true" style="color:#FAE03C;"></i></a></li>
       <li><a href="#"><i class="fa fa-credit-card fa-2x" aria-hidden="true" style="color:#F2552C;"></i></a></li>

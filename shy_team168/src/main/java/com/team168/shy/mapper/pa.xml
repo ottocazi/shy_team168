@@ -7,7 +7,7 @@
 <mapper namespace="pa">
 
 	<!-- ===== 6. Ajax 로 검색어 입력시 자동글 완성하기 =====  -->
-	<resultMap type="java.util.HashMap" id="getSearchWordMap">
+	<!-- <resultMap type="java.util.HashMap" id="getSearchWordMap">
 		<result property="SEARCHDATA" column="searchdata" javaType="String" />
 	</resultMap>
 	<select id="searchWordgrpList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
@@ -23,12 +23,18 @@
 		    from tbl_grpboard
 		    where lower(gcontent) like '%' || lower(#{grpsearch}) || '%'
 		</if>
-	</select>
+	</select> -->
 	
 	<!-- ===== 그룹만들기 ===== -->	
 	<insert id="grpinsert" parameterType="com.team168.shy.model.GroupVO">
+		<if test='!gimg.equals("")'>
 		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate,gcount)
 		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, #{gimg}, #{status} , default,default)
+		</if>
+		<if test='gimg.equals("")'>
+		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate,gcount)
+		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, default, #{status} , default,default)
+		</if>
 	</insert>
 	
 	<!-- ===== 그룹멤버 insert ===== -->	
@@ -42,11 +48,12 @@
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
 				 rank() over (order by gcount desc) as rank
 		 from tbl_group
+		 where status in(1,2)
 		 order by rank
 	</select>
 	
 	<!-- ===== 그룹 가져오기 =====  -->
-	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO"> 
+	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO" > 
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
 		 from tbl_group
 		 where to_char(groupdate,'yyyy-mm-dd hh:mi:ss') = to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
@@ -56,6 +63,7 @@
 	<select id="newGrpList" resultType="com.team168.shy.model.GroupVO"> 
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
 		 from tbl_group
+		 where status in(1,2)
 		 order by groupdate desc
 	</select>
 	
@@ -63,7 +71,7 @@
 	<select id="myGrpList" parameterType="int" resultType="com.team168.shy.model.GroupVO"> 
 		 select  *
 		 from tbl_group
-		 where fk_idx=#{fk_idx}
+		 where fk_idx=#{fk_idx} and status in(1,2,3)
 	</select>
 	
 	<!-- ===== 그룹 디테일보기 =====  -->
@@ -112,7 +120,7 @@
 		 where T.groupno = #{groupno}
 	</select>
 	
-	<!-- ===== 그룹만들기 ===== -->	
+	<!-- ===== 그룹게시글 insert ===== -->	
 	<insert id="gboardWrite" parameterType="java.util.HashMap">
 		<if test='!uploadfile.equals("")'>
 		insert into tbl_grpboard(grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status)
@@ -158,7 +166,7 @@
 	</select>
 	
 	<!-- ===== 그룹 가져오기 =====  -->
-	<select id="gmemberidx" parameterType="int" resultType="String"> 
+	<select id="gmemberidx" parameterType="java.util.HashMap" resultType="String"> 
 		 select gpdetailno
 		 from
 		 (
@@ -170,7 +178,7 @@
 		  on A.groupno = B.fk_groupno)V
 		  on C.idx = V.fk_groupidx
 		 )T
-		 where T.idx = #{idx}
+		 where T.idx = #{idx} and T.groupno = #{str_groupno}
 	</select>
 	
 	<!-- =====  그룹회원수 1증가하기 =====  -->

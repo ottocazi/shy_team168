@@ -15,7 +15,7 @@ public class PaService {
 	@Autowired
 	private PaDAO dao;
 
-	// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
+	/*// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
 		if(!map.get("grpsearch").trim().isEmpty()) {
 			List<HashMap<String, String>> grplist = dao.searchWordGrpList(map);
@@ -24,7 +24,7 @@ public class PaService {
 		else {
 			return null;
 		}
-	}
+	}*/
 
 	// ===== 그룹 만들기  =====	
 	public int grpinsert(GroupVO grpvo) {
@@ -86,8 +86,8 @@ public class PaService {
 	}
 
 	// ===== gpdetailno 가져오기  =====
-	public String getGmemberidx(int idx) {
-		String str_gpdetailno = dao.getGmemberidx(idx);
+	public String getGmemberidx(HashMap<String, Object> chckmap) {
+		String str_gpdetailno = dao.getGmemberidx(chckmap);
 		return str_gpdetailno;
 	}
 
