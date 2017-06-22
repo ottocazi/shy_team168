@@ -288,7 +288,16 @@ public class Meong_Controller {
     	return "gesipan.notiles";
     }    
 		
-	
+	// 관리자 페이지 회원관리
+    @RequestMapping(value="/shymember.shy", method={RequestMethod.GET})
+    public String shymember(HttpServletRequest req, HttpSession session){
+    	    	
+    	List<ShyMemberVO> shyList = service.getshyList(); 
+			 
+		req.setAttribute("shyList", shyList);
+		
+    	return "shymember.notiles";
+    }
 	
 	
 	

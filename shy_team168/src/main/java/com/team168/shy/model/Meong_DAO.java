@@ -91,7 +91,10 @@ public class Meong_DAO{
 		return memocount;
 	}
 
-
+	public List<ShyMemberVO> getshyList() {
+		List<ShyMemberVO> shyList = sqlsession.selectList("mangu.shyList");
+		return shyList;
+	}
     
     
 }

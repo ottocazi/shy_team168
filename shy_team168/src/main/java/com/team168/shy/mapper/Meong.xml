@@ -121,7 +121,13 @@
 		from tbl_shymemo
 		where fk_idx = #{COUNT}
 	</select>
-		
+	
+	<select id="shyList" resultType="com.team168.shy.model.ShyMemberVO">
+		select *
+		from tbl_shymember
+		where status = 1
+		order by idx desc
+	</select>
 </mapper>
 
 

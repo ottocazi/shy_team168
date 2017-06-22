@@ -1,6 +1,7 @@
 package com.team168.shy.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 
 
 
@@ -27,7 +29,61 @@ public class Min_DAO{
 	}
 	
 	
+	// 리스트 불러오기
+	public List<ShyMemberVO> memberList(HashMap<String, String> map) {
+		List<ShyMemberVO> memberList = sqlsession.selectList("min.memberList", map);
+		return memberList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// ===== #113. 총 게시물 건수 구하기
+		//             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. ===== 	
+		public int getTotalCount(HashMap<String, String> map) {
+			int count = sqlsession.selectOne("shy.getTotalCount", map);
+			return count;
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		// ===== #150. Ajax 로 검색어 입력시 자동글 완성하기 5 =====	
+		/*@Override
+		public List<HashMap<String, String>> searchWordCompleteList(HashMap<String, String> map) {
+			List<HashMap<String, String>> list = sqlsession.selectList("board.searchWordCompleteList", map);
+			return list;
+		}
+		*/
+		
+		
+		
+		
 
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

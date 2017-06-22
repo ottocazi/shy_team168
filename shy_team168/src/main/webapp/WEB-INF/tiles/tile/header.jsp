@@ -216,6 +216,131 @@ $(window).scroll(function() {
 
 </style>
 
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	searchKeep();
+	
+//	===== #147. Ajax 로 검색어 입력시 자동글 완성하기 2 =====
+	$("#displayList").hide();
+
+    $("#search").keyup(function(){
+    	
+    	var form_data = { colname : $("#colname").val(),  // 키값 : 밸류값 
+    	       		      search  : $("#search").val()    // 키값 : 밸류값 
+    	       		    };
+    	
+    	$.ajax({
+    		url: "/shy/wordSearchShow.shy",
+    		type: "GET",
+    		data: form_data,  // url 요청페이지로 보내는 ajax 요청 데이터
+    		dataType: "JSON", 
+    		success: function(data){
+    			
+    		// ===== #152. Ajax 로 검색어 입력시 자동글 완성하기 7 ===== 
+    		   if(data.length > 0) {
+    			  // 검색된 데이터가 있는 경우.
+    			  // 조심할것은 if(data != null) 으로 하면 안된다.
+    			   var resultHTML = "";
+    			  
+    			   $.each(data, function(entryIndex, entry){
+    				   var wordstr = entry.RESULTDATA.trim();
+					    // 검색어 - 영주                    aj
+					    // 결과물 - 김영주 프로그래머     AJAX
+                        //         김영주바둑기사        ajax 프로그래밍
+                        //         영주사과
+                       
+                        var index = wordstr.toLowerCase().indexOf( $("#search").val().toLowerCase() ); 
+					    var len = $("#search").val().length;
+					    var result = "";
+					    
+					    result = "<span class='first' style='color: black;'>" +wordstr.substr(0, index)+ "</span>" + "<span class='second' style='color: red; font-weight: bold;'>" +wordstr.substr(index, len)+ "</span>" + "<span class='third' style='color: blue;'>" +wordstr.substr(index+len, wordstr.length - (index+len) )+ "</span>";        
+                       
+						resultHTML += "<span style='cursor: pointer;'>" + result + "</span><br/>"; 	   
+    			   });
+    			  
+    			   $("#displayList").html(resultHTML);
+    			   $("#displayList").show();
+    		   }
+    		   else {
+    			  // 검색된 데이터가 없는 경우.
+    			  // 조심할것은 if(data == null) 으로 하면 안된다.
+    			   $("#displayList").hide();
+    		   }
+    			
+    		},
+    		error: function(){
+   				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+   		    }
+    	});
+    	
+    }); // end of keyup(function(){})---------
+    
+    
+    // ===== #153. Ajax 로 검색어 입력시 자동글 완성하기 8 ===== 
+    $("#displayList").click(function(event){
+		var word = "";
+		
+		var $target = $(event.target);
+		
+		if($target.is(".first")) {
+			word = $target.text() + $target.next().text() + $target.next().next().text();
+		//	alert(word);
+		}
+		else if($target.is(".second")) {
+			word = $target.prev().text() + $target.text() + $target.next().text();
+		//	alert(word);
+		}
+		else if($target.is(".third")) {
+			word = $target.prev().prev().text() + $target.prev().text() + $target.text();
+		//	alert(word);
+		}
+		
+		$("#search").val(word); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
+		
+		$("#displayList").hide();
+		
+    });// end of $("#displayList").click()---------	
+    
+	
+	
+});// end of $(document).ready()----------------------
+
+
+function goSearch(){
+	
+	
+	var searchFrm = document.searchFrm;
+	
+	var search = $("#search").val();
+	
+	if(search.trim() == "") {
+		alert("검색어를 입력하세요!!");
+	}
+	else {
+		searchFrm.action = "/shy/searchlist.shy";
+		searchFrm.method = "GET";
+		searchFrm.submit();
+	}
+	
+}
+
+
+function searchKeep(){
+	<c:if test="${not empty colname && not empty search}">
+		$("#colname").val("${colname}"); // 검색어 컬럼명을 유지시켜 주겠다.
+		$("#search").val("${search}");   // 검색어를 유지시켜 주겠다.
+	</c:if>
+}
+
+
+
+
+</script>
+
+
+
 
 
 </head>
@@ -255,16 +380,27 @@ $(window).scroll(function() {
       <li><a href="#"><i class="fa fa-map-marker fa-2x" aria-hidden="true" style="color:#B76BA3;"></i></a></li>
       
     </ul>
+    <!-- ===== #103. 글검색 폼 추가하기 : 제목, 내용, 글쓴이로 검색하도록 한다. ===== -->
+	<form name="searchFrm" style="margin-top: 20px;">
+		<!-- <select name="colname" id="colname" 
+		style=" border-radius: 10px; width: 70px; height: 30px;" >
+			<option value="name">회원명</option>	tbl_shymember - name
+			<option value="email">이메일</option> tbl_shymember - email
+			<option value="gname">그룹명</option>	 tbl_group - gname
+		</select> -->
+		<input type="text" name="search" id="search" size="20px" 
+			style="border-radius: 10px; height: 30px; " />
+		<button type="button" class="btn btn-primary" onClick="goSearch();" 
+		style="width: 60px; height: 30px;" >검색</button>
+	</form>
     
-    <form class="shy_topnavbar-form">
-      <div class="shy_top_form-group">
-        <input  type="text" class="shy_top_form-control" placeholder="" style="border-radius: 10px;">&nbsp;
-       
-      </div>
-      
-      <input type="hidden" class="shy_top_btn"  id="search" onclick="goSearch();"><!-- style="border: hidden;" -->
-      <label for="search" style="cursor: pointer;"><i class='fa fa-search'></i></label> 
-    </form>
+    <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
+    <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
+	</div>
+    
+    
+    
+    
   </div >
   
   

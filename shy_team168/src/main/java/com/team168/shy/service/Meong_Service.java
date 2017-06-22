@@ -75,6 +75,10 @@ public class Meong_Service implements Interface_CommonService  {
 		return memocount;
 	}
 
+	public List<ShyMemberVO> getshyList() {
+		List<ShyMemberVO> shyList = dao.getshyList();
+		return shyList;	
+	}
 
 
 
