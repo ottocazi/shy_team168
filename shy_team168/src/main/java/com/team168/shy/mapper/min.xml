@@ -57,7 +57,7 @@
     	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
     -->
     
-    <resultMap type="java.util.HashMap" id="searchpeople">
+    <resultMap type="java.util.HashMap" id="searchpeopleMap">
 		<result property="IDX" 			column="idx" 			javaType="String" />
  		<result property="NAME"  		column="name" 			javaType="String" />
  		<result property="EMAIL"  		column="email" 			javaType="String" />
@@ -70,7 +70,7 @@
  		<result property="PHONE"  		column="phone" 			javaType="String" />
 	</resultMap>
 	
-	<select id="searchpeople" parameterType="String" resultMap="searchpeopleMap">
+	<select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
 	
 	select *
         from tbl_shymember
@@ -84,7 +84,7 @@
 	
 	
 	
-	<resultMap type="java.util.HashMap" id="groupsearch">
+	<resultMap type="java.util.HashMap" id="groupsearchMap">
 		<result property="GROUPNO" 		column="groupno" 		javaType="String" />
  		<result property="FK_IDX"  		column="fk_idx" 		javaType="String" />
  		<result property="GNAME"  		column="gname" 			javaType="String" />
@@ -115,7 +115,7 @@
 	<!-- ===== #114. 총 게시물 건수 구하기
 	             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. =====
 	--> 
-	<select id="gTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+	<!-- <select id="gTotalCount" parameterType="java.util.HashMap" resultType="int"> 
 		select count(*)
 		from TBL_GROUP
 		
@@ -136,11 +136,37 @@
 		</if>
 	
 	</select>  
+	 -->
 	
 	
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 
+	<select id="guestqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select seq_question, guest_email, subject
+         , case when length(content) > 10 then substr(content , 1, 10) || '....'
+                                  else content
+                                  end as content
+            , to_char(writedate,'yyyy-mm-dd') as writedate , status
+      from tbl_guest_question   
+      where status = 1
+      
+      <if test='search != null and !"".equals(search)'>
+         and ${colname} like '%' || #{search} || '%'
+      </if>
+      order by seq_question desc
+      
+   </select> -->
 	
 	
 	
