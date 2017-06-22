@@ -391,9 +391,9 @@ function searchKeep(){
 		<input type="text" name="search" id="search" size="20px" 
 			style="border-radius: 10px; height: 30px; " />
 		
-	</form>
 	<button type="button" class="btn btn-primary" onClick="goSearch();" 
 		style="width: 60px; height: 30px;" >검색</button>
+	</form>
     
     <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
    <!--  <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
