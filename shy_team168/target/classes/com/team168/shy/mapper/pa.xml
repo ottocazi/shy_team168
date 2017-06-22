@@ -7,7 +7,7 @@
 <mapper namespace="pa">
 
 	<!-- ===== 6. Ajax 로 검색어 입력시 자동글 완성하기 =====  -->
-	<resultMap type="java.util.HashMap" id="getSearchWordMap">
+	<!-- <resultMap type="java.util.HashMap" id="getSearchWordMap">
 		<result property="SEARCHDATA" column="searchdata" javaType="String" />
 	</resultMap>
 	<select id="searchWordgrpList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
@@ -23,7 +23,7 @@
 		    from tbl_grpboard
 		    where lower(gcontent) like '%' || lower(#{grpsearch}) || '%'
 		</if>
-	</select>
+	</select> -->
 	
 	<!-- ===== 그룹만들기 ===== -->	
 	<insert id="grpinsert" parameterType="com.team168.shy.model.GroupVO">

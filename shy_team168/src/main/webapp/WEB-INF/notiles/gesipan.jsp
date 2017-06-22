@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
+    <title>SHY 관리자 페이지</title>
 
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +52,7 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> 회원관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">유저조회</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저조회</a></li>
                       <li><a href="#">게시물관리</a></li>
                     </ul>
                   </li>
@@ -74,7 +74,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">게시판</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
                       <li><a href="#">###</a></li>
                     </ul>
                   </li>
@@ -102,8 +102,8 @@
             <!-- /menu footer buttons -->
           </div>
         </div>
-<!-- 
-        top navigation
+ 
+        <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu">
             <nav>
@@ -198,14 +198,14 @@
             </nav>
           </div>
         </div>
-        /top navigation
+        <!-- /top navigation -->
 
- -->        <!-- page content -->
+        <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>000 <small>블라 블라 블라</small></h3>
+                <h3>미정</h3>
               </div>
 
               <div class="title_right">
@@ -265,7 +265,7 @@
                       </c:forEach>
                       </tbody>
 					  </table>
-					  ${pagebar}
+					  <div align="right">${pagebar}</div>
                   </div>
                 </div>
               </div>
@@ -324,7 +324,6 @@
                         </tr>
                       </tbody>
                     </table>
-
                   </div>
                 </div>
               </div>
@@ -635,8 +634,6 @@
                         </tbody>
                       </table>
                     </div>
-							
-						
                   </div>
                 </div>
               </div>
