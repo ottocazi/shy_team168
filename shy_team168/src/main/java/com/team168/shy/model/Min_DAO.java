@@ -29,16 +29,6 @@ public class Min_DAO{
 	}
 	
 	
-	// 리스트 불러오기
-	public List<ShyMemberVO> memberList(HashMap<String, String> map) {
-		List<ShyMemberVO> memberList = sqlsession.selectList("min.memberList", map);
-		return memberList;
-	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -49,10 +39,24 @@ public class Min_DAO{
 			int count = sqlsession.selectOne("min.getTotalCount", map);
 			return count;
 		}
-	
-	
-	
-	
+		
+		
+		
+
+
+		public List<HashMap<String, String>> peoplesearch(String search) {
+			List<HashMap<String, String>> list = sqlsession.selectList("min.peoplesearch");
+			return list;
+		}
+		
+		
+		
+		
+		
+		public List<HashMap<String, String>> groupsearch(String search) {
+			List<HashMap<String, String>> list = sqlsession.selectList("min.groupsearch");
+			return list;
+		}
 	
 	
 	
