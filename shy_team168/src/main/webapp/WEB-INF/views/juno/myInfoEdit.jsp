@@ -34,24 +34,30 @@
 			    <table class="table nofill table-striped" style="width: 100%;">
 					
 					<tbody class="table-hover">
-						<form name="myimgFrm" id="myimgFrm" >
+						
 						<tr class="fisrtcol" style="border-top:2px solid #27303e;">
+						
 							<td class="text-left colname">프로필사진</td>
 							<td class="text-left">
-							<img class="img-responsive img-circle" src="" >
-							
+							<form name="myimgFrm" id="myimgFrm" enctype="multipart/formdata" >
+							<img class="img-responsive img-circle"  src="<%=request.getContextPath() %>/resources/images/shydb/${getMemberVO.myimg}" >
+							<input type="file" name="myimg" class="show_more_btn" id="id_myimg" />
+							<div  class="hiddenpart">   
 							<input type="hidden" name="idx" value="${getMemberVO.idx}" />
-							<input type="hidden" name="column_name"  />
+							<input type="hidden" name="column_name" id="column_name" value="myimg" />
 			                <input type="hidden" name="edited_content" />
 			                
-							<input type="hidden" class="inputcol" id="id_myimg" name="myimg" value="${getMemberVO.myimg}" />
-							<button type="button" class="info_edit_btn editPRend">사진변경</button>
-							<button type="button" class="info_edit_btn">삭제</button>
-							 <input type="hidden" name="column_name"  />
-				             <input type="hidden" name="edited_content" />
+							<%-- <input type="hidden" class="inputcol" id="id_myimg" name="myimg" value="${getMemberVO.myimg}" /> --%>
+							
+							<button type="button" class="info_edit_btn editend" >사진변경</button>
+							<button type="button" class="info_edit_btn show_more_cancle_btn">삭제</button>
+							 
+				            </div>
+				             </form>
 			                </td>
+			               
 						</tr>
-						</form>
+						
 						
 						<form name="emailFrm" id="emailFrm">
 						<tr>
@@ -70,7 +76,7 @@
 				                <br/><span>변경할 이메일 주소를 입력하세요. (예: abc@gmail.com)</span><br/>
 				                
 				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="column_name" id="column_name" value="email"  />
 				                <input type="hidden" name="edited_content" />
 				                
 				                <input type="text" class="inputcol" id="id_email" name="email" value="${getMemberVO.email}" />
@@ -97,15 +103,15 @@
 				                <br/><span>변경할 이름을 입력하세요.</span><br/>
 				                
 				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="column_name" id="column_name" value="name" />
 				                <input type="hidden" name="edited_content" />
 				                
 				                <input type="text" class="inputcol" id="id_name" name="name" value="${getMemberVO.name}" />
 				                <button type="button" class="info_edit_btn">중복확인</button><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
-				                <input type="hidden" name="column_name"  />
-				                <input type="hidden" name="edited_content" />
+				               <!--  <input type="hidden" name="column_name"  /> -->
+				               <!--  <input type="hidden" name="edited_content" /> -->
 				                </div>
 			                </td>
 						</tr>
@@ -122,7 +128,7 @@
 				                	<br/><span><span style="color: red;">다른 아이디/사이트에서 사용한적 없는 비밀번호<br/> 이전에 사용한 적 없는 비밀번호</span>가 안전합니다.</span><br/>
 				                	
 				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                	<input type="hidden" name="column_name"  />
+				                	<input type="hidden" name="column_name" id="column_name"  value="pwd" />
 				                	<input type="hidden" name="edited_content" />
 				                	
 				                	<input placeholder="현재 비밀번호" type="password" value="${getMemberVO.pwd}"  tabindex="1"  autofocus style="margin-top: 30px;"> <br/>
@@ -146,7 +152,7 @@
 				                <br/><span>변경할 연락처를 입력하세요. (예: 01087644212)</span><br/>
 				                
 				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="column_name" id="column_name"  value="phone" />
 				                <input type="hidden" name="edited_content" />
 				                
 				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
@@ -166,14 +172,22 @@
 				                <div class="hiddenpart">
 				                변경할 성별
 				                <br/><span>변경할 성별을 고르세요</span><br/>
-				                <div id="">
+				                <div class="gender_select_form">
 				                
 				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                <input type="hidden" name="column_name"  />
+				                <input type="hidden" name="column_name" id="column_name" value="gender" />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="radio" value="남" class="inputcol" name="gender" style="margin-top: 30px;"/>남&nbsp;&nbsp;
-				                <input type="radio" value="여" class="inputcol" name="gender" />여
+				                <select class="inputcol" id="id_gender" name="gender" style="margin-top: 30px;">
+				                	<option value="${getMemberVO.gender}" selected="selected">${getMemberVO.gender}</option>
+				                	<option value="남">남</option>
+				                	<option value="여">여</option>
+				                	<option value="Other">Other</option>
+				                </select>
+				                
+				               <!--  <input type="radio" id="id_gender_male" value="남" class="inputcol" name="gender" style="margin-top: 30px;"/>남&nbsp;&nbsp;
+				                <input type="radio" id="id_gender_female" value="여" class="inputcol" name="gender" />여&nbsp;&nbsp;
+				                <input type="radio" id="id_gender_other" value="Other" class="inputcol" name="gender">Other -->
 				                </div>
 				                <br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
@@ -194,7 +208,7 @@
 				                <fieldset style="margin-top: 30px; width: 100%; height: 50px;">
 				                	
 				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                	<input type="hidden" name="column_name"  />
+				                	<input type="hidden" name="column_name" id="column_name"  value="myintro" />
 			               			<input type="hidden" name="edited_content" />		
 			               			
 							    	<textarea cols="35" rows="4" class="inputcol" id="id_myintro" name="myintro" tabindex="5"  style="resize: none; width: 80%;">${getMemberVO.myintro}</textarea>

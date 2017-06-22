@@ -15,36 +15,54 @@ $(document).ready(function(){
 	/* 수정완료	*/
 	$(".editend").click(function(){
 		
-		var column_name = $(this).parent().parent().find(".hiddenpart").find(".inputcol").attr('name');
+		/*var column_name = $(this).parent().parent().find(".hiddenpart").find(".inputcol").attr('name');
 		alert("name 값 : " + column_name);
 		
 		var column_content = $(this).parent().parent().find(".hiddenpart").find(".inputcol").attr('value');
-		alert("column_content : " + column_content);
+		alert("기존내용 : " + column_content);*/
 		
+		var column_name = $(this).parent().find("#column_name").val();
+		alert(column_name);
 		var edited_content = $("#id_"+column_name).val();
-		alert("edited_content : " + edited_content);
+		
+		
+		alert("바뀔내용 : " + edited_content);
 		
 		var form_name = column_name + "Frm";
 		alert("form_name : "+form_name);
 		
-//		test();
+		test();
+		if(column_name =="myimg"){
+			
+			document.myimgFrm.action ="myInfoEditEnd.shy";
+			document.myimgFrm.method="post";
+			document.myimgFrm.submit();
+		}
 		
-		myInfoEditEnd(column_name,edited_content,form_name);
+		else{
+			myInfoEditEnd(column_name,edited_content,form_name);
+		}
+		
 	});
+	
+
 });
 
 
 function myInfoEditEnd(column_name,edited_content,form_name) {
 	
+	
+	
 	alert("myInfoEditEnd() 실행");
 	alert(column_name);
-	if(column_name == 'myimg') {
-		document.myimgFrm.column_name.value = column_name;
-		document.myimgFrm.edited_content.value = edited_content;
-		document.myimgFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.myimgFrm.method = "POST";
-		document.myimgFrm.submit();
-	} else if(column_name == 'email') {
+//	if(column_name == 'myimg') {
+//		document.myimgFrm.column_name.value = column_name;
+//		document.myimgFrm.edited_content.value = edited_content;
+//		document.myimgFrm.action = "/shy/myInfoEditEnd.shy";	
+//		document.myimgFrm.method = "POST";
+//		document.myimgFrm.submit();
+//	} else 
+		if(column_name == 'email') {
 		document.emailFrm.column_name.value = column_name;
 		document.emailFrm.edited_content.value = edited_content;
 		document.emailFrm.action = "/shy/myInfoEditEnd.shy";	
