@@ -68,7 +68,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">게시판</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
                       <li><a href="#">###</a></li>
                     </ul>
                   </li>
@@ -78,7 +78,23 @@
             </div> 
 
             <!-- /sidebar menu -->
-
+            
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
           </div>
         </div>
 
@@ -487,11 +503,13 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-           	수줍은 우리들의 경제활동 <a href="https:www.naver.com">Shy</a>
+            <a href="open.shy">Shy</a>
           </div>
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
+
+
 
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
