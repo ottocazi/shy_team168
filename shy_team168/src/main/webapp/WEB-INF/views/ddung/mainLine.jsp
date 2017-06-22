@@ -65,7 +65,12 @@
            <a class="button follow" href="#" title="Follow">
                Follow
             </a>
-          <img class="avatar-32" src="https://upload.wikimedia.org/wikipedia/en/7/7e/Patrick_Star.png" alt="Avatar">
+          <c:if test="${shies.myimg != null}">
+          <img class="avatar-32" src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }" alt="Avatar">
+          </c:if>
+          <c:if test="${shies.myimg == null}">
+          <img class="avatar-32" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif" alt="Avatar">
+          </c:if>
           <strong>
                <a title="Full Name" href="#">
                   <span style="font-size: 12pt; margin:0; color:black;">
