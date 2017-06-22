@@ -19,8 +19,11 @@
 	
 	
 	
+	
+	
 	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
-	<!-- <resultMap type="java.util.HashMap" id="getSearchWordMap">
+	<!-- 
+	 <resultMap type="java.util.HashMap" id="getSearchWordMap">
 		<result property="SEARCHDATA" column="searchdata" javaType="String" />
 	</resultMap>
 	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
@@ -43,50 +46,135 @@
 		</if> 
 		
 	</select>	
+	 -->
 	
 	
 	
 	
-	
-	
+	<!-- 
  ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
                     파일이 첨부된 답변형 게시판 목록
     	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
-   
-    <select id="searchlist" resultType="com.spring.board.model.BoardVO" parameterType="java.util.HashMap"  >
-     select seq, userid, name, subject, readCount, regDate, commentCount  
-          , groupno, fk_seq, depthno
-          , fileName, orgFilename, fileSize
-	 from 
-	 (
-		select rownum as RNO
-		     , V.seq, V.userid, V.name, V.subject, V.content, V.readCount, V.regDate, V.commentCount
-		     , V.groupno, V.fk_seq, V.depthno
-		     , V.fileName, V.orgFilename, V.fileSize
-		from 
-		(
-		    select seq, userid, name 
-		         , case when length(subject) > 20 then substr(subject, 1, 18)||'..'
-		           else subject end as subject
-		         , content , readCount
-		         , to_char(regDate, 'yyyy-mm-dd hh24:mi:ss') as regDate
-		         , commentCount
-		         , groupno, fk_seq, depthno
-		         , fileName, orgFilename, fileSize
-		    from spring_tblBoard
-		    where status = 1
-		    <if test="colname != null and search != null">     
-		        and ${colname} like '%'|| #{search} ||'%'
-		    </if>
-		    start with fk_seq = 0
-    	    connect by prior seq = fk_seq
-		    order siblings by groupno desc, seq asc
-		) V
-	 ) T
-	 where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
- </select>      
-     		 -->
+    -->
+    
+    <resultMap type="java.util.HashMap" id="searchpeopleMap">
+		<result property="IDX" 			column="idx" 			javaType="String" />
+ 		<result property="NAME"  		column="name" 			javaType="String" />
+ 		<result property="EMAIL"  		column="email" 			javaType="String" />
+ 		<result property="PWD"  		column="pwd" 			javaType="String" />
+ 		<result property="REGISTERDATE" column="registerdate" 	javaType="String" />
+ 		<result property="MYIMG"  		column="myimg" 			javaType="String" />
+ 		<result property="MYINTRO"  	column="myintro" 		javaType="String" />
+ 		<result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+ 		<result property="GENDER"  		column="gender" 		javaType="String" />
+ 		<result property="PHONE"  		column="phone" 			javaType="String" />
+	</resultMap>
 	
+	
+	<select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
+	select *
+        from tbl_shymember
+        where status = 1
+        and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
+		
+	
+	</select>
+	<!-- <select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
+	
+	select *
+        from tbl_shymember
+        where status = 1
+        <if test="search != null">
+        and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
+		</if>
+	</select> -->
+	
+	
+	
+	
+	
+	<resultMap type="java.util.HashMap" id="groupsearchMap">
+		<result property="GROUPNO" 		column="groupno" 		javaType="String" />
+ 		<result property="FK_IDX"  		column="fk_idx" 		javaType="String" />
+ 		<result property="GNAME"  		column="gname" 			javaType="String" />
+ 		<result property="DESCRIPTION"  column="description" 	javaType="String" />
+ 		<result property="GROUPDATE" 	column="groupdate" 		javaType="String" />
+ 		<result property="STATUS"  		column="status" 		javaType="String" />
+ 		<result property="GCOUNT"  		column="gcount" 		javaType="String" />
+ 		<result property="GIMG" 		column="gimg" 			javaType="String" />
+	</resultMap>
+	
+	<select id="groupsearch" parameterType="String" resultMap="groupsearchMap">
+	
+	select *
+        from TBL_GROUP
+        <if test="search != null">
+        where gname like '%' || #{search} || '%'
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- ===== #114. 총 게시물 건수 구하기
+	             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. =====
+	--> 
+	<!-- <select id="gTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from TBL_GROUP
+		
+		<if test="search != null">
+			 where gname like '%' || #{search} || '%'
+		</if>
+	
+	</select>   
+	
+	
+	
+	<select id="mTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from TBL_SHYMEMBER
+		where status = 1
+		<if test="search != null">
+			and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
+		</if>
+	
+	</select>  
+	 -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 
+	<select id="guestqnashow" parameterType="java.util.HashMap" resultMap="Showqnamap">
+      select seq_question, guest_email, subject
+         , case when length(content) > 10 then substr(content , 1, 10) || '....'
+                                  else content
+                                  end as content
+            , to_char(writedate,'yyyy-mm-dd') as writedate , status
+      from tbl_guest_question   
+      where status = 1
+      
+      <if test='search != null and !"".equals(search)'>
+         and ${colname} like '%' || #{search} || '%'
+      </if>
+      order by seq_question desc
+      
+   </select> -->
 	
 	
 	
