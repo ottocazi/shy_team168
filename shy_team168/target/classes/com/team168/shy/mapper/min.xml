@@ -87,6 +87,28 @@ select IDX, NAME, EMAIL, PWD, REGISTERDATE,  MYIMG, MYINTRO, BIRTHDAY, GENDER, P
      		 
 	
 	
+	<!-- ===== #114. 총 게시물 건수 구하기
+	             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. =====
+	--> 
+	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from TBL_SHYMEMBER
+		where status = 1
+		<if test="colname != null and search != null">
+			and ${colname} like '%' || #{search} || '%'
+		</if>
+	
+	</select>   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>
