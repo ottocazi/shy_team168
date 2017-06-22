@@ -46,7 +46,7 @@ public class Min_DAO{
 	// ===== #113. 총 게시물 건수 구하기
 		//             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. ===== 	
 		public int getTotalCount(HashMap<String, String> map) {
-			int count = sqlsession.selectOne("shy.getTotalCount", map);
+			int count = sqlsession.selectOne("min.getTotalCount", map);
 			return count;
 		}
 	

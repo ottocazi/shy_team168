@@ -111,10 +111,14 @@ public class Min_Controller {
 	   //       먼저 위의 List<BoardVO> boardList = service.boardList(); 부분을 
 	   //       주석처리하고서 아래와 같이 한다. ===== 
 	    	String colname = req.getParameter("colname");
+	    	
+	    	
+	    	
 	    	String search = req.getParameter("search");
 	    	
 	    	HashMap<String, String> map = new HashMap<String, String>();
 	    	map.put("colname", colname);
+	    	
 	    	map.put("search", search);
 	    	
 	    	// ===== #109. 페이징 처리를 위해 start, end 를 map 에 추가하여 DB에서 select 되어지도록 한다. ===== 
@@ -235,11 +239,11 @@ public class Min_Controller {
 	        	
 	        	if(colname == null || search == null) {
 	        		// 검색어가 없는 경우
-	        		pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+	        		pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.action?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
 	        	}
 	        	else{
 	        		// 검색어가 있는 경우
-	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d&colname=%s&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 검색어 있는 경우        		
+	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.action?pageNo=%d&colname=%s&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 검색어 있는 경우        		
 	        	}	
 	        }
 	        

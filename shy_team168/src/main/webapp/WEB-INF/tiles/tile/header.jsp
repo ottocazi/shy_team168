@@ -218,6 +218,7 @@ $(window).scroll(function() {
 
 <script type="text/javascript">
 
+/* 
 $(document).ready(function(){
 	
 	searchKeep();
@@ -306,7 +307,9 @@ $(document).ready(function(){
 	
 	
 });// end of $(document).ready()----------------------
-
+ 
+ 
+ 															*/
 
 function goSearch(){
 	
@@ -382,12 +385,13 @@ function searchKeep(){
     </ul>
     <!-- ===== #103. 글검색 폼 추가하기 : 제목, 내용, 글쓴이로 검색하도록 한다. ===== -->
 	<form name="searchFrm" style="margin-top: 20px;">
-		<!-- <select name="colname" id="colname" 
+		 <select name="colname" id="colname" 
 		style=" border-radius: 10px; width: 70px; height: 30px;" >
-			<option value="name">회원명</option>	tbl_shymember - name
-			<option value="email">이메일</option> tbl_shymember - email
-			<option value="gname">그룹명</option>	 tbl_group - gname
-		</select> -->
+			<option value="all">전체조회</option>
+			<option value="name">회원명</option>	<!-- tbl_shymember - name -->
+			<option value="email">이메일</option> <!-- tbl_shymember - email -->
+			<option value="gname">그룹명</option>	 <!-- tbl_group - gname -->
+		</select> 
 		<input type="text" name="search" id="search" size="20px" 
 			style="border-radius: 10px; height: 30px; " />
 		<button type="button" class="btn btn-primary" onClick="goSearch();" 
@@ -395,9 +399,9 @@ function searchKeep(){
 	</form>
     
     <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
-    <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
+   <!--  <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
 	</div>
-    
+     -->
     
     
     
