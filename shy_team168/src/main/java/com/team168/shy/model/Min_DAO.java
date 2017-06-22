@@ -55,14 +55,14 @@ public class Min_DAO{
 
 		public List<HashMap<String, String>> peoplesearch(String search) {
 			
-			List<HashMap<String, String>> plist = sqlsession.selectList("min.peoplesearch");
+			List<HashMap<String, String>> plist = sqlsession.selectList("min.peoplesearch", search);
 			
 			return plist;
 		}
 		
 		
 		public List<HashMap<String, String>> groupsearch(String search) {
-			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch");
+			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", search);
 			return glist;
 		}
 	

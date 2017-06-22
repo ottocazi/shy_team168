@@ -89,7 +89,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="map" items="${pList}" varStatus="status">
+                      <c:forEach var="map" items="${plist}" varStatus="status">
                         <tr>
                         <td>test</td>
                           <td>${map.IDX}</td>
@@ -137,7 +137,7 @@
                         </tr>
                       </thead>
                      <tbody>
-                      <c:forEach var="map" items="${gList}" varStatus="status">
+                      <c:forEach var="map" items="${glist}" varStatus="status">
                         <tr>
                           <td>${map.GROUPNO}</td>
                           <td>${map.GNAME}</td>

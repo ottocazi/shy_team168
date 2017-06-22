@@ -107,13 +107,13 @@ public class Min_Controller {
     	
     	
     	
-    	HashMap<String, String> map = new HashMap<String, String>();
+    	/*HashMap<String, String> map = new HashMap<String, String>();*/
     	
     	String search = req.getParameter("search");
+    	System.out.println("검색어는 " + search);
     	
     	
-    	
-    	map.put("search", search);
+    	/*map.put("search", search);*/
     	
     	
     	
@@ -126,7 +126,7 @@ public class Min_Controller {
     	
     	
     	List<HashMap <String, String>> plist = service.peoplesearch(search);
-    	List<HashMap <String, String>> glist = service.groupsearch(search);
+    	//List<HashMap <String, String>> glist = service.groupsearch(search);
     	
     	
     	
@@ -249,14 +249,16 @@ public class Min_Controller {
     	*/
         
     	
-    	System.out.println(glist);
+    	//System.out.println(glist);
     	System.out.println(search);
+    	
+    	
     	
         //req.setAttribute("pagebar1", pagebar1);
         //req.setAttribute("pagebar2", pagebar2);
         
     	req.setAttribute("plist", plist);
-    	req.setAttribute("glist", glist);
+    	//req.setAttribute("glist", glist);
 
     	
     	
