@@ -75,7 +75,7 @@
 		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx)
 	</select>		
 	
-	<!-- 회원목록 보여주는 select 문 -->
+	<!-- 공지사항(미정)부분에서 회원목록 보여주는 select 문 -->
 	<resultMap type="java.util.HashMap" id="getshyListMap">
 		<result property="IDX" 		        column="idx" 	        javaType="String" />
  		<result property="NAME" 	        column="name" 	        javaType="String" />
@@ -115,19 +115,46 @@
 		where status = 1
 	</select>     
 	
-	<!-- 관리자페이지 회원에 대한 게시물조회 -->
+	<!-- 공지사항(미정)부분 회원에 대한 게시물조회 -->
 	<select id="getmemocount" parameterType="String" resultType="String">
 		select count(*) 
 		from tbl_shymemo
 		where fk_idx = #{COUNT}
 	</select>
 	
-	<select id="shyList" resultType="com.team168.shy.model.ShyMemberVO">
-		select *
+	
+	<resultMap type="java.util.HashMap" id="getshyListmap">
+		<result property="IDX" 		        column="idx" 	        javaType="int" />
+ 		<result property="NAME" 	        column="name" 	        javaType="String" />
+ 		<result property="EMAIL" 		    column="email" 	        javaType="String" />
+ 		<result property="PWD" 	            column="pwd" 	        javaType="String" />
+ 		<result property="REGISTERDATE"		column="registerdate" 	javaType="String" />
+ 		<result property="STATUS" 	        column="status" 	    javaType="int" />
+ 		<result property="MYIMG" 		    column="myimg" 	        javaType="String" />
+ 		<result property="MYINTRO" 	        column="myintro" 	    javaType="String" />
+ 		<result property="BIRTHDAY" 		column="birthday" 	    javaType="String" />
+ 		<result property="GENDER" 	        column="gender" 	    javaType="String" />
+ 		<result property="PHONE" 		    column="phone" 	        javaType="String" />
+	</resultMap>
+	<select id="shyList" parameterType="java.util.HashMap" resultMap="getshyListmap">
+		select * 
 		from tbl_shymember
-		where status = 1
 		order by idx desc
 	</select>
+
+	<update id="shystatusDown"  parameterType="java.util.HashMap">
+		update tbl_shymember
+		set status = 0
+		where idx = #{idx}
+	</update>
+
+	<update id="shystatusUp"  parameterType="java.util.HashMap">
+		update tbl_shymember
+		set status = 1
+		where idx = #{idx}
+	</update>
+
+
 </mapper>
 
 
