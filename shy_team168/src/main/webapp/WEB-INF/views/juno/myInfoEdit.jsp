@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,21 +40,33 @@
 						
 							<td class="text-left colname">프로필사진</td>
 							<td class="text-left">
-							<form name="myimgFrm" id="myimgFrm" enctype="multipart/formdata" >
-							<img class="img-responsive img-circle"  src="<%=request.getContextPath() %>/resources/images/shydb/${getMemberVO.myimg}" >
-							<input type="file" name="myimg" class="show_more_btn" id="id_myimg" />
+							
+							<c:if test="${getMemberVO.myimg!=null }">
+							
+								<img class="img-responsive img-circle"  src="<%=request.getContextPath() %>/resources/images/shydb/${getMemberVO.myimg}" >
+							
+							</c:if>
+							
+							<c:if test="${getMemberVO.myimg==null }">
+							
+								<span>현재 등록된 프로필 이미지가 없습니다.</span>
+							
+							</c:if>
+							
+							
+							<form name="myimgFrm" id="myimgFrm" enctype="multipart/form-data" action="myimgedit.shy" method="post">
+							<input type="file" name="myimg" />
 							<div  class="hiddenpart">   
 							<input type="hidden" name="idx" value="${getMemberVO.idx}" />
 							<input type="hidden" name="column_name" id="column_name" value="myimg" />
-			                <input type="hidden" name="edited_content" />
 			                
-							<%-- <input type="hidden" class="inputcol" id="id_myimg" name="myimg" value="${getMemberVO.myimg}" /> --%>
-							
-							<button type="button" class="info_edit_btn editend" >사진변경</button>
-							<button type="button" class="info_edit_btn show_more_cancle_btn">삭제</button>
-							 
 				            </div>
-				             </form>
+				            <button type="submit" class="info_edit_btn" >사진변경</button>
+							<button type="button" class="info_edit_btn show_more_cancle_btn">삭제</button>
+				            </form>
+				            
+				            
+			                
 			                </td>
 			               
 						</tr>

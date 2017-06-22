@@ -22,13 +22,13 @@
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      
     <script>
-    function openComment() {
+    function openComment(event) {
 	
-	   var commentbox = document.getElementById('commentbox');
+	   var commentbox = document.getElementById('commentbox'+event);
 	   
 	
 	   if(commentbox.style.display=='none'){
-		   commentbox.style.display = 'block';
+		   commentbox.style.display = 'block'; 
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
@@ -109,7 +109,7 @@
           <a class="bt-share" title="Share" href="#">
                Share
             </a>
-          <a href="javascript:openComment();"class="bt-comment" title="Comment" href="">
+          <a href="javascript:openComment(${shies.snsno });"class="bt-comment" title="Comment" href="">
                댓글(33)
             </a>
         </p>
@@ -119,7 +119,7 @@
       <!--new댓글창  -->
     
       
-     <div id="commentbox" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+     <div id="commentbox${shies.snsno }" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
   
   
   <!-- Form -->

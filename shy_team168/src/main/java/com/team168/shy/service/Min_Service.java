@@ -33,12 +33,7 @@ public class Min_Service {
 		}*/
 
 		
-		
-		public List<ShyMemberVO> memberList(HashMap<String, String> map) {
-			List<ShyMemberVO> memberList = dao.memberList(map);
-			return memberList;
-			
-		}
+	
 		
 		
 	
@@ -48,8 +43,26 @@ public class Min_Service {
 			int count = dao.getTotalCount(map);
 			return count;
 		}
+
+
+
+		public List<HashMap<String, String>> peoplesearch(String search) {
+			
+			List<HashMap <String, String>> plist = dao.peoplesearch(search);
+			return plist;
+		}
 		
 		
-		
+		public List<HashMap<String, String>> groupsearch(String search) {
+			
+			List<HashMap <String, String>> glist = dao.groupsearch(search);
+			return glist;
+		}
+
+
+
+
+
+
 	
 }
