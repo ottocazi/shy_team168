@@ -28,7 +28,7 @@
 	   
 	
 	   if(commentbox.style.display=='none'){
-		   commentbox.style.display = 'block';
+		   commentbox.style.display = 'block'; 
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
