@@ -46,224 +46,143 @@ public class Min_Controller {
 	 // 관리자 공지사항 페이지요청
     @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
-    	
-    	
-/*
-    	String pageNo1 = req.getParameter("pageNo1");
-    	String pageNo2 = req.getParameter("pageNo2");
-    	
-    	 첫번째 페이징 처리 -----------------------------------------------
-    	int totalCount1 = 0;
-    	int sizePerPage1 = 5; 
-    	int currentShowPageNo1 = 1;
-    	int totalPage1 = 0; 
-    	
-    	int start1 = 0;
-    	int end1 = 0;
-    	int startPageNo1 = 0;
+	    
+		   // ===== #108. 페이징 처리하기 =====
+		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
+		    	
+		      String pageNo = req.getParameter("pageNo");
+		      
+		      int totalCount = 0;        // 총게시물 건수
+		      int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 갯수 (예: 3, 5, 10) 
+		      int currentShowPageNo = 1; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.
+		      int totalPage = 0;         // 총페이지수(웹브라우저상에 보여줄 총 페이지 갯수)
+		      
+		      int start = 0;             // 시작 행 번호
+		      int end = 0;               // 끝 행 번호
+		      int startPageNo = 0;       // 페이지바에서 시작될 페이지 번호 
+		    
+		      int loop = 0;       // startPageNo 값이 증가할때 마다 1씩 증가하는 용도.
+		      int blocksize = 5;  // "페이지바" 에 보여줄 페이지의 갯수 
+		      
+		      if(pageNo == null) {
+		    	  currentShowPageNo = 1;
+		    	  
+		      }
+		      else {
+		    	  currentShowPageNo = Integer.parseInt(pageNo);
+		    	  // GET 방식으로 파라미터 pageNo 에 넘어온 값을
+		    	  // 현재 보여주고자 하는 페이지로 설정한다.
+		      }
+		      
+		      start = ((currentShowPageNo - 1) * sizePerPage) + 1;  
+		      end = start + sizePerPage - 1;
+		      
+		      String search = req.getParameter("search");
+		     // RowBounds rowbounds = new RowBounds(start, end);
 
-    	int loop1 = 0;
-    	int blocksize1 = 5;
-    	
-    	
-    	 두번째 페이징 처리 -----------------------------------------------
-    	int totalCount2 = 0;
-    	int sizePerPage2 = 5; 
-    	int currentShowPageNo2 = 1;
-    	int totalPage2 = 0; 
-    	
-    	int start2 = 0;
-    	int end2 = 0;
-    	int startPageNo2 = 0;
+		    	
+		    	
+		    	HashMap<String, String> map = new HashMap<String, String>();
+		    	//map.put("search", search);
+		    	
+		    	// ===== #109. 페이징 처리를 위해 start, end 를 map 에 추가하여 DB에서 select 되어지도록 한다. ===== 
+		    	map.put("start", String.valueOf(start) ); // 키값 start, 밸류값은 해쉬맵이 String 타입인데 start 는 int 타입이어서 String 타입으로 변경함. 
+		    	map.put("end", String.valueOf(end) );     // 키값 end,   밸류값은 해쉬맵이 String 타입인데 end 는 int 타입이어서 String 타입으로 변경함. 
+		    	
+		    	
+		    	
+		    	List<HashMap <String, String>> plist = service.peoplesearch(search);
+		    	List<HashMap <String, String>> glist = service.groupsearch(search);
+		   
+		    	totalCount = service.mTotalCount(map);
+		    	
+		 
+		    	totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
+		    	
+		    	String pagebar = "";
+		    	pagebar += "<ul>";
+		    	
+		    	
+		        loop = 1;
+		        
+		        // **** !!! 페이지바의 시작 페이지번호(startPageNo)값 만들기 --- 공식임 !!!!
+		        startPageNo = ((currentShowPageNo - 1)/blocksize)*blocksize + 1;
+		  
+		        
+		        // **** 이전5페이지 만들기 ****
+		        if(startPageNo == 1) {
+		        	// 첫 페이지바에 도달한 경우
+		        	pagebar += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize);
+		        }
+		        else {
+		        	// 첫 페이지바가 아닌 두번째 이상 페이지바에 온 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d&search=%s'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, search, blocksize); // 검색어 있는 경우        		
+		        	}	
+		        }        
+		            	
+		        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
+		        while( !(loop > blocksize ||
+		        		 startPageNo > totalPage) ) {
+		        	
+		        	if(startPageNo == currentShowPageNo) {
+		        		pagebar += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo);	
+		        	}
+		        	else {
+			        	if(search == null) {
+			        		// 검색어가 없는 경우
+			        		pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+			        	}
+			        	else{
+			        		// 검색어가 있는 경우
+			        	    pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo,  search, startPageNo); // 검색어 있는 경우        		
+			        	}
+		        	}
+		        	
+		        	loop++;
+		        	startPageNo++;
+		        	
+		        }// end of while--------------------
+		                
+		        // **** 다음5페이지 만들기 ****
+		        if(startPageNo > totalPage) {
+		        	// 마지막 페이지바에 도달한 경우
+		        	pagebar += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize);
+		        }
+		        else {
+		        	// 마지막 페이지바가 아닌 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, search, blocksize); // 검색어 있는 경우        		
+		        	}	
+		        }
+		        
+		        
+		        pagebar += "</ul>";
+		    	
+		        req.setAttribute("pagebar", pagebar);
 
-    	int loop2 = 0;
-    	int blocksize2 = 5;
-    	
-    	
-    	 첫번째 페이징 처리 -----------------------------------------------
-    	if(pageNo1 == null) {
-    		currentShowPageNo1 = 1;    		
-    	}
-    	else if(pageNo1 != null) {
-    		currentShowPageNo1 = Integer.parseInt(pageNo1); 
-    	}
-   
-    	start1 = ((currentShowPageNo1 - 1) * sizePerPage1) + 1;
-    	end1 = start1 + sizePerPage1 - 1;
-    	
-    	
-    	 두번째 페이징 처리 -----------------------------------------------
-    	
-    	if(pageNo2 == null) {
-    		currentShowPageNo2 = 1;    		
-    	}
-    	else if(pageNo2 != null) {
-    		currentShowPageNo2 = Integer.parseInt(pageNo2); 
-    	}
-   
-    	start2 = ((currentShowPageNo2 - 1) * sizePerPage2) + 1;
-    	end2 = start2 + sizePerPage2 - 1;
-    	*/
-    	
-    	
-    	
-    	/*HashMap<String, String> map = new HashMap<String, String>();*/
-    	
-    	String search = req.getParameter("search");
-    	System.out.println("검색어는 " + search);
-    	
-    	
-    	/*map.put("search", search);*/
-    	
-    	
-    	
-    	/*
-    	map.put("start", String.valueOf(start1) );
-    	map.put("end", String.valueOf(end1) );
-    	map.put("start", String.valueOf(start2) );
-    	map.put("end", String.valueOf(end2) );
-   	*/
-    	
-    	
-    	List<HashMap <String, String>> plist = service.peoplesearch(search);
-    	//List<HashMap <String, String>> glist = service.groupsearch(search);
-    	
-    	
-    	
-			 
-    	/* 첫번째 페이징 처리 -----------------------------------------------*/
-    	/*
-    	///////////////////////////////////////////////////////////////////
-    	// 시작 인덱스
-    	int start = (currentShowPageNo2 - 1) * sizePerPage2;
-    	// 뽑아올 갯수
-    	int offset = sizePerPage2;
-    	
-    	RowBounds rowBounds = new RowBounds(start, offset);
-    	
-    	// sql 문에다 넣어서 보내주세요
-    	///////////////////////////////////////////////////////////////////
-    	
-    	*/
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	/*
-    	totalCount1 = service.gTotalCount(map);
-    	totalPage1 = (int)Math.ceil((double)totalCount1/sizePerPage1);
-    	
-    	String pagebar1 = "";
-    	pagebar1 += "<ul>";
-    	
-        loop1 = 1;
+		        req.setAttribute("search", search);
+		    	
+		    	
+		    	req.setAttribute("plist", plist);
+		    	req.setAttribute("glist", glist);
 
-        startPageNo1 = ((currentShowPageNo1 - 1)/blocksize1)*blocksize1 + 1;
-    	
-        // **** 이전5페이지 만들기 ****
-        if(startPageNo1 == 1) {
-        	pagebar1 += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize1);
-        }
-        else {
-        	pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo1-1, blocksize1);		
-        }        
-            	
-        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
-        while( !(loop1 > blocksize1 ||
-        		 startPageNo1 > totalPage1) ) {
-        	if(startPageNo1 == currentShowPageNo1) {
-        		pagebar1 += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo1);	
-        	}
-        	else {
-	        	pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo1, startPageNo1);
-        	}
-        	
-        	loop1++;
-        	startPageNo1++;
-        	
-        }// end of while--------------------
-                
-        // **** 다음5페이지 만들기 ****
-        if(startPageNo1 > totalPage1) {
-        	pagebar1 += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize1);
-        }
-        else {
-        	pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo1, blocksize1);	
-        }
-        pagebar1 += "</ul>";
-    	
-        
-        
-        
-         두번째 페이징 처리 -----------------------------------------------
-        
-
-    	totalCount2 = service.mTotalCount(map);
-    	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
-    	
-    	String pagebar2 = "";
-    	pagebar2 += "<ul>";
-    	
-        loop2 = 1;
-
-        startPageNo2 = ((currentShowPageNo2 - 1)/blocksize2)*blocksize2 + 1;
-    	
-        // **** 이전5페이지 만들기 ****
-        if(startPageNo2 == 1) {
-        	pagebar2 += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize2);
-        }
-        else {
-        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo2-1, blocksize2);		
-        }        
-            	
-        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
-        while( !(loop2 > blocksize2 ||
-        		 startPageNo2 > totalPage2) ) {
-        	if(startPageNo2 == currentShowPageNo2) {
-        		pagebar2 += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo2);	
-        	}
-        	else {
-	        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo2, startPageNo2);
-        	}
-        	
-        	loop2++;
-        	startPageNo2++;
-        	
-        }// end of while--------------------
-                
-        // **** 다음5페이지 만들기 ****
-        if(startPageNo2 > totalPage2) {
-        	pagebar2 += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize2);
-        }
-        else {
-        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo2, blocksize2);	
-        }
-        pagebar2 += "</ul>";
-    	*/
-        
-    	
-    	//System.out.println(glist);
-    	System.out.println(search);
-    	
-    	
-    	
-        //req.setAttribute("pagebar1", pagebar1);
-        //req.setAttribute("pagebar2", pagebar2);
-        
-    	req.setAttribute("plist", plist);
-    	//req.setAttribute("glist", glist);
-
-    	
-    	
-    	return "smin/searchlist.tiles";
-    }    
+		    	
+		    	return "smin/searchlist.tiles";
+		    	
+		    }
     
 	
 	

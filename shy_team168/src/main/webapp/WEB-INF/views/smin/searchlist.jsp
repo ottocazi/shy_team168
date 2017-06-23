@@ -82,7 +82,7 @@
                     <table class="table">
                       <thead>
                         <tr>
-                        <th>test</th>
+                        
                           <th>회원번호</th>
                           <th>회원이름</th>
                           <th>회원아이디</th>
@@ -91,7 +91,7 @@
                       <tbody>
                       <c:forEach var="map" items="${plist}" varStatus="status">
                         <tr>
-                        <td>test</td>
+                        
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
@@ -99,7 +99,7 @@
                       </c:forEach>
                       </tbody>
 					  </table>
-					  <%-- <div align="right">${pagebar}</div> --%>
+					   <div align="right">${pagebar}</div> 
                   </div>
                 </div>
               </div>
@@ -146,6 +146,7 @@
                       </c:forEach>
                       </tbody>
                     </table>
+                    <%-- <div align="right">${pagebar}</div> --%> 
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@ package com.team168.shy.service;
 import java.util.HashMap; 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,14 +61,14 @@ public class Min_Service {
 
 		public List<HashMap<String, String>> peoplesearch(String search) {
 			
-			List<HashMap <String, String>> plist = dao.peoplesearch(search);
+			List<HashMap <String, String>> plist = dao.peoplesearch(search );
 			return plist;
 		}
 		
 		
 		public List<HashMap<String, String>> groupsearch(String search) {
 			
-			List<HashMap <String, String>> glist = dao.groupsearch(search);
+			List<HashMap <String, String>> glist = dao.groupsearch(search );
 			return glist;
 		}
 

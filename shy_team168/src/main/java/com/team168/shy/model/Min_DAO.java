@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -35,15 +36,18 @@ public class Min_DAO{
 	
 	// ===== #113. 총 게시물 건수 구하기
 		//             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. ===== 	
-	//				===== 페이징 처리 =====			
-		public int gTotalCount(HashMap<String, String> map) {
-			int count = sqlsession.selectOne("min.gTotalCount", map);
-			return count;
-		}
-		
+	
+	
+
 	// 페이징 처리2
 		public int mTotalCount(HashMap<String, String> map) {
 			int count = sqlsession.selectOne("min.mTotalCount", map);
+			return count;
+		}
+	
+	//				===== 페이징 처리 =====			
+		public int gTotalCount(HashMap<String, String> map) {
+			int count = sqlsession.selectOne("min.gTotalCount", map);
 			return count;
 		}
 		
