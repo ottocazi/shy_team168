@@ -359,6 +359,18 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }	
 	
+    // 관리자 페이지 유저관리 페이지 활성화버튼요청
+    @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
+    public String tongke(HttpServletRequest req, HttpSession session){
+    	
+    	List<HashMap<String, Object>> tkList = service.gettongkeList(); 
+    	// System.out.println(tkList);
+    	// [{S_DATE=2017062114, CNT=2}, {S_DATE=2017062115, CNT=3}, {S_DATE=2017062116, CNT=7}, {S_DATE=2017062117, CNT=7}, {S_DATE=2017062118, CNT=4}, {S_DATE=2017062120, CNT=6}]
+  
+    	req.setAttribute("tkList", tkList);
+		
+    	return "tongke.notiles";
+    }	
 	
 	
 	

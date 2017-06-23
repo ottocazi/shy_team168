@@ -153,7 +153,19 @@
 		set status = 1
 		where idx = #{idx}
 	</update>
-
+	
+	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="gettongkeListmap">
+		<result property="S_DATE" 	        column="s_date" 	    javaType="String" />
+ 		<result property="CNT" 		    column="cnt" 	        javaType="String" />
+	</resultMap>
+	<select id="gettongkeList" resultMap="gettongkeListmap">
+		SELECT TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24') S_DATE , COUNT(*) CNT FROM TBL_LOG
+		WHERE TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24')
+		BETWEEN '2017-06-21-00' AND '2017-06-22-00'
+		GROUP BY TO_CHAR(LOGTIME , 'YYYY-MM-DD-HH24')
+		ORDER BY TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24') ASC
+	</select>
 
 </mapper>
 
