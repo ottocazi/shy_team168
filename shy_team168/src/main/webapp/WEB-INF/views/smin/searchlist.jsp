@@ -56,6 +56,7 @@
             <div class="clearfix"></div>
 
             <div class="row">
+            
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -81,24 +82,24 @@
                     <table class="table">
                       <thead>
                         <tr>
+                        <th>test</th>
                           <th>회원번호</th>
                           <th>회원이름</th>
                           <th>회원아이디</th>
-                          <th>게시물수</th>
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="map" items="${shyList}" varStatus="status">
+                      <c:forEach var="map" items="${plist}" varStatus="status">
                         <tr>
+                        <td>test</td>
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
-                          <td>${map.MEMOCOUNT}</td>
                         </tr>
                       </c:forEach>
                       </tbody>
 					  </table>
-					  <div align="right">${pagebar}</div>
+					  <%-- <div align="right">${pagebar}</div> --%>
                   </div>
                 </div>
               </div>
@@ -107,7 +108,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>운영진 목록</h2>
+                    <h2>그룹 목록</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -130,31 +131,19 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>번호</th>
-                          <th>이름</th>
-                          <th>아이디</th>
-                          <th>권한</th>
+                          <th>그룹번호</th>
+                          <th>그룹이름</th>
+                          <th>그룹아이디</th>
                         </tr>
                       </thead>
-                      <tbody>
+                     <tbody>
+                      <c:forEach var="map" items="${glist}" varStatus="status">
                         <tr>
-                          <th scope="row">1</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
+                          <td>${map.GROUPNO}</td>
+                          <td>${map.GNAME}</td>
+                          <td>${map.GCOUNT}</td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
+                      </c:forEach>
                       </tbody>
                     </table>
                   </div>

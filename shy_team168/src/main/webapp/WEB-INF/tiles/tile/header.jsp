@@ -363,6 +363,15 @@
 
 	}
 
+	else {
+		searchFrm.action = "searchlist.shy";
+		searchFrm.method = "GET";
+		searchFrm.submit();
+	}
+	
+}
+
+
 	function searchKeep() {
 		<c:if test="${not empty search}">
 		/* $("#colname").val("${colname}"); // 검색어 컬럼명을 유지시켜 주겠다. */
@@ -382,6 +391,7 @@
 
 	<!-- <div style="margin-bottom:10px;">
 </div> -->
+<<<<<<< HEAD
 	<nav class="shy_topnavbar shy_topnavbar-fixed-top "
 		style="background-color: white;">
 		<div class="shy_top_container-fluid">
@@ -519,6 +529,52 @@
 
 			<!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
 			<!--  <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
+=======
+<nav class="shy_topnavbar shy_topnavbar-fixed-top " style="background-color: white;">
+  <div class="shy_top_container-fluid">
+    <div class="shy_topnavbar-header">
+      <a class="shy_topnavbar-brand" href="<%= request.getContextPath() %>/mainline.shy">
+       <span class="letter" id="shy" data-letter="s">s</span>
+   				<span class="letter" id="shy" data-letter="h">h</span>
+   				<span class="letter" id="shy" data-letter="y">y</span>
+      </a>
+      <c:if test="${loginuser!=null }">
+      
+      	<c:if test="${loginuser.name!=null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      	<c:if test="${loginuser.name==null }">
+      	<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님 안녕하세요</span>
+      	</c:if>
+      	
+      </c:if>
+    </div>
+    
+    <ul class="shy_topnav shy_topnavbar-shy_topnav shy_topnavbar-right">
+    <li><a href="javascript:shynow();"><i class="fa fa-pencil fa-2x" aria-hidden="true" style="color:red;"></i></a></li>
+      <li><a href="<%= request.getContextPath() %>/mygroups.shy"><i class="fa fa-street-view fa-2x" aria-hidden="true" style="color:#98DDDE;"></i></a></li>
+      <li><a href="<%= request.getContextPath() %>/mypage.shy?idx=${sessionScope.loginuser.idx}"><i class="fa fa-heartbeat fa-2x" aria-hidden="true" style="color:#F7786B;"></i></a></li>
+      <li><a href="#"><i class="fa fa-bolt fa-2x" aria-hidden="true" style="color:#FAE03C;"></i></a></li>
+      <li><a href="#"><i class="fa fa-credit-card fa-2x" aria-hidden="true" style="color:#F2552C;"></i></a></li>
+      <li><a href="#"><i class="fa fa-map-marker fa-2x" aria-hidden="true" style="color:#B76BA3;"></i></a></li>
+      
+    </ul>
+    <!-- ===== #103. 글검색 폼 추가하기 : 제목, 내용, 글쓴이로 검색하도록 한다. ===== -->
+	<form name="searchFrm" style="margin-top: 20px;">
+		 
+		 
+		 
+		<input type="text" name="search" id="search" size="20px" 
+			style="border-radius: 10px; height: 30px; " />
+		
+	<button type="button" class="btn btn-primary" onClick="goSearch();" 
+		style="width: 60px; height: 30px;" >검색</button>
+	</form>
+    
+    <!-- ===== #146. Ajax 로 검색어 입력시 자동글 완성하기 1 ===== -->
+   <!--  <div id="displayList" style="width:302px; margin-left: 61px; border: solid 1px gray; border-top: 0px;">
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 	</div>
      -->
 

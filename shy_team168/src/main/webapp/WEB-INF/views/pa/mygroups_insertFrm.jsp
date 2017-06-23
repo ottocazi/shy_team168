@@ -51,7 +51,7 @@
 </script>
 
 <div id="insertGrp" align="center">
-<form name="makegrpFrm">
+<form name="makegrpFrm" enctype="multipart/form-data">
     <div class="grp_form" align="center">
         <div class="grp_form-title">
           그룹,<br/>
@@ -63,7 +63,7 @@
           </div>
           <div class="input-name">
             <input type="text" value="${sessionScope.loginuser.name}" name="name" readonly="readonly" style="width: 400px;"/>
-            <input type="hidden" value="${sessionScope.loginuser.idx}" name="fk_idx" style="width: 400px;"/>
+            <input type="hidden" value="${sessionScope.loginuser.idx}" name="fk_idx"/>
           </div>
           <div class="input-status">
             <input type="radio" name="status" value="1"/>전체공개&nbsp;&nbsp;&nbsp;
