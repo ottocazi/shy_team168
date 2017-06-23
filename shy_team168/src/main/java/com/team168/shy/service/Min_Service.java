@@ -59,16 +59,16 @@ public class Min_Service {
 		
 
 
-		public List<HashMap<String, String>> peoplesearch(String search) {
+		public List<HashMap<String, String>> peoplesearch(String search, RowBounds rowBounds) {
 			
-			List<HashMap <String, String>> plist = dao.peoplesearch(search );
+			List<HashMap <String, String>> plist = dao.peoplesearch(search, rowBounds );
 			return plist;
 		}
 		
 		
-		public List<HashMap<String, String>> groupsearch(String search) {
+		public List<HashMap<String, String>> groupsearch(String search, RowBounds rowBounds) {
 			
-			List<HashMap <String, String>> glist = dao.groupsearch(search );
+			List<HashMap <String, String>> glist = dao.groupsearch(search, rowBounds );
 			return glist;
 		}
 

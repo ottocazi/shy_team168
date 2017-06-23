@@ -51,6 +51,8 @@ public class Min_Controller {
 		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
 		    	
 		      String pageNo = req.getParameter("pageNo");
+		      String search = req.getParameter("search");
+		      
 		      
 		      int totalCount = 0;        // 총게시물 건수
 		      int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 갯수 (예: 3, 5, 10) 
@@ -58,7 +60,7 @@ public class Min_Controller {
 		      int totalPage = 0;         // 총페이지수(웹브라우저상에 보여줄 총 페이지 갯수)
 		      
 		      int start = 0;             // 시작 행 번호
-		      int end = 0;               // 끝 행 번호
+		      int offset = 0;        // 끝 행 번호
 		      int startPageNo = 0;       // 페이지바에서 시작될 페이지 번호 
 		    
 		      int loop = 0;       // startPageNo 값이 증가할때 마다 1씩 증가하는 용도.
@@ -74,25 +76,20 @@ public class Min_Controller {
 		    	  // 현재 보여주고자 하는 페이지로 설정한다.
 		      }
 		      
-		      start = ((currentShowPageNo - 1) * sizePerPage) + 1;  
-		      end = start + sizePerPage - 1;
+		       start = (currentShowPageNo - 1) * sizePerPage;
+		       offset = sizePerPage;
 		      
-		      String search = req.getParameter("search");
-		     // RowBounds rowbounds = new RowBounds(start, end);
+		      
+		      RowBounds rowBounds = new RowBounds(start, offset);
 
 		    	
 		    	
 		    	HashMap<String, String> map = new HashMap<String, String>();
 		    	//map.put("search", search);
 		    	
-		    	// ===== #109. 페이징 처리를 위해 start, end 를 map 에 추가하여 DB에서 select 되어지도록 한다. ===== 
-		    	map.put("start", String.valueOf(start) ); // 키값 start, 밸류값은 해쉬맵이 String 타입인데 start 는 int 타입이어서 String 타입으로 변경함. 
-		    	map.put("end", String.valueOf(end) );     // 키값 end,   밸류값은 해쉬맵이 String 타입인데 end 는 int 타입이어서 String 타입으로 변경함. 
 		    	
-		    	
-		    	
-		    	List<HashMap <String, String>> plist = service.peoplesearch(search);
-		    	List<HashMap <String, String>> glist = service.groupsearch(search);
+		    	List<HashMap <String, String>> plist = service.peoplesearch(search,rowBounds);
+		    	List<HashMap <String, String>> glist = service.groupsearch(search,rowBounds);
 		   
 		    	totalCount = service.mTotalCount(map);
 		    	

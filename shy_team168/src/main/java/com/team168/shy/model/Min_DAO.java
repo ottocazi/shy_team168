@@ -57,7 +57,7 @@ public class Min_DAO{
 		//    ============    검색하기
 		
 
-		public List<HashMap<String, String>> peoplesearch(String search) {
+		public List<HashMap<String, String>> peoplesearch(String search, RowBounds rowBounds) {
 			
 			List<HashMap<String, String>> plist = sqlsession.selectList("min.peoplesearch", search);
 			
@@ -65,7 +65,7 @@ public class Min_DAO{
 		}
 		
 		
-		public List<HashMap<String, String>> groupsearch(String search) {
+		public List<HashMap<String, String>> groupsearch(String search, RowBounds rowBounds) {
 			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", search);
 			return glist;
 		}
