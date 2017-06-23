@@ -106,5 +106,10 @@ public class Meong_DAO{
 		return n;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList() {
+		List<HashMap<String, Object>> tkList = sqlsession.selectList("mangu.gettongkeList");
+		return tkList;
+	}
+
     
 }
