@@ -66,9 +66,9 @@ public class Min_Service {
 		}
 		
 		
-		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map, RowBounds rowBounds2) {
+		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map ) {
 			
-			List<HashMap <String, String>> glist = dao.groupsearch(map, rowBounds2  );
+			List<HashMap <String, String>> glist = dao.groupsearch(map );
 			return glist;
 		}
 
