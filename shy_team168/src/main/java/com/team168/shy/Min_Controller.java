@@ -47,11 +47,13 @@ public class Min_Controller {
     @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
 	    
+    	
+    	String search = req.getParameter("search");
 		   // ===== #108. 페이징 처리하기 =====
 		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
 		    	
 		      String pageNo = req.getParameter("pageNo");
-		      String search = req.getParameter("search");
+		      
 		      
 		      
 		      int totalCount = 0;        // 총게시물 건수
@@ -76,24 +78,62 @@ public class Min_Controller {
 		    	  // 현재 보여주고자 하는 페이지로 설정한다.
 		      }
 		      
-		       start = (currentShowPageNo - 1) * sizePerPage;
-		       offset = sizePerPage;
-		      
-		      
+		       start = ((currentShowPageNo - 1) * sizePerPage) + 1;  
+		       offset = start + sizePerPage - 1;
+		       
 		      RowBounds rowBounds = new RowBounds(start, offset);
+
+		      
+		      
+		      // ===== #108. 페이징 처리하기 =====
+			   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
+			    	
+			      String pageNo2 = req.getParameter("pageNo2");
+			      
+			      
+			      
+			      int totalCount2 = 0;        // 총게시물 건수
+			      int sizePerPage2 = 10;      // 한 페이지당 보여줄 게시물 갯수 (예: 3, 5, 10) 
+			      int currentShowPageNo2 = 1; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.
+			      int totalPage2 = 0;         // 총페이지수(웹브라우저상에 보여줄 총 페이지 갯수)
+			      
+			      int start2 = 0;             // 시작 행 번호
+			      int offset2 = 0;        // 끝 행 번호
+			      int startPageNo2 = 0;       // 페이지바에서 시작될 페이지 번호 
+			    
+			      int loop2 = 0;       // startPageNo 값이 증가할때 마다 1씩 증가하는 용도.
+			      int blocksize2 = 5;  // "페이지바" 에 보여줄 페이지의 갯수 
+			      
+			      if(pageNo2 == null) {
+			    	  currentShowPageNo2 = 1;
+			    	  
+			      }
+			      else {
+			    	  currentShowPageNo2 = Integer.parseInt(pageNo2);
+			    	  // GET 방식으로 파라미터 pageNo 에 넘어온 값을
+			    	  // 현재 보여주고자 하는 페이지로 설정한다.
+			      }
+			      
+			       start2 = ((currentShowPageNo2 - 1) * sizePerPage2) + 1;  
+			       offset2 = start2 + sizePerPage2 - 1;
+			       
+			      RowBounds rowBounds2 = new RowBounds(start2, offset2);
 
 		    	
 		    	
 		    	HashMap<String, String> map = new HashMap<String, String>();
-		    	//map.put("search", search);
+		    	map.put("search", search);
 		    	
 		    	
-		    	List<HashMap <String, String>> plist = service.peoplesearch(search,rowBounds);
-		    	List<HashMap <String, String>> glist = service.groupsearch(search,rowBounds);
+		    	List<HashMap <String, String>> plist = service.peoplesearch(map,rowBounds);
+		    	List<HashMap <String, String>> glist = service.groupsearch(map,rowBounds2);
 		   
 		    	totalCount = service.mTotalCount(map);
-		    	
+		    	totalCount2 = service.gTotalCount(map);
 		 
+		    	
+		    	
+		    	
 		    	totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
 		    	
 		    	String pagebar = "";
@@ -167,8 +207,86 @@ public class Min_Controller {
 		        
 		        
 		        pagebar += "</ul>";
+		        
+		        
+		        /*==== 두번째 페이지바 소스 ===============================================*/
+		        
+		        totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
+		    	
+		    	String pagebar2 = "";
+		    	pagebar2 += "<ul>";
+		    	
+		    	
+		        loop2 = 1;
+		        
+		        // **** !!! 페이지바의 시작 페이지번호(startPageNo)값 만들기 --- 공식임 !!!!
+		        startPageNo2 = ((currentShowPageNo2 - 1)/blocksize2)*blocksize2 + 1;
+		  
+		        
+		        // **** 이전5페이지 만들기 ****
+		        if(startPageNo2 == 1) {
+		        	// 첫 페이지바에 도달한 경우
+		        	pagebar2 += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize2);
+		        }
+		        else {
+		        	// 첫 페이지바가 아닌 두번째 이상 페이지바에 온 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo2-1, blocksize2); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d&search=%s'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo2-1, search, blocksize2); // 검색어 있는 경우        		
+		        	}	
+		        }        
+		            	
+		        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
+		        while( !(loop2 > blocksize2 ||
+		        		 startPageNo2 > totalPage2) ) {
+		        	
+		        	if(startPageNo2 == currentShowPageNo2) {
+		        		pagebar2 += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo2);	
+		        	}
+		        	else {
+			        	if(search == null) {
+			        		// 검색어가 없는 경우
+			        		pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d'>%d</a>&nbsp;&nbsp;", startPageNo2, startPageNo2); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+			        	}
+			        	else{
+			        		// 검색어가 있는 경우
+			        	    pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo2,  search, startPageNo2); // 검색어 있는 경우        		
+			        	}
+		        	}
+		        	
+		        	loop2++;
+		        	startPageNo2++;
+		        	
+		        }// end of while--------------------
+		                
+		        // **** 다음5페이지 만들기 ****
+		        if(startPageNo2 > totalPage2) {
+		        	// 마지막 페이지바에 도달한 경우
+		        	pagebar2 += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize2);
+		        }
+		        else {
+		        	// 마지막 페이지바가 아닌 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo2, blocksize2); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo2=%d&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo2, search, blocksize2); // 검색어 있는 경우        		
+		        	}	
+		        }
+		        
+		        
+		        pagebar2 += "</ul>";
 		    	
 		        req.setAttribute("pagebar", pagebar);
+		        req.setAttribute("pagebar2", pagebar2);
 
 		        req.setAttribute("search", search);
 		    	

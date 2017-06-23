@@ -146,7 +146,7 @@
                       </c:forEach>
                       </tbody>
                     </table>
-                    <%-- <div align="right">${pagebar}</div> --%> 
+                     <div align="right">${pagebar2}</div> 
                   </div>
                 </div>
               </div>
