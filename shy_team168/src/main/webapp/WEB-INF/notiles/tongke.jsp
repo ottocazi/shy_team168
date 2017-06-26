@@ -33,7 +33,15 @@ function init_charts() {
             new Chart(f, {
                 type: "line",
                 data: {
-                	labels: ["0","2017-06-21-14"+"시", "2017-06-21-15"+"시", "2017-06-21-16"+"시", "2017-06-21-17"+"시", "2017-06-21-18"+"시", "2017-06-21-20"+"시"],
+                	labels: [
+                		
+                		<c:forEach var="map" items="${tkList}"  varStatus="status">
+                		
+						"${map.S_DATE}시",
+						 
+						</c:forEach>
+                	],
+                	/* labels: ["0","2017-06-21-14"+"시", "2017-06-21-15"+"시", "2017-06-21-16"+"시", "2017-06-21-17"+"시", "2017-06-21-18"+"시", "2017-06-21-20"+"시"], */
                     datasets: [{
                         label: "로그인횟수",
                         backgroundColor: "rgba(38, 185, 154, 0.31)",
@@ -43,7 +51,15 @@ function init_charts() {
                         pointHoverBackgroundColor: "#fff",
                         pointHoverBorderColor: "rgba(220,220,220,1)",
                         pointBorderWidth: 1,
-                        data: [0, 2, 3, 7, 7, 4, 6]
+                        data: [
+                        	
+                        	<c:forEach var="map" items="${tkList}"  varStatus="status">
+                    		
+    						"${map.CNT}",
+    						 
+    						</c:forEach>
+                        	
+                        ]
                     }, /* {
                         label: "My Second dataset",
                         backgroundColor: "rgba(3, 88, 106, 0.3)",
@@ -249,7 +265,7 @@ function init_charts() {
             <div class="page-title">
               <div class="title_left">
                 <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
-                	<c:forEach var="map" items="${tkList}"  varStatus="status">
+                	<c:forEach var="map" items="${tkList}"  varStatus="status" >
 						${map.S_DATE} ,
 						<span id = "" >${map.CNT} ,</span> 
 					</c:forEach>
