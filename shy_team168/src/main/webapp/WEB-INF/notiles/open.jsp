@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.css">
+
 <script type="text/javascript">
    $(document).ready(function(){
       
@@ -25,8 +30,41 @@
          $("#joinus").hide();
       });
       
+  
+      $("#loginend").click(function(event){
+
+ 		 var email = $("#email").val(); 
+		 var pwd = $("#pwd").val(); 
+			
+			 if(email.trim()=="") {
+				swal({title: "아이디를 입력하세요!!",type: "warning"},		  
+				function(){
+				    window.location.href = "";
+				});
+				 event.preventDefault();
+				 return;
+			 }
+			
+			 if(pwd.trim()=="") {
+				swal({title: "비밀번호를 입력하세요!!", type: "error"},		  
+				function(){
+				    window.location.href = "";
+				});
+				 event.preventDefault();
+				 return;
+			 }
+
+			 document.loginform.action = "loginEnd.shy";
+			 document.loginform.method = "post";
+			 document.loginform.submit();
+		}); 
       
    });
+   
+	function goAdd() {
+		var addFrm = document.addFrm;
+		addFrm.submit();
+	}
    
 </script>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" type="text/css">
@@ -50,13 +88,14 @@
    </div>
    <p style="color: #BBBBBB; font-size: 10pt">친구들의 새소식이 궁금하시다면 <br>지금 바로 샤이로 로그인하세요</p>
    <div class="form-input">
-      <input type="text" placeholder="email" name="email" id="email"/>
-      <input type="password" placeholder="password" name="pwd" id="pwd"/>
-      
+		<form name="loginform">
+      		<input type="text" placeholder="email" name="email" id="email"/>
+      		<input type="password" placeholder="password" name="pwd" id="pwd"/>
+     	</form> 
    </div>
    <br>
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
-   <button class="login">Login</button>
+   <button class="login" id="loginend" type="button">Login</button>
    </div>
    <div id="joinus" style="min-height: 385px;">
    <div class="form-title">
@@ -66,13 +105,15 @@
    </div>
    <p style="color: #BBBBBB; font-size: 10pt">가족, 친구와 함께하는 <br>즐거운 경제활동에 참여하세요 </p>
    <div class="form-input" >
-      <input type="text" placeholder="name" name="name" id="name"/>
-      <input type="text" placeholder="email" name="email" id="email"/>
-      <input type="password" placeholder="password" name="pwd" id="pwd"/>
-      <input type="password" placeholder="password" name="chkpwd" id="chkpwd"/>
+   	  <form name="addFrm" action="<%= request.getContextPath() %>/addregistorEnd.shy" method="post">
+	      <input type="text" placeholder="name" name="name" id="name"/>
+	      <input type="text" placeholder="email" name="email" id="email"/>
+	      <input type="password" placeholder="password" name="pwd" id="pwd"/>
+	      <input type="password" placeholder="password" name="chkpwd" id="chkpwd"/>
+	  </form>    
    </div>
    
-   <button class="login">JOIN</button>
+   <button class="login" onClick="goAdd();">JOIN</button>
    </div>
   
      <div id="register">
