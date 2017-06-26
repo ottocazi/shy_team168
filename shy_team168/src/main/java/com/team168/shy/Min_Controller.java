@@ -1,6 +1,6 @@
 package com.team168.shy;
 
-import java.util.ArrayList;
+import java.util.ArrayList;  
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,10 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.spring.board.model.BoardVO;
-import com.team168.shy.service.DDung_Service;
+import com.team168.shy.model.ShyMemberVO;
+import com.team168.shy.service.Min_Service;
 
 
 @Controller
@@ -24,7 +22,7 @@ public class Min_Controller {
 
 	@Autowired
 	
-	private DDung_Service serv100;
+	private Min_Service service;
 	
 	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
@@ -42,7 +40,7 @@ public class Min_Controller {
 
 	 // ===== #59. 글목록 보기 페이지 요청 =====
 	    @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
-	    public String list(HttpServletRequest req, HttpSession session) { 
+	    public String searchlist(HttpServletRequest req, HttpSession session) { 
 	    
 	   // ===== #108. 페이징 처리하기 =====
 	   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
@@ -53,6 +51,7 @@ public class Min_Controller {
 	      int sizePerPage = 10;      // 한 페이지당 보여줄 게시물 갯수 (예: 3, 5, 10) 
 	      int currentShowPageNo = 1; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.
 	      int totalPage = 0;         // 총페이지수(웹브라우저상에 보여줄 총 페이지 갯수)
+	      
 	      
 	      int start = 0;             // 시작 행 번호
 	      int end = 0;               // 끝 행 번호
@@ -112,10 +111,14 @@ public class Min_Controller {
 	   //       먼저 위의 List<BoardVO> boardList = service.boardList(); 부분을 
 	   //       주석처리하고서 아래와 같이 한다. ===== 
 	    	String colname = req.getParameter("colname");
+	    	
+	    	
+	    	
 	    	String search = req.getParameter("search");
 	    	
 	    	HashMap<String, String> map = new HashMap<String, String>();
 	    	map.put("colname", colname);
+	    	
 	    	map.put("search", search);
 	    	
 	    	// ===== #109. 페이징 처리를 위해 start, end 를 map 에 추가하여 DB에서 select 되어지도록 한다. ===== 
@@ -123,7 +126,7 @@ public class Min_Controller {
 	    	map.put("end", String.valueOf(end) );     // 키값 end,   밸류값은 해쉬맵이 String 타입인데 end 는 int 타입이어서 String 타입으로 변경함. 
 	    		
 	    	
-	    	List<BoardVO> boardList = service.boardList(map);
+	    	List<ShyMemberVO> memberList = service.memberList(map);
 	    
 	    	
 	    //	===== #111. 페이징 작업의 계속(페이지바에 나타낼 총 페이지 갯수 구하기) =====
@@ -195,11 +198,11 @@ public class Min_Controller {
 	        	
 	        	if(colname == null || search == null) {
 	        		// 검색어가 없는 경우
-	        		pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+	        		pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.shy?pageNo=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
 	        	}
 	        	else{
 	        		// 검색어가 있는 경우
-	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d&colname=%s&search=%s'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 검색어 있는 경우        		
+	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.shy?pageNo=%d&colname=%s&search=%s'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo-1, colname, search, blocksize); // 검색어 있는 경우        		
 	        	}	
 	        }        
 	            	
@@ -213,11 +216,11 @@ public class Min_Controller {
 	        	else {
 		        	if(colname == null || search == null) {
 		        		// 검색어가 없는 경우
-		        		pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        		pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.shy?pageNo=%d'>%d</a>&nbsp;&nbsp;", startPageNo, startPageNo); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
 		        	}
 		        	else{
 		        		// 검색어가 있는 경우
-		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 검색어 있는 경우        		
+		        	    pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.shy?pageNo=%d&colname=%s&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo, colname, search, startPageNo); // 검색어 있는 경우        		
 		        	}
 	        	}
 	        	
@@ -236,11 +239,11 @@ public class Min_Controller {
 	        	
 	        	if(colname == null || search == null) {
 	        		// 검색어가 없는 경우
-	        		pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+	        		pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.action?pageNo=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, blocksize); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
 	        	}
 	        	else{
 	        		// 검색어가 있는 경우
-	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/board/list.action?pageNo=%d&colname=%s&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 검색어 있는 경우        		
+	        	    pagebar += String.format("&nbsp;&nbsp;<a href='/smin/searchlist.action?pageNo=%d&colname=%s&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo, colname, search, blocksize); // 검색어 있는 경우        		
 	        	}	
 	        }
 	        
@@ -251,7 +254,7 @@ public class Min_Controller {
 	        req.setAttribute("colname", colname);
 	        req.setAttribute("search", search);
 	    	
-	    	req.setAttribute("boardList", boardList);
+	    	req.setAttribute("memberList", memberList);
 	    	
 	    	/* ===== #68. 글조회수(readCount)증가(DML문 update)는 
 	                    반드시 해당 글제목을 클릭했을 경우에만 증가되고 

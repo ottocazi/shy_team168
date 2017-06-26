@@ -95,7 +95,7 @@ public class Pa_Controller {
 	     
 	     이와같이 jackson JSON 라이브러리를 사용할때의 장점은 View 단이 필요없게 되므로 간단하게 작성하는 장점이 있다. 
 	*/
-    @RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
+    /*@RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
     @ResponseBody
     public List<HashMap<String, Object>> wordSearchShow(HttpServletRequest req) { 
     	
@@ -122,7 +122,7 @@ public class Pa_Controller {
     	
     	return returnmapList;
     }
-    
+    */
     // ===== 그룹만들기 완료 요청 =====
     @RequestMapping(value="/mygroups_insertEnd.shy", method={RequestMethod.POST})
     public String goMakeGrp(GroupVO grpvo, HttpServletRequest req) {
