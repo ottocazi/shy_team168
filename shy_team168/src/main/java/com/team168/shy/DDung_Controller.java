@@ -35,17 +35,7 @@ public class DDung_Controller {
 	private Juno_Service jservice;
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
-    public String goMainTimeline(HttpServletRequest req) {
-    	
-
-		System.out.println("test");
-
-		System.out.println("성민 접속확인?");
-
-		System.out.println("test");
-		System.out.println("test2");
-	
-    public String mainline(HttpServletRequest req, HttpSession session) {
+	public String mainline(HttpServletRequest req, HttpSession session) {
 
 		Object loginuser = session.getAttribute("loginuser");
 		ShyMemberVO smvo = (ShyMemberVO)loginuser;
