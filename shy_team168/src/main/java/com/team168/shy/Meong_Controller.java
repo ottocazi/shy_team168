@@ -99,6 +99,7 @@ public class Meong_Controller {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
+
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
     		type = "error";
