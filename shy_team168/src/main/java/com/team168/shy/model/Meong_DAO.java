@@ -91,10 +91,25 @@ public class Meong_DAO{
 		return memocount;
 	}
 
-	public List<ShyMemberVO> getshyList() {
-		List<ShyMemberVO> shyList = sqlsession.selectList("mangu.shyList");
-		return shyList;
+	public List<HashMap<String, Object>> getshyList() {
+		List<HashMap<String, Object>> shtList = sqlsession.selectList("mangu.shyList");
+		return shtList;
 	}
-    
+
+	public int shystatusDown(HashMap<String, String> map) {
+		int n = sqlsession.insert("mangu.shystatusDown", map);
+		return n;
+	}
+
+	public int shystatusUp(HashMap<String, String> map) {
+		int n = sqlsession.insert("mangu.shystatusUp", map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList() {
+		List<HashMap<String, Object>> tkList = sqlsession.selectList("mangu.gettongkeList");
+		return tkList;
+	}
+
     
 }

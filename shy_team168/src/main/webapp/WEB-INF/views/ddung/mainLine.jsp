@@ -22,13 +22,13 @@
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      
     <script>
-    function openComment() {
+    function openComment(event) {
 	
-	   var commentbox = document.getElementById('commentbox');
+	   var commentbox = document.getElementById('commentbox'+event);
 	   
 	
 	   if(commentbox.style.display=='none'){
-		   commentbox.style.display = 'block';
+		   commentbox.style.display = 'block'; 
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
@@ -65,7 +65,12 @@
            <a class="button follow" href="#" title="Follow">
                Follow
             </a>
-          <img class="avatar-32" src="https://upload.wikimedia.org/wikipedia/en/7/7e/Patrick_Star.png" alt="Avatar">
+          <c:if test="${shies.myimg != null}">
+          <img class="avatar-32" src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }" alt="Avatar">
+          </c:if>
+          <c:if test="${shies.myimg == null}">
+          <img class="avatar-32" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif" alt="Avatar">
+          </c:if>
           <strong>
                <a title="Full Name" href="#">
                   <span style="font-size: 12pt; margin:0; color:black;">
@@ -109,7 +114,7 @@
           <a class="bt-share" title="Share" href="#">
                Share
             </a>
-          <a href="javascript:openComment();"class="bt-comment" title="Comment" href="">
+          <a href="javascript:openComment(${shies.snsno });"class="bt-comment" title="Comment" href="">
                댓글(33)
             </a>
         </p>
@@ -119,7 +124,7 @@
       <!--new댓글창  -->
     
       
-     <div id="commentbox" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+     <div id="commentbox${shies.snsno }" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
   
   
   <!-- Form -->

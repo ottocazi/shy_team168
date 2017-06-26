@@ -3,11 +3,12 @@ package com.team168.shy.service;
 import java.util.HashMap; 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team168.shy.model.Min_DAO;
-import com.team168.shy.model.ShyMemberVO;
+
 
 @Service
 public class Min_Service {
@@ -33,23 +34,48 @@ public class Min_Service {
 		}*/
 
 		
-		
-		public List<ShyMemberVO> memberList(HashMap<String, String> map) {
-			List<ShyMemberVO> memberList = dao.memberList(map);
-			return memberList;
-			
-		}
+	
 		
 		
 	
 		// ===== #112. 총 게시물 건수 구하기
 		//             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. ===== 
-		public int getTotalCount(HashMap<String, String> map) {
-			int count = dao.getTotalCount(map);
+		public int gTotalCount(HashMap<String, String> map) {
+			int count = dao.gTotalCount(map);
+			return count;
+		}
+
+		public int mTotalCount(HashMap<String, String> map) {
+			int count = dao.mTotalCount(map);
 			return count;
 		}
 		
 		
 		
+		
+		
+		
+		
+		
+
+
+		public List<HashMap<String, String>> peoplesearch(HashMap<String, String> map, RowBounds rowBounds) {
+			
+			List<HashMap <String, String>> plist = dao.peoplesearch(map, rowBounds );
+			return plist;
+		}
+		
+		
+		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map ) {
+			
+			List<HashMap <String, String>> glist = dao.groupsearch(map );
+			return glist;
+		}
+
+
+
+
+
+
 	
 }

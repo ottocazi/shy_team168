@@ -56,6 +56,7 @@
             <div class="clearfix"></div>
 
             <div class="row">
+            
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -81,24 +82,24 @@
                     <table class="table">
                       <thead>
                         <tr>
+                        
                           <th>회원번호</th>
                           <th>회원이름</th>
                           <th>회원아이디</th>
-                          <th>게시물수</th>
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="map" items="${shyList}" varStatus="status">
+                      <c:forEach var="map" items="${plist}" varStatus="status">
                         <tr>
+                        
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
-                          <td>${map.MEMOCOUNT}</td>
                         </tr>
                       </c:forEach>
                       </tbody>
 					  </table>
-					  <div align="right">${pagebar}</div>
+					   <div align="right">${pagebar}</div> 
                   </div>
                 </div>
               </div>
@@ -107,7 +108,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>운영진 목록</h2>
+                    <h2>그룹 목록</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -130,33 +131,23 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>번호</th>
-                          <th>이름</th>
-                          <th>아이디</th>
-                          <th>권한</th>
+                          <th>그룹번호</th>
+                          <th>그룹이름</th>
+                          <th>그룹아이디</th>
                         </tr>
                       </thead>
-                      <tbody>
+                     <tbody>
+                      <c:forEach var="map" items="${glist}" varStatus="status">
                         <tr>
-                          <th scope="row">1</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
+                          <td>${map.GROUPNO}</td>
+                          <td>${map.GNAME}</td>
+                          <td>${map.GCOUNT}</td>
+                          
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
+                      </c:forEach>
                       </tbody>
                     </table>
+                     <%-- <div align="right">${pagebar2}</div>  --%>
                   </div>
                 </div>
               </div>
@@ -204,46 +195,9 @@
                   <div class="x_content">
 
 				 <!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 -->
-				 <%-- <div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
-		
-		<!-- HOT한 그룹  -->
-   		  <c:if test="${hotGrpList!=null }">
-   		  <c:forEach var="gvo" items="${hotGrpList }">
-		  <div class="grp_box">
-		    <c:if test="${gvo.gimg!=null}">
-		    <img class="grp_boxImage" src="${gvo.gimg}">img가져오기
-		    </c:if>
-		    <c:if test="${gvo.gimg==null}">
-		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">기본이미지
-		    </c:if>
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
-		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">${gvo.gname }</a></h4>
-		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
-		      <span class="grp_desc"> ${gvo.description }</span>
-		      <!-- <i class="btn openPop">Popular photos</i> -->
-		    </div>
-		   
-		    <!-- <div class="pop">
-		      <i class="close">&times;</i>
-		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
-		        <img src="http://farm8.static.flickr.com/7390/12980175743_5cb04727f3_q.jpg">
-		        <img src="http://farm4.static.flickr.com/3679/12980129103_edbea2fca4_q.jpg">
-		        <img src="http://farm6.static.flickr.com/5497/14367491417_563fcbc6a9_q.jpg">
-		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
-		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
-		    </div> -->
-		  </div>
-		  </c:forEach>
-		  </c:if>
-		   <c:if test="${hotGrpList==null }">
-		   <div class="grp_box">
-		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 인기 그룹이 없습니다.</span>
-		    </div>
-		   </c:if>
-		</div>
+				  
 
- --%>
+
 
                   </div>
                   

@@ -27,8 +27,14 @@
 	
 	<!-- ===== 그룹만들기 ===== -->	
 	<insert id="grpinsert" parameterType="com.team168.shy.model.GroupVO">
+		<if test='gimg != null'>
 		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate,gcount)
 		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, #{gimg}, #{status} , default,default)
+		</if>
+		<if test='gimg == null'>
+		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate,gcount)
+		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, default, #{status} , default,default)
+		</if>
 	</insert>
 	
 	<!-- ===== 그룹멤버 insert ===== -->	
@@ -42,12 +48,13 @@
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
 				 rank() over (order by gcount desc) as rank
 		 from tbl_group
+		 where status in(1,2)
 		 order by rank
 	</select>
 	
 	<!-- ===== 그룹 가져오기 =====  -->
-	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO"> 
-		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO" > 
+		 select  groupno, fk_idx, gname
 		 from tbl_group
 		 where to_char(groupdate,'yyyy-mm-dd hh:mi:ss') = to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
 	</select>
@@ -56,6 +63,7 @@
 	<select id="newGrpList" resultType="com.team168.shy.model.GroupVO"> 
 		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
 		 from tbl_group
+		 where status in(1,2)
 		 order by groupdate desc
 	</select>
 	
@@ -63,7 +71,163 @@
 	<select id="myGrpList" parameterType="int" resultType="com.team168.shy.model.GroupVO"> 
 		 select  *
 		 from tbl_group
-		 where fk_idx=#{fk_idx}
+		 where fk_idx=#{fk_idx} and status in(1,2,3)
+	</select>
+	
+	<!-- ===== 그룹 디테일보기 =====  -->
+	<resultMap type="java.util.HashMap" id="groupDetailMap">
+		<result property="GROUPNO" 				column="groupno" 			javaType="int" />
+ 		<result property="FK_IDX" 			column="fk_idx" 			javaType="String" />
+ 		<result property="GNAME" 			column="gname" 			javaType="String" />
+ 		<result property="DESCRIPTION" 			column="description" 		javaType="String" />
+ 		<result property="GROUPDATE" 			column="groupdate" 			javaType="String" />
+ 		<result property="STATUS" 	column="status" 	javaType="int" />
+ 		<result property="GIMG" 	column="gimg" 	javaType="String" />
+ 		<result property="GCOUNT" 	column="gcount" 	javaType="int" />
+ 		<result property="NAME" 	column="name" 	javaType="String" />
+ 		<result property="EMAIL" 	column="email" 	javaType="String" />
+ 		<result property="MYIMG" 	column="myimg" 	javaType="String" />
+ 		<result property="MYINTRO" 	column="myintro" 	javaType="String" />
+	</resultMap>
+	<select id="groupDetail" parameterType="int" resultMap="groupDetailMap"> 
+		select groupno,fk_idx, gname,description,groupdate,status,gimg,gcount,name,email,myimg,myintro
+		from view_tbl_group
+		where groupno = #{groupno}
+	</select>
+	
+	<!-- ===== 그룹멤버 정보 가져오기 =====  -->
+	<resultMap type="java.util.HashMap" id="groupMemberMap">
+		<result property="GROUPNO" 				column="groupno" 			javaType="int" />
+		<result property="GPDETAILNO" 				column="gpdetailno" 			javaType="int" />
+ 		<result property="FK_GROUPIDX" 			column="fk_groupidx" 			javaType="String" />
+ 		<result property="GREGISTERDATE" 			column="gregisterdate" 			javaType="String" />
+ 		<result property="STATUS" 	column="status" 	javaType="int" />
+ 		<result property="NAME" 	column="name" 	javaType="String" />
+ 		<result property="EMAIL" 	column="email" 	javaType="String" />
+ 		<result property="MYIMG" 	column="myimg" 	javaType="String" />
+	</resultMap>
+	<select id="gmemberList" parameterType="int" resultMap="groupMemberMap"> 
+		 select name,email,myimg, groupno , gpdetailno, fk_groupidx, gregisterdate, status
+		 from
+		  (select C.name,C.email,C.myimg, V.*
+		  from tbl_shymember C join 
+		  (
+		   select A.groupno ,B.gpdetailno,B.fk_groupidx,B.gregisterdate,B.status
+		   from tbl_group A join tbl_gmember B 
+		   on A.groupno = B.fk_groupno
+		  )V
+		  on V.fk_groupidx=C.idx)T
+		 where T.groupno = #{groupno}
+	</select>
+	
+	<!-- ===== 그룹게시글 insert ===== -->	
+	<insert id="gboardWrite" parameterType="java.util.HashMap">
+		<if test='!uploadfile.equals("")'>
+		insert into tbl_grpboard(grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status)
+		values(seq_tbl_grpboard.nextval, #{gpdetailno}, #{gcontent}, #{uploadfile}, default,default, default,1,default)
+		</if>
+		<if test='uploadfile.equals("")'>
+		insert into tbl_grpboard(grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status)
+		values(seq_tbl_grpboard.nextval, #{gpdetailno}, #{gcontent}, #{uploadfile}, default,default, default,default,default)
+		</if>
+	</insert>
+	
+	<!-- ===== 그룹글 목록 가져오기 ===== -->	
+	<resultMap type="java.util.HashMap" id="groupBoardMap">
+		<result property="FK_GROUPNO" 				column="fk_groupno" 			javaType="int" />
+		<result property="GPDETAILNO" 				column="gpdetailno" 			javaType="int" />
+		<result property="GRPBOARDSEQ" 				column="grpboardseq" 			javaType="int" />
+ 		<result property="FK_GROUPIDX" 			column="fk_groupidx" 			javaType="String" />
+ 		<result property="GCONTENT" 			column="gcontent" 			javaType="String" />
+ 		<result property="UPLOADFILE" 			column="uploadfile" 			javaType="String" />
+ 		<result property="WRITEDATE" 			column="writedate" 			javaType="String" />
+ 		<result property="LIKECNT" 	column="likecnt" 	javaType="int" />
+ 		<result property="CMTCNT" 	column="cmtcnt" 	javaType="int" />
+ 		<result property="IMGYN" 	column="imgyn" 	javaType="int" />
+ 		<result property="STATUS" 	column="status" 	javaType="int" />
+ 		<result property="NAME" 	column="name" 	javaType="String" />
+ 		<result property="EMAIL" 	column="email" 	javaType="String" />
+ 		<result property="MYIMG" 	column="myimg" 	javaType="String" />
+	</resultMap>
+	<select id="gboardList" parameterType="int" resultMap="groupBoardMap"> 
+		select name,email,myimg,fk_groupno,fk_groupidx,grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status
+		from
+		(
+		select C.name,C.email,C.myimg,V.*
+		from tbl_shymember C join
+		(
+		select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+		from tbl_gmember A join tbl_grpboard B
+		on A.gpdetailno = B.gpdetailno)V
+		on C.idx = V.fk_groupidx
+		)T
+		where T.fk_groupno=#{groupno}
+		order by grpboardseq desc
+	</select>
+	
+	<!-- ===== 그룹 가져오기 =====  -->
+	<select id="gmemberidx" parameterType="java.util.HashMap" resultType="String"> 
+		 select gpdetailno
+		 from
+		 (
+		  select C.idx,V.*
+		  from tbl_shymember C join
+		 (
+		  select A.groupno,B.gpdetailno ,B.fk_groupidx
+		  from tbl_group A join  tbl_gmember B
+		  on A.groupno = B.fk_groupno)V
+		  on C.idx = V.fk_groupidx
+		 )T
+		 where T.idx = #{idx} and T.groupno = #{str_groupno}
+	</select>
+	
+	<!-- =====  그룹회원수 1증가하기 =====  -->
+	<update id="gmemberUpdate" parameterType="int">
+		update tbl_group set gcount = gcount+1
+		where groupno = #{fk_groupno}
+	</update>
+	
+	<!-- ===== 그룹회원인지 아닌지 먼저 확인 =====  -->
+	<select id="gmemberCheck" parameterType="java.util.HashMap" resultType="int"> 
+		select case( select count(*)
+	                 from tbl_gmember
+	                 where fk_groupidx=#{fk_groupidx} and fk_groupno=#{fk_groupno}  )
+	           when 1 then 1
+	           else 0
+	           end
+		from dual
+	</select>
+	
+	<!-- =====  나의 샤이 가져오기 , 내 정보 가져오기(join) =====  -->
+	<resultMap type="java.util.HashMap" id="myshies">
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+	</resultMap>
+	<select id="myshyList" parameterType="String" resultMap="myshies">
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX = #{fk_idx}
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<!-- =====  이미지 가져오기 =====  -->
+	<select id="myshyImg" parameterType="String" resultType="String">
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
 	</select>
 	
 </mapper>	

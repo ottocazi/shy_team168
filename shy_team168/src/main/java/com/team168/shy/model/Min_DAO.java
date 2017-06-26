@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,30 +30,45 @@ public class Min_DAO{
 	}
 	
 	
-	// 리스트 불러오기
-	public List<ShyMemberVO> memberList(HashMap<String, String> map) {
-		List<ShyMemberVO> memberList = sqlsession.selectList("min.memberList", map);
-		return memberList;
-	}
-	
-	
-	
-	
-	
 	
 	
 	
 	
 	// ===== #113. 총 게시물 건수 구하기
 		//             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. ===== 	
-		public int getTotalCount(HashMap<String, String> map) {
-			int count = sqlsession.selectOne("min.getTotalCount", map);
+	
+	
+
+	// 페이징 처리2
+		public int mTotalCount(HashMap<String, String> map) {
+			int count = sqlsession.selectOne("min.mTotalCount", map);
 			return count;
 		}
 	
-	
-	
-	
+	//				===== 페이징 처리 =====			
+		public int gTotalCount(HashMap<String, String> map) {
+			int count = sqlsession.selectOne("min.gTotalCount", map);
+			return count;
+		}
+		
+		
+
+		
+		//    ============    검색하기
+		
+
+		public List<HashMap<String, String>> peoplesearch(HashMap<String, String> map, RowBounds rowBounds) {
+			
+			List<HashMap<String, String>> plist = sqlsession.selectList("min.peoplesearch", map , rowBounds);
+			
+			return plist;
+		}
+		
+		
+		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map) {
+			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", map );
+			return glist;
+		}
 	
 	
 	
