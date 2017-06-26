@@ -21,6 +21,47 @@
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
+
+<script type="text/javascript">
+function init_charts() {
+    if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) {
+        if (console.log("init_charts"), Chart.defaults.global.legend = {
+                enabled: !1
+            }, 
+       		$("#lineChart").length) {
+            var f = document.getElementById("lineChart");
+            new Chart(f, {
+                type: "line",
+                data: {
+                	labels: ["0","2017-06-21-14"+"시", "2017-06-21-15"+"시", "2017-06-21-16"+"시", "2017-06-21-17"+"시", "2017-06-21-18"+"시", "2017-06-21-20"+"시"],
+                    datasets: [{
+                        label: "로그인횟수",
+                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+                        borderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointBorderWidth: 1,
+                        data: [0, 2, 3, 7, 7, 4, 6]
+                    }, /* {
+                        label: "My Second dataset",
+                        backgroundColor: "rgba(3, 88, 106, 0.3)",
+                        borderColor: "rgba(3, 88, 106, 0.70)",
+                        pointBorderColor: "rgba(3, 88, 106, 0.70)",
+                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5]
+                    } */]
+                }
+            })
+        }
+    }
+}
+</script>
+    
   </head>
 
   <body class="nav-md">
@@ -210,7 +251,7 @@
                 <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
                 	<c:forEach var="map" items="${tkList}"  varStatus="status">
 						${map.S_DATE} ,
-						${map.CNT} , 
+						<span id = "" >${map.CNT} ,</span> 
 					</c:forEach>
               </div>
 
