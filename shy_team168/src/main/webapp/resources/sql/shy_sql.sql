@@ -484,9 +484,10 @@ ALTER TABLE tbl_shymember
 		);
 
 ------------------------------------------------------------------------
-insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status) 
-		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1);
+insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status,fk_idx) 
+		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1,53);
  select * from tbl_shymemo;
+ select * from tbl_comment;
 /* 댓글 */
 CREATE TABLE tbl_comment (
 	cmtno NUMBER NOT NULL, /* 댓글seq */
