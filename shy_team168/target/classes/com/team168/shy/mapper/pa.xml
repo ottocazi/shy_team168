@@ -230,4 +230,42 @@
 		WHERE 	SNSNO = #{snsno} and rownum = 1	
 	</select>
 	
+	<!-- ===== 좋아요 insert ===== -->	
+	<insert id="insertlike" parameterType="java.util.HashMap">
+		<if test='seqcolum.equals("snsno")'>
+		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		</if>
+		<if test='seqcolum.equals("storeboardno")'>
+		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,storeboardno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		</if>
+		<if test='seqcolum.equals("grpboardseq")'>
+		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,grpboardseq)
+		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		</if>
+	</insert>
+	
+	<!-- ===== 좋아요 가져오기 =====  
+	<resultMap type="java.util.HashMap" id="getlikeListMap">
+		<result property="" column="" javaType="String" />
+	</resultMap>
+	<select id="getmyLikeList" parameterType="java.util.HashMap" resultMap="getlikeListMap"> 
+		<if test='seqcolum.equals("snsno")'>
+		    select likeno,fk_likeidx,liketype,likedate,snsno
+		    from tbl_like
+		    where fk_likeidx = #{fk_likeidx}
+		</if>
+		<if test='seqcolum.equals("storeboardno")'>
+		    select likeno,fk_likeidx,liketype,likedate,storeboardno
+		    from tbl_like
+		    where fk_likeidx = #{fk_likeidx}
+		</if>
+		<if test='seqcolum.equals("grpboardseq")'>
+		    select likeno,fk_likeidx,liketype,likedate,grpboardseq
+		    from tbl_like
+		    where fk_likeidx = #{fk_likeidx}
+		</if>
+	</select> -->
+	
 </mapper>	

@@ -118,6 +118,18 @@ public class PaService {
 		return imgfile;
 	}
 
+	// ===== 좋아요 insert ===== //
+	public int insertLike(HashMap<String, String> likemap) {
+		int n = dao.insertLike(likemap);
+		return n;
+	}
+
+	// ===== 좋아요 가져오기 ===== //
+	/*public List<HashMap<String, String>> getmyLikeList(HashMap<String, String> likeListmap) {
+		List<HashMap<String, String>> myLikeList = dao.getmyLikeList(likeListmap);
+		return myLikeList;
+	}*/
+
 
 
 	

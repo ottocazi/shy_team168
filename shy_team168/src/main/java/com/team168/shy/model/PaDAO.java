@@ -108,5 +108,17 @@ public class PaDAO {
 		return imgfile;
 	}
 
+	// ===== 좋아요 insert ===== //
+	public int insertLike(HashMap<String, String> likemap) {
+		int n = sqlsession.insert("pa.insertlike",likemap);
+		return n;
+	}
+
+	// ===== 좋아요 가져오기 ===== //
+	/*public List<HashMap<String, String>> getmyLikeList(HashMap<String, String> likeListmap) {
+		List<HashMap<String, String>> myLikeList = sqlsession.selectList("pa.getmyLikeList",likeListmap);
+		return myLikeList;
+	}*/
+
 
 }

@@ -45,7 +45,7 @@ public class Pa_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
 		}else{
 			String myIdx = Integer.toString(loginuser.getIdx());
 			req.setAttribute("loginuser", loginuser);
@@ -143,7 +143,7 @@ public class Pa_Controller {
 			return "pa/mygroups_insertFrm.tiles";
 		}
 		 
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
 		
 	}
 	
@@ -296,7 +296,7 @@ public class Pa_Controller {
     		req.setAttribute("loc", "mygroups_insertFrm.shy");
     	}
     	
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     	
     }
     
@@ -328,7 +328,7 @@ public class Pa_Controller {
     		req.setAttribute("msg", "잘못된 접근입니다!");
     		req.setAttribute("loc", "mygroups.shy");
     		
-    		return "Meong_msg.notiles";
+    		return "ddung_alert.notiles";
  		}
      	
      }
@@ -347,7 +347,7 @@ public class Pa_Controller {
 		req.setAttribute("msg", msg);
 		req.setAttribute("loc", loc);
 		
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
 		
 		}else{
 			int idx = loginuser.getIdx();
@@ -420,11 +420,11 @@ public class Pa_Controller {
 	    		req.setAttribute("msg", msg);
 	    		req.setAttribute("loc", loc);
 	    		
-	    		return "Meong_msg.notiles";
+	    		return "ddung_alert.notiles";
 	    	}
     	
 		}
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     }
     
     // ===== 그룹가입하기 완료 요청 =====
@@ -483,7 +483,87 @@ public class Pa_Controller {
 			}
 
 		}
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
     }
+    
+    // ===== hearder 알람 띄우기 ===== //
+ 	@RequestMapping(value="/myAlram.shy", method={RequestMethod.GET})
+     public String goMyAlram(ShyMemberVO loginuser,HttpServletRequest req,HttpSession session) {
+ 		
+ 		String myIdx = Integer.toString(loginuser.getIdx());
+ 		System.out.println("myIdx="+myIdx);
+ 		//req.setAttribute("myIdx", myIdx);
+ 		
+ 		//List<HashMap<String,String>> myflwlist = service.getMyfollow(myIdx);
+ 		
+		return myIdx;
+ 			
+ 	}
+ 	
+ 	// ===== 좋아요 insert ===== //
+  	@RequestMapping(value="/like.shy", method={RequestMethod.GET})
+      public String goLike(HttpServletRequest req,HttpSession session) {
+  		
+  		String fk_likeidx = req.getParameter("idx");
+  		//System.out.println("fk_likeidx="+fk_likeidx);
+  		
+  		String liketype = req.getParameter("liketype"); // 게시물 타입 1:게시물 2:댓글
+  		//System.out.println("liketype="+liketype);
+  		String seqcolum = req.getParameter("seqcolum"); // snsno,storeboardno,grpboardseq 컬럼명
+  		//System.out.println("seqcolum="+seqcolum);
+  		String likeseq = req.getParameter("likeseq"); // snsno,storeboardno,grpboardseq 벨류값
+  		//System.out.println("likeseq="+likeseq);
+  		
+  		HashMap<String, String> likemap = new HashMap<String, String>();
+  		likemap.put("fk_likeidx", fk_likeidx);
+  		likemap.put("liketype", liketype);
+  		likemap.put("seqcolum", seqcolum);
+  		likemap.put("likeseq", likeseq);
+  		
+  		int n = service.insertLike(likemap);
+  		
+  		req.setAttribute("n", n);
+  		if(n>0){
+  			// insert 성공 시
+  			req.setAttribute("title", "좋아요성공");
+    		req.setAttribute("type", "success");
+    		req.setAttribute("msg", "좋아요♥");
+    		req.setAttribute("loc", "mainline.shy");
+    		
+  		}else{
+  			req.setAttribute("title", "좋아요실패");
+    		req.setAttribute("type", "error");
+    		req.setAttribute("msg", "좋아요오류x.x");
+    		req.setAttribute("loc", "mainline.shy");
+  		}
+  		
+ 		/*return "ddung/mainLine.tiles";*/
+  		return "ddung_alert.notiles";
+  			
+  	}
+  	
+  	// ===== 좋아요 가져오기 ===== //
+   	/*@RequestMapping(value="/likeList.shy", method={RequestMethod.POST})
+       public String goLikeCnt(HttpServletRequest req,HttpSession session) {
+   		
+   		String fk_likeidx = req.getParameter("idx");
+  		System.out.println("fk_likeidx="+fk_likeidx);
+  		String seqcolum = req.getParameter("snsno"); // snsno로 때려박기
+  		System.out.println("seqcolum="+seqcolum);
+  		String likeseq = req.getParameter("likeseq"); // snsno 가져오기
+   		// 먼저, 내가 좋아요를 눌렀는지 확인
+  		
+  		HashMap<String, String> likeListmap = new HashMap<String, String>();
+  		likeListmap.put("fk_likeidx", fk_likeidx);
+  		likeListmap.put("seqcolum", seqcolum);
+  		
+  		// 어떤 게시글을 눌렀는지 확인 (sns or store or group)
+  		List<HashMap<String, String>> myLikeList = service.getmyLikeList(likeListmap);
+  		
+   		req.setAttribute("myLikeList", myLikeList);
+  		
+  		return "ddung/mainline.tiles";
+   			
+   	}*/
     
 }
