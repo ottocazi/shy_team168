@@ -287,6 +287,14 @@ public class DDung_Controller {
 		return "msg.notiles";
 		
 	}
+	
+	@RequestMapping(value="/account.shy", method={RequestMethod.GET})
+	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		return "ddung/accountenter.tiles";
+		
+	}
+	
 }
 
 
