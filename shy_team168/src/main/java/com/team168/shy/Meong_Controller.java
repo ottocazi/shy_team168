@@ -2,6 +2,7 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +100,7 @@ public class Meong_Controller {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
+
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
     		type = "error";
@@ -359,16 +361,25 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }	
 	
-    // 관리자 페이지 유저관리 페이지 활성화버튼요청
+    // 관리자 페이지 통계상세 페이지 활성화버튼요청
     @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
     public String tongke(HttpServletRequest req, HttpSession session){
     	
-    	List<HashMap<String, Object>> tkList = service.gettongkeList(); 
-    	// System.out.println(tkList);
-    	// [{S_DATE=2017062114, CNT=2}, {S_DATE=2017062115, CNT=3}, {S_DATE=2017062116, CNT=7}, {S_DATE=2017062117, CNT=7}, {S_DATE=2017062118, CNT=4}, {S_DATE=2017062120, CNT=6}]
-  
-    	req.setAttribute("tkList", tkList);
+    	Calendar today = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = today.get(Calendar.YEAR);
+    	int month = (today.get(Calendar.MONTH) + 1);
+    	int day = today.get(Calendar.DAY_OF_MONTH);
+
+    	List<HashMap<String, Object>> tkList = service.gettongkeList();
+    	List<HashMap<String, Object>> tkList2 = service.gettongkeList2();
 		
+    	req.setAttribute("tkList", tkList);
+    	req.setAttribute("tkList2", tkList2);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
     	return "tongke.notiles";
     }	
 	
