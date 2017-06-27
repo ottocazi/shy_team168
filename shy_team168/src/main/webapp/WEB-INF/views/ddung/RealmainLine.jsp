@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 
+  
+  
+  
+  
      <!-- 타임라인소스 -->
     <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/timelinestyle.css">
 
@@ -29,91 +34,7 @@
 	    }
 
 	} 
-    
-    $(document).ready(function(){
-    	$('.bt-love_chg').hide();
-    	getLike();
-    	
-    	
-    	
-    });// end of $(document).ready() --------
-    
-    function goLike(idx,likeseq,liketype,seqcolum){
-		var form_data = {idx : idx,
-						 likeseq	: likeseq,
-						 liketype	: liketype,
-						 seqcolum	: seqcolum};
-		
-		 // 좋아요 Ajax 불러오기
-        $.ajax({
-            url: "/shy/like.shy",
-            type: "GET",
-            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-            data: form_data ,// 파라미터     
-            success: function(data) { // 성공했을 때의 처리 콜백함수
-            	
-	            getLike();
-	            
-            },
-            error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
-            }
-        });
-    	
-	}
-    
-    function getLike(){
-    	var snsnoArr = new Array();
-    	
-    	<c:if test="${shies!=null}">
-        
-        <c:forEach items="${shies}" var="shies">
-        // alert('${shies.snsno}');
-        snsnoArr.push('${shies.snsno}');
-        </c:forEach>
-        </c:if>
-        
-        jQuery.ajaxSettings.traditional = true;
-		
-		 // 좋아요목록 Ajax 불러오기
-        $.ajax({
-            url: "/shy/likeList.shy",
-            type: "GET",
-            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-            data: {snsnoArr:snsnoArr},
-            success: function(data) { // 성공했을 때의 처리 콜백함수
-            	var snsnoObjArr = [];
-            	
-	            $.each(data,function(entryIndex,entry){
-	            	snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat) ]);
-	            	if(Number(entry.mylikestat) == 1) {
-	            		if(Number(entry.totalcount) >0){
-	            			$('#bt-love'+entry.snsno).hide();
-	            			$('#love'+entry.snsno).empty();
-	            			
-	            			var html = '<span>'+entry.totalcount+'</span>';
-	            			$('#love'+entry.snsno).html(html).show();
-	            		}else{
-	            			$('#bt-love'+entry.snsno).hide();
-		            		$('#love'+entry.snsno).show();
-	            		}
-	            		
-	            	}else{
-	            		$('#bt-love'+entry.snsno).show();
-	            		$('#love'+entry.snsno).hide();
-	            	}
-	            	
-	            });
-	            
-
-            	
-            },
-            error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
-            }
-        });
-    	
-	}
+     
      </script>
   </head>
   <body>
@@ -129,6 +50,7 @@
   
   <c:if test="${shies!=null}">
   	<c:forEach items="${shies }" var="shies">
+  	
   	<article class="card-60 social">
     <figure>
       
@@ -177,19 +99,18 @@
    
         </p>
         
+            
+     
+      
        <p>
        	${shies.scontent }
 
       </p>
       <footer>
         <p>
-            <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')" id="bt-love${shies.snsno }">
+          <a class="bt-love" title="Love" href="">
                Love
             </a>
-            <a class="bt-love_chg" title="Love" id="love${shies.snsno }">
-	               
-	        </a>
-           
           <a class="bt-share" title="Share" href="#">
                Share
             </a>
@@ -491,13 +412,7 @@ Tapas Deluxe .card50 odd even
 
   
 </main>
-<!-- 좋아요 form 
-<form name="likeFrm">
-<input type="hidden" name="idx" id="idx"/>
-<input type="hidden" name="likeseq" id="likeseq"/> //snsno 값 
-<input type="hidden" name="liketype"/>
-<input type="hidden" name="seqcolum"/>
-</form>-->
+
 
       
 

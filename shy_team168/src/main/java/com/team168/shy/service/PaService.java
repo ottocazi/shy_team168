@@ -125,10 +125,10 @@ public class PaService {
 	}
 
 	// ===== 좋아요 가져오기 ===== //
-	/*public List<HashMap<String, String>> getmyLikeList(HashMap<String, String> likeListmap) {
-		List<HashMap<String, String>> myLikeList = dao.getmyLikeList(likeListmap);
-		return myLikeList;
-	}*/
+	public List<HashMap<String, String>> getmyLikeList(HashMap<String, Object> mylike) {
+		List<HashMap<String, String>> likeList = dao.getmyLikeList(mylike);
+		return likeList;
+	}
 
 
 

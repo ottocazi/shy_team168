@@ -1,5 +1,13 @@
 -------------------------------------------
 --파
+SELECT A.SNSNO , NVL(B.CNT , 0) as total , 
+case when (SELECT count(snsno) FROM TBL_like WHERE  SNSNO IN (77 , 90,76))<0 then 0 else 1 end as status
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO;
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;

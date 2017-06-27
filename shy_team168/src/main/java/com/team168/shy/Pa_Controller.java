@@ -9,11 +9,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.event.ListDataListener;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.team168.shy.model.GroupVO;
@@ -502,7 +505,8 @@ public class Pa_Controller {
  	
  	// ===== 좋아요 insert ===== //
   	@RequestMapping(value="/like.shy", method={RequestMethod.GET})
-      public String goLike(HttpServletRequest req,HttpSession session) {
+  	@ResponseBody
+      public HashMap<String, Object> goLike(HttpServletRequest req) {
   		
   		String fk_likeidx = req.getParameter("idx");
   		//System.out.println("fk_likeidx="+fk_likeidx);
@@ -520,50 +524,48 @@ public class Pa_Controller {
   		likemap.put("seqcolum", seqcolum);
   		likemap.put("likeseq", likeseq);
   		
-  		int n = service.insertLike(likemap);
+  		int result = service.insertLike(likemap);
   		
-  		req.setAttribute("n", n);
-  		if(n>0){
-  			// insert 성공 시
-  			req.setAttribute("title", "좋아요성공");
-    		req.setAttribute("type", "success");
-    		req.setAttribute("msg", "좋아요♥");
-    		req.setAttribute("loc", "mainline.shy");
-    		
-  		}else{
-  			req.setAttribute("title", "좋아요실패");
-    		req.setAttribute("type", "error");
-    		req.setAttribute("msg", "좋아요오류x.x");
-    		req.setAttribute("loc", "mainline.shy");
+  		if(result>0){
+  		
   		}
+  		HashMap<String, Object> returnlike = new HashMap<String, Object>();
+  		returnlike.put("RESULT", result);
   		
- 		/*return "ddung/mainLine.tiles";*/
-  		return "ddung_alert.notiles";
+  		
+  		
+  		return returnlike;
   			
   	}
   	
   	// ===== 좋아요 가져오기 ===== //
-   	/*@RequestMapping(value="/likeList.shy", method={RequestMethod.POST})
-       public String goLikeCnt(HttpServletRequest req,HttpSession session) {
+   	@RequestMapping(value="/likeList.shy", method={RequestMethod.GET})
+   	@ResponseBody
+       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req) {
+   		//List<HashMap<String, String>> likeList = null; // 초기화
    		
-   		String fk_likeidx = req.getParameter("idx");
-  		System.out.println("fk_likeidx="+fk_likeidx);
-  		String seqcolum = req.getParameter("snsno"); // snsno로 때려박기
-  		System.out.println("seqcolum="+seqcolum);
-  		String likeseq = req.getParameter("likeseq"); // snsno 가져오기
-   		// 먼저, 내가 좋아요를 눌렀는지 확인
-  		
-  		HashMap<String, String> likeListmap = new HashMap<String, String>();
-  		likeListmap.put("fk_likeidx", fk_likeidx);
-  		likeListmap.put("seqcolum", seqcolum);
-  		
-  		// 어떤 게시글을 눌렀는지 확인 (sns or store or group)
-  		List<HashMap<String, String>> myLikeList = service.getmyLikeList(likeListmap);
-  		
-   		req.setAttribute("myLikeList", myLikeList);
-  		
-  		return "ddung/mainline.tiles";
+   		String[] snsnoArr = req.getParameterValues("snsnoArr");
+   		System.out.println("snsnoArr="+snsnoArr);
+   		
+   		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+		
+		int fk_likeidx = loginuser.getIdx();
+   		
+		HashMap<String, Object> mylike = new HashMap<String, Object>();
+		mylike.put("snsnoArr", snsnoArr);
+		mylike.put("fk_likeidx", fk_likeidx);
+   	
+   		List<HashMap<String, String>> likeList = service.getmyLikeList(mylike);
+   		
+   		
+   		for(int i = 0; i < likeList.size(); ++i) {
+   			System.out.println("snsno : " + likeList.get(i).get("snsno"));
+   			System.out.println("totalcount : " + likeList.get(i).get("totalcount"));
+   		}
+   		
+   		return likeList;
    			
-   	}*/
+   	}
     
 }

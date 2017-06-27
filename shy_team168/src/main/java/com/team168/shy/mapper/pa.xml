@@ -246,26 +246,25 @@
 		</if>
 	</insert>
 	
-	<!-- ===== 좋아요 가져오기 =====  
+	<!-- ===== 좋아요 가져오기 =====   -->
 	<resultMap type="java.util.HashMap" id="getlikeListMap">
-		<result property="" column="" javaType="String" />
+		<result property="snsno" column="SNSNO" javaType="String" />
+		<result property="totalcount" column="TOTALCOUNT" javaType="String" />
+		<result property="mylikestat" column="MYLIKESTAT" javaType="String" />
 	</resultMap>
 	<select id="getmyLikeList" parameterType="java.util.HashMap" resultMap="getlikeListMap"> 
-		<if test='seqcolum.equals("snsno")'>
-		    select likeno,fk_likeidx,liketype,likedate,snsno
-		    from tbl_like
-		    where fk_likeidx = #{fk_likeidx}
-		</if>
-		<if test='seqcolum.equals("storeboardno")'>
-		    select likeno,fk_likeidx,liketype,likedate,storeboardno
-		    from tbl_like
-		    where fk_likeidx = #{fk_likeidx}
-		</if>
-		<if test='seqcolum.equals("grpboardseq")'>
-		    select likeno,fk_likeidx,liketype,likedate,grpboardseq
-		    from tbl_like
-		    where fk_likeidx = #{fk_likeidx}
-		</if>
-	</select> -->
+	  SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+	  FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN 
+	  <foreach collection="snsnoArr" item="snsno" index="i" open="(" close=")" separator=",">
+		${snsno}
+		</foreach>
+	  ) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO LEFT OUTER join 
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno
+	</select>
 	
 </mapper>	
