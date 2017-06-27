@@ -23,59 +23,58 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
 
 <script type="text/javascript">
-function init_charts() {
-    if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) {
-        if (console.log("init_charts"), Chart.defaults.global.legend = {
-                enabled: !1
-            }, 
-       		$("#lineChart").length) {
-            var f = document.getElementById("lineChart");
-            new Chart(f, {
-                type: "line",
-                data: {
-                	labels: [
-                		
-                		<c:forEach var="map" items="${tkList}"  varStatus="status">
-                		
-						"${map.S_DATE}시",
-						 
-						</c:forEach>
-                	],
-                	/* labels: ["0","2017-06-21-14"+"시", "2017-06-21-15"+"시", "2017-06-21-16"+"시", "2017-06-21-17"+"시", "2017-06-21-18"+"시", "2017-06-21-20"+"시"], */
-                    datasets: [{
-                        label: "로그인횟수",
-                        backgroundColor: "rgba(38, 185, 154, 0.31)",
-                        borderColor: "rgba(38, 185, 154, 0.7)",
-                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointBorderWidth: 1,
-                        data: [
-                        	
-                        	<c:forEach var="map" items="${tkList}"  varStatus="status">
-                    		
-    						"${map.CNT}",
-    						 
-    						</c:forEach>
-                        	
-                        ]
-                    }, /* {
-                        label: "My Second dataset",
-                        backgroundColor: "rgba(3, 88, 106, 0.3)",
-                        borderColor: "rgba(3, 88, 106, 0.70)",
-                        pointBorderColor: "rgba(3, 88, 106, 0.70)",
-                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(151,187,205,1)",
-                        pointBorderWidth: 1,
-                        data: [6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5]
-                    } */]
-                }
-            })
-        }
-    }
-}
+
+
+	
+	 function ym_init_charts() {
+		    if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) { 
+		        if($("#lineChart_ym").length) {
+		            var f = document.getElementById("lineChart_ym");
+		            new Chart(f, {
+		                type: "line",
+		                data: {
+		                	labels: [
+		                		<c:forEach var="map" items="${tkList}"  varStatus="status">
+								"${map.TIME}시",
+								</c:forEach>
+		                	],
+		                    datasets: [{
+		                        label: "현재",
+		                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+		                        borderColor: "rgba(38, 185, 154, 0.7)",
+		                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+		                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+		                        pointHoverBackgroundColor: "#fff",
+		                        pointHoverBorderColor: "rgba(220,220,220,1)",
+		                        pointBorderWidth: 1,
+		                        data: [
+		                        	<c:forEach var="map" items="${tkList}"  varStatus="status">
+		    						"${map.CNT}",
+		    						</c:forEach>
+		                        ]
+		                    }, {
+		                        label: "어제",
+		                        backgroundColor: "rgba(3, 88, 106, 0.3)",
+		                        borderColor: "rgba(3, 88, 106, 0.70)",
+		                        pointBorderColor: "rgba(3, 88, 106, 0.70)",
+		                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+		                        pointHoverBackgroundColor: "#fff",
+		                        pointHoverBorderColor: "rgba(151,187,205,1)",
+		                        pointBorderWidth: 1,
+		                        data: [
+		                        	<c:forEach var="map" items="${tkList2}"  varStatus="status">
+		    						"${map.CNT}",
+		    						</c:forEach>
+		                        	]
+		                    } ]
+		                }
+		            })
+		        }
+		    }
+		}
+
+
+ 
 </script>
     
   </head>
@@ -104,7 +103,7 @@ function init_charts() {
 
             <br />
 
-<!-- sidebar menu -->
+			<!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>메뉴</h3>
@@ -265,10 +264,6 @@ function init_charts() {
             <div class="page-title">
               <div class="title_left">
                 <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
-                	<c:forEach var="map" items="${tkList}"  varStatus="status" >
-						${map.S_DATE} ,
-						<span id = "" >${map.CNT} ,</span> 
-					</c:forEach>
               </div>
 
               <div class="title_right">
@@ -287,9 +282,9 @@ function init_charts() {
 
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
+                <div class="x_panel_ym">
                   <div class="x_title">
-                    <h2>시간대별 로그인 통계</h2>
+                    <h2>${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -308,7 +303,7 @@ function init_charts() {
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <canvas id="lineChart"></canvas>
+                    <canvas id="lineChart_ym"></canvas>
                   </div>
                   <div>
      			  </div> 
@@ -316,7 +311,7 @@ function init_charts() {
               </div>
               
 
-              <div class="col-md-6 col-sm-6 col-xs-12">
+<%--               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Bar graph <small>Sessions</small></h2>
@@ -453,7 +448,7 @@ function init_charts() {
                     <canvas id="polarArea"></canvas>
                   </div>
                 </div>
-              </div>
+              </div> --%>
             </div>
 
           </div>

@@ -2,7 +2,7 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -365,25 +365,20 @@ public class Meong_Controller {
     @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
     public String tongke(HttpServletRequest req, HttpSession session){
     	
-    	List<HashMap<String, Object>> tkList = service.gettongkeList(); 
-    	// System.out.println(tkList);
-    	// [{S_DATE=2017062114, CNT=2}, {S_DATE=2017062115, CNT=3}, {S_DATE=2017062116, CNT=7}, {S_DATE=2017062117, CNT=7}, {S_DATE=2017062118, CNT=4}, {S_DATE=2017062120, CNT=6}]
-    	// [{JEPUMNAME=빼빼로, PERCENTAGE=41.6, TOTALQTY=5}, {JEPUMNAME=양파링, PERCENTAGE=33.3, TOTALQTY=4}, {JEPUMNAME=감자깡, PERCENTAGE=25, TOTALQTY=3}]
-/*    	
-    	List<HashMap<String, Object>> returnmapList = new ArrayList<HashMap<String, Object>>();
-    	
-		if(tkList != null) {
-			for(HashMap<String, Object> datamap : tkList) {
-				HashMap<String, Object> submap = new HashMap<String, Object>(); 
-				submap.put("S_DATE",  datamap.get("S_DATE"));
-				submap.put("CNT",   datamap.get("CNT"));
-				
-				returnmapList.add(submap);
+    	Calendar today = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = today.get(Calendar.YEAR);
+    	int month = (today.get(Calendar.MONTH) + 1);
+    	int day = today.get(Calendar.DAY_OF_MONTH);
 
-			}
-		}*/
+    	List<HashMap<String, Object>> tkList = service.gettongkeList();
+    	List<HashMap<String, Object>> tkList2 = service.gettongkeList2();
 		
     	req.setAttribute("tkList", tkList);
+    	req.setAttribute("tkList2", tkList2);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
     	
     	return "tongke.notiles";
     }	
