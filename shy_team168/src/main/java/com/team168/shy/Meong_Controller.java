@@ -2,6 +2,7 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +100,7 @@ public class Meong_Controller {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
+
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
     		type = "error";
@@ -196,7 +198,7 @@ public class Meong_Controller {
     	return "admin.notiles";
     }
     
-    // 관리자 공지사항 페이지요청
+    // 관리자 공지사항(미정) 페이지요청
     @RequestMapping(value="/gesipan.shy", method={RequestMethod.GET})
     public String gesipan(HttpServletRequest req, HttpSession session){
 
@@ -288,20 +290,103 @@ public class Meong_Controller {
     	return "gesipan.notiles";
     }    
 		
-	// 관리자 페이지 회원관리
+	// 관리자 페이지 회원관리 페이지 요청
     @RequestMapping(value="/shymember.shy", method={RequestMethod.GET})
     public String shymember(HttpServletRequest req, HttpSession session){
     	    	
-    	List<ShyMemberVO> shyList = service.getshyList(); 
+    	List<HashMap<String, Object>> shyList = service.getshyList(); 
 			 
 		req.setAttribute("shyList", shyList);
 		
     	return "shymember.notiles";
     }
 	
+    // 관리자 페이지 유저관리 페이지 비활성화버튼요청
+    @RequestMapping(value="/shystatusDown.shy", method={RequestMethod.GET})
+    public String shyleveldown(HttpServletRequest req, HttpSession session){
+    	
+    	String idx = req.getParameter("idx");
+    	String email = req.getParameter("email");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("idx", idx);
+    	
+    	int n = service.shystatusDown(map);
+    	
+    	if(n == 1) {
+    		title = email + "님을 비활성화 성공!!";
+    		type = "success";
+    		loc = "shymember.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }
 	
+    // 관리자 페이지 유저관리 페이지 활성화버튼요청
+    @RequestMapping(value="/shystatusUp.shy", method={RequestMethod.GET})
+    public String shylevelup(HttpServletRequest req, HttpSession session){
+    	
+    	String idx = req.getParameter("idx");
+    	String email = req.getParameter("email");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("idx", idx);
+    	
+    	int n = service.shystatusUp(map);
+    	
+    	if(n == 1) {
+    		title = email + "님을 활성화 성공!!";
+    		type = "success";
+    		loc = "shymember.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }	
 	
-	
+    // 관리자 페이지 통계상세 페이지 활성화버튼요청
+    @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
+    public String tongke(HttpServletRequest req, HttpSession session){
+    	
+    	List<HashMap<String, Object>> tkList = service.gettongkeList(); 
+    	// System.out.println(tkList);
+    	// [{S_DATE=2017062114, CNT=2}, {S_DATE=2017062115, CNT=3}, {S_DATE=2017062116, CNT=7}, {S_DATE=2017062117, CNT=7}, {S_DATE=2017062118, CNT=4}, {S_DATE=2017062120, CNT=6}]
+    	// [{JEPUMNAME=빼빼로, PERCENTAGE=41.6, TOTALQTY=5}, {JEPUMNAME=양파링, PERCENTAGE=33.3, TOTALQTY=4}, {JEPUMNAME=감자깡, PERCENTAGE=25, TOTALQTY=3}]
+/*    	
+    	List<HashMap<String, Object>> returnmapList = new ArrayList<HashMap<String, Object>>();
+    	
+		if(tkList != null) {
+			for(HashMap<String, Object> datamap : tkList) {
+				HashMap<String, Object> submap = new HashMap<String, Object>(); 
+				submap.put("S_DATE",  datamap.get("S_DATE"));
+				submap.put("CNT",   datamap.get("CNT"));
+				
+				returnmapList.add(submap);
+
+			}
+		}*/
+		
+    	req.setAttribute("tkList", tkList);
+    	
+    	return "tongke.notiles";
+    }	
 	
 	
 	

@@ -37,7 +37,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -75,16 +75,14 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">통계상세보기</a></li>
-                      
-                      
+					  <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
                       <li><a href="#">좋아요가 가장많은 유저</a></li>
                       <li><a href="#">신고를 많이받은 유저</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">게시판</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
                       <li><a href="#">###</a></li>
                     </ul>
                   </li>
@@ -214,7 +212,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Users <small>Some examples to get you started</small></h3>
+                <h3>회원관리</h3>
               </div>
 
             </div>
@@ -225,7 +223,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Default Example <small>Users</small></h2>
+                    <h2>SHY유저 관리</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -245,28 +243,38 @@
                   </div>
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
-                      DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
+                      <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
+                             회원들의 상세정보와 버튼을 통해 활성화/비활성화를 할수있는 페이지
                     </p>
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Position</th>
-                          <th>Office</th>
-                          <th>Age</th>
-                          <th>Start date</th>
-                          <th>Salary</th>
+                          <th>회원번호</th>
+                          <th>이름</th>
+                          <th>성별</th>
+                          <th>이메일</th>
+                          <th>나이</th>
+                          <th>가입일자</th>
+                          <th>회원상태</th>
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="shymembervo" items="${shyList}" varStatus="status">
-                        <tr>
-                          <td>${shymembervo.idx}</td>
-                          <td>${shymembervo.name}</td>
-                          <td>${shymembervo.email}</td>
-                          <td>${shymembervo.status}</td>
-                          <td>000</td>
-                          <td>000</td>
+                      <c:forEach var="map" items="${shyList}" varStatus="status">
+                        <tr align="center">
+                          <td>${map.IDX}</td>
+                          <td>${map.NAME}</td>
+                          <td>${map.GENDER}</td>
+                          <td>${map.EMAIL}</td>
+                          <td>${map.BIRTHDAY}</td>
+                          <td>${map.REGISTERDATE}</td>
+                          <td>
+                        <c:if test="${map.STATUS != 0}">  
+                  		<button onClick="javascript:location.href='shystatusDown.shy?idx=${map.IDX}&email=${map.EMAIL}'">활성화</button>
+                  		</c:if>
+                  		<c:if test="${map.STATUS == 0}">
+                  		<button onClick="javascript:location.href='shystatusUp.shy?idx=${map.IDX}&email=${map.EMAIL}'">비활성화</button>
+                  		</c:if>
+                          </td>
                         </tr>
                       </c:forEach>
                       </tbody>
@@ -285,13 +293,11 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            <a href="open.shy">Shy</a>
           </div>
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
-      </div>
-    </div>
 
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
