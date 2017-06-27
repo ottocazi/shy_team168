@@ -203,6 +203,26 @@
         order by idx desc
 	</select> 
 	
+	
+	<!-- =====  ===== -->
+	<resultMap type="java.util.HashMap" id="getFollowListArrMap">
+		<result property="IDX" column="IDX" javaType="String"/>
+		<result property="FOLLOWCHECK" column="FOLLOWCHECK" javaType="int"/>
+	</resultMap>
+	
+	<select id="getFollowListArr" resultMap="getFollowListArrMap" parameterType="java.util.HashMap">
+		SELECT A.IDX, NVL(B.STATUS, 0) AS FOLLOWCHECK
+		FROM (SELECT * FROM TBL_SHYMEMBER WHERE IDX IN 
+			<foreach collection="idxArr" item="item" index="i"  separator="," open="(" close=")">
+				  ${idxArr[i]}
+			</foreach>
+													   )A 
+			  LEFT OUTER JOIN  
+      		 (SELECT *  FROM TBL_FOLLOW WHERE FK_IDXFLW = #{idx}  ) B
+      		  ON A.IDX = B.FK_IDXFLWED
+	</select>
+	
+	
 </mapper>
 
 

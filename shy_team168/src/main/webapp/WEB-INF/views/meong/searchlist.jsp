@@ -244,10 +244,55 @@ text-decoration: none;
 </style>    
     
     <script type="text/javascript">
+
     
+   	function follow() {
+   		var idxArr = new Array();
+   		<c:if test="${plist!=null}">
+   		<c:forEach items="${plist}" var="plist">
+   		/* alert('${plist.IDX}'); */
+   		idxArr.push('${plist.IDX}');
+   		</c:forEach>
+   		</c:if>
+   		 alert(idxArr);
+   		
+   		jQuery.ajaxSettings.traditional = true;
+   		
+   		$.ajax({
+   			url: "/shy/follow.shy",
+    		type: "GET",
+    		data: {idxArr:idxArr},
+    		dataType: "JSON", 
+    		success: function(data){
+    			//alert("ajax 성공 function");
+    			var html;
+    			
+    			$.each(data, function(entryIndex, entry){
+	    			
+	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
+					if(FOLLOWCHECK == 1){
+						html = "<a href='open.shy'>팔로우해제</a>";
+					}
+					else {
+						html = "<a href=''>팔로우</a>";
+					}
+					
+					$("#follow" + entry.IDX).html(html);
+    				
+    			});
+    		//	getCommentList();
+    		},
+    		error: function(){
+ 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 		    }
+   		});
+    }; 
+      
 
     $(document).ready(function(){
-
+		
+    	follow();
+    	
         var list = $(".list li");
         var numToShow = 4;
         var button = $("#next");
@@ -362,8 +407,8 @@ text-decoration: none;
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
-                          <td><button>follow</button></td>
-                          <td><button>followed</button></td>
+                          <td id="follow${map.IDX}"></td>
+                          
                         </tr>
                       </c:forEach>
                       </tbody>

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Meong_Service;
@@ -395,18 +396,41 @@ public class Meong_Controller {
     @RequestMapping(value="/searchlistex.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
     	
-    	List<HashMap <String, String>> plist = service.peoplesearch();
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
 
+//    	System.out.println("idx 는 ==> " + idx);
+
+    	List<HashMap <String, String>> plist = service.peoplesearch();
+    	
     	req.setAttribute("plist", plist);
+    	
     	
     	return "meong/searchlist.tiles";
     	
     }
     
-    
-	
-	
-	
+    @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
+    @ResponseBody
+    public List<HashMap<String, Object>> follow(HttpServletRequest req, HttpSession session){
+    	
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	String[] idxArr = req.getParameterValues("idxArr");
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	map.put("idx", idx);
+    	map.put("idxArr", idxArr);
+    	
+    	List<HashMap<String, Object>> returnFollowList = service.follow(map);
+    	
+    	System.out.println(returnFollowList);
+    	
+    	return returnFollowList;
+    	
+    }
+
 	
 	
 }
