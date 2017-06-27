@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
   
   
   
@@ -21,10 +21,22 @@
     <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'> --> 
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      
-    <script>
+
+    <script type="text/javascript">    
+    $(document).ready(function(){
+    	countComment();
+    //	getCommentList();
+    });
+    
+    function openComment(snsno) {
+	   
+	   var commentbox = document.getElementById('commentbox'+snsno);
+
+
     function openComment(event) {
 	
 	   var commentbox = document.getElementById('commentbox'+event);
+
 	   
 	
 	   if(commentbox.style.display=='none'){
@@ -33,8 +45,72 @@
 	        commentbox.style.display = 'none';
 	    }
 
-	} 
-     
+	}
+    
+    /* ajax 로 댓글 갯수 읽어 오기 */
+   	function countComment() {
+   		var snsnoArr = new Array();
+   		<c:if test="${shies!=null}">
+   		
+   		<c:forEach items="${shies}" var="shies">
+   		// alert('${shies.snsno}');
+   		snsnoArr.push('${shies.snsno}');
+   		</c:forEach>
+   		</c:if>
+   		// alert(snsnoArr);
+   		
+   		jQuery.ajaxSettings.traditional = true;
+   		
+   		$.ajax({
+   			url: "/shy/getCommentCount.shy",
+    		type: "GET",
+    		data: {snsnoArr:snsnoArr},
+    		dataType: "JSON", 
+    		success: function(data){
+    			
+    			var html;
+    			
+    			$.each(data, function(entryIndex, entry){
+    			//	alert(entry.snsno);
+    				html = "댓글(" + entry.cnt + ")";
+    				
+    				$("#comment" + entry.snsno).html(html);
+    				
+    			});
+    		//	getCommentList();
+    		},
+    		error: function(){
+ 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 		    }
+   		});
+    }; 
+    
+    /* ajax 로 댓글 리스트 가져오기 */
+    function getCommentList() {
+    	
+    	var formdata = "";
+    	
+    	$.ajax({
+    		url: "/shy/getCommentList.shy",
+    		type: "GET",
+    	//	data: formdata,
+    		dataType: "JSON",
+    		success: function(data) {
+    			
+				var html;
+    			
+    			$.each(data, function(entryIndex, entry){
+    				alert("getCommentList success function");
+    				
+    			});
+    		},
+    		error: function(){
+				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+		    }
+    			
+    	});
+    }
+    
      </script>
   </head>
   <body>
@@ -49,12 +125,12 @@
   </c:if>
   
   <c:if test="${shies!=null}">
-  	<c:forEach items="${shies }" var="shies">
+  	<c:forEach items="${shies}" var="shies" varStatus="status">
   	
   	<article class="card-60 social">
     <figure>
       
-      <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
+      <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}" alt="shy" id="nike">
       
     </figure>
     <!-- end figure-->
@@ -103,7 +179,7 @@
      
       
        <p>
-       	${shies.scontent }
+       	${shies.scontent}
 
       </p>
       <footer>
@@ -114,17 +190,27 @@
           <a class="bt-share" title="Share" href="#">
                Share
             </a>
+
+            
+          <a href="javascript:openComment('${shies.snsno}');"class="bt-comment" title="Comment" id="comment${shies.snsno}">
+          </a>
+
           <a href="javascript:openComment(${shies.snsno });"class="bt-comment" title="Comment" href="">
                댓글(33)
             </a>
+
         </p>
       </footer>
     </div>
     
       <!--new댓글창  -->
-    
+   
       
+
+<div id="commentbox${shies.snsno}" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+
      <div id="commentbox${shies.snsno }" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+
   
   
   <!-- Form -->
@@ -151,10 +237,13 @@
   </div>
 
   <!-- Comments List -->
+  
   <div class="shy_comments">
+  <input type="hidden" name="snsno" id="snsno${shies.snsno}" value="${shies.snsno}"/>
     <!-- Comment -->
    
-
+	<%-- <c:when test="${fn:length(CommentList) > 0  }">
+	<c:forEach var="cmtVO" items="${CommentList}">
     <!-- Comment - Dummy -->
     <div class="shy_comment"><!-- for each 돌리는 div  -->
       <!-- Comment Avatar -->
@@ -164,7 +253,7 @@
 
       <!-- Comment Box -->
       <div class="shy_comment-box">
-        <div class="shy_comment-text">짧은 댓글 test1</div>
+        <div class="shy_comment-text">짧은 댓글 test1 ${cmtVO.cmtcontent}</div>
         <div class="shy_comment-footer">
           <div class="shy_comment-info">
             <span class="shy_comment-author">
@@ -184,7 +273,9 @@
 	               
       
     </div><!-- for each 돌리는 div끝  -->
-
+    </c:forEach>
+    </c:when>
+ --%>
 		<div align="center"><a class="button" href="#" style="color:white; ">
 					read more
 				</a>
@@ -206,7 +297,7 @@
   <div align="center"><a class="button" href="#" style="color:white; " >
 					더 읽기
 				</a><br><br>
-   </div>
+  </div>
   <!-- 
   <article class="card-60 social">
     <figure>

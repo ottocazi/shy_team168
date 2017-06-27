@@ -95,6 +95,11 @@ public class Meong_Service implements Interface_CommonService  {
 		return tkList;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList2() {
+		List<HashMap<String, Object>> tkList2 = dao.gettongkeList2();
+		return tkList2;
+	}
+
 
 
 }

@@ -28,6 +28,24 @@ public class Juno_Service {
 		int n = dao.myInfoEditEnd(map);
 		return n;
 	}
+	
+	// 댓글 수 카운트
+	public List<HashMap<String, Object>> getCommentCount() {
+		List<HashMap<String, Object>> returnCountList = dao.getCommentCount();
+		return returnCountList;
+	}
+	
+	// 댓글 리스트 불러오기
+	public List<HashMap<String, Object>> getCommentList() {
+		List<HashMap<String, Object>> CommentList = dao.getCommentList();
+		return CommentList;
+	}
+	
+	// 배열 파라미터
+	public List<HashMap<String, Object>> getCommentCountArr(String[] snsnoArr) {
+		List<HashMap<String, Object>> CommentList = dao.getCommentCountArr(snsnoArr);
+		return CommentList;
+	}
 
 	
 }

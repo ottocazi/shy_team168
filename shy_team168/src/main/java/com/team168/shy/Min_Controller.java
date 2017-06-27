@@ -47,11 +47,13 @@ public class Min_Controller {
     @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
 	    
+    	
+    	
 		   // ===== #108. 페이징 처리하기 =====
 		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
 		    	
 		      String pageNo = req.getParameter("pageNo");
-		      String search = req.getParameter("search");
+		      
 		      
 		      
 		      int totalCount = 0;        // 총게시물 건수
@@ -76,24 +78,29 @@ public class Min_Controller {
 		    	  // 현재 보여주고자 하는 페이지로 설정한다.
 		      }
 		      
-		       start = (currentShowPageNo - 1) * sizePerPage;
+		      start = (currentShowPageNo - 1) * sizePerPage;
 		       offset = sizePerPage;
-		      
-		      
+		       
 		      RowBounds rowBounds = new RowBounds(start, offset);
 
-		    	
+		      
+		      
+		     
+		      String search = req.getParameter("search");
 		    	
 		    	HashMap<String, String> map = new HashMap<String, String>();
-		    	//map.put("search", search);
+		    	map.put("search", search);
 		    	
 		    	
-		    	List<HashMap <String, String>> plist = service.peoplesearch(search,rowBounds);
-		    	List<HashMap <String, String>> glist = service.groupsearch(search,rowBounds);
+		    	List<HashMap <String, String>> plist = service.peoplesearch(map,rowBounds);
+		    	List<HashMap <String, String>> glist = service.groupsearch(map);
 		   
 		    	totalCount = service.mTotalCount(map);
 		    	
 		 
+		    	
+		    	
+		    	
 		    	totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
 		    	
 		    	String pagebar = "";
@@ -167,9 +174,14 @@ public class Min_Controller {
 		        
 		        
 		        pagebar += "</ul>";
+		        
+		        
+		      
 		    	
 		        req.setAttribute("pagebar", pagebar);
+		        /*req.setAttribute("pagebar2", pagebar2);*/
 
+		        
 		        req.setAttribute("search", search);
 		    	
 		    	
@@ -183,68 +195,15 @@ public class Min_Controller {
     
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-    // ===== #148. Ajax 로 검색어 입력시 자동글 완성하기 3 =====
-//  ==> jackson JSON 라이브러리와 함께 @ResponseBoady 사용하여 JSON 파싱하기 === //
-	
-    /*   @ResponseBody란?
-	     메소드에 @ResponseBody Annotation이 되어 있으면 return 되는 값은 View 단을 통해서 출력되는 것이 아니라 
-	     HTTP Response Body에 바로 직접 쓰여지게 된다. 
-		
-	     그리고 jackson JSON 라이브러리를 사용할때 주의해야할 점은 
-	     메소드의 리턴타입은 행이 1개 일경우 HashMap<K,V> 이거나 
-	                                    Map<K,V> 이고 
-		                    행이 2개 이상일 경우 List<HashMap<K,V>> 이거나
-		                                    List<Map<K,V>> 이어야 한다.
-		                    행이 2개 이상일 경우  ArrayList<HashMap<K,V>> 이거나
-		                                     ArrayList<Map<K,V>> 이면 안된다.!!!
-	     
-	     이와같이 jackson JSON 라이브러리를 사용할때의 장점은 View 단이 필요없게 되므로 간단하게 작성하는 장점이 있다. 
-	*/
-    /*
-    @RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
-    @ResponseBody
-    public List<HashMap<String, Object>> wordSearchShow(HttpServletRequest req) { 
-    	
-    	List<HashMap<String, Object>> returnmapList = new ArrayList<HashMap<String, Object>>(); 
-    	
-    	String colname = req.getParameter("colname");
-    	String search = req.getParameter("search");
-    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("colname", colname);
-    	map.put("search", search);
-    	
-    	List<HashMap<String, String>> searchWordCompleteList = service.searchWordCompleteList(map); 
-    	
-    	if(searchWordCompleteList != null) {
-    		for(HashMap<String, String> datamap : searchWordCompleteList) {
-    			
-    			HashMap<String, Object> submap = new HashMap<String, Object>();
-    			submap.put("RESULTDATA", datamap.get("SEARCHDATA")); 
-    			
-    			returnmapList.add(submap);
-    		}
-    	}
-    	
-    	return returnmapList;
-    }
-    */
-    
-	
-	
-	
-	
 }
+
+
+
+
+
+
+
+
+
+
+
