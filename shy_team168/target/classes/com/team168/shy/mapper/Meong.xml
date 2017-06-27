@@ -156,17 +156,53 @@
 	
 	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
 	<resultMap type="java.util.HashMap" id="gettongkeListmap">
-		<result property="S_DATE" 	        column="s_date" 	    javaType="String" />
- 		<result property="CNT" 		    column="cnt" 	        javaType="String" />
+		<result property="DAY" 	        column="day" 	    javaType="String" />
+ 		<result property="TIME" 		    column="time" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
 	</resultMap>
 	<select id="gettongkeList" resultMap="gettongkeListmap">
-		SELECT TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24') S_DATE , COUNT(*) CNT FROM TBL_LOG
-		WHERE TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24')
-		BETWEEN '2017-06-21-00' AND '2017-06-22-00'
-		GROUP BY TO_CHAR(LOGTIME , 'YYYY-MM-DD-HH24')
-		ORDER BY TO_CHAR (LOGTIME, 'YYYY-MM-DD-HH24') ASC
+		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
+		from (SELECT TO_CHAR(TO_DATE('2017-06-19', 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = '2017-06-19') group by time) B
+		on A.time = B.time
+		order by time asc
 	</select>
-
+	
+	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="gettongkeList2map">
+		<result property="DAY" 	        column="day" 	    javaType="String" />
+ 		<result property="TIME" 		    column="time" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="gettongkeList2" resultMap="gettongkeList2map">
+		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
+		from (SELECT TO_CHAR(TO_DATE('2017-06-20', 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = '2017-06-20') group by time) B
+		on A.time = B.time
+		order by time asc
+	</select>
+	
+	
+	<!-- 성민 -->
+	    <resultMap type="java.util.HashMap" id="searchpeopleMap">
+		<result property="IDX" 			column="idx" 			javaType="String" />
+ 		<result property="NAME"  		column="name" 			javaType="String" />
+ 		<result property="EMAIL"  		column="email" 			javaType="String" />
+ 		<result property="PWD"  		column="pwd" 			javaType="String" />
+ 		<result property="REGISTERDATE" column="registerdate" 	javaType="String" />
+ 		<result property="MYIMG"  		column="myimg" 			javaType="String" />
+ 		<result property="MYINTRO"  	column="myintro" 		javaType="String" />
+ 		<result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+ 		<result property="GENDER"  		column="gender" 		javaType="String" />
+ 		<result property="PHONE"  		column="phone" 			javaType="String" />
+	</resultMap>
+	 <select id="plist" parameterType="String" resultMap="searchpeopleMap">
+	    select *
+        from tbl_shymember
+        where status = 1
+        order by idx desc
+	</select> 
+	
 </mapper>
 
 

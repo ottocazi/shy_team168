@@ -28,7 +28,7 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/scroller.bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">  
   </head>
 
   <body class="nav-md">

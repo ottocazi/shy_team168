@@ -111,5 +111,15 @@ public class Meong_DAO{
 		return tkList;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList2() {
+		List<HashMap<String, Object>> tkList2 = sqlsession.selectList("mangu.gettongkeList2");
+		return tkList2;
+	}
+
+	public List<HashMap<String, String>> plist() {
+		List<HashMap<String, String>> plist = sqlsession.selectList("mangu.plist");
+		return plist;
+	}
+
     
 }

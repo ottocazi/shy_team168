@@ -1,13 +1,22 @@
 -------------------------------------------
 --파
 SELECT A.SNSNO , NVL(B.CNT , 0) as total , 
-case when (SELECT count(snsno) FROM TBL_like WHERE  SNSNO IN (77 , 90,76))<0 then 0 else 1 end as status
+case when (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76))>0 then (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76)) else 1 end as status
 FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A 
 
       LEFT OUTER JOIN  
       (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO LEFT OUTER join 
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
