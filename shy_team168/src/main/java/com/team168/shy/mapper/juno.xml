@@ -19,4 +19,55 @@
 	    where idx = #{idx}
 	</update>
 	
+	
+	<!-- ===== 댓글 카운트 ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentCountMap">
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="cnt" column="cnt" javaType="int"/>
+	</resultMap>
+	
+	<select id="getCommentCount" resultMap="getCommentCountMap">
+		select snsno, count(snsno) as cnt
+		from tbl_comment
+		group by snsno
+	</select>
+	
+	
+	<!-- ===== 댓글 카운트 파라미터 Array ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentCountArrMap">
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="cnt" column="cnt" javaType="int"/>
+	</resultMap>
+	
+	<select id="getCommentCountArr" resultMap="getCommentCountArrMap" parameterType="String">
+		SELECT A.SNSNO , NVL(B.CNT , 0) as cnt
+		FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN 
+														<foreach collection="array" item="item" index="i"  separator="," open="(" close=")">
+															  ${array[i]}
+														</foreach>
+													    ) A 
+			  LEFT OUTER JOIN  
+      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT GROUP BY SNSNO) B
+      		  ON A.SNSNO = B.SNSNO
+	</select>
+	
+	<!-- ===== 댓글 리스트 ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentListMap">
+		<result property="cmtno" column="cmtno" javaType="int"/>
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="grpboardseq" column="grpboardseq" javaType="int"/>
+		<result property="storeboardno" column="storeboardno" javaType="int"/>
+		<result property="cmtcontent" column="cmtcontent" javaType="String"/>
+		<result property="updatetime" column="updatetime" javaType="String"/>
+		<result property="likecnt" column="likecnt" javaType="int"/>
+		<result property="status" column="status" javaType="int"/>
+		<result property="fk_idx" column="fk_idx" javaType="String"/>
+	</resultMap>
+	
+	<select id="getCommentList" resultMap="getCommentListMap">
+		select cmtno, snsno, grpboardseq, storeboardno, cmtcontent, updatetime, likecnt, blamecnt, status, fk_idx
+		from tbl_comment
+		where status = 1
+		order by cmtno asc
+	</select>
 </mapper>	

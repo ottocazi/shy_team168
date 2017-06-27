@@ -3,17 +3,24 @@ package com.team168.shy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -148,4 +155,28 @@ public class Juno_Controller {
 //    	
     }
 	
+
+	@RequestMapping(value="/getCommentCount.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public List<HashMap<String, Object>> getCommentCount(HttpServletRequest req) {
+
+		System.out.println("댓글 개수 확인시작");
+		String[] snsnoArr = req.getParameterValues("snsnoArr");
+		System.out.println("길이" + snsnoArr.length);
+
+		List<HashMap<String, Object>> returnCountList = service.getCommentCountArr(snsnoArr);
+		System.out.println("사이즈"+returnCountList.size());
+		
+		return returnCountList;
+	}
+	
+	@RequestMapping(value="/getCommentList.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public List<HashMap<String, Object>> getCommentList(HttpServletRequest req) {
+		
+		List<HashMap<String, Object>> CommentList = service.getCommentList();
+		
+		
+		return CommentList;
+	}
 }
