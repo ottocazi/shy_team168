@@ -100,6 +100,11 @@ public class Meong_Service implements Interface_CommonService  {
 		return tkList2;
 	}
 
+	public List<HashMap<String, String>> peoplesearch() {
+		List<HashMap<String, String>> plist = dao.plist();
+		return plist;
+	}
+
 
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -391,6 +392,18 @@ public class Meong_Controller {
     	return "tongke.notiles";
     }	
 	
+    @RequestMapping(value="/searchlistex.shy", method={RequestMethod.GET})
+    public String searchlist(HttpServletRequest req, HttpSession session){
+    	
+    	List<HashMap <String, String>> plist = service.peoplesearch();
+
+    	req.setAttribute("plist", plist);
+    	
+    	return "meong/searchlist.tiles";
+    	
+    }
+    
+    
 	
 	
 	

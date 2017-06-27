@@ -116,5 +116,10 @@ public class Meong_DAO{
 		return tkList2;
 	}
 
+	public List<HashMap<String, String>> plist() {
+		List<HashMap<String, String>> plist = sqlsession.selectList("mangu.plist");
+		return plist;
+	}
+
     
 }
