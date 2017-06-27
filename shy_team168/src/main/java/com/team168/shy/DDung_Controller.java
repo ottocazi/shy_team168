@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -122,8 +123,8 @@ public class DDung_Controller {
 		
 		String rootpath = session.getServletContext().getRealPath("/");
 		String path = rootpath + "resources" + File.separator + "images/shydb";
-		path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
 		
+		//path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
 		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
 		
 		
@@ -158,6 +159,8 @@ public class DDung_Controller {
 			
 			//tag 테이블에 친구 값 insert
 		}
+		
+		
 		
 		String staggeo = "0";
 		if (shyplace!=null){
@@ -292,6 +295,45 @@ public class DDung_Controller {
 	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
 		
 		return "ddung/accountenter.tiles";
+		
+	}
+	
+	@RequestMapping(value="/insertreply.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public String insertReply(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		String myidx = req.getParameter("myidx");
+		String shyidx = req.getParameter("shyidx");
+		String replycontent = req.getParameter("replycontent");
+		
+		System.out.println(myidx+" 번 유저가");
+		System.out.println(shyidx+" 번 글에");
+		System.out.println(replycontent + " 내용의 댓글을 남깁니다.");
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("fk_idx", myidx);
+		parameters.put("snsno", shyidx);
+		parameters.put("cmtcontent", replycontent);
+		
+		service.insertReply(parameters);
+		
+		String result = "댓글 입력 끝";
+		
+		return result;
+		
+		
+	}
+	
+	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST})
+	@ResponseBody
+	public String getComments(HttpServletRequest req, HttpSession session) throws IOException {
+		
+
+		
+		String result = "댓글 입력 끝";
+		
+		return result;
+		
 		
 	}
 	

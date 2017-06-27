@@ -52,6 +52,12 @@ public class DDung_Service {
 			String imgaddr = dao.imgaddr(snsno);
 			return imgaddr;
 		}
+
+		public void insertReply(HashMap<String, String> parameters) {
+		
+			dao.insertReply(parameters);
+			
+		}
 		
 	
 	

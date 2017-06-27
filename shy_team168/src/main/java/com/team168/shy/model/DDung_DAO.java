@@ -56,5 +56,11 @@ public class DDung_DAO {
 		return imgaddr;
 	}
 
+	public void insertReply(HashMap<String, String> parameters) {
+		
+		sqlsession.insert("ddung.insertReply", parameters);
+		
+	}
+
 	
 }

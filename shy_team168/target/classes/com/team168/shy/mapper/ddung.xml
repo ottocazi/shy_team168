@@ -90,6 +90,13 @@
 		FROM	TBL_IMAGE
 		WHERE 	SNSNO = #{snsno} and rownum = 1	
 	</select>
+	
+	<insert id="insertReply">
+	
+		INSERT INTO TBL_COMMENT (CMTNO, SNSNO, CMTCONTENT, FK_IDX)
+		VALUES (SEQ_TBL_COMMENT.NEXTVAL, #{snsno}, #{cmtcontent}, #{fk_idx})
+	
+	</insert>
 </mapper>
 
  
