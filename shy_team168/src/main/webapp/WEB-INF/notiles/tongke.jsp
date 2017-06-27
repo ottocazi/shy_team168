@@ -24,57 +24,51 @@
 
 <script type="text/javascript">
 
+ function ym_init_charts() {
+	if($("#lineChart_ym").length) {
+        var f = document.getElementById("lineChart_ym");
+        new Chart(f, {
+            type: "line",
+            data: {
+            	labels: [
+            		<c:forEach var="map" items="${tkList}"  varStatus="status">
+					"${map.TIME}시",
+					</c:forEach>
+            	],
+                datasets: [{
+                    label: "현재",
+                    backgroundColor: "rgba(38, 185, 154, 0.31)",
+                    borderColor: "rgba(38, 185, 154, 0.7)",
+                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointBorderWidth: 1,
+                    data: [
+                    	<c:forEach var="map" items="${tkList}"  varStatus="status">
+						"${map.CNT}",
+						</c:forEach>
+                    ]
+                }, {
+                    label: "어제",
+                    backgroundColor: "rgba(3, 88, 106, 0.3)",
+                    borderColor: "rgba(3, 88, 106, 0.70)",
+                    pointBorderColor: "rgba(3, 88, 106, 0.70)",
+                    pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(151,187,205,1)",
+                    pointBorderWidth: 1,
+                    data: [
+                    	<c:forEach var="map" items="${tkList2}"  varStatus="status">
+						"${map.CNT}",
+						</c:forEach>
+                    	]
+                } ]
+            }
+        })
+       }
+	}
 
-	
-	 function ym_init_charts() {
-		    if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) { 
-		        if($("#lineChart_ym").length) {
-		            var f = document.getElementById("lineChart_ym");
-		            new Chart(f, {
-		                type: "line",
-		                data: {
-		                	labels: [
-		                		<c:forEach var="map" items="${tkList}"  varStatus="status">
-								"${map.TIME}시",
-								</c:forEach>
-		                	],
-		                    datasets: [{
-		                        label: "현재",
-		                        backgroundColor: "rgba(38, 185, 154, 0.31)",
-		                        borderColor: "rgba(38, 185, 154, 0.7)",
-		                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
-		                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-		                        pointHoverBackgroundColor: "#fff",
-		                        pointHoverBorderColor: "rgba(220,220,220,1)",
-		                        pointBorderWidth: 1,
-		                        data: [
-		                        	<c:forEach var="map" items="${tkList}"  varStatus="status">
-		    						"${map.CNT}",
-		    						</c:forEach>
-		                        ]
-		                    }, {
-		                        label: "어제",
-		                        backgroundColor: "rgba(3, 88, 106, 0.3)",
-		                        borderColor: "rgba(3, 88, 106, 0.70)",
-		                        pointBorderColor: "rgba(3, 88, 106, 0.70)",
-		                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-		                        pointHoverBackgroundColor: "#fff",
-		                        pointHoverBorderColor: "rgba(151,187,205,1)",
-		                        pointBorderWidth: 1,
-		                        data: [
-		                        	<c:forEach var="map" items="${tkList2}"  varStatus="status">
-		    						"${map.CNT}",
-		    						</c:forEach>
-		                        	]
-		                    } ]
-		                }
-		            })
-		        }
-		    }
-		}
-
-
- 
 </script>
     
   </head>
@@ -85,7 +79,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -311,7 +305,7 @@
               </div>
               
 
-<%--               <div class="col-md-6 col-sm-6 col-xs-12">
+<%--                <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Bar graph <small>Sessions</small></h2>
@@ -336,7 +330,7 @@
                     <canvas id="mybarChart"></canvas>
                   </div>
                 </div>
-              </div>
+              </div> --%>
             </div>
             <div class="clearfix"></div>
             <div class="row">
@@ -448,7 +442,7 @@
                     <canvas id="polarArea"></canvas>
                   </div>
                 </div>
-              </div> --%>
+              </div>
             </div>
 
           </div>

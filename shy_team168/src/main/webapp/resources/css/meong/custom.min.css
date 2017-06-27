@@ -1157,7 +1157,7 @@ h2 {
 }
 
 .x_panel_ym{
-	width: 150%;
+	width: 204.3%;
 	padding: 10px 17px;
 	display: inline-block;
 	background: #fff;
@@ -1167,6 +1167,7 @@ h2 {
 	column-break-inside: avoid;
 	opacity: 1;
 	transition: all .2s ease
+	
 }
 .x_panel {
 	width: 100%;

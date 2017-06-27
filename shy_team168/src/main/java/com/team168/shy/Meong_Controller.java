@@ -369,7 +369,15 @@ public class Meong_Controller {
     	int year = today.get(Calendar.YEAR);
     	int month = (today.get(Calendar.MONTH) + 1);
     	int day = today.get(Calendar.DAY_OF_MONTH);
-
+    	String dateString = String.format("%04d-%02d-%02d", today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH));
+    	System.out.println(dateString);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("dateString", dateString);
+    	
+    	System.out.println(map);
+    	
     	List<HashMap<String, Object>> tkList = service.gettongkeList();
     	List<HashMap<String, Object>> tkList2 = service.gettongkeList2();
 		
