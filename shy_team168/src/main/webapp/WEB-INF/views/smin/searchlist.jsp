@@ -241,6 +241,9 @@ text-decoration: none;
   		);
     
     
+    
+    
+    
     </script>
     
     
@@ -423,26 +426,26 @@ text-decoration: none;
    		  <ul class="list">
 	 		<li>
 		  <div class="grp_box">
-		    <c:if test="${map.gimg != null}">
-		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.gimg }"><%-- img가져오기 --%>
+		    <c:if test="${map.GIMG != null}">
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.GIMG }"><%-- img가져오기 --%>
 		    </c:if>
 		    
-		    <c:if test="${map.gimg == null}">
+		    <c:if test="${map.GIMG == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
 		    
-		      <c:if test="${map.status==1}">
-		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname}</a></h4>
-		      <div class="grp_fa fa-eye"> ${map.gcount}명</div>
-		      <span class="grp_desc"> ${map.description}</span>
+		      <c:if test="${map.STATUS==1}">
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
-		      <c:if test="${map.status==2}">
-		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname}</a></h4>
-		      <i class="grp_fa fa-eye"> ${map.gcount}명</i>
-		      <span class="grp_desc"> ${map.description}</span>
+		      <c:if test="${map.STATUS==2}">
+		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
 		    </div>
 		  </div>
