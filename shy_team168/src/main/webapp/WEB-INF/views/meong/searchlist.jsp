@@ -256,7 +256,7 @@ text-decoration: none;
    		</c:if>
    		 alert(idxArr);
    		
-   		jQuery.ajaxSettings.traditional = true;
+   		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
    		
    		$.ajax({
    			url: "/shy/follow.shy",
