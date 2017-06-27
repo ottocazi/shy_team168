@@ -181,7 +181,28 @@
 		on A.time = B.time
 		order by time asc
 	</select>
-
+	
+	
+	<!-- 성민 -->
+	    <resultMap type="java.util.HashMap" id="searchpeopleMap">
+		<result property="IDX" 			column="idx" 			javaType="String" />
+ 		<result property="NAME"  		column="name" 			javaType="String" />
+ 		<result property="EMAIL"  		column="email" 			javaType="String" />
+ 		<result property="PWD"  		column="pwd" 			javaType="String" />
+ 		<result property="REGISTERDATE" column="registerdate" 	javaType="String" />
+ 		<result property="MYIMG"  		column="myimg" 			javaType="String" />
+ 		<result property="MYINTRO"  	column="myintro" 		javaType="String" />
+ 		<result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+ 		<result property="GENDER"  		column="gender" 		javaType="String" />
+ 		<result property="PHONE"  		column="phone" 			javaType="String" />
+	</resultMap>
+	 <select id="plist" parameterType="String" resultMap="searchpeopleMap">
+	    select *
+        from tbl_shymember
+        where status = 1
+        order by idx desc
+	</select> 
+	
 </mapper>
 
 
