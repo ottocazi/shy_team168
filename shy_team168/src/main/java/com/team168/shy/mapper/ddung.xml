@@ -104,7 +104,7 @@
 		<result property="cmtno" 		column="CMTNO" 			javaType="String"/>
 		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
 		<result property="cmtcontent" 	column="cmtcontent" 	javaType="String"/>
-		<result property="upatetime" 	column="upatetime" 		javaType="String"/>
+		<result property="updatetime" 	column="updatetime" 	javaType="String"/>
 		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
 		<result property="name" 		column="NAME" 			javaType="String"/>
 		<result property="email" 		column="EMAIL" 			javaType="String"/>
