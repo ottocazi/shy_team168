@@ -42,26 +42,26 @@ public class PaService {
 	}
 	
 	// ===== 인기그룹 가져오기  =====
-	public List<GroupVO> gethotGroupList() {
-		List<GroupVO> hotGrpList = dao.hotGrpList();
+	public List<HashMap<String,String>> gethotGroupList() {
+		List<HashMap<String,String>> hotGrpList = dao.hotGrpList();
 		return hotGrpList;
 	}
 
 	// ===== 그룹 가져오기  =====
-	public GroupVO getGroup() {
-		GroupVO gvo = dao.getGroup();
+	public GroupVO getGroup(String fk_idx) {
+		GroupVO gvo = dao.getGroup(fk_idx);
 		return gvo;
 	}
 
 	// ===== 신규그룹 가져오기  =====
-	public List<GroupVO> getnewGroupList() {
-		List<GroupVO> newGrpList = dao.newGrpList();
+	public List<HashMap<String,String>> getnewGroupList() {
+		List<HashMap<String,String>> newGrpList = dao.newGrpList();
 		return newGrpList;
 	}
 
 	// ===== 내그룹 가져오기  =====
-	public List<GroupVO> getmyGroupList(int fk_idx) {
-		List<GroupVO> myGrpList = dao.myGrpList(fk_idx);
+	public List<HashMap<String,String>> getmyGroupList(int fk_idx) {
+		List<HashMap<String,String>> myGrpList = dao.myGrpList(fk_idx);
 		return myGrpList;
 	}
 
@@ -116,6 +116,18 @@ public class PaService {
 	public String getImgaddr(String snsno) {
 		String imgfile = dao.getImgaddr(snsno);
 		return imgfile;
+	}
+
+	// ===== 좋아요 insert ===== //
+	public int insertLike(HashMap<String, String> likemap) {
+		int n = dao.insertLike(likemap);
+		return n;
+	}
+
+	// ===== 좋아요 가져오기 ===== //
+	public List<HashMap<String, String>> getmyLikeList(HashMap<String, Object> mylike) {
+		List<HashMap<String, String>> likeList = dao.getmyLikeList(mylike);
+		return likeList;
 	}
 
 
