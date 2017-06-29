@@ -142,6 +142,13 @@ public class Meong_DAO{
 		return adminList;
 	}
 
-    
-    
+	public List<HashMap<String, Object>> gettongkeList3(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList3 = sqlsession.selectList("mangu.gettongkeList3" , map);
+		return tkList3;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList4(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList4 = sqlsession.selectList("mangu.gettongkeList4" , map);
+		return tkList4;
+	}
 }

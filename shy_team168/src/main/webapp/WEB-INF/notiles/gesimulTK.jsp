@@ -23,65 +23,82 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
 
 <script type="text/javascript">
-
-function goday(){
-	var godayForm = document.godayForm;
-	godayForm.submit();
-}
-
- function ym_init_charts() {
-	if($("#lineChart_ym").length) {
-        var f = document.getElementById("lineChart_ym");
-        new Chart(f, {
-            type: "line",
-            data: {
-            	labels: [
-            		<c:forEach var="map" items="${tkList}"  varStatus="status">
-					"${map.TIME}시",
-					</c:forEach>
-            	],
-                datasets: [{
-                    label: 
-                    	<c:if test="${empty today2}">"오늘",</c:if>
-                    	<c:if test="${not empty today2}">"${today2}",</c:if>
-                    	
-                    backgroundColor: "rgba(38, 185, 154, 0.31)",
-                    borderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                     	<c:forEach var="map" items="${tkList}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    ]
+function ym_init_echarts() {
+    if ("undefined" != typeof echarts) {
+        console.log("ym_init_echarts");
+if ($("#mainb").length) {
+    var b = echarts.init(document.getElementById("mainb"), a);
+    b.setOption({
+        title: {
+            text: "d",
+            subtext: "d"
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ["d", "d"]
+        },
+        toolbox: {
+            show: !1
+        },
+        calculable: !1,
+        xAxis: [{
+            type: "category",
+            data: ["1?", "2?", "3?", "4?", "5?", "6?", "7?", "8?", "9?", "10?", "11?", "12?"]
+        }],
+        yAxis: [{
+            type: "value"
+        }],
+        series: [{
+            name: "sales",
+            type: "bar",
+            data: [2, 4.9, 7, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20, 6.4, 3.3],
+            markPoint: {
+                data: [{
+                    type: "max",
+                    name: "???"
                 }, {
-                    label: 
-                    	<c:if test="${empty yesterday2}">"어제",</c:if>
-                    	<c:if test="${not empty yesterday2}">"${yesterday2}",</c:if>
-                    	
-                    backgroundColor: "rgba(3, 88, 106, 0.3)",
-                    borderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBorderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(151,187,205,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                    	<c:forEach var="map" items="${tkList2}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    	]
-                } ]
+                    type: "min",
+                    name: "???"
+                }]
+            },
+            markLine: {
+                data: [{
+                    type: "average",
+                    name: "???"
+                }]
             }
-        })
-       }
-	}
-
+        }, {
+            name: "purchases",
+            type: "bar",
+            data: [2.6, 5.9, 9, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6, 2.3],
+            markPoint: {
+                data: [{
+                    name: "sales",
+                    value: 182.2,
+                    xAxis: 7,
+                    yAxis: 183
+                }, {
+                    name: "purchases",
+                    value: 2.3,
+                    xAxis: 11,
+                    yAxis: 3
+                }]
+            },
+            markLine: {
+                data: [{
+                    type: "average",
+                    name: "???"
+               			 }]
+         			   }
+      			  }]
+   			 })
+		}
+    }
+}
 </script>
-    
+
   </head>
 
   <body class="nav-md">
@@ -129,6 +146,8 @@ function goday(){
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
+                      
+                      
                       <li><a href="<%= request.getContextPath() %>/gesimulTK.shy">좋아요가 가장많은 유저</a></li>
                       <li><a href="#">신고를 많이받은 유저</a></li>
                     </ul>
@@ -284,7 +303,7 @@ function goday(){
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
+<%--               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel_ym">
                   <div class="x_title" style="margin-bottom: 10px;">
                     <h2>${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h2>
@@ -318,8 +337,8 @@ function goday(){
                   <div>
      			  </div> 
                 </div>
-              </div>
-<!-- 
+              </div> --%>
+ 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -348,7 +367,7 @@ function goday(){
                   </div>
                 </div>
               </div>
-               -->
+
             </div>
 
           </div>
@@ -366,8 +385,8 @@ function goday(){
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
+<%--     <!-- Chart.js -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script> --%>
 	<!-- ECharts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
     <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
