@@ -160,10 +160,10 @@
  		<result property="TIME" 		    column="time" 	        javaType="String" />
  		<result property="CNT" 	        column="cnt" 	    javaType="String" />
 	</resultMap>
-	<select id="gettongkeList" resultMap="gettongkeListmap">
+	<select id="gettongkeList" resultMap="gettongkeListmap" parameterType="java.util.HashMap">
 		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
-		from (SELECT TO_CHAR(TO_DATE('2017-06-19', 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
-		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = '2017-06-19') group by time) B
+		from (SELECT TO_CHAR(TO_DATE(#{today}, 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = #{today}) group by time) B
 		on A.time = B.time
 		order by time asc
 	</select>
@@ -174,10 +174,10 @@
  		<result property="TIME" 		    column="time" 	        javaType="String" />
  		<result property="CNT" 	        column="cnt" 	    javaType="String" />
 	</resultMap>
-	<select id="gettongkeList2" resultMap="gettongkeList2map">
+	<select id="gettongkeList2" resultMap="gettongkeList2map" parameterType="java.util.HashMap">
 		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
-		from (SELECT TO_CHAR(TO_DATE('2017-06-20', 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
-		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = '2017-06-20') group by time) B
+		from (SELECT TO_CHAR(TO_DATE(#{yesterday}, 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = #{yesterday}) group by time) B
 		on A.time = B.time
 		order by time asc
 	</select>
@@ -221,6 +221,28 @@
       		 (SELECT *  FROM TBL_FOLLOW WHERE FK_IDXFLW = #{idx}  ) B
       		  ON A.IDX = B.FK_IDXFLWED
 	</select>
+	
+	<!-- 운영자 리스트보여주는 select문 -->
+	<resultMap type="java.util.HashMap" id="getadminListMap">
+		<result property="IDX" 		        column="idx" 	        javaType="String" />
+ 		<result property="NAME" 	        column="name" 	        javaType="String" />
+ 		<result property="EMAIL" 		    column="email" 	        javaType="String" />
+ 		<result property="PWD" 	            column="pwd" 	        javaType="String" />
+ 		<result property="REGISTERDATE"		column="registerdate" 	javaType="String" />
+ 		<result property="STATUS" 	        column="status" 	    javaType="String" />
+ 		<result property="MYIMG" 		    column="myimg" 	        javaType="String" />
+ 		<result property="MYINTRO" 	        column="myintro" 	    javaType="String" />
+ 		<result property="BIRTHDAY" 		column="birthday" 	    javaType="String" />
+ 		<result property="GENDER" 	        column="gender" 	    javaType="String" />
+ 		<result property="PHONE" 		    column="phone" 	        javaType="String" />
+	</resultMap>
+	<select id="getadminList" parameterType="String" resultMap="getadminListMap">
+		select *
+		from tbl_shymember
+		order by idx desc
+	</select>
+	
+	
 	
 	
 </mapper>

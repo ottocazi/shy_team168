@@ -258,10 +258,14 @@ text-decoration: none;
 	    			
 	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
 					if(FOLLOWCHECK == 1){
+
 						html = "<button onClick='unFollow("+ entry.IDX + ");'>팔로우해제</button>";
+
 					}
 					else {
+						
 						html = "<button onClick='goFollow("+ entry.IDX + ");'>팔로우</button>";
+
 					}
 					
 					$("#follow" + entry.IDX).html(html);

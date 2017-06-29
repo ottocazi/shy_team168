@@ -302,26 +302,17 @@
                         </tr>
                       </thead>
                       <tbody>
+                      <c:forEach var="map" items="${adminList}" varStatus="status">
                         <tr>
-                          <th scope="row">1</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
+                          <td>${map.IDX}</td>
+                          <td>${map.NAME}</td>
+                          <td>${map.EMAIL}</td>
+                          <td>${map.STATUS}</td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
+                      </c:forEach>
                       </tbody>
                     </table>
+                   <div align="right">${pagebar2}</div>
                   </div>
                 </div>
               </div>
