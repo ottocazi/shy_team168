@@ -226,10 +226,10 @@ text-decoration: none;
 	    			
 	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
 					if(FOLLOWCHECK == 1){
-						html = "<a href='open.shy'>팔로우해제</a>";
+						html = "<a href='unFollow.shy'>팔로우해제</a>";
 					}
 					else {
-						html = "<a href=''>팔로우</a>";
+						html = "<a href='goFollow.shy'>팔로우</a>";
 					}
 					
 					$("#follow" + entry.IDX).html(html);

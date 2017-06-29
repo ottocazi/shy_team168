@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -105,17 +106,17 @@ public class Meong_DAO{
 		int n = sqlsession.insert("mangu.shystatusUp", map);
 		return n;
 	}
-
+/*
 	public List<HashMap<String, Object>> gettongkeList() {
 		List<HashMap<String, Object>> tkList = sqlsession.selectList("mangu.gettongkeList");
 		return tkList;
-	}
-
+	}*/
+/*
 	public List<HashMap<String, Object>> gettongkeList2() {
 		List<HashMap<String, Object>> tkList2 = sqlsession.selectList("mangu.gettongkeList2");
 		return tkList2;
 	}
-
+*/
 	public List<HashMap<String, String>> plist() {
 		List<HashMap<String, String>> plist = sqlsession.selectList("mangu.plist");
 		return plist;
@@ -126,5 +127,21 @@ public class Meong_DAO{
 		return FollowList;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList = sqlsession.selectList("mangu.gettongkeList" , map);
+		return tkList;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList2 = sqlsession.selectList("mangu.gettongkeList2" , map);
+		return tkList2;
+	}
+
+	public List<HashMap<String, String>> groupsearch(HashMap<String, String> map, RowBounds rowBounds) {
+		List<HashMap<String, String>> adminList = sqlsession.selectList("mangu.getadminList", map, rowBounds);
+		return adminList;
+	}
+
+    
     
 }
