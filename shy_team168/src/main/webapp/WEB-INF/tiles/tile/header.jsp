@@ -130,7 +130,38 @@
 		})
 	})
 </script>
-
+<script type="text/javascript">      
+     // 알람 Ajax 불러오기
+     $.ajax({
+         url: "/shy/myAlram.shy",
+         type: "GET",
+         dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+         /* data: { // 파라미터     
+         }, */
+         success: function(data) { // 성공했을 때의 처리 콜백함수
+             $("#ajaxresult").append("success<br />");
+       
+             if(data.leght==0){
+            	 $("#ajaxresult").append("알림이 없습니다.");
+             }else{
+            	  $.each(data,function(entryIndex,entry){
+            	  
+            	  
+            	  
+            	  
+            	  }
+             }   
+         },
+         complete: function() { // ajax 전송이 완료 됐을 때의 콜백함수
+             //stopLoading();  로딩 멈추기
+       
+             $("#ajaxresult").append("complete<br />");
+         },
+         error: function() { // 에러가 발생했을 때의 콜백함수
+             $("#ajaxresult").append("error<br />");
+         }
+     });
+     </script> 
 
 
 <style>
@@ -401,12 +432,14 @@
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
 							안녕하세요
 						</span>
+						<div id="ajaxresult"></div>
 					</c:if>
 
 					<c:if test="${loginuser.name==null }">
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님
 							안녕하세요
 						</span>
+						<div id="ajaxresult"></div>
 					</c:if>
 
 				</c:if>
