@@ -132,43 +132,49 @@
 	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
 	            data: {snsno:snsno},
 	            success: function(data) { // 성공했을 때의 처리 콜백함수
-	               
-	            	var html;
-	    			
-	    			$.each(data, function(entryIndex, entry){
+	            	
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
 	    				//alert(entry.cmtcontent);
 	    				
-	    				html = '<div id="shy_comment_ajax' + entry.cmtno
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
 	    					 + '" class="shy_comment">'
 	    					 + '<div class="shy_comment-avatar">'
 	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
-	    					 + entry.myimg
+	    					 + comments.myimg
 	    					 + '"></div>'
 	    					 + '<div class="shy_comment-box">'
 	    					 + '<div class="shy_comment-text">'
-	    					 + entry.cmtcontent
+	    					 + comments.cmtcontent
 	    					 + '</div>'
 	    					 + '<div class="shy_comment-footer">'
-	    				/* 	 + '<div class="shy_comment-info">'
-	    					 + '<span class="shy_comment-author"> <a href="#">'
-	    					 + entry.email+ '</a>'
-	    					 + '</span> <span class="shy_comment-date">
-	    					 + entry.upatetime+'</span>'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+    				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+ 				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
 	    					 + '</div>'
 	    					 + '<div class="shy_comment-actions">'
 							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
 							 + ' aria-hidden="true"></i></a> '
 	    					 + '</div>'
 	    					 + '</div>'
-	    					 + '</div></div>';   */
+	    					 + '</div></div>';   
 	    			
 	    				/*html END*/ 
 	    				
-	    				$("#shy_comment_ajax").html(html);
+	    				
 	    				
 	    			});
 	               
-
+	    			$("#shy_comment_ajax" + snsno).html(html);
 	               
 	            },
 	            error: function() { // 에러가 발생했을 때의 콜백함수
@@ -176,7 +182,7 @@
 	            }
 	        });
 		   
-		   commentbox.style.display = 'block'; 
+		    
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
@@ -325,7 +331,7 @@
 								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
 								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
 								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
-								title="Share" href="#"> Share </a> <a
+								title="Share" href="#"> 공유하기 </a> <a
 								href="javascript:openComment('${shies.snsno}');"
 								class="bt-comment" title="Comment" id="comment${shies.snsno}">
 							</a>
@@ -379,7 +385,7 @@
 						<!-- Comment -->
 
 						<!-- Comment - Dummy -->
-						<div id="shy_comment_ajax" class="shy_comment">
+						<div id="shy_comment_ajax${shies.snsno}" class="shy_comment">
 							<%-- 
 							<!-- for each 돌리는 div  -->
 							<!-- Comment Avatar -->

@@ -43,4 +43,22 @@ public class JunoDAO {
 		List<HashMap<String, Object>> CommentList = sqlsession.selectList("juno.getCommentCountArr" , snsnoArr);
 		return CommentList;
 	}
+
+	public List<HashMap<String, String>> peoplesearch() {
+		List<HashMap<String, String>> plist = sqlsession.selectList("juno.peoplesearch");
+		
+		return plist;
+	}
+	
+	// gofollow
+	public int goFollow(HashMap<String, Object> map) {
+		int result = sqlsession.insert("juno.goFollow", map);
+		return result;
+	}
+	
+	// unfollow
+	public int unFollow(HashMap<String, Object> map) {
+		int result = sqlsession.update("juno.unFollow", map);
+		return result;
+	}
 }

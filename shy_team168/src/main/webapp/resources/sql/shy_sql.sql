@@ -1,5 +1,60 @@
 -------------------------------------------
 --파
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount,
+				 rank() over (order by A.gcount desc) as rank
+from
+(select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
+				 rank() over (order by gcount desc) as rank
+		 from tbl_group
+		 where status in(1,2)
+		 order by rank) A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+     select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount,
+				 rank() over (order by A.gcount desc) as rank, B.myimg, B.name
+		 from
+		 (select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+		 from tbl_group
+		 where status in(1,2)
+		 order by groupdate desc) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
+	     order by groupdate desc;
+     
+     delete from tbl_group;
+     delete from tbl_gmember;
+     delete from tbl_grpboard;
+ select  groupno, fk_idx, gname,to_char(groupdate,'yyyy-mm-dd hh:mi')
+		 from tbl_group
+		 where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
+commit;
+select *
+from tbl_gmember;
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount
+from
+(select  *
+		 from tbl_group
+		 where fk_idx=33 and status in(1,2,3))A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) as total , 
+case when (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76))>0 then (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76)) else 1 end as status
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO LEFT OUTER join 
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
