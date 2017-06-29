@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
+import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Min_Service;
 
 
@@ -47,8 +47,7 @@ public class Min_Controller {
     @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
 	    
-    	
-    	
+    		
 		   // ===== #108. 페이징 처리하기 =====
 		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
 		    	
