@@ -56,5 +56,17 @@ public class DDung_DAO {
 		return imgaddr;
 	}
 
+	public void insertReply(HashMap<String, String> parameters) {
+		
+		sqlsession.insert("ddung.insertReply", parameters);
+		
+	}
+
+	public List<HashMap<String, String>> getComments(String snsno) {
+		
+		List <HashMap <String, String>> comments = sqlsession.selectList("ddung.getComments", snsno);
+		return comments;
+	}
+
 	
 }

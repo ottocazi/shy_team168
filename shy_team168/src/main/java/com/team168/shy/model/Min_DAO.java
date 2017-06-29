@@ -65,8 +65,8 @@ public class Min_DAO{
 		}
 		
 		
-		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map) {
-			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", map );
+		public List<HashMap<String, String>> groupsearch(HashMap<String, String> map, RowBounds rowBounds1) {
+			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", map, rowBounds1 );
 			return glist;
 		}
 	
