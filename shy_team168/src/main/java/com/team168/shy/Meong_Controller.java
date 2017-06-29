@@ -10,7 +10,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -74,7 +73,7 @@ public class Meong_Controller {
 		   req.setAttribute("type", type);
 		   req.setAttribute("title", title);
 		   
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     }
 	
 
@@ -114,7 +113,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
     	else {
     		title = "아이디가 존재하지 않습니다.!!";
@@ -127,7 +126,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
    	
     	InetAddress inetAddress = InetAddress.getLocalHost();
