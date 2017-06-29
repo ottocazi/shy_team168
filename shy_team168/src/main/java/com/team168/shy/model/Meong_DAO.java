@@ -121,5 +121,10 @@ public class Meong_DAO{
 		return plist;
 	}
 
+	public List<HashMap<String, Object>> getFollowListArr(HashMap<String, Object> map) {
+		List<HashMap<String, Object>> FollowList = sqlsession.selectList("mangu.getFollowListArr" , map);
+		return FollowList;
+	}
+
     
 }

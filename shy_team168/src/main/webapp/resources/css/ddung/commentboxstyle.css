@@ -66,7 +66,26 @@
   font-size: 14px;
 }
 
-.shy_comment-form .shy_form input[type=submit]{
+.shy_comment-form .shy_form input[type=button] {
+  background-color: #555f77;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  outline: none;
+  padding: 6px 15px;
+
+  -webkit-transition: 350ms box-shadow;
+  -moz-transition: 350ms box-shadow;
+  -ms-transition: 350ms box-shadow;
+  -o-transition: 350ms box-shadow;
+  transition: 350ms box-shadow;
+}
+
+#replybutton{
   background-color: #555f77;
   border: none;
   border-radius: 4px;
@@ -86,8 +105,8 @@
 }
 
 .shy_comment-form .shy_form .shy_input:focus,
-.shy_comment-form .shy_form input[type=submit]:focus,
-.shy_comment-form .shy_form input[type=submit]:hover{
+.shy_comment-form .shy_form input[type=button]:focus,
+.shy_comment-form .shy_form input[type=button]:hover{
   box-shadow: 0 2px 6px rgba(121, 137, 148, .55);
 }
 
@@ -115,18 +134,18 @@
   border: 2px solid #fff;
   border-radius: 50%;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-  height: 70px;
+  height: 66px;
   left: 0;
   overflow: hidden;
   position: absolute;
   top: 0;
-  width: 70px;
+  width: 66px;
 }
 
 .shy_comment-form .shy_comment-avatar img,
 .shy_comment .shy_comment-avatar img{
   display: block;
-  height: auto;
+  height: 100%;
   width: 100%;
 }
 
