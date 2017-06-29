@@ -9,11 +9,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.event.ListDataListener;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.team168.shy.model.GroupVO;
@@ -99,24 +102,24 @@ public class Pa_Controller {
 		if(loginuser != null) {
     		int fk_idx = loginuser.getIdx();
 				
-			List<GroupVO> myGrpList = service.getmyGroupList(fk_idx);
+			List<HashMap<String,String>> myGrpList = service.getmyGroupList(fk_idx);
 		    req.setAttribute("myGrpList", myGrpList);
 				
 			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-			List<GroupVO> hotGrpList = service.gethotGroupList();
+			List<HashMap<String,String>> hotGrpList = service.gethotGroupList();
 		    req.setAttribute("hotGrpList", hotGrpList);
 		    	
 		    // 신규그룹 목록 
-		    List<GroupVO> newGrpList = service.getnewGroupList();
+		    List<HashMap<String,String>> newGrpList = service.getnewGroupList();
 		    req.setAttribute("newGrpList", newGrpList);
 		    
 		}else{
 			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-			List<GroupVO> hotGrpList = service.gethotGroupList();
+			List<HashMap<String,String>> hotGrpList = service.gethotGroupList();
 	    	req.setAttribute("hotGrpList", hotGrpList);
 	    	
 	    	// 신규그룹 목록 
-	    	List<GroupVO> newGrpList = service.getnewGroupList();
+	    	List<HashMap<String,String>> newGrpList = service.getnewGroupList();
 	    	req.setAttribute("newGrpList", newGrpList);
 		}
 		
@@ -272,7 +275,7 @@ public class Pa_Controller {
     		
     		if(grpvo!=null){
     			
-    			grpvo = service.getGroup(); // 제일 최근 insert된 tbl_group을 가져온다.
+    			grpvo = service.getGroup(fk_idx); // 제일 최근 insert된 tbl_group을 가져온다.
     			
     			int fk_groupno = grpvo.getGroupno(); 
         		System.out.println("fk_groupno="+fk_groupno);
@@ -485,5 +488,84 @@ public class Pa_Controller {
 		}
 		return "ddung_alert.notiles";
     }
+    
+    // ===== hearder 알람 띄우기 ===== //
+ 	@RequestMapping(value="/myAlram.shy", method={RequestMethod.GET})
+     public String goMyAlram(ShyMemberVO loginuser,HttpServletRequest req,HttpSession session) {
+ 		
+ 		String myIdx = Integer.toString(loginuser.getIdx());
+ 		System.out.println("myIdx="+myIdx);
+ 		//req.setAttribute("myIdx", myIdx);
+ 		
+ 		//List<HashMap<String,String>> myflwlist = service.getMyfollow(myIdx);
+ 		
+		return myIdx;
+ 			
+ 	}
+ 	
+ 	// ===== 좋아요 insert ===== //
+  	@RequestMapping(value="/like.shy", method={RequestMethod.GET})
+  	@ResponseBody
+      public HashMap<String, Object> goLike(HttpServletRequest req) {
+  		
+  		String fk_likeidx = req.getParameter("idx");
+  		//System.out.println("fk_likeidx="+fk_likeidx);
+  		
+  		String liketype = req.getParameter("liketype"); // 게시물 타입 1:게시물 2:댓글
+  		//System.out.println("liketype="+liketype);
+  		String seqcolum = req.getParameter("seqcolum"); // snsno,storeboardno,grpboardseq 컬럼명
+  		//System.out.println("seqcolum="+seqcolum);
+  		String likeseq = req.getParameter("likeseq"); // snsno,storeboardno,grpboardseq 벨류값
+  		//System.out.println("likeseq="+likeseq);
+  		
+  		HashMap<String, String> likemap = new HashMap<String, String>();
+  		likemap.put("fk_likeidx", fk_likeidx);
+  		likemap.put("liketype", liketype);
+  		likemap.put("seqcolum", seqcolum);
+  		likemap.put("likeseq", likeseq);
+  		
+  		int result = service.insertLike(likemap);
+  		
+  		if(result>0){
+  			//service.getLikes(likemap);
+  		}
+  		HashMap<String, Object> returnlike = new HashMap<String, Object>();
+  		returnlike.put("RESULT", result);
+  		
+  		
+  		
+  		return returnlike;
+  			
+  	}
+  	
+  	// ===== 좋아요 가져오기 ===== //
+   	@RequestMapping(value="/likeList.shy", method={RequestMethod.GET})
+   	@ResponseBody
+       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req) {
+   		//List<HashMap<String, String>> likeList = null; // 초기화
+   		
+   		String[] snsnoArr = req.getParameterValues("snsnoArr");
+   		System.out.println("snsnoArr="+snsnoArr);
+   		
+   		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+		
+		int fk_likeidx = loginuser.getIdx();
+   		
+		HashMap<String, Object> mylike = new HashMap<String, Object>();
+		mylike.put("snsnoArr", snsnoArr);
+		mylike.put("fk_likeidx", fk_likeidx);
+   	
+   		List<HashMap<String, String>> likeList = service.getmyLikeList(mylike);
+   		
+   		
+   		for(int i = 0; i < likeList.size(); ++i) {
+   			System.out.println("snsno : " + likeList.get(i).get("snsno"));
+   			System.out.println("totalcount : " + likeList.get(i).get("totalcount"));
+   		}
+   		
+   		return likeList;
+   			
+   	}
     
 }

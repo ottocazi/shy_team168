@@ -101,8 +101,9 @@
 	
 	    select *
         from TBL_GROUP
+        where status != 3
         <if test="search != null">
-        where gname like '%' || #{search} || '%'
+        and gname like '%' || #{search} || '%'
 		</if>
 		order by groupno desc
 	</select>
@@ -118,9 +119,9 @@
 	   <select id="gTotalCount" parameterType="java.util.HashMap" resultType="int"> 
 		select count(*)
 		from TBL_GROUP
-		
+		where status != 3
 		<if test="search != null">
-			 where gname like '%' || #{search} || '%'
+			 and gname like '%' || #{search} || '%'
 		</if>
 	
 	</select>   

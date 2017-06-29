@@ -199,8 +199,40 @@ text-decoration: none;
 </style>    
     
     <script type="text/javascript">
+    function goFollow(fk_idxflwed){
+    	var form_data = {fk_idxflwed:fk_idxflwed}
+    	$.ajax({
+   			url: "/shy/goFollow.shy",
+    		type: "GET",
+    		data: form_data,
+    		dataType: "JSON", 
+    		success: function(data){
+    			alert("idx : "+fk_idxflwed);
+    			follow();
+    		},
+    		error: function(){
+				  alert("goFollow() error!"); 
+		    }
+    	});	
+    };
+	
+    function unFollow(fk_idxflwed){
+    	var form_data = {fk_idxflwed:fk_idxflwed}
+    	$.ajax({
+   			url: "/shy/unFollow.shy",
+    		type: "GET",
+    		data: form_data,
+    		dataType: "JSON", 
+    		success: function(data){
+    			alert("idx : "+fk_idxflwed);
+    			follow();
+    		},
+    		error: function(){
+				  alert("unFollow() error!"); 
+		    }
+    	});	
+    };
     
-
    	function follow() {
    		var idxArr = new Array();
    		<c:if test="${plist!=null}">
@@ -219,17 +251,17 @@ text-decoration: none;
     		data: {idxArr:idxArr},
     		dataType: "JSON", 
     		success: function(data){
-    			//alert("ajax 성공 function");
+    			//alert("follow");
     			var html;
     			
     			$.each(data, function(entryIndex, entry){
 	    			
 	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
 					if(FOLLOWCHECK == 1){
-						html = "<a href='open.shy'>팔로우해제</a>";
+						html = "<button onClick='unFollow("+ entry.IDX + ");'>팔로우해제</button>";
 					}
 					else {
-						html = "<a href=''>팔로우</a>";
+						html = "<button onClick='goFollow("+ entry.IDX + ");'>팔로우</button>";
 					}
 					
 					$("#follow" + entry.IDX).html(html);
@@ -238,7 +270,7 @@ text-decoration: none;
     		//	getCommentList();
     		},
     		error: function(){
- 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 				  alert("follow() error!"); 
  		    }
    		});
     }; 

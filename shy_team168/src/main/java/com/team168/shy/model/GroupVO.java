@@ -1,7 +1,5 @@
 package com.team168.shy.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class GroupVO {
 	private int groupno;
 	private String fk_idx;
@@ -18,13 +16,11 @@ public class GroupVO {
 	private String gregisterdate;
 	private int gmstatus;
 	
-	ShyMemberVO shymemvo;
-	
 	public GroupVO() {
 	}
 
 	public GroupVO(int groupno, String fk_idx, String gname, String description, String groupdate, String gimg,
-			int gcount, int status,ShyMemberVO shymemvo) {
+			int gcount, int status) {
 		this.groupno = groupno;
 		this.fk_idx = fk_idx;
 		this.gname = gname;
@@ -33,26 +29,8 @@ public class GroupVO {
 		this.gimg = gimg;
 		this.gcount = gcount;
 		this.status = status;
-		this.shymemvo = shymemvo;
 	}
 	
-	public GroupVO(int groupno, String fk_idx, String gname, String description, String groupdate, String gimg,
-			int gcount, int status, int gpdetailno, String fk_groupidx, String gregisterdate, int gmstatus,ShyMemberVO shymemvo) {
-		this.groupno = groupno;
-		this.fk_idx = fk_idx;
-		this.gname = gname;
-		this.description = description;
-		this.groupdate = groupdate;
-		this.gimg = gimg;
-		this.gcount = gcount;
-		this.status = status;
-		this.gpdetailno = gpdetailno;
-		this.fk_groupidx = fk_groupidx;
-		this.gregisterdate = gregisterdate;
-		this.gmstatus = gmstatus;
-		this.shymemvo = shymemvo;
-	}
-
 	public int getGroupno() {
 		return groupno;
 	}
@@ -149,12 +127,6 @@ public class GroupVO {
 		this.gmstatus = gmstatus;
 	}
 
-	public ShyMemberVO getShymemvo() {
-		return shymemvo;
-	}
-
-	public void setShymemvo(ShyMemberVO shymemvo) {
-		this.shymemvo = shymemvo;
-	}
+	
 	
 }
