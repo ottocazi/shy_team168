@@ -355,6 +355,7 @@ text-decoration: none;
                           <th>회원번호</th>
                           <th>회원이름</th>
                           <th>회원아이디</th>
+                          <th>팔로우</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -364,6 +365,7 @@ text-decoration: none;
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
+                          <td id="follow${map.IDX}"></td>
                         </tr>
                       </c:forEach>
                       </tbody>
