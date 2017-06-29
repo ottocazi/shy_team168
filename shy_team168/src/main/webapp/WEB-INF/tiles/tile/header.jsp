@@ -132,12 +132,13 @@
 </script>
 <script type="text/javascript">      
      // 알람 Ajax 불러오기
-     $.ajax({
+     
+  /*   $.ajax({
          url: "/shy/myAlram.shy",
          type: "GET",
          dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-         /* data: { // 파라미터     
-         }, */
+          data: { // 파라미터     
+         }, 
          success: function(data) { // 성공했을 때의 처리 콜백함수
              $("#ajaxresult").append("success<br />");
        
@@ -160,7 +161,7 @@
          error: function() { // 에러가 발생했을 때의 콜백함수
              $("#ajaxresult").append("error<br />");
          }
-     });
+     }); */
      </script> 
 
 
@@ -421,7 +422,7 @@
 		style="background-color: white;">
 		<div class="shy_top_container-fluid">
 			<div class="shy_topnavbar-header">
-				<a class="shy_topnavbar-brand" href="#"> <span class="letter"
+				<a class="shy_topnavbar-brand" href="<%=request.getContextPath() %>/mainline.shy"> <span class="letter"
 					id="shy" data-letter="s">s</span> <span class="letter" id="shy"
 					data-letter="h">h</span> <span class="letter" id="shy"
 					data-letter="y">y</span>
@@ -453,8 +454,9 @@
 					<button class="dropbtn"><i class="fa fa-street-view fa-2x"
 							aria-hidden="true" style="color: #98DDDE;"></i></button>
 							<div class="dropdown-content">
-								<a href="#">Link 1111111</a> <a href="#">Link 2</a> <a href="#">Link
-									3</a>
+								<a href="<%=request.getContextPath() %>/mypage.shy">my shy</a> 
+								<a href="<%=request.getContextPath() %>/myInfoEdit.shy">정보수정</a> 
+								<a href="#">Link3</a>
 							</div>
 				</div>
 				</li>
@@ -466,8 +468,9 @@
 						<button class="dropbtn"><i class="fa fa-heartbeat fa-2x"
 						aria-hidden="true" style="color: #F7786B;"></i></button>
 						<div class="dropdown-content">
-							<a href="#">Link 1111111</a> <a href="#">Link 2</a> <a href="#">Link
-								3</a>
+							<a href="#">팔로워</a> 
+							<a href="<%=request.getContextPath() %>/mygroups.shy">그룹</a> 
+							<a href="#">Link3</a>
 						</div>
 					</div>
 				

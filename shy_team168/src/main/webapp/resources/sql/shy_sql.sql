@@ -1,6 +1,6 @@
 -------------------------------------------
 --파
-<<<<<<< HEAD
+
 insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
 values(seq_tbl_like.nextval,53,1,sysdate,76);
 select *

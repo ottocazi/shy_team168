@@ -33,7 +33,7 @@
     	$('.bt-love_chg').hide();
     	countComment();
       
-       //getLike();
+       getLike();
        
        
        
@@ -323,9 +323,11 @@
 						<p>
 							<a class="bt-love" title="Love"
 								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
-								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
+								id="bt-love${shies.snsno }"> Love </a> 
+								<a class="bt-love_chg"
 								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
-								title="Share" href="#"> Share </a> <a
+								title="Share" href="#"> Share </a> 
+								<a
 								href="javascript:openComment('${shies.snsno}');"
 								class="bt-comment" title="Comment" id="comment${shies.snsno}">
 							</a>
