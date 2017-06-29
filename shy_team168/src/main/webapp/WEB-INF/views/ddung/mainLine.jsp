@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-
+<!-- DDD -->
 
 <!-- 타임라인소스 -->
 <link rel="stylesheet"
@@ -33,7 +33,7 @@
     	$('.bt-love_chg').hide();
     	countComment();
       
-       //getLike();
+       getLike();
        
        
        

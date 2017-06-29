@@ -499,6 +499,8 @@ public class Pa_Controller {
  		
  		//List<HashMap<String,String>> myflwlist = service.getMyfollow(myIdx);
  		
+ 		//List<HashMap<String,String>> myflwlist = service.getAlramlike(myIdx);
+ 		
 		return myIdx;
  			
  	}

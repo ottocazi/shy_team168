@@ -1,5 +1,61 @@
 -------------------------------------------
 --파
+select *
+from
+(select snsno,fk_idx
+from tbl_shymemo
+)A 
+left join
+;
+
+insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
+values(seq_tbl_like.nextval,53,1,sysdate,76);
+select *
+from tbl_like;
+commit;
+select *
+from tbl_shymemo;
+delete from tbl_like ;
+select *
+from tbl_storeboard;
+
+select *
+from tbl_comment;
+
+select snsno,nvl2(case when count(*)>0 then count(*) else 0 end,0,count(*))
+from tbl_comment 
+where status = 1 and snsno =71
+group by snsno;
+
+select case when nvl(snsno,0)<1 then 0 else 1 end
+from
+(select snsno,case when count(*)>0 then count(*) else 0 end
+from tbl_comment 
+where status = 1 and snsno =null
+group by snsno)
+V;
+
+--내가 좋아요 누른 샤이
+select V.*
+from
+(select A.snsno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_shymemo A join tbl_like B
+on A.snsno = B.snsno)
+V
+where V.fk_likeidx=32;
+
+
+
+--가게리뷰글좋아요
+select A.storeboardno,A.fk_businessno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_storeboard A join tbl_like B
+on A.storeboardno = B.storeboardno;
+
+--그룹게시글좋아요
+select A.grpboardseq,A.gpdetailno,B.likeno,B.fk_likeidx, B.likedate
+from tbl_grpboard A join tbl_like B
+on A.grpboardseq = B.grpboardseq;
+=======
 select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount,
 				 rank() over (order by A.gcount desc) as rank
 from
@@ -55,6 +111,7 @@ FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
       (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
@@ -539,9 +596,10 @@ ALTER TABLE tbl_shymember
 		);
 
 ------------------------------------------------------------------------
-insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status) 
-		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1);
+insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status,fk_idx) 
+		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1,53);
  select * from tbl_shymemo;
+ select * from tbl_comment;
 /* 댓글 */
 CREATE TABLE tbl_comment (
 	cmtno NUMBER NOT NULL, /* 댓글seq */
