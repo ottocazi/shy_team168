@@ -250,11 +250,11 @@ text-decoration: none;
    		var idxArr = new Array();
    		<c:if test="${plist!=null}">
    		<c:forEach items="${plist}" var="plist">
-   		/* alert('${plist.IDX}'); */
+   		// alert('${plist.IDX}');
    		idxArr.push('${plist.IDX}');
    		</c:forEach>
    		</c:if>
-   		 alert(idxArr);
+   		 // alert(idxArr);
    		
    		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
    		
