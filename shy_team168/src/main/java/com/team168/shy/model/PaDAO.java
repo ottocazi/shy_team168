@@ -32,26 +32,26 @@ public class PaDAO {
 	}
 	
 	// ===== 인기그룹 가져오기  =====
-	public List<GroupVO> hotGrpList() {
-		List<GroupVO> hotGrpList = sqlsession.selectList("pa.hotGrpList");
+	public List<HashMap<String,String>> hotGrpList() {
+		List<HashMap<String,String>> hotGrpList = sqlsession.selectList("pa.hotGrpList");
 		return hotGrpList;
 	}
 
 	// ===== 그룹 가져오기  =====
-	public GroupVO getGroup() {
-		GroupVO gvo = sqlsession.selectOne("pa.selectGvo");
+	public GroupVO getGroup(String fk_idx) {
+		GroupVO gvo = sqlsession.selectOne("pa.selectGvo",fk_idx);
 		return gvo;
 	}
 
 	// ===== 신규그룹 가져오기  =====
-	public List<GroupVO> newGrpList() {
-		List<GroupVO> newGrpList = sqlsession.selectList("pa.newGrpList");
+	public List<HashMap<String,String>> newGrpList() {
+		List<HashMap<String,String>> newGrpList = sqlsession.selectList("pa.newGrpList");
 		return newGrpList;
 	}
 
 	// ===== 내그룹 가져오기  =====
-	public List<GroupVO> myGrpList(int fk_idx) {
-		List<GroupVO> myGrpList = sqlsession.selectList("pa.myGrpList",fk_idx);
+	public List<HashMap<String,String>> myGrpList(int fk_idx) {
+		List<HashMap<String,String>> myGrpList = sqlsession.selectList("pa.myGrpList",fk_idx);
 		return myGrpList;
 	}
 

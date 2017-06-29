@@ -44,34 +44,89 @@
 	</insert>
 	
 	<!-- ===== 인기그룹 가져오기 =====  -->
-	<select id="hotGrpList" resultType="com.team168.shy.model.GroupVO"> 
-		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
-				 rank() over (order by gcount desc) as rank
+	<resultMap type="java.util.HashMap" id="hotgroupMap">
+		<result property="groupno" 				column="GROUPNO" 			javaType="int" />
+ 		<result property="fk_idx" 			column="FK_IDX" 			javaType="string" />
+ 		<result property="gname" 			column="GNAME" 			javaType="string" />
+ 		<result property="description" 			column="DESCRIPTION" 		javaType="string" />
+ 		<result property="groupdate" 			column="GROUPDATE" 			javaType="string" />
+ 		<result property="status" 	column="STATUS" 	javaType="int" />
+ 		<result property="gimg" 	column="GIMG" 	javaType="string" />
+ 		<result property="gcount" 	column="GCOUNT" 	javaType="int" />
+ 		<result property="rank" 	column="RANK" 	javaType="int" />
+ 		<result property="myimg" 	column="MYIMG" 	javaType="string" />
+ 		<result property="name" 	column="NAME" 	javaType="string" />
+	</resultMap>
+	<select id="hotGrpList" resultMap="hotgroupMap"> 
+		 select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount,
+				 rank() over (order by A.gcount desc) as rank, B.myimg, B.name
+		 from
+		 (select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
+						  rank() over (order by gcount desc) as rank
 		 from tbl_group
 		 where status in(1,2)
-		 order by rank
+		 order by rank) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
 	</select>
 	
 	<!-- ===== 그룹 가져오기 =====  -->
-	<select id="selectGvo" resultType="com.team168.shy.model.GroupVO" > 
+	<select id="selectGvo" parameterType="String" resultType="com.team168.shy.model.GroupVO" > 
 		 select  groupno, fk_idx, gname
 		 from tbl_group
-		 where to_char(groupdate,'yyyy-mm-dd hh:mi:ss') = to_char(sysdate,'yyyy-mm-dd hh:mi:ss')
+		 where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi') and
+		 	   fk_idx = #{fk_idx}
 	</select>
 	
 	<!-- ===== 신규그룹 가져오기 =====  -->
-	<select id="newGrpList" resultType="com.team168.shy.model.GroupVO"> 
-		 select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+	<resultMap type="java.util.HashMap" id="newgroupMap">
+		<result property="groupno" 				column="GROUPNO" 			javaType="int" />
+ 		<result property="fk_idx" 			column="FK_IDX" 			javaType="string" />
+ 		<result property="gname" 			column="GNAME" 			javaType="string" />
+ 		<result property="description" 			column="DESCRIPTION" 		javaType="string" />
+ 		<result property="groupdate" 			column="GROUPDATE" 			javaType="string" />
+ 		<result property="status" 	column="STATUS" 	javaType="int" />
+ 		<result property="gimg" 	column="GIMG" 	javaType="string" />
+ 		<result property="gcount" 	column="GCOUNT" 	javaType="int" />
+ 		<result property="rank" 	column="RANK" 	javaType="int" />
+ 		<result property="myimg" 	column="MYIMG" 	javaType="string" />
+ 		<result property="name" 	column="NAME" 	javaType="string" />
+	</resultMap>
+	<select id="newGrpList" resultMap="newgroupMap"> 
+		 select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount,
+				 rank() over (order by A.gcount desc) as rank, B.myimg, B.name
+		 from
+		 (select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
 		 from tbl_group
 		 where status in(1,2)
-		 order by groupdate desc
+		 order by groupdate desc) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
+	     order by groupdate desc
 	</select>
 	
 	<!-- ===== 내그룹 가져오기(내가 만든것) =====  -->
-	<select id="myGrpList" parameterType="int" resultType="com.team168.shy.model.GroupVO"> 
-		 select  *
+	<resultMap type="java.util.HashMap" id="mygroupMap">
+		<result property="groupno" 				column="GROUPNO" 			javaType="int" />
+ 		<result property="fk_idx" 			column="FK_IDX" 			javaType="string" />
+ 		<result property="gname" 			column="GNAME" 			javaType="string" />
+ 		<result property="description" 			column="DESCRIPTION" 		javaType="string" />
+ 		<result property="groupdate" 			column="GROUPDATE" 			javaType="string" />
+ 		<result property="status" 	column="STATUS" 	javaType="int" />
+ 		<result property="gimg" 	column="GIMG" 	javaType="string" />
+ 		<result property="gcount" 	column="GCOUNT" 	javaType="int" />
+ 		<result property="myimg" 	column="MYIMG" 	javaType="string" />
+ 		<result property="name" 	column="NAME" 	javaType="string" />
+	</resultMap>
+	<select id="myGrpList" parameterType="int" resultMap="mygroupMap"> 
+		 select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount
+		 		,B.myimg, B.name
+		 from
+		 (select  *
 		 from tbl_group
-		 where fk_idx=#{fk_idx} and status in(1,2,3)
+		 where fk_idx=#{fk_idx} and status in(1,2,3)) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
 	</select>
 	
 	<!-- ===== 그룹 디테일보기 =====  -->

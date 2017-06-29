@@ -33,25 +33,44 @@ function goMakegrp() {
 
 $(document).ready(function(){
 
-    var list = $(".list li");
+    var newlist = $(".newlist li");
+    var hotlist = $(".hotlist li");
     var numToShow = 4;
-    var button = $("#next");
-    var numInList = list.length;
-    list.hide();
-    if (numInList > numToShow) {
-      button.show();
+   /*   var button = $("#next"); */
+    var numInNewList = newlist.length;
+    var numInHotList = hotlist.length;
+   
+    newlist.hide();
+    hotlist.hide();
+    
+    if (numInNewList > numToShow) {
+    	$("#newGrp").show();
+    	
     }
-    list.slice(0, numToShow).show();
+    if (numInHotList > numToShow){
+    	$("#hotGrp").show();
+    }
+    
+    newlist.slice(0, numToShow).show();
+    hotlist.slice(0, numToShow).show();
 
-    button.click(function(){
-        var showing = list.filter(':visible').length;
-        list.slice(showing - 1, showing + numToShow).fadeIn();
-        var nowShowing = list.filter(':visible').length;
-        if (nowShowing >= numInList) {
-          button.hide();
+    $("#newGrp").click(function(){
+        var showing = newlist.filter(':visible').length;
+        newlist.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = newlist.filter(':visible').length;
+        if (nowShowing >= numInNewList) {
+        	$("#next newGrp").hide();
         }
     });
 
+    $("#hotGrp").click(function(){
+        var showing = hotlist.filter(':visible').length;
+        hotlist.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = hotlist.filter(':visible').length;
+        if (nowShowing >= numInHotList) {
+        	$("#next hotGrp").hide();
+        }
+    });
     
     
 });
@@ -272,20 +291,15 @@ text-decoration: none;
 .mygrp_clearfix html[xmlns]{ display: block; }
 .mygrp_clearfix * html { height: 1%; }
 
+@import "compass/css3";
 
-
-
-    @import "compass/css3";
-
-	
-	
-    .list {
+.newlist, .hotlist {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-.list li {
+.newlist li, .hotlist li {
 	position: relative;
 	margin-bottom: 10px;
 }
@@ -335,18 +349,11 @@ text-decoration: none;
 		      <c:if test="${gvo.gimg == null}">
 		      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		      </c:if>
-		      	<img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
+		      	<img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg }">
 		      	<div class="grp_inner">
-		      <c:if test="${gvo.status==1}">
 		      	<h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
 		      	<i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
 		      	<span class="grp_desc"> ${gvo.description }</span>
-		      </c:if>
-		      <c:if test="${gvo.status==2}">
-			      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
-			      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
-			      <span class="grp_desc"> ${gvo.description }</span>
-		      </c:if>
 		      </div>
 	    	 </div>
 	    	</c:forEach>
@@ -378,7 +385,7 @@ text-decoration: none;
 			</c:if>
    		  
    		  
-   		   <ul class="list">
+   		   <ul class="hotlist">
 	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
@@ -387,8 +394,13 @@ text-decoration: none;
 		    <c:if test="${gvo.gimg == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
-		    <div class="grp_inner">
+		    <c:if test="${gvo.myimg != null}">
+		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
+		    </c:if>
+		    <c:if test="${gvo.myimg == null}">
+			<img class="grp_buddy" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif">
+			 </c:if>
+		     <div class="grp_inner">
 		      <c:if test="${gvo.status==1}">
 		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
 		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
@@ -418,7 +430,7 @@ text-decoration: none;
 		   </c:if>
 		</div>
 		</div>
-		<div align="center"><button id="next" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
+		<div align="center"><button id="hotGrp" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 		
 		
 		
@@ -437,7 +449,7 @@ text-decoration: none;
    		  </c:if>
    		  
    		  
-   		  <ul class="list">
+   		  <ul class="newlist">
 	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
@@ -446,7 +458,12 @@ text-decoration: none;
 		    <c:if test="${gvo.gimg == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
+		    <c:if test="${gvo.myimg != null}">
+		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
+		    </c:if>
+		    <c:if test="${gvo.myimg == null}">
+			<img class="grp_buddy" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif">
+			 </c:if>
 		    <div class="grp_inner">
 		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
 		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
@@ -474,7 +491,7 @@ text-decoration: none;
 		
 		
 		
-	<div align="center"><button id="next" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
+	<div align="center"><button id="newGrp" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 	</div>
 </div>
 

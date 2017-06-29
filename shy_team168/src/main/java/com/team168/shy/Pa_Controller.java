@@ -102,24 +102,24 @@ public class Pa_Controller {
 		if(loginuser != null) {
     		int fk_idx = loginuser.getIdx();
 				
-			List<GroupVO> myGrpList = service.getmyGroupList(fk_idx);
+			List<HashMap<String,String>> myGrpList = service.getmyGroupList(fk_idx);
 		    req.setAttribute("myGrpList", myGrpList);
 				
 			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-			List<GroupVO> hotGrpList = service.gethotGroupList();
+			List<HashMap<String,String>> hotGrpList = service.gethotGroupList();
 		    req.setAttribute("hotGrpList", hotGrpList);
 		    	
 		    // 신규그룹 목록 
-		    List<GroupVO> newGrpList = service.getnewGroupList();
+		    List<HashMap<String,String>> newGrpList = service.getnewGroupList();
 		    req.setAttribute("newGrpList", newGrpList);
 		    
 		}else{
 			// 인기그룹 목록 (인기 기준 == 회원 수 많은 그룹)
-			List<GroupVO> hotGrpList = service.gethotGroupList();
+			List<HashMap<String,String>> hotGrpList = service.gethotGroupList();
 	    	req.setAttribute("hotGrpList", hotGrpList);
 	    	
 	    	// 신규그룹 목록 
-	    	List<GroupVO> newGrpList = service.getnewGroupList();
+	    	List<HashMap<String,String>> newGrpList = service.getnewGroupList();
 	    	req.setAttribute("newGrpList", newGrpList);
 		}
 		
@@ -275,7 +275,7 @@ public class Pa_Controller {
     		
     		if(grpvo!=null){
     			
-    			grpvo = service.getGroup(); // 제일 최근 insert된 tbl_group을 가져온다.
+    			grpvo = service.getGroup(fk_idx); // 제일 최근 insert된 tbl_group을 가져온다.
     			
     			int fk_groupno = grpvo.getGroupno(); 
         		System.out.println("fk_groupno="+fk_groupno);
@@ -527,7 +527,7 @@ public class Pa_Controller {
   		int result = service.insertLike(likemap);
   		
   		if(result>0){
-  		
+  			//service.getLikes(likemap);
   		}
   		HashMap<String, Object> returnlike = new HashMap<String, Object>();
   		returnlike.put("RESULT", result);
