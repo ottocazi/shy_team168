@@ -90,6 +90,37 @@
 		FROM	TBL_IMAGE
 		WHERE 	SNSNO = #{snsno} and rownum = 1	
 	</select>
+	
+	<insert id="insertReply">
+	
+		INSERT INTO TBL_COMMENT (CMTNO, SNSNO, CMTCONTENT, FK_IDX)
+		VALUES (SEQ_TBL_COMMENT.NEXTVAL, #{snsno}, #{cmtcontent}, #{fk_idx})
+	
+	</insert>
+	
+	
+	<resultMap type="java.util.HashMap" id="commentMap">
+	
+		<result property="cmtno" 		column="CMTNO" 			javaType="String"/>
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="cmtcontent" 	column="cmtcontent" 	javaType="String"/>
+		<result property="upatetime" 	column="upatetime" 		javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="status" 		column="status"			javaType="String"/>
+		
+	</resultMap>
+	
+	<select id="getComments" parameterType="String" resultMap="commentMap">
+	
+	SELECT * 
+	FROM TBL_COMMENT a join tbl_shymember b on a.fk_idx = b.idx 
+	WHERE a.STATUS = 1 AND a.SNSNO = #{snsno}
+	ORDER BY a.CMTNO ASC
+	
+	</select>
 </mapper>
 
  

@@ -95,7 +95,7 @@
    </div>
    <br>
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
-   <button class="login" id="loginend" type="button">Login</button>
+   <button class="login" id="loginend" type="submit">Login</button>
    </div>
    <div id="joinus" style="min-height: 385px;">
    <div class="form-title">
@@ -113,7 +113,7 @@
 	  </form>    
    </div>
    
-   <button class="login" onClick="goAdd();">JOIN</button>
+   <button class="login" type="button" onClick="goAdd();">JOIN</button>
    </div>
   
      <div id="register">
