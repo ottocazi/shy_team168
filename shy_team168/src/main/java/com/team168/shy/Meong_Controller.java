@@ -10,12 +10,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Meong_Service;
@@ -73,7 +73,7 @@ public class Meong_Controller {
 		   req.setAttribute("type", type);
 		   req.setAttribute("title", title);
 		   
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     }
 	
 
@@ -113,7 +113,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
     	else {
     		title = "아이디가 존재하지 않습니다.!!";
@@ -126,7 +126,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
    	
     	InetAddress inetAddress = InetAddress.getLocalHost();
@@ -395,18 +395,41 @@ public class Meong_Controller {
     @RequestMapping(value="/searchlistex.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
     	
-    	List<HashMap <String, String>> plist = service.peoplesearch();
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
 
+//    	System.out.println("idx 는 ==> " + idx);
+
+    	List<HashMap <String, String>> plist = service.peoplesearch();
+    	
     	req.setAttribute("plist", plist);
+    	
     	
     	return "meong/searchlist.tiles";
     	
     }
     
-    
-	
-	
-	
+    @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
+    @ResponseBody
+    public List<HashMap<String, Object>> follow(HttpServletRequest req, HttpSession session){
+    	
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	String[] idxArr = req.getParameterValues("idxArr");
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	map.put("idx", idx);
+    	map.put("idxArr", idxArr);
+    	
+    	List<HashMap<String, Object>> returnFollowList = service.follow(map);
+    	
+    	System.out.println(returnFollowList);
+    	
+    	return returnFollowList;
+    	
+    }
+
 	
 	
 }

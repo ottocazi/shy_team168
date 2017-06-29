@@ -25,24 +25,157 @@
 	rel="stylesheet">
 
 
-<script type="text/javascript">    
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  
     $(document).ready(function(){
+    	$('.bt-love_chg').hide();
     	countComment();
-    //	getCommentList();
-    });
+      
+       //getLike();
+       
+       
+       
+    });// end of $(document).ready() --------
+    
+    function goLike(idx,likeseq,liketype,seqcolum){
+      var form_data = {idx : idx,
+                   likeseq   : likeseq,
+                   liketype   : liketype,
+                   seqcolum   : seqcolum};
+      
+       // 좋아요 Ajax 불러오기
+        $.ajax({
+            url: "/shy/like.shy",
+            type: "GET",
+            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+            data: form_data ,// 파라미터     
+            success: function(data) { // 성공했을 때의 처리 콜백함수
+               
+               getLike();
+               
+            },
+            error: function() { // 에러가 발생했을 때의 콜백함수
+                alert("error");
+            }
+        });
+       
+   }
+    
+    function getLike(){
+       var snsnoArr = new Array();
+       
+       <c:if test="${shies!=null}">
+        
+        <c:forEach items="${shies}" var="shies">
+        // alert('${shies.snsno}');
+        snsnoArr.push('${shies.snsno}');
+        </c:forEach>
+        
+        </c:if>
+        
+        jQuery.ajaxSettings.traditional = true;
+      
+       // 좋아요목록 Ajax 불러오기
+        $.ajax({
+            url: "/shy/likeList.shy",
+            type: "GET",
+            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+            data: {snsnoArr:snsnoArr},
+            success: function(data) { // 성공했을 때의 처리 콜백함수
+               var snsnoObjArr = [];
+               
+               $.each(data,function(entryIndex,entry){
+                  snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat) ]);
+                  if(Number(entry.mylikestat) == 1) {
+                     if(Number(entry.totalcount) >0){
+                        $('#bt-love'+entry.snsno).hide();
+                        $('#love'+entry.snsno).empty();
+                        
+                        var html = '<span>'+entry.totalcount+'</span>';
+                        $('#love'+entry.snsno).html(html).show();
+                     }else{
+                        $('#bt-love'+entry.snsno).hide();
+                        $('#love'+entry.snsno).show();
+                     }
+                     
+                  }else{
+                     $('#bt-love'+entry.snsno).show();
+                     $('#love'+entry.snsno).hide();
+                  }
+                  
+               });
+               
+
+               
+            },
+            error: function() { // 에러가 발생했을 때의 콜백함수
+                alert("error");
+            }
+        });
+       
+   }
+   
+    
     
     function openComment(snsno) {
 	   
 	   var commentbox = document.getElementById('commentbox'+snsno);
 
-
-    function openComment(event) {
-	
-	   var commentbox = document.getElementById('commentbox'+event);
-
-	   
-	
 	   if(commentbox.style.display=='none'){
+		   
+		   
+		   $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	               
+	            	var html;
+	    			
+	    			$.each(data, function(entryIndex, entry){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html = '<div id="shy_comment_ajax' + entry.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + entry.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + entry.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				/* 	 + '<div class="shy_comment-info">'
+	    					 + '<span class="shy_comment-author"> <a href="#">'
+	    					 + entry.email+ '</a>'
+	    					 + '</span> <span class="shy_comment-date">
+	    					 + entry.upatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   */
+	    			
+	    				/*html END*/ 
+	    				
+	    				$("#shy_comment_ajax").html(html);
+	    				
+	    			});
+	               
+
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+		   
 		   commentbox.style.display = 'block'; 
 	    }else{
 	        commentbox.style.display = 'none';
@@ -68,13 +201,15 @@
    			url: "/shy/getCommentCount.shy",
     		type: "GET",
     		data: {snsnoArr:snsnoArr},
-    		dataType: "JSON", 
+    		dataType: "JSON",  
     		success: function(data){
     			
     			var html;
     			
     			$.each(data, function(entryIndex, entry){
     			//	alert(entry.snsno);
+    				
+    				
     				html = "댓글(" + entry.cnt + ")";
     				
     				$("#comment" + entry.snsno).html(html);
@@ -86,32 +221,39 @@
  				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
  		    }
    		});
-    }; 
+    } 
     
-    /* ajax 로 댓글 리스트 가져오기 */
-    function getCommentList() {
+    
+    
+    
+    
+ function insertReply(shyidx){
     	
-    	var formdata = "";
+	   	var myidx = $('#myidx'+shyidx).val();
+    	var replycontent = $('#replycontent'+shyidx).val();
+    	
+    	var form_data = {myidx : myidx,
+                   		 shyidx   : shyidx,
+                   		 replycontent   : replycontent };
     	
     	$.ajax({
-    		url: "/shy/getCommentList.shy",
+    		url: "/shy/insertreply.shy",
     		type: "GET",
-    	//	data: formdata,
-    		dataType: "JSON",
+    		data: form_data ,
+    		dataType: "text", 
     		success: function(data) {
-    			
-				var html;
-    			
-    			$.each(data, function(entryIndex, entry){
-    				alert("getCommentList success function");
-    				
-    			});
+    			alert('success');
+    			alert($('#replycontent'+shyidx).val());
+    			$('#replycontent'+shyidx).val("");
+    			countComment();
+    			//getCommentList();
     		},
     		error: function(){
-				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				  alert('ajax 오류');
 		    }
     			
-    	});
+    	}); 
     }
     
      </script>
@@ -176,16 +318,19 @@
 
 
 
-
 					<p>${shies.scontent}</p>
 					<footer>
 						<p>
-							<a class="bt-love" title="Love" href=""> Love </a> <a
-								class="bt-share" title="Share" href="#"> Share </a> <a
+							<a class="bt-love" title="Love"
+								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
+								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
+								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
+								title="Share" href="#"> Share </a> <a
 								href="javascript:openComment('${shies.snsno}');"
 								class="bt-comment" title="Comment" id="comment${shies.snsno}">
-							</a> <a href="javascript:openComment(${shies.snsno });"
-								class="bt-comment" title="Comment" href=""> 댓글(33) </a>
+							</a>
+
+
 
 						</p>
 					</footer>
@@ -195,100 +340,102 @@
 
 
 
-				<div id="commentbox${shies.snsno}" class="shy_comments-app"
+				<div id="commentbox${shies.snsno }" class="shy_comments-app"
 					style="margin-top: 0; display: none;">
 					<!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
 
-					<div id="commentbox${shies.snsno }" class="shy_comments-app"
-						style="margin-top: 0; display: none;">
-						<!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
 
 
+					<!-- Form -->
+					<div class="shy_comment-form">
+						<!-- Comment Avatar -->
+						<div class="shy_comment-avatar">
+							<img
+								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								style="display: block; height: 100%; width: 100%;">
+						</div>
 
-						<!-- Form -->
-						<div class="shy_comment-form">
+						<form class="shy_form" name="insertReplyform" id="insertReplyform">
+							<input type="hidden" id="myidx${shies.snsno }"
+								value="${loginuser.idx }" />
+							<div class="shy_form-row">
+								<textarea class="shy_input" id="replycontent${shies.snsno }"
+									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+							</div>
+
+
+							<div class="shy_form-row">
+								<input type="button" id="replybutton" value="올리기"
+									onclick="insertReply(${shies.snsno});" />
+							</div>
+						</form>
+					</div>
+
+					<!-- Comments List -->
+
+					<div class="shy_comments" id="dd_shycomment">
+						<input type="hidden" name="snsno" id="snsno${shies.snsno}"
+							value="${shies.snsno}" />
+						<!-- Comment -->
+
+						<!-- Comment - Dummy -->
+						<div id="shy_comment_ajax" class="shy_comment">
+							<%-- 
+							<!-- for each 돌리는 div  -->
 							<!-- Comment Avatar -->
 							<div class="shy_comment-avatar">
-								<img src="http://lorempixel.com/200/200/people">
+								<img src="" alt="사진 읎어용">
 							</div>
 
-							<form class="shy_form" name="form"
-								ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
-								<div class="shy_form-row">
-									<textarea class="shy_input" ng-model="cmntCtrl.comment.text"
-										placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+							<!-- Comment Box -->
+							<div class="shy_comment-box">
+								<div class="shy_comment-text">짧은 댓글 test1
+									${cmtVO.cmtcontent}</div>
+								<div class="shy_comment-footer">
+									<div class="shy_comment-info">
+										<span class="shy_comment-author"> <a href="">유저명</a>
+										</span> <span class="shy_comment-date">댓글작성시간</span>
+									</div>
+
+									<div class="shy_comment-actions">
+										<a href="#"><i class="fa fa-exclamation-triangle fa-2x"
+											aria-hidden="true"></i></a>
+									</div>
 								</div>
 
 
-								<div class="shy_form-row">
-									<input type="submit" value="올리기">
-								</div>
-							</form>
-						</div>
+							</div>
 
-						<!-- Comments List -->
-
-						<div class="shy_comments">
-							<input type="hidden" name="snsno" id="snsno${shies.snsno}"
-								value="${shies.snsno}" />
-							<!-- Comment -->
-
-							<%-- <c:when test="${fn:length(CommentList) > 0  }">
-	<c:forEach var="cmtVO" items="${CommentList}">
-    <!-- Comment - Dummy -->
-    <div class="shy_comment"><!-- for each 돌리는 div  -->
-      <!-- Comment Avatar -->
-      <div class="shy_comment-avatar">
-        <img src="" alt="프로필">
-      </div>
-
-      <!-- Comment Box -->
-      <div class="shy_comment-box">
-        <div class="shy_comment-text">짧은 댓글 test1 ${cmtVO.cmtcontent}</div>
-        <div class="shy_comment-footer">
-          <div class="shy_comment-info">
-            <span class="shy_comment-author">
-              <a href="">유저명</a>
-            </span>
-            <span class="shy_comment-date">댓글작성시간</span>
-          </div>
-
-          <div class="shy_comment-actions">
-            <a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" ></i></a>
-          </div>
-        </div>
-        
-
-      </div>
-	
-	               
-      
-    </div><!-- for each 돌리는 div끝  -->
-    </c:forEach>
-    </c:when>
  --%>
-							<div align="center">
-								<a class="button" href="#" style="color: white;"> read more
-								</a>
-							</div>
-						</div>
-					</div>
-					<!--new댓글창 end  -->
 
-					<!-- end .flex-content-->
+						</div>
+						<!-- for each 돌리는 div끝  -->
+
+
+						<!-- <div align="center">
+							<a class="button" href="#" style="color: white;"> read more </a>
+						</div> -->
+					</div>
+				</div>
+				<!--new댓글창 end  -->
+
+				<!-- end .flex-content-->
 			</article>
 
 
 			<!-- post foreach 마무리  -->
-
-
 		</c:forEach>
 	</c:if>
 
+
+
 	<div align="center">
-		<a class="button" href="#" style="color: white;"> 더 읽기 </a><br>
-		<br>
+		<a class="button" href="#" style="color: white;"> 더 읽기 </a><br> <br>
+		=======
 	</div>
+
+
+	</main>
 	<!-- 
   <article class="card-60 social">
     <figure>
@@ -489,12 +636,16 @@ Tapas Deluxe .card50 odd even
 
     
   </article>
- --> </main>
+ -->
+
+
+
 
 
 
 
 	<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
+
 	<!-- <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script> -->
 
 </body>

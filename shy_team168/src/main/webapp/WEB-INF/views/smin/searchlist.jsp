@@ -201,8 +201,53 @@ text-decoration: none;
     <script type="text/javascript">
     
 
+   	function follow() {
+   		var idxArr = new Array();
+   		<c:if test="${plist!=null}">
+   		<c:forEach items="${plist}" var="plist">
+   		// alert('${plist.IDX}');
+   		idxArr.push('${plist.IDX}');
+   		</c:forEach>
+   		</c:if>
+   		 // alert(idxArr);
+   		
+   		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
+   		
+   		$.ajax({
+   			url: "/shy/follow.shy",
+    		type: "GET",
+    		data: {idxArr:idxArr},
+    		dataType: "JSON", 
+    		success: function(data){
+    			//alert("ajax 성공 function");
+    			var html;
+    			
+    			$.each(data, function(entryIndex, entry){
+	    			
+	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
+					if(FOLLOWCHECK == 1){
+						html = "<a href='open.shy'>팔로우해제</a>";
+					}
+					else {
+						html = "<a href=''>팔로우</a>";
+					}
+					
+					$("#follow" + entry.IDX).html(html);
+    				
+    			});
+    		//	getCommentList();
+    		},
+    		error: function(){
+ 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 		    }
+   		});
+    }; 
+      
+
     $(document).ready(function(){
 
+    	follow();
+    	
         var list = $(".list li");
         var numToShow = 4;
         var button = $("#next");
@@ -239,6 +284,9 @@ text-decoration: none;
   		    });
   		  }
   		);
+    
+    
+    
     
     
     </script>
@@ -307,6 +355,7 @@ text-decoration: none;
                           <th>회원번호</th>
                           <th>회원이름</th>
                           <th>회원아이디</th>
+                          <th>팔로우</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -316,6 +365,7 @@ text-decoration: none;
                           <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
+                          <td id="follow${map.IDX}"></td>
                         </tr>
                       </c:forEach>
                       </tbody>
@@ -354,7 +404,8 @@ text-decoration: none;
                         <tr>
                           <th>그룹번호</th>
                           <th>그룹이름</th>
-                          <th>그룹아이디</th>
+                          <th>그룹 회원수</th>
+                          <th>그룹 공개범위</th>
                         </tr>
                       </thead>
                      <tbody>
@@ -362,13 +413,16 @@ text-decoration: none;
                         <tr>
                           <td>${map.GROUPNO}</td>
                           <td>${map.GNAME}</td>
-                          <td>${map.GCOUNT}</td>
-                          
+                          <td>${map.GCOUNT}명</td>
+                          <td>
+                          <c:if test="${map.STATUS==1}">전체 공개</c:if>
+                          <c:if test="${map.STATUS==2}">회원 공개</c:if>
+                          </td>
                         </tr>
                       </c:forEach>
                       </tbody>
                     </table>
-                     <%-- <div align="right">${pagebar2}</div>  --%>
+                      <div align="right">${pagebar1}</div> 
                   </div>
                 </div>
               </div>
@@ -404,7 +458,7 @@ text-decoration: none;
 	<div class="mygrp" align="center">
 
 				 <!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 -->
-				 <h3 class="mygrp_types">그룹 목록</h3>
+				 <h3 class="mygrp_types">그룹 목록 IMAGE </h3>
 			
 			
 			<c:if test="${glist!=null }">
@@ -423,26 +477,26 @@ text-decoration: none;
    		  <ul class="list">
 	 		<li>
 		  <div class="grp_box">
-		    <c:if test="${map.gimg != null}">
-		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.gimg }"><%-- img가져오기 --%>
+		    <c:if test="${map.GIMG != null}">
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.GIMG }"><%-- img가져오기 --%>
 		    </c:if>
 		    
-		    <c:if test="${map.gimg == null}">
+		    <c:if test="${map.GIMG == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
 		    
-		      <c:if test="${map.status==1}">
-		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname}</a></h4>
-		      <div class="grp_fa fa-eye"> ${map.gcount}명</div>
-		      <span class="grp_desc"> ${map.description}</span>
+		      <c:if test="${map.STATUS==1}">
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
-		      <c:if test="${map.status==2}">
-		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname}</a></h4>
-		      <i class="grp_fa fa-eye"> ${map.gcount}명</i>
-		      <span class="grp_desc"> ${map.description}</span>
+		      <c:if test="${map.STATUS==2}">
+		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
 		    </div>
 		  </div>
