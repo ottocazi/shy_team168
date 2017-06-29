@@ -380,12 +380,7 @@ marker.setMap(map);
       
       <div class="wrapper">
       
-      
-	 <ul class="list">
-	 
-     <li>
-
-      <div>
+        <div>
       <h4>메인 글남기기</h4>
       <form role="form" name="gogo">
         <div class="form-group">
@@ -398,11 +393,10 @@ marker.setMap(map);
       
       <br><br>
       </div>
-
-	
-	
-
-      </li>
+      
+      
+	 <ul class="list">
+	 
       
      <li>
 
