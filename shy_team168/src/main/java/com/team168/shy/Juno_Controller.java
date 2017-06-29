@@ -67,7 +67,7 @@ public class Juno_Controller {
     }
 	
 	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.POST})
-    public String myInfoEditEnd(MultipartHttpServletRequest req, HttpSession session) throws IOException {
+    public String myInfoEditEnd(HttpServletRequest req, HttpSession session) throws IOException {
 		
 	
 		
