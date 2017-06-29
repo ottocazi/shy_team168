@@ -21,122 +21,55 @@ $(function(){
 	});
 </script>
 <script>
-/* $(document).ready(function(){
-	
-	//grpsearchKeep();
-	
-	//	===== 2. Ajax 로 검색어 입력시 자동글 완성하기  =====
-	$(".topInputSearchList").hide();
-
-    $("#grpsearch").keyup(function(){
-    	
-    	var form_data = { colname : $("#colname").val(),  // 키값 : 밸류값  
-    					  grpsearch  : $("#grpsearch").val()    // 키값 : 밸류값 
-    	       		    };
-    	
-    	$.ajax({
-    		url: "/shy/wordSearchShow.shy",
-    		type: "GET",
-    		data: form_data,  // url 요청페이지로 보내는 ajax 요청 데이터
-    		dataType: "JSON", 
-    		success: function(data){
-    			
-    		// ===== 7. Ajax 로 검색어 입력시 자동글 완성하기  ===== 
-    		   if(data.length > 0) {
-    			  // 검색된 데이터가 있는 경우.
-    			  // 조심할것은 if(data != null) 으로 하면 안된다.
-    			   var resultHTML = "";
-    			  
-    			   $.each(data, function(entryIndex, entry){
-    				   var wordstr = entry.RESULTDATA.trim();
-					    // 검색어 - 영주                    aj
-					    // 결과물 - 김영주 프로그래머     AJAX
-                        //         김영주바둑기사        ajax 프로그래밍
-                        //         영주사과
-                       
-                        var index = wordstr.toLowerCase().indexOf( $("#grpsearch").val().toLowerCase() ); 
-					    var len = $("#grpsearch").val().length;
-					    var result = "";
-					    
-					    result = "<span class='first' style='color: font-weight: bold;'>" +wordstr.substr(0, index)+ "</span>" + "<span class='second' style='color: #DD4124; font-weight: bold;'>" +wordstr.substr(index, len)+ "</span>" + "<span class='third' >" +wordstr.substr(index+len, wordstr.length - (index+len) )+ "</span>";        
-                       
-						resultHTML += "<span style='cursor: pointer;'>" + result + "</span><br/>"; 	   
-    			   });
-    			  
-    			   $(".topInputSearchList").html(resultHTML);
-    			   $(".topInputSearchList").show();
-    		   }
-    		   else {
-    			  // 검색된 데이터가 없는 경우.
-    			  // 조심할것은 if(data == null) 으로 하면 안된다.
-    			   $(".topInputSearchList").hide();
-    		   }
-    			
-    		},
-    		error: function(){
-   				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
-   		    }
-    	});
-    	
-    }); // end of keyup(function(){})---------
-    
-    
-    // ===== 8. Ajax 로 검색어 입력시 자동글 완성하기  ===== 
-    $(".topInputSearchList").click(function(event){
-		var word = "";
-		
-		var $target = $(event.target);
-		
-		if($target.is(".first")) {
-			word = $target.text() + $target.next().text() + $target.next().next().text();
-		//	alert(word);
-		}
-		else if($target.is(".second")) {
-			word = $target.prev().text() + $target.text() + $target.next().text();
-		//	alert(word);
-		}
-		else if($target.is(".third")) {
-			word = $target.prev().prev().text() + $target.prev().text() + $target.text();
-		//	alert(word);
-		}
-		
-		$("#grpsearch").val(word); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
-		
-		$(".topInputSearchList").hide();
-		
-    });// end of $(".topInputSearchList").click()---------
-    
-	
-	
-});// end of $(document).ready()---------------------- */
 
 
-/* function goGrpsearch(){
-	
-	var frm = document.searchFrm;
-	var grpsearch = $("#grpsearch").val();
-	
-	if(grpsearch.trim() == "") {
-		alert("검색어를 입력하세요!!");
-	}
-	else {
-		frm.action = "mygroups.shy";
-		frm.method = "GET";
-		frm.submit();
-	}
-}// end of goGrpsearch() ------- 상단검색바
-
-function grpsearchKeep(){
-	<c:if test="${not empty grpsearch}">
-		$("#grpsearch").val("${grpsearch}");   // 검색어를 유지시켜 주겠다.
-	</c:if>
-}// end of grpsearchKeep() ----- 상단검색바 검색어 유지 */
 
 function goMakegrp() {
 	var frm = document.GroupFrm;
 	
 	frm.submit();
 }
+
+
+$(document).ready(function(){
+
+    var list = $(".list li");
+    var numToShow = 4;
+    var button = $("#next");
+    var numInList = list.length;
+    list.hide();
+    if (numInList > numToShow) {
+      button.show();
+    }
+    list.slice(0, numToShow).show();
+
+    button.click(function(){
+        var showing = list.filter(':visible').length;
+        list.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = list.filter(':visible').length;
+        if (nowShowing >= numInList) {
+          button.hide();
+        }
+    });
+
+    
+    
+});
+
+
+$(
+		  function () {
+		    $('li').on('click', function() {
+		      var selectedCssClass = 'selected';
+		      var $this = $(this);
+		      $this.siblings('.' + selectedCssClass).removeClass(selectedCssClass);
+		      $this
+		        .addClass(selectedCssClass)
+		        .parent().addClass('vote-cast');
+		    });
+		  }
+		);
+
 
 </script>
 <style>
@@ -146,7 +79,7 @@ text-decoration: none;
 
 #mygroups{
 	margin: 0 auto;
-	width: 80%;
+	width: 70%;
 	display: block;
 }
 
@@ -339,6 +272,28 @@ text-decoration: none;
 .mygrp_clearfix html[xmlns]{ display: block; }
 .mygrp_clearfix * html { height: 1%; }
 
+
+
+
+    @import "compass/css3";
+
+	
+	
+    .list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.list li {
+	position: relative;
+	margin-bottom: 10px;
+}
+	
+
+
+
+
 </style>    
     
     
@@ -404,12 +359,27 @@ text-decoration: none;
 		   	 </c:if>
 		</div>
 	
-		<h3 class="mygrp_types">HOT 그룹</h3>
-		<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+	
+	
+	
+	
+	
+		<div style="border: dashed; border-color:  #ff8080; width: 110%;">
+		<h3 class="mygrp_types" style="color:  #ff8080">HOT 그룹</h3>
+		
 		
 		<!-- HOT한 그룹  -->
    		  <c:if test="${hotGrpList!=null }">
-   		  <c:forEach var="gvo" items="${hotGrpList }">
+   		  <c:forEach var="gvo" items="${hotGrpList }" varStatus="status">
+   		  
+   		  <c:if test="${status.index % 4 == 0}">
+				 <!-- 이게 한줄 -->
+			<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+			</c:if>
+   		  
+   		  
+   		   <ul class="list">
+	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
 		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
@@ -430,23 +400,45 @@ text-decoration: none;
 		      <span class="grp_desc"> ${gvo.description }</span>
 		      </c:if>
 		    </div>
-		   
 		  </div>
+		  </li>
+		  </ul>
+		  
+		  <c:if test="${(status.index + 1) % 4 == 0}">
+		  </div>
+		  </c:if>
 		  </c:forEach>
 		  </c:if>
+		  
+		  
 		   <c:if test="${hotGrpList==null }">
 		   <div class="grp_box">
 		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 인기 그룹이 없습니다.</span>
 		    </div>
 		   </c:if>
 		</div>
+		</div>
+		<div align="center"><button id="next" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 		
-		<h3 class="mygrp_types">신규 그룹</h3>
-		<div class="mygrp mygrp_newgrp" style="display: inline-flex; flex-wrap: nowrap;">
+		
+		
+		
+		
+		
+		<div style="border: dashed; border-color: #00b300; width: 110%;">
+		<h3 class="mygrp_types" style="color: #00b300">신규 그룹</h3>
 		
 		<!-- 신규 그룹 -->
 		 <c:if test="${newGrpList!=null }">
-   		  <c:forEach var="gvo" items="${newGrpList }">
+   		  <c:forEach var="gvo" items="${newGrpList }" varStatus="status">
+   		  
+   		  <c:if test="${status.index % 4 == 0}">
+   		  <div class="mygrp mygrp_newgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+   		  </c:if>
+   		  
+   		  
+   		  <ul class="list">
+	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
 		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
@@ -461,8 +453,15 @@ text-decoration: none;
 		      <span class="grp_desc"> ${gvo.description }</span>
 		    </div>
 		  </div>
+		  </li>
+		  </ul>
+		  
+		  <c:if test="${(status.index + 1) % 4 == 0}">
+		  </div>
+		  </c:if>
 		  </c:forEach>
 		  </c:if>
+		  
 		   <c:if test="${newGrpList==null }">
 		   <div class="grp_box">
 		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 신규 그룹이 없습니다.</span>
@@ -470,7 +469,12 @@ text-decoration: none;
 		   </c:if>
 		   
 		</div>
-	
+		
+		</div>
+		
+		
+		
+	<div align="center"><button id="next" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 	</div>
 </div>
 

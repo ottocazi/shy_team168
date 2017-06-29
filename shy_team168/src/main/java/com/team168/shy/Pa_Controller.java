@@ -45,7 +45,7 @@ public class Pa_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
 		}else{
 			String myIdx = Integer.toString(loginuser.getIdx());
 			req.setAttribute("loginuser", loginuser);
@@ -143,7 +143,7 @@ public class Pa_Controller {
 			return "pa/mygroups_insertFrm.tiles";
 		}
 		 
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
 		
 	}
 	
@@ -296,7 +296,7 @@ public class Pa_Controller {
     		req.setAttribute("loc", "mygroups_insertFrm.shy");
     	}
     	
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     	
     }
     
@@ -328,7 +328,7 @@ public class Pa_Controller {
     		req.setAttribute("msg", "잘못된 접근입니다!");
     		req.setAttribute("loc", "mygroups.shy");
     		
-    		return "Meong_msg.notiles";
+    		return "ddung_alert.notiles";
  		}
      	
      }
@@ -347,7 +347,7 @@ public class Pa_Controller {
 		req.setAttribute("msg", msg);
 		req.setAttribute("loc", loc);
 		
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
 		
 		}else{
 			int idx = loginuser.getIdx();
@@ -420,11 +420,11 @@ public class Pa_Controller {
 	    		req.setAttribute("msg", msg);
 	    		req.setAttribute("loc", loc);
 	    		
-	    		return "Meong_msg.notiles";
+	    		return "ddung_alert.notiles";
 	    	}
     	
 		}
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     }
     
     // ===== 그룹가입하기 완료 요청 =====
@@ -483,7 +483,7 @@ public class Pa_Controller {
 			}
 
 		}
-		return "Meong_msg.notiles";
+		return "ddung_alert.notiles";
     }
     
 }

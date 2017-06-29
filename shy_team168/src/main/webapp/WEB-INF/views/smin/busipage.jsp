@@ -156,7 +156,7 @@
       if (numInList > numToShow) {
         button.show();
       }
-      list.slice(0, numToShow).show();
+      list.slice(1, numToShow).show();
 
       button.click(function(){
           var showing = list.filter(':visible').length;

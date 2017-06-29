@@ -2,6 +2,7 @@ package com.team168.shy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Meong_Service;
@@ -71,7 +73,7 @@ public class Meong_Controller {
 		   req.setAttribute("type", type);
 		   req.setAttribute("title", title);
 		   
-    	return "Meong_msg.notiles";
+    	return "ddung_alert.notiles";
     }
 	
 
@@ -99,6 +101,7 @@ public class Meong_Controller {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
+
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
     		type = "error";
@@ -110,7 +113,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
     	else {
     		title = "아이디가 존재하지 않습니다.!!";
@@ -123,7 +126,7 @@ public class Meong_Controller {
 			req.setAttribute("msg", msg);
 			req.setAttribute("loc", loc);
 			
-			return "Meong_msg.notiles";
+			return "ddung_alert.notiles";
     	}
    	
     	InetAddress inetAddress = InetAddress.getLocalHost();
@@ -196,7 +199,7 @@ public class Meong_Controller {
     	return "admin.notiles";
     }
     
-    // 관리자 공지사항 페이지요청
+    // 관리자 공지사항(미정) 페이지요청
     @RequestMapping(value="/gesipan.shy", method={RequestMethod.GET})
     public String gesipan(HttpServletRequest req, HttpSession session){
 
@@ -288,24 +291,145 @@ public class Meong_Controller {
     	return "gesipan.notiles";
     }    
 		
-	// 관리자 페이지 회원관리
+	// 관리자 페이지 회원관리 페이지 요청
     @RequestMapping(value="/shymember.shy", method={RequestMethod.GET})
     public String shymember(HttpServletRequest req, HttpSession session){
     	    	
-    	List<ShyMemberVO> shyList = service.getshyList(); 
+    	List<HashMap<String, Object>> shyList = service.getshyList(); 
 			 
 		req.setAttribute("shyList", shyList);
 		
     	return "shymember.notiles";
     }
 	
+    // 관리자 페이지 유저관리 페이지 비활성화버튼요청
+    @RequestMapping(value="/shystatusDown.shy", method={RequestMethod.GET})
+    public String shyleveldown(HttpServletRequest req, HttpSession session){
+    	
+    	String idx = req.getParameter("idx");
+    	String email = req.getParameter("email");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("idx", idx);
+    	
+    	int n = service.shystatusDown(map);
+    	
+    	if(n == 1) {
+    		title = email + "님을 비활성화 성공!!";
+    		type = "success";
+    		loc = "shymember.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }
 	
+    // 관리자 페이지 유저관리 페이지 활성화버튼요청
+    @RequestMapping(value="/shystatusUp.shy", method={RequestMethod.GET})
+    public String shylevelup(HttpServletRequest req, HttpSession session){
+    	
+    	String idx = req.getParameter("idx");
+    	String email = req.getParameter("email");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("idx", idx);
+    	
+    	int n = service.shystatusUp(map);
+    	
+    	if(n == 1) {
+    		title = email + "님을 활성화 성공!!";
+    		type = "success";
+    		loc = "shymember.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }	
 	
+    // 관리자 페이지 통계상세 페이지 활성화버튼요청
+    @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
+    public String tongke(HttpServletRequest req, HttpSession session){
+    	
+    	Calendar today = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = today.get(Calendar.YEAR);
+    	int month = (today.get(Calendar.MONTH) + 1);
+    	int day = today.get(Calendar.DAY_OF_MONTH);
+    	String dateString = String.format("%04d-%02d-%02d", today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH));
+    	System.out.println(dateString);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("dateString", dateString);
+    	
+    	System.out.println(map);
+    	
+    	List<HashMap<String, Object>> tkList = service.gettongkeList();
+    	List<HashMap<String, Object>> tkList2 = service.gettongkeList2();
+		
+    	req.setAttribute("tkList", tkList);
+    	req.setAttribute("tkList2", tkList2);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
+    	return "tongke.notiles";
+    }	
 	
-	
-	
-	
-	
+    @RequestMapping(value="/searchlistex.shy", method={RequestMethod.GET})
+    public String searchlist(HttpServletRequest req, HttpSession session){
+    	
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+
+//    	System.out.println("idx 는 ==> " + idx);
+
+    	List<HashMap <String, String>> plist = service.peoplesearch();
+    	
+    	req.setAttribute("plist", plist);
+    	
+    	
+    	return "meong/searchlist.tiles";
+    	
+    }
+    
+    @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
+    @ResponseBody
+    public List<HashMap<String, Object>> follow(HttpServletRequest req, HttpSession session){
+    	
+    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	String[] idxArr = req.getParameterValues("idxArr");
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	map.put("idx", idx);
+    	map.put("idxArr", idxArr);
+    	
+    	List<HashMap<String, Object>> returnFollowList = service.follow(map);
+    	
+    	System.out.println(returnFollowList);
+    	
+    	return returnFollowList;
+    	
+    }
+
 	
 	
 }

@@ -1,5 +1,52 @@
 -------------------------------------------
 --파
+insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
+values(seq_tbl_like.nextval,53,1,sysdate,76);
+select *
+from tbl_like;
+commit;
+select *
+from tbl_shymemo;
+delete from tbl_like ;
+select *
+from tbl_storeboard;
+
+select *
+from tbl_comment;
+
+select snsno,nvl2(case when count(*)>0 then count(*) else 0 end,0,count(*))
+from tbl_comment 
+where status = 1 and snsno =71
+group by snsno;
+
+select case when nvl(snsno,0)<1 then 0 else 1 end
+from
+(select snsno,case when count(*)>0 then count(*) else 0 end
+from tbl_comment 
+where status = 1 and snsno =null
+group by snsno)
+V;
+
+--내가 좋아요 누른 샤이
+select V.*
+from
+(select A.snsno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_shymemo A join tbl_like B
+on A.snsno = B.snsno)
+V
+where V.fk_likeidx=32;
+
+
+
+--가게리뷰글좋아요
+select A.storeboardno,A.fk_businessno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_storeboard A join tbl_like B
+on A.storeboardno = B.storeboardno;
+
+--그룹게시글좋아요
+select A.grpboardseq,A.gpdetailno,B.likeno,B.fk_likeidx, B.likedate
+from tbl_grpboard A join tbl_like B
+on A.grpboardseq = B.grpboardseq;
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
