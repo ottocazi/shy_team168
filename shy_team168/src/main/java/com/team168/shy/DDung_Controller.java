@@ -326,13 +326,16 @@ public class DDung_Controller {
 	
 	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST})
 	@ResponseBody
-	public String getComments(HttpServletRequest req, HttpSession session) throws IOException {
+	public List <HashMap <String, String>> getComments(HttpServletRequest req, HttpSession session) throws IOException {
 		
-
+		String snsno = req.getParameter("snsno");
 		
-		String result = "댓글 입력 끝";
+		System.out.println("댓글을 출력할 샤이 번호는 : "+snsno);
 		
-		return result;
+		List <HashMap <String, String>> comments = service.getComments(snsno);
+		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
+		
+		return comments;
 		
 		
 	}

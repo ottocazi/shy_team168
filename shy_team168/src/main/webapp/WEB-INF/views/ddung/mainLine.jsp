@@ -24,12 +24,15 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-      
+  
     $(document).ready(function(){
+    	$('.bt-love_chg').hide();
     	countComment();
-       $('.bt-love_chg').hide();
+      
        //getLike();
        
        
@@ -69,6 +72,7 @@
         // alert('${shies.snsno}');
         snsnoArr.push('${shies.snsno}');
         </c:forEach>
+        
         </c:if>
         
         jQuery.ajaxSettings.traditional = true;
@@ -120,6 +124,58 @@
 	   var commentbox = document.getElementById('commentbox'+snsno);
 
 	   if(commentbox.style.display=='none'){
+		   
+		   
+		   $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	               
+	            	var html;
+	    			
+	    			$.each(data, function(entryIndex, entry){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html = '<div id="shy_comment_ajax' + entry.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + entry.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + entry.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				/* 	 + '<div class="shy_comment-info">'
+	    					 + '<span class="shy_comment-author"> <a href="#">'
+	    					 + entry.email+ '</a>'
+	    					 + '</span> <span class="shy_comment-date">
+	    					 + entry.upatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   */
+	    			
+	    				/*html END*/ 
+	    				
+	    				$("#shy_comment_ajax").html(html);
+	    				
+	    			});
+	               
+
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+		   
 		   commentbox.style.display = 'block'; 
 	    }else{
 	        commentbox.style.display = 'none';
@@ -167,37 +223,8 @@
    		});
     } 
     
-    /* ajax 로 댓글 리스트 가져오기 */
-    function getCommentList() {
-    	
-    	var snsnoArr = new Array();
-   		
-   		<c:forEach items="${shies}" var="shies">
-   			snsnoArr.push('${shies.snsno}');
-   		</c:forEach>
-   		
-   		jQuery.ajaxSettings.traditional = true;
-    	
-    	$.ajax({
-    		url: "/shy/getComments.shy",
-    		type: "POST",
-    		data: {snsnoArr:snsnoArr},
-    		dataType: "JSON",
-    		success: function(data) {
-    			
-				var html;
-    			
-    			$.each(data, function(entryIndex, entry){
-    				alert("getCommentList success function");
-    				
-    			});
-    		},
-    		error: function(){
-				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
-		    }
-    			
-    	});
-    }
+    
+    
     
     
  function insertReply(shyidx){
@@ -291,7 +318,6 @@
 
 
 
-
 					<p>${shies.scontent}</p>
 					<footer>
 						<p>
@@ -324,11 +350,14 @@
 					<div class="shy_comment-form">
 						<!-- Comment Avatar -->
 						<div class="shy_comment-avatar">
-							<img src="http://lorempixel.com/200/200/people">
+							<img
+								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								style="display: block; height: 100%; width: 100%;">
 						</div>
 
 						<form class="shy_form" name="insertReplyform" id="insertReplyform">
-							<input type="hidden" id="myidx${shies.snsno }" value="${loginuser.idx }" /> 
+							<input type="hidden" id="myidx${shies.snsno }"
+								value="${loginuser.idx }" />
 							<div class="shy_form-row">
 								<textarea class="shy_input" id="replycontent${shies.snsno }"
 									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
@@ -337,25 +366,25 @@
 
 							<div class="shy_form-row">
 								<input type="button" id="replybutton" value="올리기"
-									onclick="insertReply(${shies.snsno});"
-									style="background-color: #555f77; border: none; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, .15); color: #fff; cursor: pointer; display: block; margin-left: auto; outline: none; padding: 6px 15px; -webkit-transition: 350ms box-shadow; -moz-transition: 350ms box-shadow; -ms-transition: 350ms box-shadow; -o-transition: 350ms box-shadow; transition: 350ms box-shadow;" />
+									onclick="insertReply(${shies.snsno});" />
 							</div>
 						</form>
 					</div>
 
 					<!-- Comments List -->
 
-					<div class="shy_comments">
+					<div class="shy_comments" id="dd_shycomment">
 						<input type="hidden" name="snsno" id="snsno${shies.snsno}"
 							value="${shies.snsno}" />
 						<!-- Comment -->
 
 						<!-- Comment - Dummy -->
-						<div class="shy_comment">
+						<div id="shy_comment_ajax" class="shy_comment">
+							<%-- 
 							<!-- for each 돌리는 div  -->
 							<!-- Comment Avatar -->
 							<div class="shy_comment-avatar">
-								<img src="" alt="프로필">
+								<img src="" alt="사진 읎어용">
 							</div>
 
 							<!-- Comment Box -->
@@ -377,15 +406,15 @@
 
 							</div>
 
-
+ --%>
 
 						</div>
 						<!-- for each 돌리는 div끝  -->
 
 
-						<div align="center">
+						<!-- <div align="center">
 							<a class="button" href="#" style="color: white;"> read more </a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<!--new댓글창 end  -->
@@ -395,14 +424,18 @@
 
 
 			<!-- post foreach 마무리  -->
-
-
 		</c:forEach>
 	</c:if>
 
+
+
 	<div align="center">
 		<a class="button" href="#" style="color: white;"> 더 읽기 </a><br> <br>
+		=======
 	</div>
+
+
+	</main>
 	<!-- 
   <article class="card-60 social">
     <figure>
@@ -603,12 +636,16 @@ Tapas Deluxe .card50 odd even
 
     
   </article>
- --> </main>
+ -->
 
 
 
 
-	     
+
+
+
+	<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
+
 	<!-- <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script> -->
 
 </body>

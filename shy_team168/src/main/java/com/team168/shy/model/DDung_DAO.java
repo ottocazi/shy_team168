@@ -62,5 +62,11 @@ public class DDung_DAO {
 		
 	}
 
+	public List<HashMap<String, String>> getComments(String snsno) {
+		
+		List <HashMap <String, String>> comments = sqlsession.selectList("ddung.getComments", snsno);
+		return comments;
+	}
+
 	
 }
