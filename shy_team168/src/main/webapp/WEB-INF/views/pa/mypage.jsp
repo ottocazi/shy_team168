@@ -230,58 +230,14 @@
   <div class="mycard myIncard">
   <c:set var="myimg" value="${shies.myimg }"/>	
   	<article class="card-60 social">
-    <c:if test="${shies.imageaddr != null}">
-   <figure>
+    
       
       <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
-      
-    </figure>
-    </c:if>
-    <c:if test="${shies.imageaddr == null}">
-     <figure>
-      
-      <%--<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">--%>
-      </figure>
-      <!-- end figure-->
-    
+    <div class="flex-content">
       <p style="text-align: left">
        	${shies.scontent }
       </p>
     
-    </c:if>
-       <div class="flex-content">
- <%-- <header style="text-align: left">
-        <p class="user">
-          <c:if test="${shies.myimg != null}">
-          <img class="avatar-32" src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }" alt="Avatar">
-          </c:if>
-          <c:if test="${shies.myimg == null}">
-          <img class="avatar-32" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif" alt="Avatar">
-          </c:if>
-          <strong>
-               <a title="Full Name" href="#">
-                  <span style="font-size: 12pt; margin:0; color:black;">
-	                  
-	                <c:if test="${shies.name!=null }">
-	                ${shies.name }
-	                </c:if> 
-                  
-                  	<c:if test="${shies.name==null }">
-                  	${shies.email }
-                  	</c:if>
-                  
-                  </span>
-               </a>
-            </strong>
-          <span>${shies.sdatedtime} <br/>&middot; <a href="">@파파파</a> 님과 함께</span>
-        </p>
-      </header> 
-
-      <p class="subinfo" style="text-align: left">
-             <a class="location" title="Location" href="" >
-               당산역 맥도날드 앞 사거리에서 shy
-         </a>
-        </p>--%>
        
       <footer>
         <p>
