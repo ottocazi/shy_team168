@@ -39,7 +39,7 @@ public class Min_Controller {
 	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
     public String geoPage(HttpServletRequest req) {
     	
-		return "smin/geo.tiles";
+		return "geo.notiles";
     	
     }
 	
