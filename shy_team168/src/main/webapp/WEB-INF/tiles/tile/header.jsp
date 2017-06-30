@@ -283,6 +283,25 @@
 	-webkit-transition: 0.5s;
 	-o-transition: 0.5s;
 }
+
+.header-menu-number {
+	/* position: absolute; */
+	line-height: 22px;
+	padding: 0 6px;
+	font-weight: 700;
+	background: #eee;
+	border-radius: 100%;
+	top: 15px;
+	right: 2px;
+	-webkit-transition: all .3s linear;
+	transition: all .3s linear;
+}
+
+.header-menu-number:hover {
+	text-decoration: none;
+	-webkit-transform: rotate(360deg);
+	transform: rotate(360deg);
+}
 </style>
 
 <script type="text/javascript">
@@ -395,11 +414,6 @@
 
 	}
 
-	
-	
-
-
-
 	function searchKeep() {
 		<c:if test="${not empty search}">
 		/* $("#colname").val("${colname}"); // 검색어 컬럼명을 유지시켜 주겠다. */
@@ -433,7 +447,7 @@
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
 							안녕하세요
 						</span>
-						<div id="ajaxresult"></div>
+						<a class="header-menu-number" href="#">5</a><div id="ajaxresult"></div>
 					</c:if>
 
 					<c:if test="${loginuser.name==null }">

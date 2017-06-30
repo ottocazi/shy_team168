@@ -14,6 +14,7 @@
  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/commentboxstyle.css">
 
 <script>
+
     function openComment() {
 	
 	   var commentbox = document.getElementById('commentbox');
@@ -69,6 +70,30 @@
        
    }
     
+    function goUnlike(idx,likeseq,seqcolum){
+        var form_data = {idx : idx,
+                     likeseq   : likeseq,
+                     seqcolum   : seqcolum};
+        
+         // 좋아요 Ajax 불러오기
+          $.ajax({
+              url: "/shy/unlike.shy",
+              type: "GET",
+              dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+              data: form_data ,// 파라미터     
+              success: function(data) { // 성공했을 때의 처리 콜백함수
+                 
+                 getLike();
+                 
+              },
+              error: function() { // 에러가 발생했을 때의 콜백함수
+                  alert("error");
+              }
+          });
+         
+     }
+    
+    
     function getLike(){
        var snsnoArr = new Array();
        
@@ -92,27 +117,24 @@
                var snsnoObjArr = [];
                
                $.each(data,function(entryIndex,entry){
-                  snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat) ]);
-                  if(Number(entry.mylikestat) == 1) {
-                     if(Number(entry.totalcount) >0){
+                  snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat),Number(entry.likeno) ]);
+                  if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 1){
                         $('#bt-love'+entry.snsno).hide();
                         $('#love'+entry.snsno).empty();
                         
-                        var html = '<span>'+entry.totalcount+'</span>';
+                        var html = "<span>"+entry.totalcount+"</span>";
                         $('#love'+entry.snsno).html(html).show();
-                     }else{
-                        $('#bt-love'+entry.snsno).hide();
-                        $('#love'+entry.snsno).show();
-                     }
-                     
-                  }else{
-                     $('#bt-love'+entry.snsno).show();
-                     $('#love'+entry.snsno).hide();
-                  }
-                  
+                        
+                  }else if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 0){
+                	  	var html = "<span>"+entry.totalcount+"</span>";
+                	  	$('#bt-love'+entry.snsno).html(html).show();
+                	  	$('#love'+entry.snsno).hide();
+                	  	
+                  }/* else{
+                       $('#bt-love'+entry.snsno).show();
+                       $('#love'+entry.snsno).hide();
+                   } */
                });
-               
-
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
@@ -150,6 +172,8 @@
     line-height: 1;
     background: #88d;
 }
+
+
 </style>
 </head>
 <body>
@@ -193,7 +217,7 @@
 
           <div id="myTabContent" class="tab-content">
                
-               <main role="main"><!--지우지 마세요  -->
+       <!--  <main role="main">지우지 마세요  -->
   
   <c:if test="${myshyList==null}">
   	아직 등록된 글이 없습니다.
@@ -201,18 +225,32 @@
   </c:if>
   
   <c:if test="${myshyList!=null}">
+  
   <c:forEach items="${myshyList }" var="shies">
+  <div class="mycard myIncard">
   <c:set var="myimg" value="${shies.myimg }"/>	
   	<article class="card-60 social">
-    <figure>
+    <c:if test="${shies.imageaddr != null}">
+   <figure>
       
       <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
       
     </figure>
-    <!-- end figure-->
-    <div class="flex-content">
-       
- <header style="text-align: left">
+    </c:if>
+    <c:if test="${shies.imageaddr == null}">
+     <figure>
+      
+      <%--<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">--%>
+      </figure>
+      <!-- end figure-->
+    
+      <p style="text-align: left">
+       	${shies.scontent }
+      </p>
+    
+    </c:if>
+       <div class="flex-content">
+ <%-- <header style="text-align: left">
         <p class="user">
           <c:if test="${shies.myimg != null}">
           <img class="avatar-32" src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }" alt="Avatar">
@@ -235,34 +273,22 @@
                   </span>
                </a>
             </strong>
-          <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과 함께</span>
+          <span>${shies.sdatedtime} <br/>&middot; <a href="">@파파파</a> 님과 함께</span>
         </p>
-      </header>
+      </header> 
 
       <p class="subinfo" style="text-align: left">
              <a class="location" title="Location" href="" >
                당산역 맥도날드 앞 사거리에서 shy
          </a>
-        </p>
-       <p style="text-align: left">
-       	${shies.scontent }
-      </p>
+        </p>--%>
+       
       <footer>
         <p>
-          <a class="bt-love" title="Love"
-								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
-								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
-								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
-								title="Share" href="#"> Share </a> <a
-								href="javascript:openComment('${shies.snsno}');"
-								class="bt-comment" title="Comment" id="comment${shies.snsno}">
-							</a>
-          <a class="bt-share" title="Share" href="#">
-               Share
-            </a>
-          <a href="javascript:openComment();"class="bt-comment" title="Comment" href="">
-               댓글(33)
-            </a>
+          <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')" id="bt-love${shies.snsno }"> Love </a> 
+		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
+		 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
+		 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
         </p>
       </footer>
     </div>
@@ -341,16 +367,20 @@
   
   <!-- post foreach 마무리  -->
   	
-  	
+  </div>
   </c:forEach>
+  
   </c:if>
   
   <div align="center"><a class="readmore" href="#" style="color:white; " >
 					더 읽기
 				</a><br><br>
-   </div>
-	</main> <!-- 한 개의 shy 끝  -->
-               
+	</div>			
+   
+<!--	</main>  한 개의 shy 끝  -->
+	
+
+
                
                
           </div>

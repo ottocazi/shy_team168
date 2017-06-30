@@ -120,5 +120,11 @@ public class PaDAO {
 		return myLikeList;
 	}
 
+	// ===== 좋아요 취소하기 ===== //
+	public int deletetLike(HashMap<String, String> likemap) {
+		int n = sqlsession.delete("pa.deleteLike",likemap);
+		return n;
+	}
+
 
 }

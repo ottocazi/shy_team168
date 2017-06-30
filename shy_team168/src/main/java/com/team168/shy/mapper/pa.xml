@@ -301,6 +301,19 @@
 		</if>
 	</insert>
 	
+	<!-- ===== 좋아요 delete ===== -->	
+	<delete id="deleteLike" parameterType="java.util.HashMap">
+		<if test='seqcolum.equals("snsno")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
+		</if>
+		<if test='seqcolum.equals("storeboardno")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
+		</if>
+		<if test='seqcolum.equals("grpboardseq")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
+		</if>
+	</delete>
+	
 	<!-- ===== 좋아요 가져오기 =====   -->
 	<resultMap type="java.util.HashMap" id="getlikeListMap">
 		<result property="snsno" column="SNSNO" javaType="String" />
@@ -308,18 +321,18 @@
 		<result property="mylikestat" column="MYLIKESTAT" javaType="String" />
 	</resultMap>
 	<select id="getmyLikeList" parameterType="java.util.HashMap" resultMap="getlikeListMap"> 
-	  SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+      SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
 	  FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN 
 	  <foreach collection="snsnoArr" item="snsno" index="i" open="(" close=")" separator=",">
 		${snsno}
-		</foreach>
+	  </foreach>
 	  ) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
 	
 </mapper>	

@@ -130,6 +130,12 @@ public class PaService {
 		return likeList;
 	}
 
+	// ===== 좋아요 취소하기 ===== //
+	public int deletetLike(HashMap<String, String> likemap) {
+		int n = dao.deletetLike(likemap);
+		return n;
+	}
+
 
 
 	

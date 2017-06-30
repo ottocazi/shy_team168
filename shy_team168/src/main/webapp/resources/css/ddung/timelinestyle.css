@@ -334,7 +334,7 @@ line-height: 3.2rem;
   background-image: url('http://jlantunez.com/imgs/spritecard.png');
   background-repeat: no-repeat;
 }
-[class*="card-"] a.bt-love {
+[class*="card-"] a.bt-love,a.bt-love_chg:hover {
   background-position: 0 7px;
 }
 

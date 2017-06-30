@@ -534,11 +534,40 @@ public class Pa_Controller {
   		HashMap<String, Object> returnlike = new HashMap<String, Object>();
   		returnlike.put("RESULT", result);
   		
-  		
-  		
   		return returnlike;
   			
   	}
+  	
+  	// ===== 좋아요 취소하기 ===== //
+   	@RequestMapping(value="/unlike.shy", method={RequestMethod.GET})
+   	@ResponseBody
+       public HashMap<String, Object> goUnlike(HttpServletRequest req) {
+   		
+   		String fk_likeidx = req.getParameter("idx");
+   		//System.out.println("fk_likeidx="+fk_likeidx);
+   		String seqcolum = req.getParameter("seqcolum"); // snsno,storeboardno,grpboardseq 컬럼명
+   		//System.out.println("seqcolum="+seqcolum);
+   		String likeseq = req.getParameter("likeseq"); // snsno,storeboardno,grpboardseq 벨류값
+   		//System.out.println("likeseq="+likeseq);
+   		
+   		HashMap<String, String> likemap = new HashMap<String, String>();
+   		likemap.put("fk_likeidx", fk_likeidx);
+   		likemap.put("seqcolum", seqcolum);
+   		likemap.put("likeseq", likeseq);
+   		
+   		int result = service.deletetLike(likemap);
+   		
+   		if(result>0){
+   			//service.getLikes(likemap);
+   		}
+   		HashMap<String, Object> returnunlike = new HashMap<String, Object>();
+   		returnunlike.put("RESULT", result);
+   		
+   		
+   		
+   		return returnunlike;
+   			
+   	}
   	
   	// ===== 좋아요 가져오기 ===== //
    	@RequestMapping(value="/likeList.shy", method={RequestMethod.GET})
