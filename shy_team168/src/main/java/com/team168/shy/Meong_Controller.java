@@ -528,7 +528,14 @@ public class Meong_Controller {
     	return "gesimulTK.notiles";
     	
     }
+    
+    @RequestMapping(value="/kongyou.shy", method={RequestMethod.GET})
+    public String kongyou(HttpServletRequest req, HttpSession session){
 
+    	
+    	return "kongyou.notiles";
+    	
+    }
 
 
 
