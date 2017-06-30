@@ -19,6 +19,9 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/sweetalert2/latest/sweetalert2.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgGMD-V3HkeJQ98LDfxtAW11hVbxFRvUo&libraries=places"></script>
+
+
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css"
 	rel="stylesheet" />
