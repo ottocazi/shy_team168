@@ -286,7 +286,7 @@ function goday(){
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel_ym">
-                  <div class="x_title" style="margin-bottom: 10px;">
+                  <div class="x_title" style="margin-bottom: 50px;">
                     <h2>${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h2>
                     
 <form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
@@ -312,7 +312,7 @@ function goday(){
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div class="x_content" style="margin-bottom: 50px;">
                     <canvas id="lineChart_ym"></canvas>
                   </div>
                   <div>
