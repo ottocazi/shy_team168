@@ -242,7 +242,33 @@
 		order by idx desc
 	</select>
 	
+	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="gettongkeList3map">
+		<result property="DAY" 	        column="day" 	    javaType="String" />
+ 		<result property="TIME" 		    column="time" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="gettongkeList3" resultMap="gettongkeList3map" parameterType="java.util.HashMap">
+		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
+		from (SELECT TO_CHAR(TO_DATE(#{today2}, 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = #{today2}) group by time) B
+		on A.time = B.time
+		order by time asc
+	</select>
 	
+	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="gettongkeList4map">
+		<result property="DAY" 	        column="day" 	    javaType="String" />
+ 		<result property="TIME" 		    column="time" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="gettongkeList4" resultMap="gettongkeList4map" parameterType="java.util.HashMap">
+		select A.time as day, substr(A.time, 12, 13) AS TIME, nvl(B.cnt, 0) as cnt
+		from (SELECT TO_CHAR(TO_DATE(#{yesterday2}, 'YYYY-MM-DD') + ((LEVEL - 1) / 24), 'YYYY-MM-DD hh24') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 24) A
+		left outer join (select time, count(time) as cnt from (SELECT TO_CHAR(logtime, 'YYYY-MM-DD hh24') as time from tbl_log where to_char(logtime, 'yyyy-mm-dd') = #{yesterday2}) group by time) B
+		on A.time = B.time
+		order by time asc
+	</select>
 	
 	
 </mapper>

@@ -26,6 +26,7 @@ public class Min_Controller {
 	
 	private Min_Service service;
 	
+	
 	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req) {
     	
@@ -34,7 +35,13 @@ public class Min_Controller {
     }
 	
 	
-	
+
+	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
+    public String geoPage(HttpServletRequest req) {
+    	
+		return "smin/geo.tiles";
+    	
+    }
 	
 	
 	
