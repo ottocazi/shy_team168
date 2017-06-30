@@ -126,4 +126,14 @@ public class Meong_Service implements Interface_CommonService  {
 		return adminList;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList3(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList3 = dao.gettongkeList3(map);
+		return tkList3;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList4(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList4 = dao.gettongkeList4(map);
+		return tkList4;
+	}
+
 }
