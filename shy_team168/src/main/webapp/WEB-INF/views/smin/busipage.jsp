@@ -337,8 +337,8 @@
   
     <div class="col-sm-3 well">
     	
-<!-- Add Google Maps -->
-<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 관련 jsp -->
 <script>
 function myMap() {
 var myCenter = new google.maps.LatLng(37.539578, 126.899568);
@@ -347,10 +347,41 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 var marker = new google.maps.Marker({position:myCenter});
 marker.setMap(map);
 }
+
+var autoComplete = new google.maps.places.Autocomplete(
+		document.getElementById(search), {
+		types: [‘(cities)’]
+		});
+		
+google.maps.event.addListener(autoComplete, ‘place_changed’, function() {
+	var place = autocomplete.getPlace();
+	if (place.geometry) {
+	map.panTo(place.geometry.location);
+	map.setZoom(15);
+	}
+	});
 </script>
+
+<!-- 구글 맵 호출 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm5ys8Aqru_hi_-arUTuHNDxR0Gmx4HxU&callback=myMap"></script>
 
+
+
+<!-- 구글 자동완성 라이브러리 호출 -->
+<script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCJ6uWo6CjVt02ze8P_hedzb6PZpydtZIM">
+</script>
+
+
+<!-- 구글 맵 -->
+<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 자동완성 -->
+<input id="search" type="text">
 <br><br>
+
+
+
 
 
 <p class="star_rating" align="center">
@@ -380,12 +411,7 @@ marker.setMap(map);
       
       <div class="wrapper">
       
-      
-	 <ul class="list">
-	 
-     <li>
-
-      <div>
+        <div>
       <h4>메인 글남기기</h4>
       <form role="form" name="gogo">
         <div class="form-group">
@@ -398,11 +424,10 @@ marker.setMap(map);
       
       <br><br>
       </div>
-
-	
-	
-
-      </li>
+      
+      
+	 <ul class="list">
+	 
       
      <li>
 

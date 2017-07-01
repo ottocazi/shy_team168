@@ -66,7 +66,7 @@
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      <li><a href="#">좋아요가 가장많은 유저</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesimulTK.shy">좋아요가 가장많은 유저</a></li>
                       <li><a href="#">신고를 많이받은 유저</a></li>
                     </ul>
                   </li>
@@ -302,26 +302,17 @@
                         </tr>
                       </thead>
                       <tbody>
+                      <c:forEach var="map" items="${adminList}" varStatus="status">
                         <tr>
-                          <th scope="row">1</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
+                          <td>${map.IDX}</td>
+                          <td>${map.NAME}</td>
+                          <td>${map.EMAIL}</td>
+                          <td>${map.STATUS}</td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>0</td>
-                          <td>0</td>
-                          <td>0</td>
-                        </tr>
+                      </c:forEach>
                       </tbody>
                     </table>
+                   <div align="right">${pagebar2}</div>
                   </div>
                 </div>
               </div>

@@ -47,5 +47,22 @@ public class Juno_Service {
 		return CommentList;
 	}
 
+	public List<HashMap<String, String>> peoplesearch() {
+		List<HashMap <String, String>> plist = dao.peoplesearch();
+		return plist;
+	}
+	
+	// gofollow
+	public int goFollow(HashMap<String, Object> map) {
+		int result = dao.goFollow(map);
+		return result;
+	}
+	
+	// unfollow
+	public int unFollow(HashMap<String, Object> map) {
+		int result = dao.unFollow(map);
+		return result;
+	}
+
 	
 }

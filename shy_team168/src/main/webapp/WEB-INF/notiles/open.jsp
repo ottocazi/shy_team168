@@ -87,16 +87,19 @@
    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
    </div>
    <p style="color: #BBBBBB; font-size: 10pt">친구들의 새소식이 궁금하시다면 <br>지금 바로 샤이로 로그인하세요</p>
+   <form name="loginform">
    <div class="form-input">
-		<form name="loginform">
+		
       		<input type="text" placeholder="email" name="email" id="email"/>
       		<input type="password" placeholder="password" name="pwd" id="pwd"/>
-     	</form> 
+     	
    </div>
    <br>
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
    <button class="login" id="loginend" type="submit">Login</button>
+   </form> 
    </div>
+   
    <div id="joinus" style="min-height: 385px;">
    <div class="form-title">
    <span class="letter" id="shy" data-letter="s">s</span>

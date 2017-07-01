@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -199,11 +200,12 @@ public class Meong_Controller {
     	return "admin.notiles";
     }
     
+    
     // 관리자 공지사항(미정) 페이지요청
     @RequestMapping(value="/gesipan.shy", method={RequestMethod.GET})
     public String gesipan(HttpServletRequest req, HttpSession session){
 
-    	String pageNo = req.getParameter("pageNo");
+    	String pageNo = req.getParameter("pageNo"); // 회원페이징처리
     	
     	int totalCount = 0;
     	int sizePerPage = 5; 
@@ -287,10 +289,87 @@ public class Meong_Controller {
     	
         req.setAttribute("pagebar", pagebar);
     	req.setAttribute("shyList", shyList);
+    	
+    //----------------------------------------------------------------------------------------------
+    	
+    	String pageNo2 = req.getParameter("pageNo2"); // 운영자 페이징처리
 
+    	int totalCount2 = 0;
+    	int sizePerPage2 = 5; 
+    	int currentShowPageNo2 = 1;
+    	int totalPage2 = 0; 
+    	
+    	int start2 = 0;
+    	int end2 = 0;
+    	int startPageNo2 = 0;
+
+    	int loop2 = 0;
+    	int blocksize2 = 5;
+    	
+    	if(pageNo2 == null) {
+    		currentShowPageNo2 = 1;    		
+    	}
+    	else {
+    		currentShowPageNo2 = Integer.parseInt(pageNo2); 
+    	}
+   
+    	start2 = ((currentShowPageNo2 - 1) * sizePerPage2) + 1;
+    	end2 = start2 + sizePerPage2 - 1;
+    	
+    	RowBounds rowBounds = new RowBounds(start2, end2);
+    	
+    	List<HashMap<String, String>> adminList = service.getadminList(map,rowBounds); 
+    	System.out.println(adminList);
+   	
+    	totalCount2 = service.getTotalCount(map);
+    	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
+    	
+    	String pagebar2 = "";
+    	pagebar2 += "<ul>";
+    	
+        loop2 = 1;
+
+        startPageNo2 = ((currentShowPageNo2 - 1)/blocksize2)*blocksize2 + 1;
+    	
+        // **** 이전5페이지 만들기 ****
+        if(startPageNo2 == 1) {
+        	pagebar2 += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize2);
+        }
+        else {
+        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo2=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo2-1, blocksize2);		
+        }        
+            	
+        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
+        while( !(loop2 > blocksize2 ||
+        		 startPageNo2 > totalPage2) ) {
+        	if(startPageNo2 == currentShowPageNo2) {
+        		pagebar2 += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo2);	
+        	}
+        	else {
+	        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo2=%d'>%d</a>&nbsp;&nbsp;", startPageNo2, startPageNo2);
+        	}
+        	
+        	loop2++;
+        	startPageNo2++;
+        	
+        }// end of while--------------------
+                
+        // **** 다음5페이지 만들기 ****
+        if(startPageNo2 > totalPage2) {
+        	pagebar2 += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize2);
+        }
+        else {
+        	pagebar2 += String.format("&nbsp;&nbsp;<a href='/shy/gesipan.shy?pageNo2=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo2, blocksize2);	
+        }
+        pagebar2 += "</ul>";
+    	
+        req.setAttribute("pagebar2", pagebar2);
+    	req.setAttribute("adminList", adminList);
+    	
     	return "gesipan.notiles";
     }    
 		
+    
 	// 관리자 페이지 회원관리 페이지 요청
     @RequestMapping(value="/shymember.shy", method={RequestMethod.GET})
     public String shymember(HttpServletRequest req, HttpSession session){
@@ -302,6 +381,7 @@ public class Meong_Controller {
     	return "shymember.notiles";
     }
 	
+    
     // 관리자 페이지 유저관리 페이지 비활성화버튼요청
     @RequestMapping(value="/shystatusDown.shy", method={RequestMethod.GET})
     public String shyleveldown(HttpServletRequest req, HttpSession session){
@@ -332,6 +412,7 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }
 	
+    
     // 관리자 페이지 유저관리 페이지 활성화버튼요청
     @RequestMapping(value="/shystatusUp.shy", method={RequestMethod.GET})
     public String shylevelup(HttpServletRequest req, HttpSession session){
@@ -362,52 +443,61 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }	
 	
+    
     // 관리자 페이지 통계상세 페이지 활성화버튼요청
     @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
     public String tongke(HttpServletRequest req, HttpSession session){
     	
-    	Calendar today = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
-    	int year = today.get(Calendar.YEAR);
-    	int month = (today.get(Calendar.MONTH) + 1);
-    	int day = today.get(Calendar.DAY_OF_MONTH);
-    	String dateString = String.format("%04d-%02d-%02d", today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH));
-    	System.out.println(dateString);
+    	String today2 = req.getParameter("today");
+    	String yesterday2 = req.getParameter("yesterday");
+    	System.out.println("today2 는 ==> " + today2);
+    	System.out.println("yesterday2 는 ==> " + yesterday2);
+    	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = calendar.get(Calendar.YEAR);
+    	int month = (calendar.get(Calendar.MONTH) + 1);
+    	int day = calendar.get(Calendar.DAY_OF_MONTH);
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+    	//System.out.println(yesterday);
     	
     	HashMap<String, String> map = new HashMap<String, String>();
     	
-    	map.put("dateString", dateString);
+    	map.put("today", today);
+    	map.put("yesterday", yesterday);
+    	map.put("today2", today2);
+    	map.put("yesterday2", yesterday2);
     	
-    	System.out.println(map);
+    	if(today2 == null && yesterday2 == null){
+    		
+        	List<HashMap<String, Object>> tkList = service.gettongkeList(map);
+        	List<HashMap<String, Object>> tkList2 = service.gettongkeList2(map);
+        	
+        	req.setAttribute("tkList", tkList);
+        	req.setAttribute("tkList2", tkList2);
+    				
+    	}
+    	else{ // 달력으로 날짜조정했을때
+    		
+        	List<HashMap<String, Object>> tkList = service.gettongkeList3(map);
+        	List<HashMap<String, Object>> tkList2 = service.gettongkeList4(map);
+        	
+        	req.setAttribute("tkList", tkList);
+        	req.setAttribute("tkList2", tkList2);
+    	}
     	
-    	List<HashMap<String, Object>> tkList = service.gettongkeList();
-    	List<HashMap<String, Object>> tkList2 = service.gettongkeList2();
-		
-    	req.setAttribute("tkList", tkList);
-    	req.setAttribute("tkList2", tkList2);
+    	//System.out.println(map);
     	
     	req.setAttribute("year", year);
     	req.setAttribute("month", month);
     	req.setAttribute("day", day);
     	
+    	req.setAttribute("today2", today2);
+    	req.setAttribute("yesterday2", yesterday2);
+    	
     	return "tongke.notiles";
     }	
-	
-    @RequestMapping(value="/searchlistex.shy", method={RequestMethod.GET})
-    public String searchlist(HttpServletRequest req, HttpSession session){
-    	
-    	ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
-    	int idx =  loginuser.getIdx();
 
-//    	System.out.println("idx 는 ==> " + idx);
-
-    	List<HashMap <String, String>> plist = service.peoplesearch();
-    	
-    	req.setAttribute("plist", plist);
-    	
-    	
-    	return "meong/searchlist.tiles";
-    	
-    }
     
     @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
     @ResponseBody
@@ -429,7 +519,25 @@ public class Meong_Controller {
     	return returnFollowList;
     	
     }
+    
+    
+    @RequestMapping(value="/gesimulTK.shy", method={RequestMethod.GET})
+    public String gesimulTK(HttpServletRequest req, HttpSession session){
 
-	
+    	
+    	return "gesimulTK.notiles";
+    	
+    }
+    
+    @RequestMapping(value="/kongyou.shy", method={RequestMethod.GET})
+    public String kongyou(HttpServletRequest req, HttpSession session){
+
+    	
+    	return "kongyou.notiles";
+    	
+    }
+
+
+
 	
 }

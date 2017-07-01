@@ -31,53 +31,8 @@ text-decoration: none;
 
 #mygroups{
 	margin: 0 auto;
-	width: 80%;
+	width: 70%;
 	display: block;
-}
-
-/* 검색바 부분  */
-.topInputSearch {
-    position: sticky;
-    margin-top:1.2%;
-    width: 50%;
-    height: 28px;
-    padding: 0 36px 0 12px;
-}
-
-.topInputSearch input{
-	position: relative;
-    width: 232px;
-    padding: 4px;
-    border: 1px solid rgba(0,0,0,.15);
-    background: rgba(255,255,255,.11);
-    border-radius: 28px;
-}
-
-.topInputSearch button{
-    border: none;
-    left: 93%;
-    padding: 5px;
-    background: rgba(255,255,255,.11);
-}
-
-.topInputSearch .populargrp{
-    text-align: center;
-    display: block;
-    padding: 5px;
-    background: rgba(255,255,255,.11);
-}
-
-.topInputSearchList{
-	position: sticky;
-    display: inline-flex;
-    width: 220px;
-    height: auto;
-    margin-left: 5px;
-    margin-top: -5px;
-    padding: 10px;
-    border: 1px solid rgba(0,0,0,.15);
-    border-top: hidden;
-    background: #fff;
 }
 
 /* 그룹 리스트  */
@@ -244,7 +199,39 @@ text-decoration: none;
 </style>    
     
     <script type="text/javascript">
-
+    function goFollow(fk_idxflwed){
+    	var form_data = {fk_idxflwed:fk_idxflwed}
+    	$.ajax({
+   			url: "/shy/goFollow.shy",
+    		type: "GET",
+    		data: form_data,
+    		dataType: "JSON", 
+    		success: function(data){
+    			alert("idx : "+fk_idxflwed);
+    			follow();
+    		},
+    		error: function(){
+				  alert("goFollow() error!"); 
+		    }
+    	});	
+    };
+	
+    function unFollow(fk_idxflwed){
+    	var form_data = {fk_idxflwed:fk_idxflwed}
+    	$.ajax({
+   			url: "/shy/unFollow.shy",
+    		type: "GET",
+    		data: form_data,
+    		dataType: "JSON", 
+    		success: function(data){
+    			alert("idx : "+fk_idxflwed);
+    			follow();
+    		},
+    		error: function(){
+				  alert("unFollow() error!"); 
+		    }
+    	});	
+    };
     
    	function follow() {
    		var idxArr = new Array();
@@ -264,17 +251,17 @@ text-decoration: none;
     		data: {idxArr:idxArr},
     		dataType: "JSON", 
     		success: function(data){
-    			//alert("ajax 성공 function");
+    			//alert("follow");
     			var html;
     			
     			$.each(data, function(entryIndex, entry){
 	    			
 	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
 					if(FOLLOWCHECK == 1){
-						html = "<a href='open.shy'>팔로우해제</a>";
+						html = "<button onClick='unFollow("+ entry.IDX + ");'>팔로우해제</button>";
 					}
 					else {
-						html = "<a href=''>팔로우</a>";
+						html = "<button onClick='goFollow("+ entry.IDX + ");'>팔로우</button>";
 					}
 					
 					$("#follow" + entry.IDX).html(html);
@@ -283,14 +270,14 @@ text-decoration: none;
     		//	getCommentList();
     		},
     		error: function(){
- 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 				  alert("follow() error!"); 
  		    }
    		});
     }; 
       
 
     $(document).ready(function(){
-		
+
     	follow();
     	
         var list = $(".list li");
@@ -331,12 +318,15 @@ text-decoration: none;
   		);
     
     
+    
+    
+    
     </script>
     
     
   </head>
 
-  <body class="nav-md">
+  <body style="margin-left: 10%; width: 80%;">
     <div class="container body">
       <div class="main_container">
         
@@ -408,7 +398,6 @@ text-decoration: none;
                           <td>${map.NAME}</td>
                           <td>${map.EMAIL}</td>
                           <td id="follow${map.IDX}"></td>
-                          
                         </tr>
                       </c:forEach>
                       </tbody>
@@ -447,7 +436,8 @@ text-decoration: none;
                         <tr>
                           <th>그룹번호</th>
                           <th>그룹이름</th>
-                          <th>그룹아이디</th>
+                          <th>그룹 회원수</th>
+                          <th>그룹 공개범위</th>
                         </tr>
                       </thead>
                      <tbody>
@@ -455,13 +445,16 @@ text-decoration: none;
                         <tr>
                           <td>${map.GROUPNO}</td>
                           <td>${map.GNAME}</td>
-                          <td>${map.GCOUNT}</td>
-                          
+                          <td>${map.GCOUNT}명</td>
+                          <td>
+                          <c:if test="${map.STATUS==1}">전체 공개</c:if>
+                          <c:if test="${map.STATUS==2}">회원 공개</c:if>
+                          </td>
                         </tr>
                       </c:forEach>
                       </tbody>
                     </table>
-                     <%-- <div align="right">${pagebar2}</div>  --%>
+                      <div align="right">${pagebar1}</div> 
                   </div>
                 </div>
               </div>
@@ -489,60 +482,82 @@ text-decoration: none;
 
                   <div class="x_content">
 
+				
+<div id="mygroups">
+				
+				
+	<!-- 그룹리스트 -->
+	<div class="mygrp" align="center">
+
 				 <!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 --><!-- 여기에 그룹 콘텐트 넣어주기 -->
-				 <h3 class="mygrp_types">HOT 그룹</h3>
-		<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
-		
+				 <h3 class="mygrp_types">그룹 목록 IMAGE </h3>
+			
+			
+			<c:if test="${glist!=null }">
+   		  <c:forEach var="map" items="${glist }" varStatus="status">
+   		  
+   		  
+   		  <c:if test="${status.index % 4 == 0}">
+				 <!-- 이게 한줄 -->
+			<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+			</c:if>
 		
 		
 		<!-- HOT한 그룹  -->
-   		  <c:if test="${glist!=null }">
-   		  <c:forEach var="map" items="${glist }">
+   		  
    		  
    		  <ul class="list">
 	 		<li>
 		  <div class="grp_box">
-		    <c:if test="${map.gimg != null}">
-		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.gimg }"><%-- img가져오기 --%>
+		    <c:if test="${map.GIMG != null}">
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${map.GIMG }"><%-- img가져오기 --%>
 		    </c:if>
 		    
-		    <c:if test="${map.gimg == null}">
+		    <c:if test="${map.GIMG == null}">
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    
 		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
 		    <div class="grp_inner">
 		    
-		      <c:if test="${map.status==1}">
-		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname }</a></h4>
-		      <i class="grp_fa fa-eye"> ${map.gcount }명</i>
-		      <span class="grp_desc"> ${map.description }</span>
+		      <c:if test="${map.STATUS==1}">
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
-		      <c:if test="${map.status==2}">
-		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.groupno}">${map.gname }</a></h4>
-		      <i class="grp_fa fa-eye"> ${map.gcount }명</i>
-		      <span class="grp_desc"> ${map.description }</span>
+		      <c:if test="${map.STATUS==2}">
+		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></h4>
+		      <i class="grp_fa fa-eye"> ${map.GCOUNT}명</i>
+		      <span class="grp_desc"> ${map.DESCRIPTION}</span>
 		      </c:if>
 		    </div>
 		  </div>
 		  </li>
 		  </ul>
-		  <br><br>
+		  
+		  <c:if test="${(status.index + 1) % 4 == 0}">
+		  </div>
+		  </c:if>
 		  </c:forEach>
 		  </c:if>
+		  
+		  
 		
 		  
 		 
 		  
 		   <c:if test="${glist==null }">
+		   <div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
 		   <div class="grp_box">
 		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 인기 그룹이 없습니다.</span>
 		    </div>
+		    
+		    </div>
 		   </c:if>
 		   
-		</div>
-
- 
+		
+</div>
+ </div>
 
                   </div>
                   
@@ -551,9 +566,11 @@ text-decoration: none;
                   
                 </div>
                 
-                <button id="next" style=" margin-bottom: 150px; ">Show More</button>
+                
                 
               </div>
+              
+              <div align="center"><button id="next" style=" margin-bottom: 150px; font-size: 20px;">더보기</button></div>
             </div>
           </div>
         </div>

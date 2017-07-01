@@ -3,6 +3,7 @@ package com.team168.shy.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -89,16 +90,16 @@ public class Meong_Service implements Interface_CommonService  {
 		int n = dao.shystatusUp(map);
 		return n;
 	}
-
+/*
 	public List<HashMap<String, Object>> gettongkeList() {
 		List<HashMap<String, Object>> tkList = dao.gettongkeList();
 		return tkList;
-	}
-
+	}*/
+/*
 	public List<HashMap<String, Object>> gettongkeList2() {
 		List<HashMap<String, Object>> tkList2 = dao.gettongkeList2();
 		return tkList2;
-	}
+	}*/
 
 	public List<HashMap<String, String>> peoplesearch() {
 		List<HashMap<String, String>> plist = dao.plist();
@@ -110,6 +111,29 @@ public class Meong_Service implements Interface_CommonService  {
 		return FollowList;
 	}
 
+	public List<HashMap<String, Object>> gettongkeList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList = dao.gettongkeList(map);
+		return tkList;
+	}
 
+	public List<HashMap<String, Object>> gettongkeList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList2 = dao.gettongkeList2(map);
+		return tkList2;
+	}
+
+	public List<HashMap<String, String>> getadminList(HashMap<String, String> map, RowBounds rowBounds) {
+		List<HashMap <String, String>> adminList = dao.groupsearch(map, rowBounds);
+		return adminList;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList3(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList3 = dao.gettongkeList3(map);
+		return tkList3;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList4(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList4 = dao.gettongkeList4(map);
+		return tkList4;
+	}
 
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,7 +67,7 @@ public class Juno_Controller {
     }
 	
 	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.POST})
-    public String myInfoEditEnd(MultipartHttpServletRequest req, HttpSession session) throws IOException {
+    public String myInfoEditEnd(HttpServletRequest req, HttpSession session) throws IOException {
 		
 	
 		
@@ -129,4 +130,72 @@ public class Juno_Controller {
 		
 		return CommentList;
 	}
+	
+	 // 관리자 공지사항 페이지요청
+    @RequestMapping(value="/searchlistj.shy", method={RequestMethod.GET})
+    public String searchlist(HttpServletRequest req, HttpSession session){
+	    
+
+    	List<HashMap <String, String>> plist = service.peoplesearch();        
+		        
+    	req.setAttribute("plist", plist);        
+		        
+		    	
+    	return "juno/searchlist.tiles";
+		    	
+    }
+    
+	@RequestMapping(value="/goFollow.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> goFollow(HttpServletRequest req, HttpSession session) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	System.out.println("idx : " + idx);
+		
+    	String str_fk_idxflwed = req.getParameter("fk_idxflwed");
+    	int fk_idxflwed = Integer.parseInt(str_fk_idxflwed);
+    	System.out.println("fk_idxflwed : "+fk_idxflwed);
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("idx", idx);
+    	map.put("fk_idxflwed", fk_idxflwed);
+    	
+		int result = service.goFollow(map);
+		
+		if(result==0){
+			
+		}
+		
+		HashMap<String, Object> returnresult = new HashMap<String, Object>();
+    	map.put("result", result);
+		return returnresult;
+	}
+	
+	@RequestMapping(value="/unFollow.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> unFollow(HttpServletRequest req, HttpSession session) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	System.out.println("idx : " + idx);
+		
+    	String str_fk_idxflwed = req.getParameter("fk_idxflwed");
+    	int fk_idxflwed = Integer.parseInt(str_fk_idxflwed);
+    	System.out.println("fk_idxflwed : "+fk_idxflwed);
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("idx", idx);
+    	map.put("fk_idxflwed", fk_idxflwed);
+    	
+		int result = service.unFollow(map);
+		
+		if(result==0){
+			
+		}
+		HashMap<String, Object> returnresult = new HashMap<String, Object>();
+    	map.put("result", result);
+		return returnresult;
+	}
+	
+	
+
 }

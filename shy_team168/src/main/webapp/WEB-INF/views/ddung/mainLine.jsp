@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-
+<!-- DDD -->
 
 <!-- 타임라인소스 -->
 <link rel="stylesheet"
@@ -32,8 +32,7 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	countComment();
-      
-       //getLike();
+       	getLike();
        
        
        
@@ -93,7 +92,7 @@
                         $('#bt-love'+entry.snsno).hide();
                         $('#love'+entry.snsno).empty();
                         
-                        var html = '<span>'+entry.totalcount+'</span>';
+                        var html = '<span style="cursor:pointer">'+entry.totalcount+'</span>';
                         $('#love'+entry.snsno).html(html).show();
                      }else{
                         $('#bt-love'+entry.snsno).hide();
@@ -132,43 +131,49 @@
 	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
 	            data: {snsno:snsno},
 	            success: function(data) { // 성공했을 때의 처리 콜백함수
-	               
-	            	var html;
-	    			
-	    			$.each(data, function(entryIndex, entry){
+	            	
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
 	    				//alert(entry.cmtcontent);
 	    				
-	    				html = '<div id="shy_comment_ajax' + entry.cmtno
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
 	    					 + '" class="shy_comment">'
 	    					 + '<div class="shy_comment-avatar">'
 	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
-	    					 + entry.myimg
+	    					 + comments.myimg
 	    					 + '"></div>'
 	    					 + '<div class="shy_comment-box">'
 	    					 + '<div class="shy_comment-text">'
-	    					 + entry.cmtcontent
+	    					 + comments.cmtcontent
 	    					 + '</div>'
 	    					 + '<div class="shy_comment-footer">'
-	    				/* 	 + '<div class="shy_comment-info">'
-	    					 + '<span class="shy_comment-author"> <a href="#">'
-	    					 + entry.email+ '</a>'
-	    					 + '</span> <span class="shy_comment-date">
-	    					 + entry.upatetime+'</span>'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+    				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+ 				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
 	    					 + '</div>'
 	    					 + '<div class="shy_comment-actions">'
 							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
 							 + ' aria-hidden="true"></i></a> '
 	    					 + '</div>'
 	    					 + '</div>'
-	    					 + '</div></div>';   */
+	    					 + '</div></div>';   
 	    			
 	    				/*html END*/ 
 	    				
-	    				$("#shy_comment_ajax").html(html);
+	    				
 	    				
 	    			});
 	               
-
+	    			$("#shy_comment_ajax" + snsno).html(html);
 	               
 	            },
 	            error: function() { // 에러가 발생했을 때의 콜백함수
@@ -176,12 +181,74 @@
 	            }
 	        });
 		   
-		   commentbox.style.display = 'block'; 
+		    
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
 
 	}
+    
+    function reopenComment(snsno){
+    	
+    	 $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	            	
+	            	countComment();
+	            	var commentbox = document.getElementById('commentbox'+snsno);
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + comments.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + comments.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+ 				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   
+	    			
+	    				/*html END*/ 
+	    				
+	    				
+	    				
+	    			});
+	               
+	    			$("#shy_comment_ajax" + snsno).html(html);
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+    	
+    }
     
     /* ajax 로 댓글 갯수 읽어 오기 */
    	function countComment() {
@@ -215,7 +282,7 @@
     				$("#comment" + entry.snsno).html(html);
     				
     			});
-    		//	getCommentList();
+    		
     		},
     		error: function(){
  				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
@@ -242,11 +309,10 @@
     		data: form_data ,
     		dataType: "text", 
     		success: function(data) {
-    			alert('success');
-    			alert($('#replycontent'+shyidx).val());
+    			
     			$('#replycontent'+shyidx).val("");
     			countComment();
-    			//getCommentList();
+    			reopenComment(shyidx);
     		},
     		error: function(){
 				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -324,8 +390,8 @@
 							<a class="bt-love" title="Love"
 								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
 								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
-								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
-								title="Share" href="#"> Share </a> <a
+								title="Love" id="love${shies.snsno }" style="cursor:pointer"> </a> <a class="bt-share"
+								title="Share" href="#"> 공유하기 </a> <a
 								href="javascript:openComment('${shies.snsno}');"
 								class="bt-comment" title="Comment" id="comment${shies.snsno}">
 							</a>
@@ -346,30 +412,6 @@
 
 
 
-					<!-- Form -->
-					<div class="shy_comment-form">
-						<!-- Comment Avatar -->
-						<div class="shy_comment-avatar">
-							<img
-								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
-								style="display: block; height: 100%; width: 100%;">
-						</div>
-
-						<form class="shy_form" name="insertReplyform" id="insertReplyform">
-							<input type="hidden" id="myidx${shies.snsno }"
-								value="${loginuser.idx }" />
-							<div class="shy_form-row">
-								<textarea class="shy_input" id="replycontent${shies.snsno }"
-									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
-							</div>
-
-
-							<div class="shy_form-row">
-								<input type="button" id="replybutton" value="올리기"
-									onclick="insertReply(${shies.snsno});" />
-							</div>
-						</form>
-					</div>
 
 					<!-- Comments List -->
 
@@ -379,7 +421,7 @@
 						<!-- Comment -->
 
 						<!-- Comment - Dummy -->
-						<div id="shy_comment_ajax" class="shy_comment">
+						<div id="shy_comment_ajax${shies.snsno}" class="shy_comment">
 							<%-- 
 							<!-- for each 돌리는 div  -->
 							<!-- Comment Avatar -->
@@ -410,7 +452,31 @@
 
 						</div>
 						<!-- for each 돌리는 div끝  -->
+						
+					<!-- Form -->
+					<div class="shy_comment-form">
+						<!-- Comment Avatar -->
+						<div class="shy_comment-avatar">
+							<img
+								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								style="display: block; height: 100%; width: 100%;">
+						</div>
 
+						<form class="shy_form" name="insertReplyform" id="insertReplyform">
+							<input type="hidden" id="myidx${shies.snsno }"
+								value="${loginuser.idx }" />
+							<div class="shy_form-row">
+								<textarea class="shy_input" id="replycontent${shies.snsno }"
+									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+							</div>
+
+
+							<div class="shy_form-row">
+								<input type="button" id="replybutton" value="올리기"
+									onclick="insertReply(${shies.snsno});" />
+							</div>
+						</form>
+					</div>
 
 						<!-- <div align="center">
 							<a class="button" href="#" style="color: white;"> read more </a>
