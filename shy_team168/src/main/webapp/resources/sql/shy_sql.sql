@@ -63,6 +63,7 @@ select * from tbl_group;
 delete from tbl_group where groupno=14;
 
 commit;
+delete from tbl_like;
 
 alter table tbl_grpboard
 drop column imgyn;
