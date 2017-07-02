@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =====   mapper 기본설정 ===== -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<!-- =====   루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
+<mapper namespace="min">
+
+	
+	<!-- 메인글 남기기-->	
+	
+	<!-- <insert id="mainput" parameterType="com.team168.shy.model.GroupVO">
+		<if test="fk_idx!=null">
+		insert into tbl_group(groupno, fk_idx, gname, description, gimg, status, groupdate)
+		values(seq_tbl_group.nextval, #{fk_idx}, #{gname}, #{description}, #{gimg}, #{status} , default)
+		</if>
+	</insert>
+	 -->
+	
+	
+	
+	
+	
+	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
+	<!-- 
+	 <resultMap type="java.util.HashMap" id="getSearchWordMap">
+		<result property="SEARCHDATA" column="searchdata" javaType="String" />
+	</resultMap>
+	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
+		<if test='colname.equals("name")'>
+		    select name as searchdata 
+		    from tbl_shymember
+		    where lower(name) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("email")'>
+		    select email as searchdata    
+		    from tbl_shymember
+		    where lower(email) like '%' || lower(#{search}) || '%'
+		</if>
+		
+		<if test='colname.equals("gname")'>
+			select distinct gname as searchdata 
+		    from tbl_group
+		    where lower(gname) like '%' || lower(#{search}) || '%'
+		</if> 
+		
+	</select>	
+	 -->
+	
+	
+	
+	
+	<!-- 
+ ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
+                    파일이 첨부된 답변형 게시판 목록
+    	           먼저 위의 #125. 글목록 보여주기를 주석처리 하고서 아래와 같이 한다. =====
+    -->
+    
+    <resultMap type="java.util.HashMap" id="searchpeopleMap">
+		<result property="IDX" 			column="idx" 			javaType="String" />
+ 		<result property="NAME"  		column="name" 			javaType="String" />
+ 		<result property="EMAIL"  		column="email" 			javaType="String" />
+ 		<result property="PWD"  		column="pwd" 			javaType="String" />
+ 		<result property="REGISTERDATE" column="registerdate" 	javaType="String" />
+ 		<result property="MYIMG"  		column="myimg" 			javaType="String" />
+ 		<result property="MYINTRO"  	column="myintro" 		javaType="String" />
+ 		<result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+ 		<result property="GENDER"  		column="gender" 		javaType="String" />
+ 		<result property="PHONE"  		column="phone" 			javaType="String" />
+	</resultMap>
+	
+	<!-- if문에서의 표현문제?  -->
+	 <select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
+	    select *
+        from tbl_shymember
+        where status = 1
+          <if test="search != null">
+         and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
+		</if>
+       order by idx desc
+		
+	
+	</select> 
+	 
+	
+	
+	<resultMap type="java.util.HashMap" id="groupsearchMap">
+		<result property="GROUPNO" 		column="groupno" 		javaType="String" />
+ 		<result property="FK_IDX"  		column="fk_idx" 		javaType="String" />
+ 		<result property="GNAME"  		column="gname" 			javaType="String" />
+ 		<result property="DESCRIPTION"  column="description" 	javaType="String" />
+ 		<result property="GROUPDATE" 	column="groupdate" 		javaType="String" />
+ 		<result property="STATUS"  		column="status" 		javaType="String" />
+ 		<result property="GCOUNT"  		column="gcount" 		javaType="String" />
+ 		<result property="GIMG" 		column="gimg" 			javaType="String" />
+	</resultMap>
+	
+	
+	 <select id="groupsearch" parameterType="String" resultMap="groupsearchMap">
+	
+	    select *
+        from TBL_GROUP
+        where status != 3
+        <if test="search != null">
+        and gname like '%' || #{search} || '%'
+		</if>
+		order by groupno desc
+	</select>
+	
+	
+	
+	
+	
+	
+	<!-- ===== #114. 총 게시물 건수 구하기
+	             총 게시물 건수는 검색조건이 없을때와 있을때로 나뉘어진다. =====
+	--> 
+	   <select id="gTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from TBL_GROUP
+		where status != 3
+		<if test="search != null">
+			 and gname like '%' || #{search} || '%'
+		</if>
+	
+	</select>   
+	
+	 
+	
+	<select id="mTotalCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from TBL_SHYMEMBER
+		where status = 1
+		<if test="search != null">
+			and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
+		</if>
+	
+	</select>  
+	  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+	

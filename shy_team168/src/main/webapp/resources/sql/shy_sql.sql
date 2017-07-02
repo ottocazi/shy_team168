@@ -1,19 +1,288 @@
 -------------------------------------------
 --파
-select fk_idx, to_char(groupdate, 'yyyy-mm-dd hh:mi:ss')
-from tbl_group;
+select *
+from
+(select snsno,fk_idx
+from tbl_shymemo
+)A 
+left join
+;
+
+insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
+values(seq_tbl_like.nextval,53,1,sysdate,76);
+select *
+from tbl_like;
+commit;
+select *
+from tbl_shymemo;
+delete from tbl_like ;
+select *
+from tbl_storeboard;
 
 select *
-from tbl_group;
+from tbl_comment;
 
+select snsno,nvl2(case when count(*)>0 then count(*) else 0 end,0,count(*))
+from tbl_comment 
+where status = 1 and snsno =71
+group by snsno;
+
+select case when nvl(snsno,0)<1 then 0 else 1 end
+from
+(select snsno,case when count(*)>0 then count(*) else 0 end
+from tbl_comment 
+where status = 1 and snsno =null
+group by snsno)
+V;
+
+--내가 좋아요 누른 샤이
+select V.*
+from
+(select A.snsno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_shymemo A join tbl_like B
+on A.snsno = B.snsno)
+V
+where V.fk_likeidx=32;
+
+
+
+--가게리뷰글좋아요
+select A.storeboardno,A.fk_businessno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_storeboard A join tbl_like B
+on A.storeboardno = B.storeboardno;
+
+--그룹게시글좋아요
+select A.grpboardseq,A.gpdetailno,B.likeno,B.fk_likeidx, B.likedate
+from tbl_grpboard A join tbl_like B
+on A.grpboardseq = B.grpboardseq;
+=======
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount,
+				 rank() over (order by A.gcount desc) as rank
+from
+(select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
+				 rank() over (order by gcount desc) as rank
+		 from tbl_group
+		 where status in(1,2)
+		 order by rank) A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+     select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount,
+				 rank() over (order by A.gcount desc) as rank, B.myimg, B.name
+		 from
+		 (select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+		 from tbl_group
+		 where status in(1,2)
+		 order by groupdate desc) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
+	     order by groupdate desc;
+     
+     delete from tbl_group;
+     delete from tbl_gmember;
+     delete from tbl_grpboard;
+ select  groupno, fk_idx, gname,to_char(groupdate,'yyyy-mm-dd hh:mi')
+		 from tbl_group
+		 where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
+commit;
 select *
 from tbl_gmember;
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount
+from
+(select  *
+		 from tbl_group
+		 where fk_idx=33 and status in(1,2,3))A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) as total , 
+case when (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76))>0 then (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76)) else 1 end as status
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO LEFT OUTER join 
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
+
+alter table tbl_grpboard
+add imgyn NUMBER default 0;
+
+select * from tbl_group;
+delete from tbl_group where groupno=14;
+
+commit;
+
+alter table tbl_grpboard
+drop column imgyn;
+
+select *
+from tbl_grpboard;
+
+select *
+from tbl_gmember
+where fk_groupidx=33 and fk_groupno=1; 
+
+select case( select count(*)
+	                 from tbl_gmember
+	                 where fk_groupidx=53 and fk_groupno=2 )
+	           when 1 then 1
+                   else 0
+	           end as checkmember
+from dual;
+
+delete from tbl_gmember where gpdetailno=9;
+
+select T.*
+from
+(
+select C.name,C.email,C.myimg,V.*
+from tbl_shymember C join
+(
+select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+from tbl_gmember A join tbl_grpboard B
+on A.gpdetailno = B.gpdetailno)V
+on C.idx = V.fk_groupidx
+)T
+where T.fk_groupno=2;
+
+select name,email,myimg,fk_groupno,fk_groupidx,grpboardseq,gpdetailno,gcontent,uploadfile,writedate,likecnt,cmtcnt,imgyn,status
+		from
+		(
+		select C.name,C.email,C.myimg,V.*
+		from tbl_shymember C join
+		(
+		select A.fk_groupno,A.fk_groupidx,B.grpboardseq,B.gpdetailno,B.gcontent,B.uploadfile,B.writedate,B.likecnt,B.cmtcnt,B.imgyn,B.status
+		from tbl_gmember A join tbl_grpboard B
+		on A.gpdetailno = B.gpdetailno)V
+		on C.idx = V.fk_groupidx
+		)T
+		where T.fk_groupno=2;
+
+update tbl_grpboard set imgyn = 1
+where grpboardseq = 2;
+
+select gpdetailno
+from
+(
+select C.idx,V.*
+from tbl_shymember C join
+(
+select A.groupno,B.gpdetailno ,B.fk_groupidx
+from tbl_group A join  tbl_gmember B
+on A.groupno = B.fk_groupno)V
+on C.idx = V.fk_groupidx
+)T
+where T.idx = 33;
+
+select *
+from tbl_gmember
+order by rank;
+
+ select name,email,myimg, groupno , gpdetailno, fk_groupidx, gregisterdate, status
+		 from
+		  (select C.name,C.email,C.myimg, V.*
+		  from tbl_shymember C join 
+		  (
+		   select A.groupno ,B.gpdetailno,B.fk_groupidx,B.gregisterdate,B.status
+		   from tbl_group A join tbl_gmember B 
+		   on A.groupno = B.fk_groupno
+		  )V
+		  on V.fk_groupidx=C.idx)T
+		 where T.groupno = 2;
+
+select *
+from tbl_log;
+
+delete from tbl_group where groupno=11;
+delete from tbl_shymember where name='junotest';
+
+select *
+from tbl_gmember
+order by gpdetailno;
+--where fk_groupno=2
+select T.*
+from
+(select C.name,C.email,C.myimg, V.*
+from tbl_shymember C join 
+(
+select A.groupno ,B.gpdetailno,B.fk_groupidx,B.gregisterdate,B.status as Bstatus
+from tbl_group A join tbl_gmember B 
+on A.groupno = B.fk_groupno
+)V
+on V.fk_groupidx=C.idx)T
+where T.groupno = 2;
+select V.*
+from
+(
+select A.groupno,A.fk_idx, A.gname,A.description,A.groupdate,A.status,A.gimg,A.gcount,C.name,C.email,C.myimg,C.myintro
+from tbl_group A join tbl_shymember C
+on A.fk_idx = C.idx)V
+where V.groupno = 2;
+
+create or replace view view_tbl_group
+as
+select V.*
+from
+(
+select A.groupno,A.fk_idx, A.gname,A.description,A.groupdate,A.status,A.gimg,A.gcount,C.name,C.email,C.myimg,C.myintro
+from tbl_group A join tbl_shymember C
+on A.fk_idx = C.idx)V
+;
+commit;
+--내가 만든 그룹
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 1; -- 10,12,13,14
+
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 33; -- 2
+
+select groupno,fk_idx, gname, description,groupdate,status,gimg,gcount
+from tbl_group 
+where fk_idx = 32; -- 없음
+
+--내가 가입한 그룹
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 1; --10,12,13,14
+
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 33; --2
+
+select gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status
+from tbl_gmember
+where fk_groupidx = 32; --2
+
+select *
+from tbl_group
+where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
+
+insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,gregisterdate,status) 
+		values(seq_tbl_gmember.nextval,13,32,default,default);
+
+commit;
+update tbl_group set gimg='null'
+where groupno=3;
 
 insert into tbl_gmember(gpdetailno,fk_groupno,fk_groupidx,GREGISTERDATE,status) 
-values(seq_tbl_gmember.nextval,2,33,default,1);
+values(seq_tbl_gmember.nextval,2,32,default,1);
 
 select *
 from tbl_shymember;
+
+select *
+from tbl_shymemo;
 
 select substr(gcontent, instr(gcontent, 'te', 1, 1), length('te') + 5 )
 		           as searchdata    
@@ -57,16 +326,25 @@ CREATE TABLE tbl_group (
 	gname VARCHAR2(20) NOT NULL, /* 그룹명 */
 	description VARCHAR2(40), /* 그룹설명 */
 	groupdate DATE DEFAULT sysdate NOT NULL, /* 그룹생성일자 */
---	gcount NUMBER DEFAULT 1, /* 그룹회원수 */
+	gcount NUMBER DEFAULT 1, /* 그룹회원수 */
 	status NUMBER DEFAULT 1 NOT NULL /* 그룹상태 */
 );
+
+alter table tbl_group modify(gimg varchar2(2000) default null);
 
 alter table tbl_group
 add gimg varchar2(100);  /* 그룹대표이미지 추가 */
 
 alter table tbl_group
-drop column gcount; /* 그룹회원수 삭제 */
+add gcount number;
 
+alter table tbl_group
+drop column gcount;
+
+alter table tbl_group
+add gcount number default 1;
+
+--drop sequence seq_tbl_group
 create sequence seq_tbl_group
 start with 1
 increment by 1
@@ -108,6 +386,7 @@ ALTER TABLE tbl_group
 ------------------------------------------------------------------------
 
 /* 그룹상세 */
+--drop table tbl_gmember
 CREATE TABLE tbl_gmember (
 	gpdetailno NUMBER(30) NOT NULL, /* 그룹상세seq */
 	fk_groupno NUMBER, /* FK_그룹seq */
@@ -270,7 +549,7 @@ CREATE TABLE tbl_shymember (
 	gender VARCHAR2(10), /* 성별 */
 	phone VARCHAR2(20) /* 연락처 */
 );
-
+alter table tbl_shymember modify(myimg varchar2(2000) default null);
 
 create sequence seq_tbl_shymember
 start with 1
@@ -317,22 +596,35 @@ ALTER TABLE tbl_shymember
 		);
 
 ------------------------------------------------------------------------
-
+insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status,fk_idx) 
+		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1,53);
+ select * from tbl_shymemo;
+ select * from tbl_comment;
 /* 댓글 */
 CREATE TABLE tbl_comment (
 	cmtno NUMBER NOT NULL, /* 댓글seq */
-	snsno VARCHAR2(20) NOT NULL, /* FK_sns글seq */
-	grpboardseq NUMBER(20), /* FK_그룹게시물seq */
-	storeboardno NUMBER, /* FK_가게리뷰게시판seq */
+	snsno VARCHAR2(20) DEFAULT null, /* FK_sns글seq */
+	grpboardseq NUMBER(20) DEFAULT null, /* FK_그룹게시물seq */
+	storeboardno NUMBER DEFAULT null, /* FK_가게리뷰게시판seq */
 	cmtcontent VARCHAR2(100), /* 댓글내용 */
-	updatetime DATE DEFAULT sysdate NOT NULL, /* 댓글최근수정일시 */
-	likecnt NUMBER DEFAULT 0 NOT NULL, /* 좋아요회수 */
-	blamecnt NUMBER DEFAULT 0 NOT NULL, /* 신고회수 */
-	status NUMBER DEFAULT 0 NOT NULL /* 댓글삭제여부 */
+	updatetime DATE DEFAULT sysdate, /* 댓글최근수정일시 */
+	likecnt NUMBER DEFAULT 0, /* 좋아요회수 */
+	blamecnt NUMBER DEFAULT 0, /* 신고회수 */
+	status NUMBER DEFAULT 1 /* 댓글삭제여부 */
 );
-
+alter table tbl_comment modify(snsno VARCHAR2(20) DEFAULT null);
+alter table tbl_comment modify(grpboardseq NUMBER(20) DEFAULT null);
+alter table tbl_comment modify(storeboardno NUMBER DEFAULT null);
+alter table tbl_comment modify(updatetime DATE DEFAULT sysdate);
+alter table tbl_comment modify(likecnt NUMBER DEFAULT 0);
+alter table tbl_comment modify(blamecnt NUMBER DEFAULT 0);
+alter table tbl_comment modify(status NUMBER DEFAULT 1);
+alter table tbl_comment add fk_idx varchar2(20); --컬럼추가
+ALTER TABLE tbl_comment ADD CONSTRAINT FK_tbl_comment_idx foreign key(fk_idx) references tbl_shymember(idx); --제약조건 추가
+commit;
+--drop sequence seq_tbl_comment
 create sequence seq_tbl_comment
-start with 000000001
+start with 1
 increment by 1
 nomaxvalue
 nominvalue
@@ -417,20 +709,19 @@ ALTER TABLE tbl_follow
 ------------------------------------------------------------------------
 
 /* 그룹게시물 */
-
 --drop table tbl_grpboard 
 CREATE TABLE tbl_grpboard (
 	grpboardseq NUMBER(20) NOT NULL, /* 그룹게시물seq */
 	gpdetailno NUMBER(30), /* 그룹상세seq */
 	gcontent CLOB, /* 내용 */
 	uploadfile VARCHAR2(40), /* 첨부파일 */
-	writedate DATE, /* 작성날짜 */
+	writedate DATE , /* 작성날짜 */
 	likecnt NUMBER, /* 좋아요수 */
 	cmtcnt NUMBER, /* 댓글수 */
-	readcnt NUMBER, /* 조회수 */
-	imgyn VARCHAR2(10), /* 이미지여부 */
+	imgyn NUMBER, /* 이미지여부 */
 	status NUMBER /* 삭제여부 */
 );
+alter table tbl_grpboard modify(uploadfile varchar2(2000));
 
 --drop sequence seq_tbl_grpboard 
 create sequence seq_tbl_grpboard
@@ -457,9 +748,9 @@ COMMENT ON COLUMN tbl_grpboard.likecnt IS '좋아요수';
 
 COMMENT ON COLUMN tbl_grpboard.cmtcnt IS '댓글수';
 
-COMMENT ON COLUMN tbl_grpboard.readcnt IS '조회수';
+--COMMENT ON COLUMN tbl_grpboard.readcnt IS '조회수';
 
-COMMENT ON COLUMN tbl_grpboard.imgyn IS '이미지여부';
+COMMENT ON COLUMN tbl_grpboard.imgyn IS '이미지여부 1: 존재 0: 없음';
 
 COMMENT ON COLUMN tbl_grpboard.status IS '1: 존재 0: 삭제';
 

@@ -338,7 +338,7 @@ line-height: 3.2rem;
   background-position: 0 7px;
 }
 
-[class*="card-"] a.bt-love:hover {
+[class*="card-"] a.bt-love:hover,a.bt-love_chg {
   color: #f34;
   background-position: 0 -25px;
 }

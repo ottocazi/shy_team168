@@ -14,10 +14,12 @@ public class ShyMemberVO {
 	private String gender;   
 	private String phone;
 	
+	GroupVO grpvo;
+	
 	public ShyMemberVO(){ }
 	
 	public ShyMemberVO(int idx, String name, String email, String pwd, String registerdate, int status, String myimg,
-			String myintro, String birthday, String gender, String phone) {
+			String myintro, String birthday, String gender, String phone,GroupVO grpvo) {
 		this.idx = idx;
 		this.name = name;
 		this.email = email;
@@ -29,6 +31,7 @@ public class ShyMemberVO {
 		this.birthday = birthday;
 		this.gender = gender;
 		this.phone = phone;
+		this.grpvo = grpvo;
 	}
 
 	public int getIdx() {
@@ -117,8 +120,14 @@ public class ShyMemberVO {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}  
-    
-	
+	}
+
+	public GroupVO getGrpvo() {
+		return grpvo;
+	}
+
+	public void setGrpvo(GroupVO grpvo) {
+		this.grpvo = grpvo;
+	}
 	
 }

@@ -1,201 +1,508 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
+<!-- DDD -->
 
-  
-  
-  
-  
-     <!-- 타임라인소스 -->
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/timelinestyle.css">
+<!-- 타임라인소스 -->
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/css/ddung/timelinestyle.css">
 
-     <!-- 코멘트박스 소스 -->
-   <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/commentboxstyle.css">
+<!-- 코멘트박스 소스 -->
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/resources/css/ddung/commentboxstyle.css">
+
+<!-- 아이콘 통일 소스주소: http://materializecss.com/icons.html -->
+<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+
+
+<!-- <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css"> -->
+<!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'> -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  
+    $(document).ready(function(){
+    	$('.bt-love_chg').hide();
+    	countComment();
+       	getLike();
+       
+       
+       
+    });// end of $(document).ready() --------
     
-    <!-- 아이콘 통일 소스주소: http://materializecss.com/icons.html -->
-   <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    function goLike(idx,likeseq,liketype,seqcolum){
+      var form_data = {idx : idx,
+                   likeseq   : likeseq,
+                   liketype   : liketype,
+                   seqcolum   : seqcolum};
+      
+       // 좋아요 Ajax 불러오기
+        $.ajax({
+            url: "/shy/like.shy",
+            type: "GET",
+            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+            data: form_data ,// 파라미터     
+            success: function(data) { // 성공했을 때의 처리 콜백함수
+               
+               getLike();
+               
+            },
+            error: function() { // 에러가 발생했을 때의 콜백함수
+                alert("error");
+            }
+        });
+       
+   }
+    
+    function getLike(){
+       var snsnoArr = new Array();
+       
+       <c:if test="${shies!=null}">
+        
+        <c:forEach items="${shies}" var="shies">
+        // alert('${shies.snsno}');
+        snsnoArr.push('${shies.snsno}');
+        </c:forEach>
+        
+        </c:if>
+        
+        jQuery.ajaxSettings.traditional = true;
+      
+       // 좋아요목록 Ajax 불러오기
+        $.ajax({
+            url: "/shy/likeList.shy",
+            type: "GET",
+            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+            data: {snsnoArr:snsnoArr},
+            success: function(data) { // 성공했을 때의 처리 콜백함수
+               var snsnoObjArr = [];
+               
+               $.each(data,function(entryIndex,entry){
+                  snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat) ]);
+                  if(Number(entry.mylikestat) == 1) {
+                     if(Number(entry.totalcount) >0){
+                        $('#bt-love'+entry.snsno).hide();
+                        $('#love'+entry.snsno).empty();
+                        
+                        var html = '<span style="cursor:pointer">'+entry.totalcount+'</span>';
+                        $('#love'+entry.snsno).html(html).show();
+                     }else{
+                        $('#bt-love'+entry.snsno).hide();
+                        $('#love'+entry.snsno).show();
+                     }
+                     
+                  }else{
+                     $('#bt-love'+entry.snsno).show();
+                     $('#love'+entry.snsno).hide();
+                  }
+                  
+               });
+               
 
-
-    <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css"> -->
-    <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'> --> 
-   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-     
-    <script>
-    function openComment() {
-	
-	   var commentbox = document.getElementById('commentbox');
+               
+            },
+            error: function() { // 에러가 발생했을 때의 콜백함수
+                alert("error");
+            }
+        });
+       
+   }
+   
+    
+    
+    function openComment(snsno) {
 	   
-	
+	   var commentbox = document.getElementById('commentbox'+snsno);
+
 	   if(commentbox.style.display=='none'){
-		   commentbox.style.display = 'block';
+		   
+		   
+		   $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	            	
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + comments.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + comments.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+    				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+ 				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   
+	    			
+	    				/*html END*/ 
+	    				
+	    				
+	    				
+	    			});
+	               
+	    			$("#shy_comment_ajax" + snsno).html(html);
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+		   
+		    
 	    }else{
 	        commentbox.style.display = 'none';
 	    }
 
-	} 
-     
-     </script>
-  </head>
-  <body>
-  
-
-  
-  <main role="main"><!--지우지 마세요  -->
-  
-  <article class="card-60 social">
-    <figure>
-      
-      <img src="https://source.unsplash.com/GgEtIbD0hVo/800x600" alt="Nike Shoes">
-      
-    </figure>
-    <!-- end figure-->
-    <div class="flex-content">
-       
- <header>
-        <p class="user">
-           <a class="button follow" href="#" title="Follow">
-               Follow
-            </a>
-          <img class="avatar-32" src="http://jlantunez.com/imgs/avatar.jpg" alt="Avatar">
-          <strong>
-               <a title="Full Name" href="#">
-                  <span style="font-size: 12pt; margin:0; color:black;">username</span>
-               </a>
-            </strong>
-          <span>8 mins ago &middot; <a href="">@파파파</a> 님과 함께</span>
-        </p>
-      </header>
-
-      
-      <p class="subinfo">
-         
-             <a class="location" title="Location" href="">
-               당산역 맥도날드 앞 사거리에서 shy
-         </a>
-   
-        </p>
-        
-            
-     
-      
-       <p>
-       	내가 이거신으면 호날두다!
-
-      </p>
-      <footer>
-        <p>
-          <a class="bt-love" title="Love" href="">
-               Love
-            </a>
-          <a class="bt-share" title="Share" href="#">
-               Share
-            </a>
-          <a href="javascript:openComment();"class="bt-comment" title="Comment" href="">
-               댓글(33)
-            </a>
-        </p>
-      </footer>
-    </div>
+	}
     
-      <!--new댓글창  -->
-    
-      
-     <div id="commentbox" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
-  
-  
-  <!-- Form -->
-  <div class="shy_comment-form">
-    <!-- Comment Avatar -->
-    <div class="shy_comment-avatar">
-      <img src="http://lorempixel.com/200/200/people">
-    </div>
-
-    <form class="shy_form" name="form" action="" method="" novalidate>
-      <div class="shy_form-row">
-        <textarea
-                  class="shy_input"
-                  ng-model="cmntCtrl.comment.text"
-                  placeholder="댓글로 이야기를 나눠보세요"
-                  required></textarea>
-      </div>
-<!-- 
-      <div class="shy_form-row">
-        <input
-               class="shy_input"
-               ng-class="shy_{ disabled: cmntCtrl.comment.anonymous }"
-               ng-disabled="cmntCtrl.comment.anonymous"
-               ng-model="cmntCtrl.comment.author"
-               ng-required="!cmntCtrl.comment.anonymous"
-               placeholder="Email"
-               type="email">
-      </div> -->
-
-      <!-- <div class="shy_form-row text-right">
-        <input
-               id="comment-anonymous"
-               ng-change="cmntCtrl.anonymousChanged()"
-               ng-model="cmntCtrl.comment.anonymous"
-               type="checkbox">
-        <label for="comment-anonymous">Anonymous</label>
-      </div> -->
-
-      <div class="shy_form-row">
-        <input type="submit" value="올리기">
-      </div>
-    </form>
-  </div>
-
-  <!-- Comments List -->
-  <div class="shy_comments">
-    <!-- Comment -->
-   
-
-    <!-- Comment - Dummy -->
-    <div class="shy_comment"><!-- 댓글 양식 for each 돌리는 div  -->
-      <!-- Comment Avatar -->
-      <div class="shy_comment-avatar" style="margin-left:0;">
-        <img src="" alt="프로필">
-      </div>
-
-      <!-- Comment Box -->
-      <div class="shy_comment-box">
-        <div class="shy_comment-text">짧은 댓글 test1</div>
-        <div class="shy_comment-footer">
-          <div class="shy_comment-info">
-            <span class="shy_comment-author">
-              <a href="">유저명</a>
-            </span>
-            <span class="shy_comment-date">댓글작성시간</span>
-          </div>
-
-          <div class="shy_comment-actions">
-            <a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" ></i></a>
-          </div>
-        </div>
-        
-
-      </div>
-	
+    function reopenComment(snsno){
+    	
+    	 $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	            	
+	            	countComment();
+	            	var commentbox = document.getElementById('commentbox'+snsno);
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + comments.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + comments.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+ 				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   
+	    			
+	    				/*html END*/ 
+	    				
+	    				
+	    				
+	    			});
 	               
-      
-    </div><!-- for each 돌리는 div끝  -->
-
-		<div align="center"><a class="button" href="#" >
-					read more
-				</a>
-   </div>
-  </div>
-</div>
-    <!--new댓글창 end  -->
+	    			$("#shy_comment_ajax" + snsno).html(html);
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+    	
+    }
     
-    <!-- end .flex-content-->
-  </article>
-  
-  
-  <!-- post foreach 마무리  -->
-  <!-- 
+    /* ajax 로 댓글 갯수 읽어 오기 */
+   	function countComment() {
+   		var snsnoArr = new Array();
+   		<c:if test="${shies!=null}">
+   		
+   		<c:forEach items="${shies}" var="shies">
+   		// alert('${shies.snsno}');
+   		snsnoArr.push('${shies.snsno}');
+   		</c:forEach>
+   		</c:if>
+   		// alert(snsnoArr);
+   		
+   		jQuery.ajaxSettings.traditional = true;
+   		
+   		$.ajax({
+   			url: "/shy/getCommentCount.shy",
+    		type: "GET",
+    		data: {snsnoArr:snsnoArr},
+    		dataType: "JSON",  
+    		success: function(data){
+    			
+    			var html;
+    			
+    			$.each(data, function(entryIndex, entry){
+    			//	alert(entry.snsno);
+    				
+    				
+    				html = "댓글(" + entry.cnt + ")";
+    				
+    				$("#comment" + entry.snsno).html(html);
+    				
+    			});
+    		
+    		},
+    		error: function(){
+ 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 		    }
+   		});
+    } 
+    
+    
+    
+    
+    
+ function insertReply(shyidx){
+    	
+	   	var myidx = $('#myidx'+shyidx).val();
+    	var replycontent = $('#replycontent'+shyidx).val();
+    	
+    	var form_data = {myidx : myidx,
+                   		 shyidx   : shyidx,
+                   		 replycontent   : replycontent };
+    	
+    	$.ajax({
+    		url: "/shy/insertreply.shy",
+    		type: "GET",
+    		data: form_data ,
+    		dataType: "text", 
+    		success: function(data) {
+    			
+    			$('#replycontent'+shyidx).val("");
+    			countComment();
+    			reopenComment(shyidx);
+    		},
+    		error: function(){
+				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				  alert('ajax 오류');
+		    }
+    			
+    	}); 
+    }
+    
+     </script>
+</head>
+<body>
+
+
+
+
+	<main role="main"><!--지우지 마세요  --> <c:if test="${shies==null}">
+  	새 글을 써 보시거나, 친구를 추가해 보세요!
+  </c:if> <c:if test="${shies!=null}">
+		<c:forEach items="${shies}" var="shies" varStatus="status">
+
+			<article class="card-60 social">
+				<figure>
+
+					<img
+						src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}"
+						alt="shy" id="nike">
+
+				</figure>
+				<!-- end figure-->
+				<div class="flex-content">
+
+					<header>
+						<p class="user">
+							<a class="button follow" href="#" title="Follow"> Follow </a>
+							<c:if test="${shies.myimg != null}">
+								<img class="avatar-32"
+									src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+									alt="Avatar">
+							</c:if>
+							<c:if test="${shies.myimg == null}">
+								<img class="avatar-32"
+									src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif"
+									alt="Avatar">
+							</c:if>
+							<strong> <a title="Full Name" href="#"> <span
+									style="font-size: 12pt; margin: 0; color: black;"> <c:if
+											test="${shies.name!=null }">
+	                ${shies.name }
+	                </c:if> <c:if test="${shies.name==null }">
+                  	${shies.email }
+                  	</c:if>
+
+								</span>
+							</a>
+							</strong> <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과
+								함께
+							</span>
+						</p>
+					</header>
+
+
+					<p class="subinfo">
+
+						<a class="location" title="Location" href=""> 당산역 맥도날드 앞 사거리에서
+							shy </a>
+
+					</p>
+
+
+
+					<p>${shies.scontent}</p>
+					<footer>
+						<p>
+							<a class="bt-love" title="Love"
+								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
+								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
+								title="Love" id="love${shies.snsno }" style="cursor:pointer"> </a> <a class="bt-share"
+								title="Share" href="#"> 공유하기 </a> <a
+								href="javascript:openComment('${shies.snsno}');"
+								class="bt-comment" title="Comment" id="comment${shies.snsno}">
+							</a>
+
+
+
+						</p>
+					</footer>
+				</div>
+
+				<!--new댓글창  -->
+
+
+
+				<div id="commentbox${shies.snsno }" class="shy_comments-app"
+					style="margin-top: 0; display: none;">
+					<!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
+
+
+
+
+					<!-- Comments List -->
+
+					<div class="shy_comments" id="dd_shycomment">
+						<input type="hidden" name="snsno" id="snsno${shies.snsno}"
+							value="${shies.snsno}" />
+						<!-- Comment -->
+
+						<!-- Comment - Dummy -->
+						<div id="shy_comment_ajax${shies.snsno}" class="shy_comment">
+							<%-- 
+							<!-- for each 돌리는 div  -->
+							<!-- Comment Avatar -->
+							<div class="shy_comment-avatar">
+								<img src="" alt="사진 읎어용">
+							</div>
+
+							<!-- Comment Box -->
+							<div class="shy_comment-box">
+								<div class="shy_comment-text">짧은 댓글 test1
+									${cmtVO.cmtcontent}</div>
+								<div class="shy_comment-footer">
+									<div class="shy_comment-info">
+										<span class="shy_comment-author"> <a href="">유저명</a>
+										</span> <span class="shy_comment-date">댓글작성시간</span>
+									</div>
+
+									<div class="shy_comment-actions">
+										<a href="#"><i class="fa fa-exclamation-triangle fa-2x"
+											aria-hidden="true"></i></a>
+									</div>
+								</div>
+
+
+							</div>
+
+ --%>
+
+						</div>
+						<!-- for each 돌리는 div끝  -->
+						
+					<!-- Form -->
+					<div class="shy_comment-form">
+						<!-- Comment Avatar -->
+						<div class="shy_comment-avatar">
+							<img
+								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								style="display: block; height: 100%; width: 100%;">
+						</div>
+
+						<form class="shy_form" name="insertReplyform" id="insertReplyform">
+							<input type="hidden" id="myidx${shies.snsno }"
+								value="${loginuser.idx }" />
+							<div class="shy_form-row">
+								<textarea class="shy_input" id="replycontent${shies.snsno }"
+									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+							</div>
+
+
+							<div class="shy_form-row">
+								<input type="button" id="replybutton" value="올리기"
+									onclick="insertReply(${shies.snsno});" />
+							</div>
+						</form>
+					</div>
+
+						<!-- <div align="center">
+							<a class="button" href="#" style="color: white;"> read more </a>
+						</div> -->
+					</div>
+				</div>
+				<!--new댓글창 end  -->
+
+				<!-- end .flex-content-->
+			</article>
+
+
+			<!-- post foreach 마무리  -->
+		</c:forEach>
+	</c:if>
+
+
+
+	<div align="center">
+		<a class="button" href="#" style="color: white;"> 더 읽기 </a><br> <br>
+		=======
+	</div>
+
+
+	</main>
+	<!-- 
   <article class="card-60 social">
     <figure>
       <a class="ribbon-buy popular" href="#" title="Popular">
@@ -398,14 +705,14 @@ Tapas Deluxe .card50 odd even
  -->
 
 
-  
-</main>
 
 
-      
 
- <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
-  <!-- <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script> --> 
-  
-  </body>
+
+
+	<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
+
+	<!-- <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script> -->
+
+</body>
 </html>

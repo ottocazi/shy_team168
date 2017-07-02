@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/js/newAlert/sweetalert.css">
+<script src="https://cdn.jsdelivr.net/sweetalert2/latest/sweetalert2.js"></script>
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css" rel="stylesheet"/>
 
 <script type="text/javascript">
 
@@ -12,10 +12,8 @@ $(document).ready(function() {
 	  	title:  "${title}", 
 	   	text: 	"${msg}",
 	    type: 	"${type}" // 설명 :  warning, error, success, info and question
-	  },
-	  
-	  function(){
-	    window.location.href = "${loc}";
+	  }).then(function(){
+	    location.href = "${loc}";
 	});
 });
 </script>

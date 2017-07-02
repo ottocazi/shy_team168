@@ -3,144 +3,102 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <script>
 $(function(){
-	  $('.mygrp_gimg').on('click', function(e){
-	    var $biginfo = $('.mygrp_clearfix');
-	    var $bigname = $('.mygrp_name');
-	    var $bigmember  = $('.mygrp_member');
-	    var $bigdesc  = $('.mygrp_desc');
-	    
-	    var newname = $(this).siblings('.name').eq(0).html();
-	    var newmember = $(this).siblings('.member').eq(0).html();
-	    var newdesc = $(this).siblings('.desc').eq(0).html();
-	    
-	    $bigname.html(newname);
-	    $bigmember.html(newmember);
-	    $bigdesc.html(newdesc);
-	    
-	    if($biginfo.css('display') == 'none') {
-	      $biginfo.slideDown(350);
-	    }
+	  
+	  $('.grp_h2').on('click', function(e){
+		 alert('회원공개 그룹입니다.');
 	  });
+	  
+	  $('.mygrp_register').mouseover(function() { 
+		  var target = $(event.target);
+			
+		  $(this).addClass("mygrp_registerover");
+	  });
+	  
+	  $(".mygrp_register").mouseout(function() {
+			$(this).removeClass("mygrp_registerover");
+		});
+	  
 	});
 </script>
 <script>
+
+
+
+function goMakegrp() {
+	var frm = document.GroupFrm;
+	
+	frm.submit();
+}
+
+
 $(document).ready(function(){
-	
-	grpsearchKeep();
-	
-	//	===== 2. Ajax 로 검색어 입력시 자동글 완성하기  =====
-	$(".topInputSearchList").hide();
 
-    $("#grpsearch").keyup(function(){
+    var newlist = $(".newlist li");
+    var hotlist = $(".hotlist li");
+    var numToShow = 4;
+   /*   var button = $("#next"); */
+    var numInNewList = newlist.length;
+    var numInHotList = hotlist.length;
+   
+    newlist.hide();
+    hotlist.hide();
+    
+    if (numInNewList > numToShow) {
+    	$("#newGrp").show();
     	
-    	var form_data = { colname : $("#colname").val(),  // 키값 : 밸류값  
-    					  grpsearch  : $("#grpsearch").val()    // 키값 : 밸류값 
-    	       		    };
-    	
-    	$.ajax({
-    		url: "/shy/wordSearchShow.shy",
-    		type: "GET",
-    		data: form_data,  // url 요청페이지로 보내는 ajax 요청 데이터
-    		dataType: "JSON", 
-    		success: function(data){
-    			
-    		// ===== 7. Ajax 로 검색어 입력시 자동글 완성하기  ===== 
-    		   if(data.length > 0) {
-    			  // 검색된 데이터가 있는 경우.
-    			  // 조심할것은 if(data != null) 으로 하면 안된다.
-    			   var resultHTML = "";
-    			  
-    			   $.each(data, function(entryIndex, entry){
-    				   var wordstr = entry.RESULTDATA.trim();
-					    // 검색어 - 영주                    aj
-					    // 결과물 - 김영주 프로그래머     AJAX
-                        //         김영주바둑기사        ajax 프로그래밍
-                        //         영주사과
-                       
-                        var index = wordstr.toLowerCase().indexOf( $("#grpsearch").val().toLowerCase() ); 
-					    var len = $("#grpsearch").val().length;
-					    var result = "";
-					    
-					    result = "<span class='first' style='color: font-weight: bold;'>" +wordstr.substr(0, index)+ "</span>" + "<span class='second' style='color: #DD4124; font-weight: bold;'>" +wordstr.substr(index, len)+ "</span>" + "<span class='third' >" +wordstr.substr(index+len, wordstr.length - (index+len) )+ "</span>";        
-                       
-						resultHTML += "<span style='cursor: pointer;'>" + result + "</span><br/>"; 	   
-    			   });
-    			  
-    			   $(".topInputSearchList").html(resultHTML);
-    			   $(".topInputSearchList").show();
-    		   }
-    		   else {
-    			  // 검색된 데이터가 없는 경우.
-    			  // 조심할것은 if(data == null) 으로 하면 안된다.
-    			   $(".topInputSearchList").hide();
-    		   }
-    			
-    		},
-    		error: function(){
-   				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
-   		    }
-    	});
-    	
-    }); // end of keyup(function(){})---------
+    }
+    if (numInHotList > numToShow){
+    	$("#hotGrp").show();
+    }
+    
+    newlist.slice(0, numToShow).show();
+    hotlist.slice(0, numToShow).show();
+
+    $("#newGrp").click(function(){
+        var showing = newlist.filter(':visible').length;
+        newlist.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = newlist.filter(':visible').length;
+        if (nowShowing >= numInNewList) {
+        	$("#next newGrp").hide();
+        }
+    });
+
+    $("#hotGrp").click(function(){
+        var showing = hotlist.filter(':visible').length;
+        hotlist.slice(showing - 1, showing + numToShow).fadeIn();
+        var nowShowing = hotlist.filter(':visible').length;
+        if (nowShowing >= numInHotList) {
+        	$("#next hotGrp").hide();
+        }
+    });
     
     
-    // ===== 8. Ajax 로 검색어 입력시 자동글 완성하기  ===== 
-    $(".topInputSearchList").click(function(event){
-		var word = "";
-		
-		var $target = $(event.target);
-		
-		if($target.is(".first")) {
-			word = $target.text() + $target.next().text() + $target.next().next().text();
-		//	alert(word);
-		}
-		else if($target.is(".second")) {
-			word = $target.prev().text() + $target.text() + $target.next().text();
-		//	alert(word);
-		}
-		else if($target.is(".third")) {
-			word = $target.prev().prev().text() + $target.prev().text() + $target.text();
-		//	alert(word);
-		}
-		
-		$("#grpsearch").val(word); // 텍스트박스에 검색된 결과의 문자열을 입력해준다.
-		
-		$(".topInputSearchList").hide();
-		
-    });// end of $(".topInputSearchList").click()---------
-    
-	
-	
-});// end of $(document).ready()----------------------
+});
 
 
-function goGrpsearch(){
-	
-	var frm = document.searchFrm;
-	
-	var grpsearch = $("#grpsearch").val();
-	
-	if(grpsearch.trim() == "") {
-		alert("검색어를 입력하세요!!");
-	}
-	else {
-		frm.action = "/shy/mygroups.shy";
-		frm.method = "GET";
-		frm.submit();
-	}
-}// end of goGrpsearch() ------- 상단검색바
+$(
+		  function () {
+		    $('li').on('click', function() {
+		      var selectedCssClass = 'selected';
+		      var $this = $(this);
+		      $this.siblings('.' + selectedCssClass).removeClass(selectedCssClass);
+		      $this
+		        .addClass(selectedCssClass)
+		        .parent().addClass('vote-cast');
+		    });
+		  }
+		);
 
 
-function grpsearchKeep(){
-	<c:if test="${not empty grpsearch}">
-		$("#grpsearch").val("${grpsearch}");   // 검색어를 유지시켜 주겠다.
-	</c:if>
-}// end of grpsearchKeep() ----- 상단검색바 검색어 유지
 </script>
 <style>
+a, a:hover{
+text-decoration: none;
+}
+
 #mygroups{
 	margin: 0 auto;
-	width: 80%;
+	width: 70%;
 	display: block;
 }
 
@@ -199,6 +157,7 @@ function grpsearchKeep(){
 
 .mygrp .mygrp_list, .mygrp .mygrp_hotgrp, .mygrp .mygrp_newgrp{
 	position: relative;
+	display: inline-block;
 }
 
 .mygrp_types{
@@ -209,28 +168,34 @@ function grpsearchKeep(){
 }
 
 .mygrp_register{
-	position: absolute;
 	font-weight: bold;
 	margin: 10px;
+	background-color: #fff;
+	border: 1px solid gray;
 }
 
-/* hot,신규그룹 layout */
-.grp_box { 
-	width: 660px; 
-	margin: 40px auto; 
-	position: relative; 
+.mygrp_registerover{
+	color:#92A8D1;
+	font-weight: bold;
 }
 
 .grp_box { 
 	overflow: hidden;
-	width:320px;
+	width:220px;
+	height:auto;
 	text-align:left;
-	display:inline-block;
 	position:relative;
 	border: 1px solid #ddd;
 	border-bottom: 1px solid #bbb;
 	background: #fff;
 	border-radius: 3px;
+	margin: 2px;
+}
+
+.grp_box:hover{
+  background: #A9A8A8;
+  border-color: #919191;
+  box-shadow: 0 1px 40px rgba(0, 0, 0, 0.15);
 }
 
 .grp_fa { 
@@ -238,15 +203,17 @@ function grpsearchKeep(){
 	font-family:"FontAwesome", "Open Sans", sans-serif; 
 	font-weight:100; 
 	font-size:12px; 
-	cursor:help; 
+	cursor:pointer; 
 	word-spacing:2px; 
     padding: 8px;
     text-align: right;
 }
 .grp_fa:hover { color: #666; }
-.grp_h { margin-top: 20%;display:block; color:#999; font-weight: bold; }
-.grp_inner { text-align: center; display: grid; padding: 5px;}
-.grp_boxImage { border-top-left-radius:3px; border-top-right-radius:3px; width:100%; }
+.grp_h { margin-top: 20%;display:block; color:#999; font-weight: bold;}
+.grp_h2 { margin-top: 20%;display:block; color:#999; font-weight: bold;}
+.grp_inner { text-align: center; padding: 15px;}
+.grp_boxImage { border-top-left-radius:3px; border-top-right-radius:3px; width:100%; height: 145px; }
+.grp_boxImage:hover{background-color: #A9A8A8;opacity: inherit;}
 
 .grp_buddy {
   position:absolute; z-index:2;
@@ -324,114 +291,207 @@ function grpsearchKeep(){
 .mygrp_clearfix html[xmlns]{ display: block; }
 .mygrp_clearfix * html { height: 1%; }
 
+@import "compass/css3";
+
+.newlist, .hotlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.newlist li, .hotlist li {
+	position: relative;
+	margin-bottom: 10px;
+}
+	
+
+
+
+
 </style>    
     
     
 <div id="mygroups">
-<form name="searchFrm">
+
 	<!-- 그룹검색 -->
-	<div align="center" style="margin-top: 60px;">
+	<!-- <div align="center" style="margin-top: 60px;">
 	<div class="topInputSearch">
 		<select name="colname" id="colname">
 			<option value="gname">그룹명</option>
 			<option value="gcontent">게시글</option>
 		</select>  
-		<input type="text" id="grpsearch" name="grpsearch" placeholder="그룹, 게시글을 검색해 보세요"> <!-- class="grpInputSearch"  -->
+		<input type="text" id="grpsearch" name="grpsearch" placeholder="그룹, 게시글을 검색해 보세요"> class="grpInputSearch" 
 		<button type="submit" class="icon-search" onclick="goGrpsearch();"><span class="searchgrp">검색</span></button>
 		<span class="populargrp">#해시태그 #해시태그</span>
 	</div>
 	
-	<!-- =====  1. Ajax 로 검색어 입력시 자동글 완성하기  ===== --> 
+	=====  1. Ajax 로 검색어 입력시 자동글 완성하기  ===== 
 	<div class="topInputSearchList" align="center">자동글완성
 	</div>
-	</div>
+	</div> -->
 	
 	<!-- 그룹리스트 -->
 	<div class="mygrp" align="center">
 	
-		<div class="mygrp mygrp_list">
+		<h3 class="mygrp_types">내가 만든 그룹</h3>
+			<form name="GroupFrm" method="POST" action="<%= request.getContextPath() %>/mygroups_insertFrm.shy">
+				<button type="submit" class="mygrp_register" onclick="goMakegrp();">그룹만들기</button>
+			</form>
+		<div class="mygrp mygrp_list" style="display: inline-flex; flex-wrap: nowrap;">
 		<!-- 내 그룹-->
-			<h3 class="mygrp_types">내가 만든 그룹</h3>
-			<button type="button" class="mygrp_register" onclick="goMakegrp();">그룹만들기</button>
-			 <div class="mygrp_clearfix">
-		      <img src="https://i.imgur.com/TkSNOpF.jpg" class="mygrp_img" width="225" height="260">
-		      <div class="mygrp_details">
-		        <h3 class="mygrp_name">그룹명</h3>
-		        <p class="mygrp_member">그룹회원 수</p>
-		        <p class="mygrp_desc">그룹설명 그룹설…&nbsp;<a href="#">더 보기</a></p>
+			
+			<c:if test="${myGrpList!=null }">
+			<c:forEach var="gvo" items="${myGrpList }">
+			 <div class="grp_box">
+		      <c:if test="${gvo.gimg != null}">
+		      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		      </c:if>
+		      <c:if test="${gvo.gimg == null}">
+		      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		      </c:if>
+		      	<img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg }">
+		      	<div class="grp_inner">
+		      	<h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
+		      	<i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      	<span class="grp_desc"> ${gvo.description }</span>
 		      </div>
 	    	 </div>
-	    
-		    <ul class="mygrp mygrp_clearfix">
-		      <li>
-		        <img src="https://i.imgur.com/TkSNOpF.jpg" alt="Johnny Appleseed" width="130" height="150" class="mygrp_gimg">
-		        <span class="gcontent name">President/CEO</span>
-		        <span class="gcontent member">5명</span>
-		        <span class="gcontent desc">Just a bunch of random text here explaining details about the person. You could include history, job responsibilities, time at the company, and maybe stuff they like to do for fun. Or make fun of them... your call.</span>
-		      </li>
-		       <li>
-		        <img src="https://i.imgur.com/TkSNOpF.jpg" alt="Mr. What Zit Tooya" width="130" height="150" class="mygrp_gimg">
-		        <span class="gcontent name">Project Manager</span>
-		        <span class="gcontent member">6명</span>
-		        <p class="gcontent desc">These are pretty flexible and we could even include <strong>real HTML tags</strong>! Which also means the potential to include <a href="https://twitter.com/" target="_blank">social networking</a> links.</p>
-      		   </li>
-		   	 </ul>
+	    	</c:forEach>
+		   	 
+		   	 </c:if>
+		   	 <c:if test="${myGrpList==null }">
+		   	 <div class="grp_box" style="width: 100%">
+		   	 	<span style="text-align: center; font-weight: bold; font-size: 15pt;"> 내가 만든 그룹이 없습니다.</span>
+		   	 </div>
+		   	 </c:if>
 		</div>
 	
-		<div class="mygrp mygrp_hotgrp">
-		<!-- HOT한 그룹  -->
-   		  <h3 class="mygrp_types">HOT 그룹</h3>
-		  <div class="grp_box">
-		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
-		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">그룹명</a></h4>
-		      <i class="grp_fa fa-eye"> 회원 수</i>
-		      <span class="grp_desc">그룹 설명 그룹 설명 그룹 설명</span>
-		      <!-- <i class="btn openPop">Popular photos</i> -->
-		    </div>
-		    
-		    <!-- <div class="pop">
-		      <i class="close">&times;</i>
-		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
-		        <img src="http://farm8.static.flickr.com/7390/12980175743_5cb04727f3_q.jpg">
-		        <img src="http://farm4.static.flickr.com/3679/12980129103_edbea2fca4_q.jpg">
-		        <img src="http://farm6.static.flickr.com/5497/14367491417_563fcbc6a9_q.jpg">
-		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
-		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
-		    </div> -->
-		    
-		  </div>
-		</div>
+	
+	
+	
+	
+	
+		<div style="border: dashed; border-color:  #ff8080; width: 110%;">
+		<h3 class="mygrp_types" style="color:  #ff8080">HOT 그룹</h3>
 		
-		<div class="mygrp mygrp_newgrp">
-		<!-- 신규 그룹 -->
-		 <h3 class="mygrp_types">신규 그룹</h3>
-		 <div class="grp_box">
-		    <img class="grp_boxImage" src="https://farm8.staticflickr.com/7328/9000198669_57003f7505_n.jpg">
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
-		    <div class="grp_inner">
-		      <h4 class="grp_h"><a href="http://www.flickr.com/photos/tommiehansen/">그룹명</a></h4>
-		      <i class="grp_fa fa-eye"> 회원 수</i>
-		      <span class="grp_desc">그룹 설명 그룹 설명 그룹 설명</span>
-		      <!-- <i class="btn openPop">Popular photos</i> -->
+		
+		<!-- HOT한 그룹  -->
+   		  <c:if test="${hotGrpList!=null }">
+   		  <c:forEach var="gvo" items="${hotGrpList }" varStatus="status">
+   		  
+   		  <c:if test="${status.index % 4 == 0}">
+				 <!-- 이게 한줄 -->
+			<div class="mygrp mygrp_hotgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+			</c:if>
+   		  
+   		  
+   		   <ul class="hotlist">
+	 		<li>
+		  <div class="grp_box">
+		    <c:if test="${gvo.gimg != null}">
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		    </c:if>
+		    <c:if test="${gvo.gimg == null}">
+		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		    </c:if>
+		    <c:if test="${gvo.myimg != null}">
+		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
+		    </c:if>
+		    <c:if test="${gvo.myimg == null}">
+			<img class="grp_buddy" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif">
+			 </c:if>
+		     <div class="grp_inner">
+		      <c:if test="${gvo.status==1}">
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
+		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      <span class="grp_desc"> ${gvo.description }</span>
+		      </c:if>
+		      <c:if test="${gvo.status==2}">
+		      <h4 class="grp_h2"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
+		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      <span class="grp_desc"> ${gvo.description }</span>
+		      </c:if>
 		    </div>
-		    
-		    <!-- <div class="pop">
-		      <i class="close">&times;</i>
-		      <h3><i>Tommie Hansen's</i>Popular photos</h3>
-		        <img src="http://farm8.static.flickr.com/7390/12980175743_5cb04727f3_q.jpg">
-		        <img src="http://farm4.static.flickr.com/3679/12980129103_edbea2fca4_q.jpg">
-		        <img src="http://farm6.static.flickr.com/5497/14367491417_563fcbc6a9_q.jpg">
-		        <img src="http://farm3.static.flickr.com/2573/12980150413_6982593c38_q.jpg">
-		      <a href="http://www.flickr.com/photos/tommiehansen/" target="_blank">Visit flickr photostream</a>yes, target is evil
-		    </div> -->
-		    
 		  </div>
+		  </li>
+		  </ul>
+		  
+		  <c:if test="${(status.index + 1) % 4 == 0}">
+		  </div>
+		  </c:if>
+		  </c:forEach>
+		  </c:if>
+		  
+		  
+		   <c:if test="${hotGrpList==null }">
+		   <div class="grp_box">
+		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 인기 그룹이 없습니다.</span>
+		    </div>
+		   </c:if>
+		</div>
+		</div>
+		<div align="center"><button id="hotGrp" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
+		
+		
+		
+		
+		
+		
+		<div style="border: dashed; border-color: #00b300; width: 110%;">
+		<h3 class="mygrp_types" style="color: #00b300">신규 그룹</h3>
+		
+		<!-- 신규 그룹 -->
+		 <c:if test="${newGrpList!=null }">
+   		  <c:forEach var="gvo" items="${newGrpList }" varStatus="status">
+   		  
+   		  <c:if test="${status.index % 4 == 0}">
+   		  <div class="mygrp mygrp_newgrp" style="display: inline-flex; flex-wrap: nowrap; ">
+   		  </c:if>
+   		  
+   		  
+   		  <ul class="newlist">
+	 		<li>
+		  <div class="grp_box">
+		    <c:if test="${gvo.gimg != null}">
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		    </c:if>
+		    <c:if test="${gvo.gimg == null}">
+		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		    </c:if>
+		    <c:if test="${gvo.myimg != null}">
+		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
+		    </c:if>
+		    <c:if test="${gvo.myimg == null}">
+			<img class="grp_buddy" src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif">
+			 </c:if>
+		    <div class="grp_inner">
+		      <h4 class="grp_h"><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${gvo.groupno}">${gvo.gname }</a></h4>
+		      <i class="grp_fa fa-eye"> ${gvo.gcount }명</i>
+		      <span class="grp_desc"> ${gvo.description }</span>
+		    </div>
+		  </div>
+		  </li>
+		  </ul>
+		  
+		  <c:if test="${(status.index + 1) % 4 == 0}">
+		  </div>
+		  </c:if>
+		  </c:forEach>
+		  </c:if>
+		  
+		   <c:if test="${newGrpList==null }">
+		   <div class="grp_box">
+		   	 <span style="text-align: center; font-weight: bold; font-size: 15pt;"> 신규 그룹이 없습니다.</span>
+		    </div>
+		   </c:if>
 		   
 		</div>
-	
+		
+		</div>
+		
+		
+		
+	<div align="center"><button id="newGrp" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 	</div>
-	</form>
 </div>
 

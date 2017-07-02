@@ -16,10 +16,10 @@ html,body {
 }
 
 #mypage .myProfile{
-   margin-top: 15px;
-   margin-left: 300px;
-   width:50%;
-   border: solid 1px #8c8c8c;
+    margin-top: 15px;
+    width: 40%;
+    border: solid 1px #eee;
+    text-align: left;
 }
 
 #mypage .pimg img{
@@ -31,7 +31,8 @@ html,body {
 }
 
 #mypage .myProfile .myIntro{
-   margin:15px
+   margin:15px;
+   text-align: left;
 }
 
 #mypage .myProfile .myIntro .proedit{
@@ -41,7 +42,6 @@ html,body {
 }
 
 #mypage .showMypage{
-   margin-left: 300px;
    margin-top: 20px;
    width:50%;
    min-height: 300px;

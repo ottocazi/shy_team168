@@ -26,20 +26,9 @@
     @import "compass/css3";
 
 
-.star,
-.rating:not(.vote-cast):hover .star:hover ~ .star,
-.rating.vote-cast .star.selected ~ .star
-{
-  /* normal state */
-  color: black;
-}
 
-.rating:hover .star,
-.rating.vote-cast .star
-{
-  /* highlighted state */
-  color: red;
-}
+
+
     
     
     
@@ -137,7 +126,19 @@
 }
 
 
-    
+.star_rating {font-size:0; letter-spacing:-4px;}
+.star_rating a {
+    font-size:22px;
+    letter-spacing:0;
+    display:inline-block;
+    margin-left:5px;
+    color:#ccc;
+    text-decoration:none;
+}
+.star_rating a:first-child {margin-left:0;}
+.star_rating a.on {color:#b30000;}
+
+
     
   </style>
   
@@ -155,7 +156,7 @@
       if (numInList > numToShow) {
         button.show();
       }
-      list.slice(0, numToShow).show();
+      list.slice(1, numToShow).show();
 
       button.click(function(){
           var showing = list.filter(':visible').length;
@@ -166,6 +167,17 @@
           }
       });
 
+      
+      $( ".star_rating a" ).click(function() {
+    	     $(this).parent().children("a").removeClass("on");
+    	     $(this).addClass("on").prevAll("a").addClass("on");
+    	     return false;
+    	});
+
+
+      
+      
+      
 });
   
   
@@ -182,7 +194,7 @@
 		    });
 		  }
 		);
-  
+  /* 
   $(window).scroll(function() {
 	    if ($(this).scrollTop() > 50 ) {
 	        $('.scrolltop:hidden').stop(true, true).fadeIn();
@@ -192,6 +204,31 @@
 	});
 	$(function(){$(".scroll").click(function(){$("html,body").animate({scrollTop:$(".thetop").offset().top},"1000");return false})})
   
+	 */
+	
+	
+	function getText(){
+		
+		var test = $("#firstarea").val();
+	
+
+		$("#secondarea").val(test);
+		
+
+	}
+	
+	
+	function goInput( ) {
+		  
+		    /*formData 추가?  */
+			  document.mainputfrm.method = "post";
+			  document.mainputfrm.action = "shynow.shy";
+			  document.mainputfrm.submit();
+			  
+		  
+		}
+	
+	
   </script>
   
 </head>
@@ -201,9 +238,9 @@
 
 
 
-
+<!-- 
 <div class='thetop'></div>
-
+ -->
 
 
 			<!-- ******  인풋 (글남기기) 형식 *********  시작 -->
@@ -226,7 +263,7 @@
 		
 
         <div class="form-group">
-          <textarea class="form-control" rows="7" required></textarea>
+          <textarea class="form-control" rows="7"  required></textarea>
         </div>
  
 
@@ -242,7 +279,7 @@
 
 
 
-<form role="form">
+<form role="form" name="mainputfrm">
 <!-- 80%size Modal at Center -->
 <div class="modal modal-center fade" id="MainInput" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
   <div class="modal-dialog modal-80size modal-center" role="document">
@@ -258,14 +295,14 @@
 		
 
         <div class="form-group">
-          <textarea class="form-control" rows="7" required></textarea>
+          <textarea class="form-control" rows="7" id="secondarea"  required></textarea>
         </div>
  
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-         <button type="submit" class="btn btn-success">Submit</button>
+         <button type="submit" class="btn btn-success" OnClick="goInput()">확인</button>
       </div>
     </div>
   </div>
@@ -293,37 +330,6 @@
 
 
 
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header" style="margin-left: 350px;">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">홈페이지</a>
-    </div>
-    
-    <div class="collapse navbar-collapse" id="myNavbar" style="margin-right: 320px;">
-     
-      <form class="navbar-form navbar-right" role="search">
-        <div class="form-group input-group">
-          <input type="text" class="form-control" placeholder="Search..">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </span>        
-        </div>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> OOO님 </a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-  
 <div class="container ">    
   <div class="row">
   
@@ -331,8 +337,8 @@
   
     <div class="col-sm-3 well">
     	
-<!-- Add Google Maps -->
-<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 관련 jsp -->
 <script>
 function myMap() {
 var myCenter = new google.maps.LatLng(37.539578, 126.899568);
@@ -341,21 +347,52 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 var marker = new google.maps.Marker({position:myCenter});
 marker.setMap(map);
 }
+
+var autoComplete = new google.maps.places.Autocomplete(
+		document.getElementById(search), {
+		types: [‘(cities)’]
+		});
+		
+google.maps.event.addListener(autoComplete, ‘place_changed’, function() {
+	var place = autocomplete.getPlace();
+	if (place.geometry) {
+	map.panTo(place.geometry.location);
+	map.setZoom(15);
+	}
+	});
 </script>
+
+<!-- 구글 맵 호출 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm5ys8Aqru_hi_-arUTuHNDxR0Gmx4HxU&callback=myMap"></script>
 
-<br><br><br>
 
 
-		<ul class="rating"  >
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left; margin-left: 7px;">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none;float: left; ">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none;float: left; ">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left;">&star;</li>
-  <li class="star" style=" cursor:pointer; display:inline-block; font-size: 30px;list-style-type: none; float: left;">&star;</li>
-</ul>        
+<!-- 구글 자동완성 라이브러리 호출 -->
+<script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCJ6uWo6CjVt02ze8P_hedzb6PZpydtZIM">
+</script>
+
+
+<!-- 구글 맵 -->
+<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 자동완성 -->
+<input id="search" type="text">
 <br><br>
- 
+
+
+
+
+
+<p class="star_rating" align="center">
+    <a href="#" class="on">★</a>
+    <a href="#" class="on">★</a>
+    <a href="#" class="on">★</a>
+    <a href="#">★</a>
+    <a href="#">★</a>
+    <button type="button" class="btn btn-info" style="margin-left: 30px;"> 확인 </button>
+</p> 
+
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -374,26 +411,23 @@ marker.setMap(map);
       
       <div class="wrapper">
       
-      
-	 <ul class="list">
-	 
-     <li>
-
-      <div>
+        <div>
       <h4>메인 글남기기</h4>
-      <form role="form">
+      <form role="form" name="gogo">
         <div class="form-group">
-          <textarea class="form-control" rows="7"  data-toggle="modal" data-target="#MainInput" required></textarea>
+          <textarea class="form-control" rows="7" id="firstarea"  required></textarea>
         </div>
         
       </form>
+      
+      	<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#MainInput" style="float: right;" OnClick="getText()">작성 시작하기</button>
+      
       <br><br>
       </div>
-
-	
-	
-
-      </li>
+      
+      
+	 <ul class="list">
+	 
       
      <li>
 
@@ -413,16 +447,12 @@ marker.setMap(map);
           <textarea class="form-control" rows="4"  data-toggle="modal" data-target="#my80sizeCenterModal" required></textarea>
         </div>
         
-        
+        <!-- 
         <div class="dropdown">
   <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"> 코멘트
   <span class="badge">2</span></button>
   <ul class="dropdown-menu">
     
-
-
-
-		 
       
       <div class="row">
         <div class="col-sm-2 text-center">
@@ -457,12 +487,8 @@ marker.setMap(map);
         </div>
         </div>
 
-
-
-
-
   </ul>
-</div>
+</div> -->
         
       </form>
       <br><br>
@@ -555,11 +581,11 @@ marker.setMap(map);
 
 
 
-
+<!-- 
 
 <div class='scrolltop'>
     <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
-</div>
+</div> -->
 
 
 </body>
