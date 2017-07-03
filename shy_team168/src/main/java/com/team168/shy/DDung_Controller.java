@@ -55,7 +55,7 @@ public class DDung_Controller {
 		// 로그인 유저의 팔로우 명단 가져오기 
 		List <String> followlist = service.followlist(smvo.getIdx());
 		
-		
+
 		// 팔로워 명단에 내 계정도 추가해서 내 계정의 글들도 같이 볼수 있도록 하기
 		String myIdx = Integer.toString(smvo.getIdx());
 		System.out.println("myIdx = "+ myIdx);
