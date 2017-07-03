@@ -136,4 +136,9 @@ public class Meong_Service implements Interface_CommonService  {
 		return tkList4;
 	}
 
+	public int CheckEmail(String joinemail) {
+		int n = dao.CheckEmail(joinemail);
+		return n;
+	}
+
 }
