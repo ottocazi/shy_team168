@@ -16,41 +16,7 @@
 		</if>
 	</insert>
 	 -->
-	
-	
-	
-	
-	
-	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
-	<!-- 
-	 <resultMap type="java.util.HashMap" id="getSearchWordMap">
-		<result property="SEARCHDATA" column="searchdata" javaType="String" />
-	</resultMap>
-	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
-		<if test='colname.equals("name")'>
-		    select name as searchdata 
-		    from tbl_shymember
-		    where lower(name) like '%' || lower(#{search}) || '%'
-		</if>
-		
-		<if test='colname.equals("email")'>
-		    select email as searchdata    
-		    from tbl_shymember
-		    where lower(email) like '%' || lower(#{search}) || '%'
-		</if>
-		
-		<if test='colname.equals("gname")'>
-			select distinct gname as searchdata 
-		    from tbl_group
-		    where lower(gname) like '%' || lower(#{search}) || '%'
-		</if> 
-		
-	</select>	
-	 -->
-	
-	
-	
-	
+	 
 	<!-- 
  ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
                     파일이 첨부된 답변형 게시판 목록
@@ -138,6 +104,21 @@
 	
 	</select>  
 	  
+	
+	
+	<!-- ===== 로그인 성공한 사용자 정보 가져오기 ===== -->	
+	<select id="getMemberVO" parameterType="int" resultType="com.team168.shy.model.ShyMemberVO">
+		select idx, name, email, pwd, registerdate, status, myimg, myintro, birthday, gender, phone
+	   	from tbl_shymember
+	   	where status = 1 and idx = #{idx}
+	</select>
+	
+	
+	<!-- ===== 사업자 신청하기 ===== -->
+	<update id="applybusiEnd" parameterType="java.util.HashMap">
+		update tbl_shymember set ${column_name} = #{edited_content}
+	    where idx = #{idx}
+	</update>
 	
 	
 	
