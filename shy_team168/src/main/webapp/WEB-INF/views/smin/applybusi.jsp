@@ -30,32 +30,41 @@ $(document).ready(function(){
 	});
 		
 	
+	
+	
+	/* 수정완료	*/
+	$(".applybusiEnd").click(function(){
+	
+		
+		
+		applybusiEnd(categoryno,bname,busicontent,busicall,busimail);
+		
+	});
+	
+	
+	
+	
+	
 
 });
 
 
-function applybusiEnd(column_name,edited_content) {
+function applybusiEnd(categoryno,bname,busicontent,busicall,busimail) {
 	
 	
 	
 	alert("applybusiEnd() 실행");
-	alert(column_name);
 	
-//	if(column_name == 'myimg') {
-//		document.myimgFrm.column_name.value = column_name;
-//		document.myimgFrm.edited_content.value = edited_content;
-//		document.myimgFrm.action = "/shy/myInfoEditEnd.shy";	
-//		document.myimgFrm.method = "POST";
-//		document.myimgFrm.submit();
-//	} else 
-	
-		if(column_name == 'email') {
-		document.emailFrm.column_name.value = column_name;
-		document.emailFrm.edited_content.value = edited_content;
-		document.emailFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.emailFrm.method = "POST";
-		document.emailFrm.submit();
-	} 
+		
+		document.applybusiFrm.categoryno.value = categoryno;
+		document.applybusiFrm.bname.value = bname;
+		document.applybusiFrm.busicontent.value = busicontent;
+		document.applybusiFrm.busicall.value = busicall;
+		document.applybusiFrm.busimail.value = busimail;
+		document.applybusiFrm.action = "/shy/applybusiEnd.shy";	
+		document.applybusiFrm.method = "POST";
+		document.applybusiFrm.submit();
+		
 	
 
 	alert("submit() 완료");
@@ -107,9 +116,9 @@ function applybusiEnd(column_name,edited_content) {
 								
 								${getMemberVO.name}님
 								<br/><span>'사업명/상호명'을 입력해주세요.</span><br/>
-								<input type="text" class="inputcol" id="BNAME" name="BNAME" />
+								<input type="text" class="inputcol" id="bname" name="bname" />
 								
-				                <select name="CNAME" id="CNAME" style="width: 100px; height: 30px"> 
+				                <select name="categoryno" id="categoryno" style="width: 100px; height: 30px"> 
 								<option value="1">서비스업</option>
 								<option value="2">야근업</option>
 								<option value="3">개발업</option>
@@ -132,14 +141,8 @@ function applybusiEnd(column_name,edited_content) {
 							
 							
 							
-							
-							<div  class="hiddenpart">
-							<input type="hidden" name="idx" value="${getMemberVO.idx}" />
-							<input type="hidden" name="column_name" id="column_name" value="myimg" />
-			                
-				            </div>
 				            <input type="hidden" name="userseq" value="${loginuser.idx}"/>
-							<textarea id="content" name="content" class="swal2-textarea" placeholder="성공적인 사업을 위한 당신의 멋진 설계를 보여주세요!  (야근필수)" 
+							<textarea id="busicontent" name="busicontent" class="swal2-textarea" placeholder="성공적인 사업을 위한 당신의 멋진 설계를 보여주세요!  (야근필수)" 
 							 style="width: 350px; height: 350px; font-size: 10pt;"></textarea>
 							
 							<br>
@@ -175,7 +178,7 @@ function applybusiEnd(column_name,edited_content) {
 				                <input type="hidden" name="column_name" id="column_name" value="email"  />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="text" class="inputcol" id="firstarea" name="email" value="${getMemberVO.email}" />
+				                <input type="text" class="inputcol" id="busimail" name="busimail" value="${getMemberVO.email}" />
 				                <button type="button" class="info_edit_btn">인증메일발송</button><br/>
 				                
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">확인</button>
@@ -203,7 +206,7 @@ function applybusiEnd(column_name,edited_content) {
 				                <input type="hidden" name="column_name" id="column_name"  value="phone" />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
+				                <input type="text" class="inputcol" id="busicall" name="busicall" value="${getMemberVO.phone}" /><br/>
 				                
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">확인</button>
 				                </div>

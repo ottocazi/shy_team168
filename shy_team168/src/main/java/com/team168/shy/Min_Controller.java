@@ -91,16 +91,30 @@ public class Min_Controller {
 			String str_idx = req.getParameter("idx");
 			System.out.println("컨트롤에서 받은 idx : "+ str_idx);
 			
-			String column_name = req.getParameter("column_name");
-			System.out.println("컨트롤에서 받은 column_name : " + column_name);
+			String categoryno = req.getParameter("categoryno");
+			System.out.println("컨트롤에서 받은 categoryno : " + categoryno);
 			
-			String edited_content = req.getParameter("edited_content");
-			System.out.println("컨트롤에서 받은 edited_content : " + edited_content);
+			String bname = req.getParameter("bname");
+			System.out.println("컨트롤에서 받은 bname : " + bname);
+			
+
+			String busicontent = req.getParameter("busicontent");
+			System.out.println("컨트롤에서 받은 busicontent : " + busicontent);
+
+			String busicall = req.getParameter("busicall");
+			System.out.println("컨트롤에서 받은 busicall : " + busicall);
+
+			String busimail = req.getParameter("busimail");
+			System.out.println("컨트롤에서 받은 busimail : " + busimail);
+			
 			
 			HashMap<String, String> map = new HashMap<String, String>();
 	    	map.put("idx", str_idx);
-	    	map.put("column_name", column_name);
-	    	map.put("edited_content", edited_content);
+	    	map.put("categoryno", categoryno);
+	    	map.put("bname", bname);
+	    	map.put("busicontent", busicontent);
+	    	map.put("busicall", busicall);
+	    	map.put("busimail", busimail);
 	    	
 			int n = service.applybusiEnd(map);
 			

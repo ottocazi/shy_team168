@@ -115,15 +115,10 @@
 	
 	
 	<!-- ===== 사업자 신청하기 ===== -->
-	<update id="applybusiEnd" parameterType="java.util.HashMap">
-		update tbl_shymember set ${column_name} = #{edited_content}
-	    where idx = #{idx}
-	</update>
 	
-	<!-- ===== goFollow ===== -->
 	<insert id="applybusiEnd" parameterType="java.util.HashMap">
-		insert into tbl_follow(followno,  fk_idxflw, fk_idxflwed, 	 followdate, status)
-		values (seq_tbl_follow.nextval,   #{idx},    #{fk_idxflwed}, sysdate,    1)
+		insert into TBL_BUSINESS(BUSINESSNO, FK_IDX, CATEGORYNO, BNAME, STATUS, BUSICONTENT, BUSICALL, BUSIMAIL)
+		values (SEQ_TBL_BUSINESS.nextval, #{idx}, #{categoryno}, #{bname}, default, #{busicontent}, #{busicall}, #{busimail})
 	</insert>
 	
 	
