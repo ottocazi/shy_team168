@@ -43,7 +43,13 @@ public class Min_Controller {
     	
     }
 	
-	
+	@RequestMapping(value="/geotest.shy", method={RequestMethod.GET})
+    public String geoPage2(HttpServletRequest req) {
+    	
+		
+		return "geotest.notiles";
+    	
+    }
 	
 	
 	

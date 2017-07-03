@@ -329,6 +329,7 @@ function initAutocomplete() {
 
 
 
+
 /* function resize(){
 
 $('#myModal').on('shown.bs.modal', function () {
