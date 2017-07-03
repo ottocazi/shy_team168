@@ -120,7 +120,11 @@
 	    where idx = #{idx}
 	</update>
 	
-	
+	<!-- ===== goFollow ===== -->
+	<insert id="applybusiEnd" parameterType="java.util.HashMap">
+		insert into tbl_follow(followno,  fk_idxflw, fk_idxflwed, 	 followdate, status)
+		values (seq_tbl_follow.nextval,   #{idx},    #{fk_idxflwed}, sysdate,    1)
+	</insert>
 	
 	
 	

@@ -34,12 +34,13 @@ $(document).ready(function(){
 });
 
 
-function myInfoEditEnd(column_name,edited_content,form_name) {
+function applybusiEnd(column_name,edited_content) {
 	
 	
 	
-	alert("myInfoEditEnd() 실행");
+	alert("applybusiEnd() 실행");
 	alert(column_name);
+	
 //	if(column_name == 'myimg') {
 //		document.myimgFrm.column_name.value = column_name;
 //		document.myimgFrm.edited_content.value = edited_content;
@@ -47,43 +48,14 @@ function myInfoEditEnd(column_name,edited_content,form_name) {
 //		document.myimgFrm.method = "POST";
 //		document.myimgFrm.submit();
 //	} else 
+	
 		if(column_name == 'email') {
 		document.emailFrm.column_name.value = column_name;
 		document.emailFrm.edited_content.value = edited_content;
 		document.emailFrm.action = "/shy/myInfoEditEnd.shy";	
 		document.emailFrm.method = "POST";
 		document.emailFrm.submit();
-	} else if(column_name == 'name') {
-		document.nameFrm.column_name.value = column_name;
-		document.nameFrm.edited_content.value = edited_content;
-		document.nameFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.nameFrm.method = "POST";
-		document.nameFrm.submit();
-	} else if(column_name == 'pwd') {
-		document.pwdFrm.column_name.value = column_name;
-		document.pwdFrm.edited_content.value = edited_content;
-		document.pwdFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.pwdFrm.method = "POST";
-		document.pwdFrm.submit();
-	} else if(column_name == 'phone') {
-		document.phoneFrm.column_name.value = column_name;
-		document.phoneFrm.edited_content.value = edited_content;
-		document.phoneFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.phoneFrm.method = "POST";
-		document.phoneFrm.submit();
-	} else if(column_name == 'gender') {
-		document.genderFrm.column_name.value = column_name;
-		document.genderFrm.edited_content.value = edited_content;
-		document.genderFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.genderFrm.method = "POST";
-		document.genderFrm.submit();
-	} else if(column_name == 'myintro') {
-		document.myintroFrm.column_name.value = column_name;
-		document.myintroFrm.edited_content.value = edited_content;
-		document.myintroFrm.action = "/shy/myInfoEditEnd.shy";	
-		document.myintroFrm.method = "POST";
-		document.myintroFrm.submit();
-	}
+	} 
 	
 
 	alert("submit() 완료");
@@ -92,15 +64,6 @@ function myInfoEditEnd(column_name,edited_content,form_name) {
 
 
 
-function getText(){
-	
-	var test = $("#firstarea").val();
-
-
-	$("#secondarea").val(test);
-	
-
-}
 
 
 </script>
@@ -214,8 +177,8 @@ function getText(){
 				                
 				                <input type="text" class="inputcol" id="firstarea" name="email" value="${getMemberVO.email}" />
 				                <button type="button" class="info_edit_btn">인증메일발송</button><br/>
-				                <button type="button" class="info_edit_btn" OnClick="getText()">입력완료</button>
-				                <button type="button" class="info_edit_btn show_more_cancle_btn">취소하기</button>
+				                
+				                <button type="button" class="info_edit_btn show_more_cancle_btn">확인</button>
 				                
 				                </div>
 			                </td>
@@ -241,8 +204,8 @@ function getText(){
 				                <input type="hidden" name="edited_content" />
 				                
 				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
-				                <button type="button" class="info_edit_btn editend">입력완료</button>
-				                <button type="button" class="info_edit_btn show_more_cancle_btn">취소하기</button>
+				                
+				                <button type="button" class="info_edit_btn show_more_cancle_btn">확인</button>
 				                </div>
 			                </td>
 						</tr>
@@ -253,7 +216,7 @@ function getText(){
 						
 					</tbody>
 				</table>
-				<button type="button" class="info_edit_btn editend" style="float: right; padding: 20px; font-weight: bold;">신청하기</button>
+				<button type="button" class="info_edit_btn applybusiEnd" style="float: right; padding: 20px; font-weight: bold;">신청하기</button>
 			</div>
 			
         </div>
