@@ -9,14 +9,20 @@
 	<!-- 회원가입 -->
 	<insert id="addregistorEnd" parameterType="java.util.HashMap">
 		insert into tbl_shymember(idx, name, email, pwd, registerdate, status) 
-		values(seq_tbl_shymember.nextval, #{name}, #{email}, #{pwd}, default, default)  
+		values(seq_tbl_shymember.nextval, #{joinname}, #{joinemail}, #{joinpwd}, default, default)  
 	</insert>
+	
+	<!-- 이메일중복체크(ajax) -->
+	<select id="CheckEmail" parameterType="String" resultType="int"> 
+		select nvl(count(*),0) as checker
+		from tbl_shymember where email=#{joinemail}
+	</select>
 	
 	<!-- 로그인 여부 알아오기 -->
 	<select id="loginEnd" parameterType="java.util.HashMap" resultType="int"> 
 		select case( select count(*)
 	                 from tbl_shymember
-	                 where email = #{email} and
+	                 where status = 1 and email = #{email} and
 	                       pwd = #{pwd} )
 	           when 1 then 1
 	           else( case(select count(*) 

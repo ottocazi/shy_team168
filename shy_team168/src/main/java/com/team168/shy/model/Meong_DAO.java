@@ -151,4 +151,9 @@ public class Meong_DAO{
 		List<HashMap<String, Object>> tkList4 = sqlsession.selectList("mangu.gettongkeList4" , map);
 		return tkList4;
 	}
+
+	public int CheckEmail(String joinemail) {
+		int n = sqlsession.selectOne("mangu.CheckEmail", joinemail);
+		return n;
+	}
 }

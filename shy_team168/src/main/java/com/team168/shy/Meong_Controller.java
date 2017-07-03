@@ -32,17 +32,17 @@ public class Meong_Controller {
 	@RequestMapping(value="/addregistorEnd.shy", method={RequestMethod.POST})
     public String test(HttpServletRequest req, HttpSession session, ShyMemberVO svo) {
     	
-		String name = req.getParameter("name");
-		String email = req.getParameter("email");
-		String pwd = req.getParameter("pwd");
-		String chkpwd = req.getParameter("chkpwd");
+		String joinname = req.getParameter("name");
+		String joinemail = req.getParameter("email");
+		String joinpwd = req.getParameter("pwd");
+		String joinchkpwd = req.getParameter("chkpwd");
 
     	HashMap<String, String> map = new HashMap<String, String>();
 
-    	map.put("name", name);
-    	map.put("email", email);
-    	map.put("pwd", pwd);
-    	map.put("chkpwd", chkpwd);
+    	map.put("joinname", joinname);
+    	map.put("joinemail", joinemail);
+    	map.put("joinpwd", joinpwd);
+    	map.put("joinchkpwd", joinchkpwd);
     	
     	int n = 0;
     	
@@ -51,15 +51,16 @@ public class Meong_Controller {
 		   String msg = "";
 		   String loc = "";
 		   String type = "";	
-		   String title = "";
+		   String title = "";   
 		   
 		   if(n==1) {
-			   msg = "로그인페이지로 이동하시겠습니까?";
+			   msg = "다시한번 로그인해주십쇼~";
 			   loc = "javascript:history.back();";
 			   type = "success";
 			   title = "Shy가입을 축하드립니다~~";
 			   // or 추가정보입력하시겠습니까?
 		   }
+
 		   
 /*		   아직 유효성검사 안했으므로
 		   else {
@@ -75,6 +76,25 @@ public class Meong_Controller {
 		   req.setAttribute("title", title);
 		   
     	return "ddung_alert.notiles";
+    }
+	
+	// 아이디 중복체크(ajax활용)
+	@RequestMapping(value="/CheckEmail.shy", method={RequestMethod.POST})
+    @ResponseBody
+    public int CheckEmail(HttpServletRequest req) {
+    	
+		String joinemail = req.getParameter("joinemail");
+//		System.out.println("검사할 id값은 "+joinemail);
+		req.setAttribute("joinemail", joinemail);
+		int n = 0;
+		
+//		System.out.println("joinemail 은 ==> " + joinemail);	
+
+		n = service.CheckEmail(joinemail);
+//		System.out.println("n 은 ==> " + n);
+		
+    	return n;
+    	
     }
 	
 
