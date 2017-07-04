@@ -61,4 +61,40 @@ public class JunoDAO {
 		int result = sqlsession.update("juno.unFollow", map);
 		return result;
 	}
+	
+	// 임시 메인라인
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = sqlsession.selectList("juno.shiesj", followlist);
+		return shies;
+	}
+
+	// 임시 메인라인
+	public List<String> followlist(int idx) {
+		List<String> followlist = sqlsession.selectList("juno.followlistj", idx);
+		return followlist;
+	}
+
+	// 임시 메인라인
+	public String imgaddr(String snsno) {
+		String imgaddr = sqlsession.selectOne("juno.imgaddrj", snsno);
+		return imgaddr;
+	}
+	
+	// 댓글 수정
+	public int goCommentEdit(HashMap<String, String> map) {
+		int n = sqlsession.update("juno.goCommentEdit", map);
+		return n;
+	}
+	
+	// 댓글 삭제
+	public int goCommentDelete(HashMap<String, String> map) {
+		int n = sqlsession.update("juno.goCommentDelete", map);
+		return n;
+	}
+	
+	// 댓글 신고
+	public int goBlameEnd(HashMap<String, Object> map) {
+		int n = sqlsession.insert("juno.goBlameEnd", map);
+		return n;
+	}
 }

@@ -20,7 +20,7 @@
 	</update>
 	
 	
-	<!-- ===== 댓글 카운트 ===== -->
+	<!-- ===== 댓글 카운트 (status 0 포함)===== -->
 	<resultMap type="java.util.HashMap" id="getCommentCountMap">
 		<result property="snsno" column="snsno" javaType="String"/>
 		<result property="cnt" column="cnt" javaType="int"/>
@@ -47,7 +47,7 @@
 														</foreach>
 													    ) A 
 			  LEFT OUTER JOIN  
-      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT GROUP BY SNSNO) B
+      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT WHERE STATUS=1 GROUP BY SNSNO) B
       		  ON A.SNSNO = B.SNSNO
 	</select>
 	
@@ -105,4 +105,65 @@
 		delete from tbl_follow
 		where fk_idxflw = #{idx} and fk_idxflwed = #{fk_idxflwed}
 	</delete>
+	
+	<!-- 임시메인라인 -->
+	<select id="followlistj" parameterType="int" resultType="String">
+		select fk_idxflwed
+		from tbl_follow
+		where 1=1 and fk_idxflw = #{idx} and status = 1
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="shiesj">
+	
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		
+	</resultMap>
+	
+	<select id="shiesj" parameterType="java.util.List" resultMap="shiesj">
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX IN
+				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<select id="imgaddrj" parameterType="String" resultType="String">
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
+	</select>
+	
+	<!-- ===== 댓글 수정하기 ===== -->
+	<update id="goCommentEdit" parameterType="java.util.HashMap">
+		update tbl_comment set cmtcontent = #{cmtcontent}
+		where snsno = #{snsno} and cmtno = #{cmtno}
+	</update>
+	
+	<!-- ===== 댓글 삭제하기 ===== -->
+	<update id="goCommentDelete" parameterType="java.util.HashMap">
+		update tbl_comment set status = 0
+		where snsno = #{snsno} and cmtno = #{cmtno}
+	</update>
+	
+	<!-- ===== 댓글 신고 ===== -->
+	<insert id="goBlameEnd" parameterType="java.util.HashMap">
+		insert into tbl_blame(blameno, snsno,    fk_blameidx, fk_blamedidx, bladate, fk_cmtno, reason, 	  resondetail)
+		values (seq_tbl_blame.nextval, #{snsno}, #{idx},      #{fk_idx},    sysdate, #{cmtno}, #{result}, #{value})
+	</insert>
 </mapper>	
