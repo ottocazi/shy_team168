@@ -33,7 +33,7 @@
 	
 		select *
 		from tbl_shymemo 
-		where rownum = 1 and fk_idx = #{p_idx} order by snsno desc
+		where rownum = 1 and fk_idx = #{p_idx} order by SDATEDTIME DESC
 	
 	</select>
 	
@@ -81,7 +81,7 @@
 				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
 					${item}
 				</foreach>
-		ORDER BY A.SNSNO DESC
+		ORDER BY A.SDATEDTIME DESC
 	</select>
 	
 	<select id="imgaddr" parameterType="String" resultType="String">
@@ -121,6 +121,13 @@
 	ORDER BY a.CMTNO ASC
 	
 	</select>
+	
+	<insert id="insertGeo" parameterType="java.util.HashMap">
+	INSERT INTO TBL_GEO (SEQ, FK_SNSNO, SHYPLACE, LONGDITUDE, LATITUDE, COUNTRY, POSTAL_CODE, AREA1, LOCALITY, ROUTE, STREET_NUMBER)
+	VALUES (SEQ_GEO.NEXTVAL, #{fk_snsno}, #{shyplace}, #{longditude}, 
+	#{latitude}, #{country}, #{postal_code} , #{area1}, #{locality} , #{route}, #{street_number}
+	)
+	</insert>
 </mapper>
 
  

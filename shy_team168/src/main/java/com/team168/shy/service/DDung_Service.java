@@ -65,6 +65,12 @@ public class DDung_Service {
 			return comments;
 			
 		}
+
+		public void insertGeo(HashMap<String, String> parameters) {
+			
+			dao.insertGeo(parameters);
+			
+		}
 		
 	
 	
