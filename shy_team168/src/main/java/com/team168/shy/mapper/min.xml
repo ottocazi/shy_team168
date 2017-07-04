@@ -118,7 +118,7 @@
 	
 	<insert id="applybusiEnd" parameterType="java.util.HashMap">
 		insert into TBL_BUSINESS(BUSINESSNO, FK_IDX, CATEGORYNO, BNAME, STATUS, BUSICONTENT, BUSICALL, BUSIMAIL)
-		values (SEQ_TBL_BUSINESS.nextval, #{idx}, #{categoryno}, #{bname}, default, #{busicontent}, #{busicall}, #{busimail})
+		values (SEQ_TBL_BUSINESS.nextval, #{idx}, #{categoryno}, #{bname}, 0, #{busicontent}, #{busicall}, #{busimail})
 	</insert>
 	
 	
