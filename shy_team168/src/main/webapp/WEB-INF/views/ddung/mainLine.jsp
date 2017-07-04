@@ -322,6 +322,286 @@
     	}); 
     }
     
+ 
+ function modiCheck(snsno, cmtno, fk_idx) {
+     
+     var idx = ${loginuser.idx};
+     if (fk_idx == idx){
+        selectmodi(snsno, cmtno, fk_idx);
+     } else {
+        goBlame(snsno, cmtno, fk_idx);
+     }
+  }
+  
+  function selectmodi(snsno, cmtno, fk_idx){
+     
+     swal({
+          title: '',
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '수정하기',
+          cancelButtonText: '삭제하기'
+        }).then(function () {
+           
+           swal.setDefaults({
+                 showCancelButton: false,
+                 animation: true,
+                 progressSteps: ['1']
+               })
+             
+               var steps = [
+                 {
+                     title: cmtno+'번의 댓글 수정',
+                     text: "원래글내용:",
+                     input: 'text',
+                      inputPlaceholder: '수정할 댓글을 입력하세요.',
+                      inputValue: '',
+                     showCancelButton: true,
+                   confirmButtonText: '수정하기',
+                    cancelButtonText: '수정취소',
+                    inputValidator: function (value) {
+                        return new Promise(function (resolve, reject) {
+                          if (value) {
+                            resolve()
+                          } else {
+                            reject('수정할 내용을 입력해 주세요')
+                          }
+                        })
+                    }
+                   }
+               ]
+
+               swal.queue(steps).then(function (result) {
+                  alert(result);
+                  $.ajax({
+                        url: "/shy/goCommentEdit.shy",
+                      type: "POST",
+                      data: {snsno:snsno
+                           ,cmtno:cmtno
+                           ,cmtcontent:result
+                           ,fk_idx:fk_idx
+                           },
+                      dataType: "JSON",  
+                      success: function(data){
+                         alert("댓글 수정 ajax success function!");
+                         
+                          swal.resetDefaults()
+                             swal({
+                               title: '댓글 수정!',
+                               html:
+                                 '수정된 댓글: <pre>' +
+                                   JSON.stringify(result) +
+                                 '</pre>',
+                               confirmButtonText: '수정완료!',
+                               showCancelButton: false
+                             })  
+                       },
+                      error: function(){
+                           alert("댓글 수정 ajax error function!"); 
+                       }
+                     });
+                  
+               }, function () {
+                 swal.resetDefaults()
+               })
+        }, function (dismiss) {
+           alert("dismiss : "+ dismiss);
+           
+           $.ajax({
+                 url: "/shy/goCommentDelete.shy",
+               type: "POST",
+               data: {snsno:snsno
+                    ,cmtno:cmtno
+                    ,fk_idx:fk_idx
+                    },
+               dataType: "JSON",  
+               success: function(data){
+                  alert("댓글 삭제 ajax success function!");
+
+                  // dismiss can be 'cancel', 'overlay',
+                  // 'close', and 'timer'
+                  
+                  if (dismiss === 'cancel') {
+                      swal(   
+                        '삭제완료',
+                        '댓글이 삭제되었습니다.',
+                        'error'
+                      )
+                    }
+                   
+                  countComment();
+               },
+               error: function(){
+                    alert("댓글 수정 ajax error function!"); 
+                }
+              });
+        })
+  }
+  
+  function goBlame(snsno, cmtno, fk_idx){
+     swal({
+        title: '',
+        text: "",
+        type: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#d33',
+        confirmButtonText: '신고하기'
+      }).then(function () {
+         
+         swal.setDefaults({
+               showCancelButton: true,
+               confirmButtonColor: '#d33',
+               cancelButtonColor: '#3085d6',
+               cancelButtonText: '삭제하기',
+               animation: true,
+               progressSteps: ['1']
+             })
+          
+            var options = new Promise(function (resolve) {
+              
+                resolve({
+                  '1': '광고홍보성',
+                  '2': '음란성',
+                  '3': '욕설 및 인신공격',
+                  '4': '도배성',
+                  '5': '유언비어',
+                   '6': '기타'
+                })
+              
+            })
+              
+              
+             var steps = [
+               {
+                   title: '신고사유선택',
+                   text: '신고할 내용을 선택해주세요.',
+                   showCancelButton: true,
+                 confirmButtonText: '신고하기',
+                  cancelButtonText: '신고취소',
+                  inputOptions: options,
+                  input: 'radio',
+                  inputValidator: function (result) {
+                     return new Promise(function (resolve, reject) {
+                       if (result) {
+                         resolve()
+                       } else {
+                         reject('신고 사유를 선택해주세요.')
+                       }
+                     })
+                 }
+                 }
+             ]
+
+             swal.queue(steps).then(function (result) {
+                alert("result : "+result);
+                alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+                // 1~5 선택시
+                if(result < 6) {
+                   var value = "";
+                   goBlameEnd(result,snsno,cmtno,fk_idx,value);
+                } else { // 6(기타) 선택시
+                   swal({
+                      showCancelButton: true,
+                      confirmButtonText: '신고하기',
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      cancelButtonText: '신고취소',
+                      animation: true,
+                      progressSteps: ['1','2'],
+                      title: '기타사유 입력',
+                        text: '',
+                        input: 'text',
+                         inputPlaceholder: '신고할 사유를 입력하세요.',
+                         inputValue: '',
+                        showCancelButton: true,
+                       inputValidator: function (value) {
+                           return new Promise(function (resolve, reject) {
+                                alert(value);
+                              
+                              if (value) {
+                               resolve()
+                                goBlameEnd(result,snsno,cmtno,fk_idx,value);
+                             } else {
+                               reject('신고할 내용을 입력해 주세요.')
+                             }
+                           })
+                       }
+                   }).then(function (){
+                      
+                   }, function (dismiss) {
+                      alert("dismiss : "+ dismiss);
+                      
+                      // dismiss can be 'cancel', 'overlay',
+                      // 'close', and 'timer'
+                      
+                      if (dismiss === 'cancel') {
+                          swal(   
+                            '신고취소',
+                            '신고가 취소되었습니다.',
+                            'error'
+                          )
+                        }
+                          
+                   })
+                } // end of else ~
+                
+             }, function () {
+               swal.resetDefaults()
+             })
+      }, function (dismiss) {
+         alert("dismiss : "+ dismiss);
+         // dismiss can be 'cancel', 'overlay',
+        // 'close', and 'timer'
+        
+          if (dismiss === 'cancel') {
+              swal(   
+                '신고취소',
+                '신고가 취소되었습니다.',
+                'error'
+              )
+        }
+                 
+      })
+  }
+  
+  function goBlameEnd(result,snsno,cmtno,fk_idx, value){
+     alert("goBlameEnd();시작! value : "+value);
+     
+       $.ajax({
+             url: "/shy/goBlameEnd.shy",
+           type: "GET",
+          data: {snsno:snsno
+             ,cmtno:cmtno
+             ,fk_idx:fk_idx
+             ,result:result
+             ,value:value
+             },
+           dataType: "JSON",  
+           success: function(data){
+              alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+              
+              swal.resetDefaults()
+                swal({
+                  title: fk_idx+'님의 댓글 신고!',
+                  html:
+                    '신고된 사유: <pre>' +
+                      JSON.stringify(result) +
+                    '</pre>',
+                  confirmButtonText: '신고 완료!',
+                  showCancelButton: false
+                })
+               
+           //   countComment();
+           },
+           error: function(){
+                alert("댓글 신고 ajax error function!"); 
+            }
+          });
+     
+  }
      </script>
 </head>
 <body>
