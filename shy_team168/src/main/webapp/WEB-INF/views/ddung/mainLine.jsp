@@ -32,8 +32,7 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	countComment();
-      
-       getLike();
+       	getLike();
        
        
        
@@ -93,7 +92,7 @@
                         $('#bt-love'+entry.snsno).hide();
                         $('#love'+entry.snsno).empty();
                         
-                        var html = '<span>'+entry.totalcount+'</span>';
+                        var html = '<span style="cursor:pointer">'+entry.totalcount+'</span>';
                         $('#love'+entry.snsno).html(html).show();
                      }else{
                         $('#bt-love'+entry.snsno).hide();
@@ -189,6 +188,68 @@
 
 	}
     
+    function reopenComment(snsno){
+    	
+    	 $.ajax({
+	            url: "/shy/getComments.shy",
+	            type: "POST",
+	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+	            data: {snsno:snsno},
+	            success: function(data) { // 성공했을 때의 처리 콜백함수
+	            	
+	            	countComment();
+	            	var commentbox = document.getElementById('commentbox'+snsno);
+	            	commentbox.style.display = 'block';
+	            	var html = '';
+	            	
+	    			$.each(data, function(i, comments){
+	    				//alert(entry.cmtcontent);
+	    				
+	    				html += '<div id="shy_comment_ajax' + comments.cmtno
+	    					 + '" class="shy_comment">'
+	    					 + '<div class="shy_comment-avatar">'
+	    					 + '<img src="<%=request.getContextPath() %>/resources/images/shydb/'
+	    					 + comments.myimg
+	    					 + '"></div>'
+	    					 + '<div class="shy_comment-box">'
+	    					 + '<div class="shy_comment-text">'
+	    					 + comments.cmtcontent
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-footer">'
+	    				 	 + '<div class="shy_comment-info">'
+	    				 	 + '<a href="#"> <span class="shy_comment-author">';
+ 				if (comments.name==null){
+	    				html += comments.email+ '</span></a>';
+	    			}
+	    			else {
+	    			 	html	+= comments.name+ '</span></a>'; 
+				 	}
+	    				html	+= '<span class="shy_comment-date">'
+	    					 + comments.updatetime+'</span>'
+	    					 + '</div>'
+	    					 + '<div class="shy_comment-actions">'
+							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
+							 + ' aria-hidden="true"></i></a> '
+	    					 + '</div>'
+	    					 + '</div>'
+	    					 + '</div></div>';   
+	    			
+	    				/*html END*/ 
+	    				
+	    				
+	    				
+	    			});
+	               
+	    			$("#shy_comment_ajax" + snsno).html(html);
+	               
+	            },
+	            error: function() { // 에러가 발생했을 때의 콜백함수
+	                alert("error");
+	            }
+	        });
+    	
+    }
+    
     /* ajax 로 댓글 갯수 읽어 오기 */
    	function countComment() {
    		var snsnoArr = new Array();
@@ -221,7 +282,7 @@
     				$("#comment" + entry.snsno).html(html);
     				
     			});
-    		//	getCommentList();
+    		
     		},
     		error: function(){
  				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
@@ -248,11 +309,10 @@
     		data: form_data ,
     		dataType: "text", 
     		success: function(data) {
-    			alert('success');
-    			alert($('#replycontent'+shyidx).val());
+    			
     			$('#replycontent'+shyidx).val("");
     			countComment();
-    			//getCommentList();
+    			reopenComment(shyidx);
     		},
     		error: function(){
 				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -262,6 +322,286 @@
     	}); 
     }
     
+ 
+ function modiCheck(snsno, cmtno, fk_idx) {
+     
+     var idx = ${loginuser.idx};
+     if (fk_idx == idx){
+        selectmodi(snsno, cmtno, fk_idx);
+     } else {
+        goBlame(snsno, cmtno, fk_idx);
+     }
+  }
+  
+  function selectmodi(snsno, cmtno, fk_idx){
+     
+     swal({
+          title: '',
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '수정하기',
+          cancelButtonText: '삭제하기'
+        }).then(function () {
+           
+           swal.setDefaults({
+                 showCancelButton: false,
+                 animation: true,
+                 progressSteps: ['1']
+               })
+             
+               var steps = [
+                 {
+                     title: cmtno+'번의 댓글 수정',
+                     text: "원래글내용:",
+                     input: 'text',
+                      inputPlaceholder: '수정할 댓글을 입력하세요.',
+                      inputValue: '',
+                     showCancelButton: true,
+                   confirmButtonText: '수정하기',
+                    cancelButtonText: '수정취소',
+                    inputValidator: function (value) {
+                        return new Promise(function (resolve, reject) {
+                          if (value) {
+                            resolve()
+                          } else {
+                            reject('수정할 내용을 입력해 주세요')
+                          }
+                        })
+                    }
+                   }
+               ]
+
+               swal.queue(steps).then(function (result) {
+                  alert(result);
+                  $.ajax({
+                        url: "/shy/goCommentEdit.shy",
+                      type: "POST",
+                      data: {snsno:snsno
+                           ,cmtno:cmtno
+                           ,cmtcontent:result
+                           ,fk_idx:fk_idx
+                           },
+                      dataType: "JSON",  
+                      success: function(data){
+                         alert("댓글 수정 ajax success function!");
+                         
+                          swal.resetDefaults()
+                             swal({
+                               title: '댓글 수정!',
+                               html:
+                                 '수정된 댓글: <pre>' +
+                                   JSON.stringify(result) +
+                                 '</pre>',
+                               confirmButtonText: '수정완료!',
+                               showCancelButton: false
+                             })  
+                       },
+                      error: function(){
+                           alert("댓글 수정 ajax error function!"); 
+                       }
+                     });
+                  
+               }, function () {
+                 swal.resetDefaults()
+               })
+        }, function (dismiss) {
+           alert("dismiss : "+ dismiss);
+           
+           $.ajax({
+                 url: "/shy/goCommentDelete.shy",
+               type: "POST",
+               data: {snsno:snsno
+                    ,cmtno:cmtno
+                    ,fk_idx:fk_idx
+                    },
+               dataType: "JSON",  
+               success: function(data){
+                  alert("댓글 삭제 ajax success function!");
+
+                  // dismiss can be 'cancel', 'overlay',
+                  // 'close', and 'timer'
+                  
+                  if (dismiss === 'cancel') {
+                      swal(   
+                        '삭제완료',
+                        '댓글이 삭제되었습니다.',
+                        'error'
+                      )
+                    }
+                   
+                  countComment();
+               },
+               error: function(){
+                    alert("댓글 수정 ajax error function!"); 
+                }
+              });
+        })
+  }
+  
+  function goBlame(snsno, cmtno, fk_idx){
+     swal({
+        title: '',
+        text: "",
+        type: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#d33',
+        confirmButtonText: '신고하기'
+      }).then(function () {
+         
+         swal.setDefaults({
+               showCancelButton: true,
+               confirmButtonColor: '#d33',
+               cancelButtonColor: '#3085d6',
+               cancelButtonText: '삭제하기',
+               animation: true,
+               progressSteps: ['1']
+             })
+          
+            var options = new Promise(function (resolve) {
+              
+                resolve({
+                  '1': '광고홍보성',
+                  '2': '음란성',
+                  '3': '욕설 및 인신공격',
+                  '4': '도배성',
+                  '5': '유언비어',
+                   '6': '기타'
+                })
+              
+            })
+              
+              
+             var steps = [
+               {
+                   title: '신고사유선택',
+                   text: '신고할 내용을 선택해주세요.',
+                   showCancelButton: true,
+                 confirmButtonText: '신고하기',
+                  cancelButtonText: '신고취소',
+                  inputOptions: options,
+                  input: 'radio',
+                  inputValidator: function (result) {
+                     return new Promise(function (resolve, reject) {
+                       if (result) {
+                         resolve()
+                       } else {
+                         reject('신고 사유를 선택해주세요.')
+                       }
+                     })
+                 }
+                 }
+             ]
+
+             swal.queue(steps).then(function (result) {
+                alert("result : "+result);
+                alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+                // 1~5 선택시
+                if(result < 6) {
+                   var value = "";
+                   goBlameEnd(result,snsno,cmtno,fk_idx,value);
+                } else { // 6(기타) 선택시
+                   swal({
+                      showCancelButton: true,
+                      confirmButtonText: '신고하기',
+                      confirmButtonColor: '#d33',
+                      cancelButtonColor: '#3085d6',
+                      cancelButtonText: '신고취소',
+                      animation: true,
+                      progressSteps: ['1','2'],
+                      title: '기타사유 입력',
+                        text: '',
+                        input: 'text',
+                         inputPlaceholder: '신고할 사유를 입력하세요.',
+                         inputValue: '',
+                        showCancelButton: true,
+                       inputValidator: function (value) {
+                           return new Promise(function (resolve, reject) {
+                                alert(value);
+                              
+                              if (value) {
+                               resolve()
+                                goBlameEnd(result,snsno,cmtno,fk_idx,value);
+                             } else {
+                               reject('신고할 내용을 입력해 주세요.')
+                             }
+                           })
+                       }
+                   }).then(function (){
+                      
+                   }, function (dismiss) {
+                      alert("dismiss : "+ dismiss);
+                      
+                      // dismiss can be 'cancel', 'overlay',
+                      // 'close', and 'timer'
+                      
+                      if (dismiss === 'cancel') {
+                          swal(   
+                            '신고취소',
+                            '신고가 취소되었습니다.',
+                            'error'
+                          )
+                        }
+                          
+                   })
+                } // end of else ~
+                
+             }, function () {
+               swal.resetDefaults()
+             })
+      }, function (dismiss) {
+         alert("dismiss : "+ dismiss);
+         // dismiss can be 'cancel', 'overlay',
+        // 'close', and 'timer'
+        
+          if (dismiss === 'cancel') {
+              swal(   
+                '신고취소',
+                '신고가 취소되었습니다.',
+                'error'
+              )
+        }
+                 
+      })
+  }
+  
+  function goBlameEnd(result,snsno,cmtno,fk_idx, value){
+     alert("goBlameEnd();시작! value : "+value);
+     
+       $.ajax({
+             url: "/shy/goBlameEnd.shy",
+           type: "GET",
+          data: {snsno:snsno
+             ,cmtno:cmtno
+             ,fk_idx:fk_idx
+             ,result:result
+             ,value:value
+             },
+           dataType: "JSON",  
+           success: function(data){
+              alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+              
+              swal.resetDefaults()
+                swal({
+                  title: fk_idx+'님의 댓글 신고!',
+                  html:
+                    '신고된 사유: <pre>' +
+                      JSON.stringify(result) +
+                    '</pre>',
+                  confirmButtonText: '신고 완료!',
+                  showCancelButton: false
+                })
+               
+           //   countComment();
+           },
+           error: function(){
+                alert("댓글 신고 ajax error function!"); 
+            }
+          });
+     
+  }
      </script>
 </head>
 <body>
@@ -269,7 +609,11 @@
 
 
 
-	<main role="main"><!--지우지 마세요  --> <c:if test="${shies==null}">
+	<main role="main"><!--지우지 마세요  --> 
+	
+	
+	
+	<c:if test="${shies==null}">
   	새 글을 써 보시거나, 친구를 추가해 보세요!
   </c:if> <c:if test="${shies!=null}">
 		<c:forEach items="${shies}" var="shies" varStatus="status">
@@ -330,7 +674,7 @@
 							<a class="bt-love" title="Love"
 								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
 								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
-								title="Love" id="love${shies.snsno }"> </a> <a class="bt-share"
+								title="Love" id="love${shies.snsno }" style="cursor:pointer"> </a> <a class="bt-share"
 								title="Share" href="#"> 공유하기 </a> <a
 								href="javascript:openComment('${shies.snsno}');"
 								class="bt-comment" title="Comment" id="comment${shies.snsno}">
@@ -352,30 +696,6 @@
 
 
 
-					<!-- Form -->
-					<div class="shy_comment-form">
-						<!-- Comment Avatar -->
-						<div class="shy_comment-avatar">
-							<img
-								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
-								style="display: block; height: 100%; width: 100%;">
-						</div>
-
-						<form class="shy_form" name="insertReplyform" id="insertReplyform">
-							<input type="hidden" id="myidx${shies.snsno }"
-								value="${loginuser.idx }" />
-							<div class="shy_form-row">
-								<textarea class="shy_input" id="replycontent${shies.snsno }"
-									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
-							</div>
-
-
-							<div class="shy_form-row">
-								<input type="button" id="replybutton" value="올리기"
-									onclick="insertReply(${shies.snsno});" />
-							</div>
-						</form>
-					</div>
 
 					<!-- Comments List -->
 
@@ -416,7 +736,31 @@
 
 						</div>
 						<!-- for each 돌리는 div끝  -->
+						
+					<!-- Form -->
+					<div class="shy_comment-form">
+						<!-- Comment Avatar -->
+						<div class="shy_comment-avatar">
+							<img
+								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								style="display: block; height: 100%; width: 100%;">
+						</div>
 
+						<form class="shy_form" name="insertReplyform" id="insertReplyform">
+							<input type="hidden" id="myidx${shies.snsno }"
+								value="${loginuser.idx }" />
+							<div class="shy_form-row">
+								<textarea class="shy_input" id="replycontent${shies.snsno }"
+									placeholder="댓글로 이야기를 나눠보세요" required></textarea>
+							</div>
+
+
+							<div class="shy_form-row">
+								<input type="button" id="replybutton" value="올리기"
+									onclick="insertReply(${shies.snsno});" />
+							</div>
+						</form>
+					</div>
 
 						<!-- <div align="center">
 							<a class="button" href="#" style="color: white;"> read more </a>
