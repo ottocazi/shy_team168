@@ -88,6 +88,28 @@ public class Min_DAO{
 			int n = sqlsession.insert("min.applybusiEnd", map);
 			return n;
 		}
+
+
+
+
+
+
+		public HashMap<String, String> getgeoinfo(String geoidx) {
+			
+			HashMap<String, String> geomap = sqlsession.selectOne("min.getgeoinfo", geoidx);
+			return geomap;
+		}
+
+
+
+
+
+
+		public List<HashMap<String, String>> getgeolist(HashMap<String, String> geomap) {
+			
+			List<HashMap<String, String>> geolist = sqlsession.selectList("min.getgeolist", geomap);
+			return geolist;
+		}
 	
 	
 	
