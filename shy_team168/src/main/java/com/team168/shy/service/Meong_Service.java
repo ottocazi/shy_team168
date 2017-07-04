@@ -136,4 +136,29 @@ public class Meong_Service implements Interface_CommonService  {
 		return tkList4;
 	}
 
+	public int CheckEmail(String joinemail) {
+		int n = dao.CheckEmail(joinemail);
+		return n;
+	}
+
+	public List<String> followlist(int idx) {
+		List<String> followlist = dao.followlist(idx);
+		return followlist;
+	}
+
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = dao.getmainshy(followlist);
+		return shies;
+	}
+
+	public String imgaddr(String snsno) {
+		String imgaddr = dao.imgaddr(snsno);
+		return imgaddr;
+	}
+
+	public int AddShare(HashMap<String, Object> map) {
+		int n = dao.AddShare(map);
+		return n;
+	}
+
 }

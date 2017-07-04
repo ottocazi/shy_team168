@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team168.shy.model.Min_DAO;
+import com.team168.shy.model.ShyMemberVO;
 
 
 @Service
@@ -72,7 +73,18 @@ public class Min_Service {
 			return glist;
 		}
 
+		// 1. 멤버 idx 로 vo 정보 얻어오기
+	public ShyMemberVO getMemberVO(int idx) {
+		ShyMemberVO getMemberVO = dao.getMemberVO(idx);
+		return getMemberVO;
+	}
 
+	
+	// 2. 멤버 정보 수정하기
+		public int applybusiEnd(HashMap<String, String> map) {
+			int n = dao.applybusiEnd(map);
+			return n;
+		}
 
 
 

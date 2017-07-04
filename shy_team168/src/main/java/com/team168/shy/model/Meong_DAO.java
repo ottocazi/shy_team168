@@ -151,4 +151,29 @@ public class Meong_DAO{
 		List<HashMap<String, Object>> tkList4 = sqlsession.selectList("mangu.gettongkeList4" , map);
 		return tkList4;
 	}
+
+	public int CheckEmail(String joinemail) {
+		int n = sqlsession.selectOne("mangu.CheckEmail", joinemail);
+		return n;
+	}
+
+	public List<String> followlist(int idx) {
+		List<String> followlist = sqlsession.selectList("mangu.followlist", idx);
+		return followlist;
+	}
+
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = sqlsession.selectList("mangu.shies", followlist);
+		return shies;
+	}
+
+	public String imgaddr(String snsno) {
+		String imgaddr = sqlsession.selectOne("mangu.imgaddr", snsno);
+		return imgaddr;
+	}
+
+	public int AddShare(HashMap<String, Object> map) {
+		int n = sqlsession.insert("mangu.AddShare", map);
+		return n;
+	}
 }

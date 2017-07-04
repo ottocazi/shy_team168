@@ -1,6 +1,7 @@
 package com.team168.shy;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,12 +40,97 @@ public class Min_Controller {
 	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
     public String geoPage(HttpServletRequest req) {
     	
-		return "smin/geo.tiles";
+		return "geo.notiles";
+    	
+    }
+	
+	@RequestMapping(value="/geotest.shy", method={RequestMethod.GET})
+    public String geoPage2(HttpServletRequest req) {
+    	
+		
+		return "geotest.notiles";
     	
     }
 	
 	
+	// == 마이페이지 불러오기 == 
+		@RequestMapping(value="/applybusi.shy", method={RequestMethod.GET})
+	    public String applybusi(HttpServletRequest req) {
+	    	
+			HttpSession session = req.getSession();
+		       
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			/*String str_idx = req.getParameter("idx");
+			int idx = Integer.parseInt(str_idx);
+			int idx = 33;*/
+			System.out.println("int idx : "+idx);
+			
+			// idx 로 memberVO 얻어오기 
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		        
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        return "smin/applybusi.tiles";
+
+	    }
 	
+
+		@RequestMapping(value="/applybusiEnd.shy", method={RequestMethod.POST})
+	    public String applybusiEnd(HttpServletRequest req, HttpSession session) throws IOException {
+			
+		
+			
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			
+			String str_idx = req.getParameter("idx");
+			System.out.println("컨트롤에서 받은 idx : "+ str_idx);
+			
+			String categoryno = req.getParameter("categoryno");
+			System.out.println("컨트롤에서 받은 categoryno : " + categoryno);
+			
+			String bname = req.getParameter("bname");
+			System.out.println("컨트롤에서 받은 bname : " + bname);
+			
+
+			String busicontent = req.getParameter("busicontent");
+			System.out.println("컨트롤에서 받은 busicontent : " + busicontent);
+
+			String busicall = req.getParameter("busicall");
+			System.out.println("컨트롤에서 받은 busicall : " + busicall);
+
+			String busimail = req.getParameter("busimail");
+			System.out.println("컨트롤에서 받은 busimail : " + busimail);
+			
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+	    	map.put("idx", str_idx);
+	    	map.put("categoryno", categoryno);
+	    	map.put("bname", bname);
+	    	map.put("busicontent", busicontent);
+	    	map.put("busicall", busicall);
+	    	map.put("busimail", busimail);
+	    	
+			int n = service.applybusiEnd(map);
+			
+			// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+			// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+			req.setAttribute("n", n);
+			idx = Integer.parseInt(str_idx);
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		       
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        
+
+			return "smin/applybusi.tiles";
+	    	
+	    }
 	
 	
 	
