@@ -224,7 +224,7 @@
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> 오늘 게시글수</span>
-              <div class="count">00</div>
+              <div class="count">${todaytotalshymemo}</div>
               <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span>
             </div>
           </div>
