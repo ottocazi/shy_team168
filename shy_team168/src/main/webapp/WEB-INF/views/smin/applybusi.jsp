@@ -49,21 +49,19 @@ $(document).ready(function(){
 });
 
 
-function applybusiEnd(categoryno,bname,busicontent,busicall,busimail) {
+function applybusiEnd() {
 	
+	/*categoryno,bname,busicontent,busicall,busimail  */
+	//alert("applybusiEnd() 실행");
 	
-	
-	alert("applybusiEnd() 실행");
-	
-		
-		document.applybusiFrm.categoryno.value = categoryno;
-		document.applybusiFrm.bname.value = bname;
+		//alert("카테고리 value는 : "+$("#categoryno").val());
+		/* document.applybusiFrm.bname.value = bname;
 		document.applybusiFrm.busicontent.value = busicontent;
 		document.applybusiFrm.busicall.value = busicall;
-		document.applybusiFrm.busimail.value = busimail;
+		document.applybusiFrm.busimail.value = busimail; */
 		document.applybusiFrm.action = "/shy/applybusiEnd.shy";	
 		document.applybusiFrm.method = "POST";
-		document.applybusiFrm.submit();
+		document.applybusiFrm.submit(); 
 		
 	
 
@@ -118,7 +116,7 @@ function applybusiEnd(categoryno,bname,busicontent,busicall,busimail) {
 								<br/><span>'사업명/상호명'을 입력해주세요.</span><br/>
 								<input type="text" class="inputcol" id="bname" name="bname" />
 								
-				                <select name="categoryno" id="categoryno" style="width: 100px; height: 30px"> 
+				                <select name="categoryno" id="categoryno" style="width: 100px; height: 30px" > 
 								<option value="1">서비스업</option>
 								<option value="2">야근업</option>
 								<option value="3">개발업</option>

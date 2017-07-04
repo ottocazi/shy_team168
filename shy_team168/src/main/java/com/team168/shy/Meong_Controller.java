@@ -335,7 +335,7 @@ public class Meong_Controller {
     	RowBounds rowBounds = new RowBounds(start2, end2);
     	
     	List<HashMap<String, String>> adminList = service.getadminList(map,rowBounds); 
-    	System.out.println(adminList);
+//    	System.out.println(adminList);
    	
     	totalCount2 = service.getTotalCount(map);
     	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);

@@ -131,7 +131,7 @@
     font-size:22px;
     letter-spacing:0;
     display:inline-block;
-    margin-left:5px;
+    margin-left:1px;
     color:#ccc;
     text-decoration:none;
 }
@@ -211,7 +211,6 @@
 		
 		var test = $("#firstarea").val();
 	
-
 		$("#secondarea").val(test);
 		
 
@@ -227,6 +226,12 @@
 			  
 		  
 		}
+	
+	function starcount(count){
+		
+		alert(count);
+		$("#starcounter").val(count);
+	}
 	
 	
   </script>
@@ -292,6 +297,16 @@
       </div>
       <div class="modal-body">
         
+<p class="star_rating" align="right">
+    <a href="#" class="on" onclick="starcount('1');">★</a>
+    <a href="#" class="on" onclick="starcount('2');">★</a>
+    <a href="#" class="on" onclick="starcount('3');">★</a>
+    <a href="#" onclick="starcount('4');">★</a>
+    <a href="#" onclick="starcount('5');">★</a>
+     
+    
+</p>
+<input type="hidden" id="starcounter" value="0"/> 
 		
 
         <div class="form-group">
@@ -384,14 +399,6 @@ src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCJ6uWo6C
 
 
 
-<p class="star_rating" align="center">
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#">★</a>
-    <a href="#">★</a>
-    <button type="button" class="btn btn-info" style="margin-left: 30px;"> 확인 </button>
-</p> 
 
 
       <div class="alert alert-success fade in">
