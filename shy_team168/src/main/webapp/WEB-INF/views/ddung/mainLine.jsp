@@ -329,7 +329,11 @@
 
 
 
-	<main role="main"><!--지우지 마세요  --> <c:if test="${shies==null}">
+	<main role="main"><!--지우지 마세요  --> 
+	
+	
+	
+	<c:if test="${shies==null}">
   	새 글을 써 보시거나, 친구를 추가해 보세요!
   </c:if> <c:if test="${shies!=null}">
 		<c:forEach items="${shies}" var="shies" varStatus="status">
