@@ -131,7 +131,7 @@
     font-size:22px;
     letter-spacing:0;
     display:inline-block;
-    margin-left:5px;
+    margin-left:1px;
     color:#ccc;
     text-decoration:none;
 }
@@ -211,7 +211,6 @@
 		
 		var test = $("#firstarea").val();
 	
-
 		$("#secondarea").val(test);
 		
 
@@ -227,6 +226,12 @@
 			  
 		  
 		}
+	
+	function starcount(count){
+		
+		alert(count);
+		$("#starcounter").val(count);
+	}
 	
 	
   </script>
@@ -292,6 +297,16 @@
       </div>
       <div class="modal-body">
         
+<p class="star_rating" align="right">
+    <a href="#" class="on" onclick="starcount('1');">★</a>
+    <a href="#" class="on" onclick="starcount('2');">★</a>
+    <a href="#" class="on" onclick="starcount('3');">★</a>
+    <a href="#" onclick="starcount('4');">★</a>
+    <a href="#" onclick="starcount('5');">★</a>
+     
+    
+</p>
+<input type="hidden" id="starcounter" value="0"/> 
 		
 
         <div class="form-group">
@@ -337,8 +352,8 @@
   
     <div class="col-sm-3 well">
     	
-<!-- Add Google Maps -->
-<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 관련 jsp -->
 <script>
 function myMap() {
 var myCenter = new google.maps.LatLng(37.539578, 126.899568);
@@ -347,20 +362,43 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 var marker = new google.maps.Marker({position:myCenter});
 marker.setMap(map);
 }
+
+var autoComplete = new google.maps.places.Autocomplete(
+		document.getElementById(search), {
+		types: [‘(cities)’]
+		});
+		
+google.maps.event.addListener(autoComplete, ‘place_changed’, function() {
+	var place = autocomplete.getPlace();
+	if (place.geometry) {
+	map.panTo(place.geometry.location);
+	map.setZoom(15);
+	}
+	});
 </script>
+
+<!-- 구글 맵 호출 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm5ys8Aqru_hi_-arUTuHNDxR0Gmx4HxU&callback=myMap"></script>
 
+
+
+<!-- 구글 자동완성 라이브러리 호출 -->
+<script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCJ6uWo6CjVt02ze8P_hedzb6PZpydtZIM">
+</script>
+
+
+<!-- 구글 맵 -->
+<div id="googleMap" style="height:300px;width:100%;"></div>
+
+<!-- 구글 자동완성 -->
+<input id="search" type="text">
 <br><br>
 
 
-<p class="star_rating" align="center">
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#">★</a>
-    <a href="#">★</a>
-    <button type="button" class="btn btn-info" style="margin-left: 30px;"> 확인 </button>
-</p> 
+
+
+
 
 
       <div class="alert alert-success fade in">

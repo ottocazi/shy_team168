@@ -330,7 +330,7 @@ text-decoration: none;
     
   </head>
 
-  <body style="margin-left: 10%; width: 80%;">
+  <body style="margin-left: 10%; width: 80%; background-color: #fff;">
     <div class="container body">
       <div class="main_container">
         

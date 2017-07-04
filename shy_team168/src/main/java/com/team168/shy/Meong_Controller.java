@@ -32,17 +32,17 @@ public class Meong_Controller {
 	@RequestMapping(value="/addregistorEnd.shy", method={RequestMethod.POST})
     public String test(HttpServletRequest req, HttpSession session, ShyMemberVO svo) {
     	
-		String name = req.getParameter("name");
-		String email = req.getParameter("email");
-		String pwd = req.getParameter("pwd");
-		String chkpwd = req.getParameter("chkpwd");
+		String joinname = req.getParameter("name");
+		String joinemail = req.getParameter("email");
+		String joinpwd = req.getParameter("pwd");
+		String joinchkpwd = req.getParameter("chkpwd");
 
     	HashMap<String, String> map = new HashMap<String, String>();
 
-    	map.put("name", name);
-    	map.put("email", email);
-    	map.put("pwd", pwd);
-    	map.put("chkpwd", chkpwd);
+    	map.put("joinname", joinname);
+    	map.put("joinemail", joinemail);
+    	map.put("joinpwd", joinpwd);
+    	map.put("joinchkpwd", joinchkpwd);
     	
     	int n = 0;
     	
@@ -51,15 +51,16 @@ public class Meong_Controller {
 		   String msg = "";
 		   String loc = "";
 		   String type = "";	
-		   String title = "";
+		   String title = "";   
 		   
 		   if(n==1) {
-			   msg = "로그인페이지로 이동하시겠습니까?";
+			   msg = "다시한번 로그인해주십쇼~";
 			   loc = "javascript:history.back();";
 			   type = "success";
 			   title = "Shy가입을 축하드립니다~~";
 			   // or 추가정보입력하시겠습니까?
 		   }
+
 		   
 /*		   아직 유효성검사 안했으므로
 		   else {
@@ -77,7 +78,25 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }
 	
+	// 아이디 중복체크(ajax활용)
+	@RequestMapping(value="/CheckEmail.shy", method={RequestMethod.POST})
+    @ResponseBody
+    public int CheckEmail(HttpServletRequest req) {
+    	
+		String joinemail = req.getParameter("joinemail");
+//		System.out.println("검사할 id값은 "+joinemail);
+		req.setAttribute("joinemail", joinemail);
+		int n = 0;
+		
+//		System.out.println("joinemail 은 ==> " + joinemail);	
 
+		n = service.CheckEmail(joinemail);
+//		System.out.println("n 은 ==> " + n);
+		
+    	return n;
+    	
+    }
+	
     // 로그인 완료 요청 
     @RequestMapping(value="/loginEnd.shy", method={RequestMethod.POST})
     public String loginEnd(HttpServletRequest req, ShyMemberVO loginuser, HttpSession session) throws UnknownHostException {
@@ -149,7 +168,6 @@ public class Meong_Controller {
     	
     }
 	
-
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
     public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
@@ -181,8 +199,7 @@ public class Meong_Controller {
     	
     	return "logout.notiles";
     }
-	
-    
+	 
 	// 관리자 페이지요청
     @RequestMapping(value="/admin.shy", method={RequestMethod.GET})
     public String admin(HttpServletRequest req, HttpSession session){
@@ -199,7 +216,6 @@ public class Meong_Controller {
 
     	return "admin.notiles";
     }
-    
     
     // 관리자 공지사항(미정) 페이지요청
     @RequestMapping(value="/gesipan.shy", method={RequestMethod.GET})
@@ -319,7 +335,7 @@ public class Meong_Controller {
     	RowBounds rowBounds = new RowBounds(start2, end2);
     	
     	List<HashMap<String, String>> adminList = service.getadminList(map,rowBounds); 
-    	System.out.println(adminList);
+//    	System.out.println(adminList);
    	
     	totalCount2 = service.getTotalCount(map);
     	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
@@ -369,7 +385,6 @@ public class Meong_Controller {
     	return "gesipan.notiles";
     }    
 		
-    
 	// 관리자 페이지 회원관리 페이지 요청
     @RequestMapping(value="/shymember.shy", method={RequestMethod.GET})
     public String shymember(HttpServletRequest req, HttpSession session){
@@ -381,7 +396,6 @@ public class Meong_Controller {
     	return "shymember.notiles";
     }
 	
-    
     // 관리자 페이지 유저관리 페이지 비활성화버튼요청
     @RequestMapping(value="/shystatusDown.shy", method={RequestMethod.GET})
     public String shyleveldown(HttpServletRequest req, HttpSession session){
@@ -412,7 +426,6 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }
 	
-    
     // 관리자 페이지 유저관리 페이지 활성화버튼요청
     @RequestMapping(value="/shystatusUp.shy", method={RequestMethod.GET})
     public String shylevelup(HttpServletRequest req, HttpSession session){
@@ -443,7 +456,6 @@ public class Meong_Controller {
     	return "ddung_alert.notiles";
     }	
 	
-    
     // 관리자 페이지 통계상세 페이지 활성화버튼요청
     @RequestMapping(value="/tongke.shy", method={RequestMethod.GET})
     public String tongke(HttpServletRequest req, HttpSession session){
@@ -498,7 +510,6 @@ public class Meong_Controller {
     	return "tongke.notiles";
     }	
 
-    
     @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
     @ResponseBody
     public List<HashMap<String, Object>> follow(HttpServletRequest req, HttpSession session){
@@ -520,7 +531,6 @@ public class Meong_Controller {
     	
     }
     
-    
     @RequestMapping(value="/gesimulTK.shy", method={RequestMethod.GET})
     public String gesimulTK(HttpServletRequest req, HttpSession session){
 
@@ -536,7 +546,96 @@ public class Meong_Controller {
     	return "kongyou.notiles";
     	
     }
+    
+    // 기현이형 메인라인
+	@RequestMapping(value="/mmainline.shy", method={RequestMethod.GET})
+    public String mmainline(HttpServletRequest req, HttpSession session) {
+		
+		Object loginuser = session.getAttribute("loginuser");
+		ShyMemberVO smvo = (ShyMemberVO)loginuser;
+		session.setAttribute("loginuser", smvo);
+		
+		if(smvo==null){
+			
+			System.out.println("null이오");
+			req.setAttribute("type", "question");
+			req.setAttribute("msg", "활동이 감지되지 않아 로그아웃되었습니다.  :)");
+			req.setAttribute("loc", req.getContextPath()+"/");
+			return "ddung_alert.notiles";
+			
+		}
+		
+		// 로그인 유저의 팔로우 명단 가져오기 
+		List <String> followlist = service.followlist(smvo.getIdx());
+		
 
+		// 팔로워 명단에 내 계정도 추가해서 내 계정의 글들도 같이 볼수 있도록 하기
+		String myIdx = Integer.toString(smvo.getIdx());
+//		System.out.println("myIdx = "+ myIdx);
+		followlist.add(myIdx);
+		
+//		System.out.println("followlist의 사이즈 = "+followlist.size());
+		
+		// 팔로워들 + 나의 샤이 가져오기 , 유저정보 가져오기(join?), 
+		List <HashMap<String, String>> shies = service.getmainshy(followlist);
+		
+		if(shies!=null){
+			for(int i =0 ; i<shies.size(); i++){
+				
+				
+				// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+				// 페이징 처리 미완성
+				if("1".equals(shies.get(i).get("simage"))){
+					
+					String snsno = shies.get(i).get("snsno");
+//					System.out.println("snsno = "+snsno);
+					String imagefile = service.imgaddr(snsno);
+					
+//					System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+					shies.get(i).put("imageaddr", imagefile);
+					
+				}
+				
+				else if("0".equals(shies.get(i).get("simage"))){
+					shies.get(i).put("imageaddr", null);
+				}
+				
+//				System.out.println("shies.simage : "+shies.get(i).get("simage"));
+//				System.out.println("shies에 들어간 imageaddr = " + shies.get(i).get("imageaddr"));
+			}
+		
+		}
+		
+		
+		req.setAttribute("shies", shies);
+		
+		return "maeng9/mmainLine.tiles";
+    	
+    }
+	
+    @RequestMapping(value="/share.shy", method={RequestMethod.POST})
+    public String share(HttpServletRequest req, HttpSession session){
+    	
+    	String fk_idx = req.getParameter("fk_idx");
+    	String snsno = req.getParameter("snsno");
+
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	map.put("fk_idx", fk_idx);
+    	map.put("snsno", snsno);
+    	
+    	int n = 0;
+    	
+    	n = service.AddShare(map);
+    	
+    	System.out.println("n값은 == " + n);
+    	// n값은 == 1
+    	
+    	req.setAttribute("loc", "mmainline.shy");
+    	
+    	return "msg.notiles";
+    	
+    }
 
 
 	

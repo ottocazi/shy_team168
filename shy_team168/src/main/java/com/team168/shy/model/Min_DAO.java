@@ -69,8 +69,25 @@ public class Min_DAO{
 			List<HashMap<String, String>> glist = sqlsession.selectList("min.groupsearch", map, rowBounds1 );
 			return glist;
 		}
-	
-	
+
+
+
+
+
+
+		// *** 사용자 정보 가져오기 ***
+	public ShyMemberVO getMemberVO(int idx) {
+		ShyMemberVO getMemberVO = sqlsession.selectOne("min.getMemberVO", idx);
+		return getMemberVO;
+	}
+
+
+
+	// 내 정보수정
+		public int applybusiEnd(HashMap<String, String> map) {
+			int n = sqlsession.insert("min.applybusiEnd", map);
+			return n;
+		}
 	
 	
 	
