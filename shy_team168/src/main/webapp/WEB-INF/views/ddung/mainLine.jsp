@@ -157,17 +157,19 @@
 	    			else {
 	    			 	html	+= comments.name+ '</span></a>'; 
  				 	}
-	    				html	+= '<span class="shy_comment-date">'
-	    					 + comments.updatetime+'</span>'
-	    					 + '</div>'
-	    					 + '<div class="shy_comment-actions">'
-							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
-							 + ' aria-hidden="true"></i></a> '
-	    					 + '</div>'
-	    					 + '</div>'
-	    					 + '</div></div>';   
-	    			
-	    				/*html END*/ 
+	    				
+    			     html   += '<span class="shy_comment-date">'
+                         + comments.updatetime+'</span>'
+                         + '</div>'
+                         + '<div class="shy_comment-actions">'
+                        + ' <a href="javascript:modiCheck('
+                        + snsno+','+comments.cmtno+','+comments.fk_idx+');"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i></a> '
+                        + '</div>'
+                         + '</div>'
+                         + '</div></div>';   
+                  
+                     /*html END*/ 
+
 	    				
 	    				
 	    				

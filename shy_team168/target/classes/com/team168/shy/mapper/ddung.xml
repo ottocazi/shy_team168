@@ -31,9 +31,12 @@
 	
 	<select id="getshynow" parameterType="Object" resultMap="getshynow">
 	
-		select *
-		from tbl_shymemo 
-		where rownum = 1 and fk_idx = #{p_idx} order by SDATEDTIME DESC
+		select  *
+  from (
+    select *
+    from tbl_shymemo 
+    where fk_idx = #{fk_idx} order by sdatedtime DESC)
+    where rownum = 1
 	
 	</select>
 	
