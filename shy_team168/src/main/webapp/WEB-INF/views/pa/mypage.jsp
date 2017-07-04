@@ -39,10 +39,47 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	//countComment();
-      
+   		
         getLike();
+        
+        $('#showFlwList').hide();
+        
+        
+        $('#showFlwList').click(function(e){
+           $('#showFlwList').hide(); 
+        });
        
-       
+        $('.flwList').click(function(e){
+           
+            // 팔로우목록 Ajax 불러오기
+             $.ajax({
+                 url: "/shy/myfollowList.shy",
+                 type: "GET",
+                 dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+                 /* data: , */
+                 success: function(data) { // 성공했을 때의 처리 콜백함수
+                    if(data.length > 0) {
+                       var Result="";
+                    
+                       $.each(data,function(entryIndex,entry){
+                        var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+                                 +"<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
+                           Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
+                           
+                       });
+                       $("#showFlwList").html(Result).show(); 
+                       
+                   }else{
+                      $('#showFlwList').hide();   
+                   }
+                 },
+                 error: function() { // 에러가 발생했을 때의 콜백함수
+                     alert("error");
+                 }
+             });
+            
+        });
+
        
     });// end of $(document).ready() --------
     
@@ -130,10 +167,10 @@
                 	  	$('#bt-love'+entry.snsno).html(html).show();
                 	  	$('#love'+entry.snsno).hide();
                 	  	
-                  }/* else{
+                  }else{
                        $('#bt-love'+entry.snsno).show();
                        $('#love'+entry.snsno).hide();
-                   } */
+                   } 
                });
                
             },
@@ -143,7 +180,86 @@
         });
        
    }
+  
 </script>
+
+<script>
+var pageNo = 1;
+	
+function moreList(){
+	
+	
+	
+	pageNo += 1;
+	
+    $.ajax({
+        type: 'POST'
+        , async: false
+        , url: "/shy/mypageList.shy"
+        , data: {pageNo: pageNo}
+        , beforeSend: function() {
+             $('#ajax_load_indicator').show().fadeIn('slow');  // div가 나타는 속도
+          }
+        , success: function(data) {
+        	 
+            var result = "";
+            var end;
+            	
+            $.each(data,function(entryIndex,entry){
+              
+      		  var  html = "<article class='card-60 social'>"+
+      	     			  "<img src='/shy/resources/images/shydb/"+entry.myimg+"' alt='shy' id='nike'>"+
+          				  "<div class='flex-content'>"+
+            			  "<p style='text-align: left'>"+
+            			  entry.scontent+"</p><footer><p>";
+            			  if(entry.slikecnt==0){
+            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
+            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
+	            			  if(entry.snsnocnt==0){ 
+	            				  html +="Love </a>";
+	            			  }else{
+	            				  html += entry.snsnocnt+"</a>";
+	            			  }
+            			  }else{
+            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
+            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
+            			  }
+            			  html += "<a class='bt-share' title='Share' href='#'> 공유하기 </a>"+
+				      	  "<a href='javascript:openComment('"+
+            			  entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+
+            			  entry.snsno+"'> </a>"+
+				          "</p></footer></div></article>";
+				          
+      			result += "<div class='mycard myIncard'>"+html+"</div>";
+      			$('#readmore').remove();
+      			
+      			end = entry.end;
+      	 	});
+            
+          	////
+  			if(end == 1) {
+  				$(result).appendTo('#ajax_load_indicator');
+  			}
+  			////
+  			else {
+  				result += "<div id='readmore' align='center'><a class='readmore' href='javascript:moreList();' style='color:white;'>더 읽기</a></div>";
+  	            $(result).appendTo('#ajax_load_indicator');
+  			}
+          }
+        , error: function(data) {
+        	alert("error");
+          }
+        , complete: function(data) { 
+        	//$('.readmore').hide();
+            //$('#ajax_load_indicator').fadeOut('slow');
+        	//getLike();
+        	
+          }
+    });
+}
+</script>
+
+
 <style type="text/css">
 .bt, .proedit {
     text-align: center;
@@ -195,8 +311,25 @@
                Follow
             </button>
             <hr>
-            <span>게시물&nbsp; 10개</span>&nbsp;&nbsp;
-            <span>팔로우&nbsp; 6명</span>&nbsp;&nbsp;
+             <span>게시물&nbsp; 
+               <c:if test="${myshyCount==0}" >
+               0
+               </c:if>
+               <c:if test="${myshyCount>0}" >
+               ${myshyCount }
+               </c:if>
+               개</span>&nbsp;&nbsp;
+            <span class="flwList">팔로우&nbsp; 
+               <c:if test="${fk_idxflwedcnt==0 }" >
+               0
+               </c:if>
+               <c:if test="${fk_idxflwedcnt>0 }" >
+               ${fk_idxflwedcnt } 
+               </c:if>
+                      명</span>&nbsp;&nbsp;
+            <div id="showFlwList">
+            </div>
+
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
             <button class="proedit" onclick="goEdit();">프로필편집</button>
             <c:if test="${loginuser.myintro != null}">
@@ -217,7 +350,6 @@
 
           <div id="myTabContent" class="tab-content">
                
-       <!--  <main role="main">지우지 마세요  -->
   
   <c:if test="${myshyList==null}">
   	아직 등록된 글이 없습니다.
@@ -226,9 +358,8 @@
   
   <c:if test="${myshyList!=null}">
   
-  <c:forEach items="${myshyList }" var="shies">
+  <c:forEach items="${myshyList }" var="shies" varStatus="status">
   <div class="mycard myIncard">
-  <c:set var="myimg" value="${shies.myimg }"/>	
   	<article class="card-60 social">
     
       
@@ -241,97 +372,31 @@
        
       <footer>
         <p>
-          <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')" id="bt-love${shies.snsno }"> Love </a> 
+         <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')" id="bt-love${shies.snsno }"> Love </a> 
 		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
 		 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
 		 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
         </p>
       </footer>
     </div>
-    
-      <!--new댓글창  -->
-    
-      
-     <div id="commentbox" class="shy_comments-app" style="margin-top:0; display:none;" ><!--ng-app="commentsApp" ng-controller="CommentsController as cmntCtrl"  -->
-  
-  
-  <!-- Form -->
-  <div class="shy_comment-form">
-    <!-- Comment Avatar -->
-    <div class="shy_comment-avatar">
-      <img src="http://lorempixel.com/200/200/people">
-    </div>
 
-    <form class="shy_form" name="form" ng-submit="form.$valid && cmntCtrl.addComment()" novalidate>
-      <div class="shy_form-row">
-        <textarea class="shy_input" ng-model="cmntCtrl.comment.text"  placeholder="댓글로 이야기를 나눠보세요" required></textarea>
-      </div>
-
-
-      <div class="shy_form-row">
-        <input type="submit" value="올리기">
-      </div>
-    </form>
-  </div>
-
-  <!-- Comments List -->
-  <div class="shy_comments">
-    <!-- Comment -->
-   
-
-    <!-- Comment - Dummy -->
-    <div class="shy_comment"><!-- for each 돌리는 div  -->
-      <!-- Comment Avatar -->
-      <div class="shy_comment-avatar">
-        <img src="" alt="프로필">
-      </div>
-
-      <!-- Comment Box -->
-      <div class="shy_comment-box">
-        <div class="shy_comment-text">짧은 댓글 test1</div>
-        <div class="shy_comment-footer">
-          <div class="shy_comment-info">
-            <span class="shy_comment-author">
-              <a href="">유저명</a>
-            </span>
-            <span class="shy_comment-date">댓글작성시간</span>
-          </div>
-
-          <div class="shy_comment-actions">
-            <a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" ></i></a>
-          </div>
-        </div>
-        
-
-      </div>
-	
-	               
-      
-    </div><!-- for each 돌리는 div끝  -->
-
-		<div align="center"><a class="button" href="#" style="color:white; ">
-					read more
-				</a>
-   </div>
-  </div>
-</div>
-    <!--new댓글창 end  -->
-    
-    <!-- end .flex-content-->
   </article>
   
   
-  <!-- post foreach 마무리  -->
   	
-  </div>
+  </div> 
   </c:forEach>
+  <div id="ajax_load_indicator" style="display:none">
+  </div>
   
+  <c:if test="${myshyCount > 6}">
+  <div id="readmore" align="center"><a class="readmore" href="javascript:moreList();" style="color:white;">더 읽기</a>
+	</div>
+  </c:if>	
+  <c:if test="${myshyCount < 6}">
   </c:if>
-  
-  <div align="center"><a class="readmore" href="#" style="color:white; " >
-					더 읽기
-				</a><br><br>
-	</div>			
+  </c:if>
+  		
    
 <!--	</main>  한 개의 shy 끝  -->
 	

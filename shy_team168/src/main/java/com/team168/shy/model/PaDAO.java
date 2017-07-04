@@ -96,11 +96,11 @@ public class PaDAO {
 		return check;
 	}
 
-	// ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
-	public List<HashMap<String, String>> getMyshy(String myIdx) {
-		List<HashMap<String, String>> myshyList = sqlsession.selectList("pa.myshyList",myIdx);
+	/* ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
+	public List<HashMap<String, String>> getMyshys(HashMap<String, Object> mymap) {
+		List<HashMap<String, String>> myshyList = sqlsession.selectList("pa.myshyList",mymap);
 		return myshyList;
-	}
+	}*/
 
 	// ===== 이미지 가져오기 =====
 	public String getImgaddr(String snsno) {
@@ -126,5 +126,44 @@ public class PaDAO {
 		return n;
 	}
 
+	// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+	public List<HashMap<String, String>> getMyshy(HashMap<String, Object> mymap) {
+		List<HashMap<String, String>> myshyList = sqlsession.selectList("pa.getmyshyList",mymap);
+		return myshyList;
+	}
+	
+	////
+	// =====  나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 ===== //
+	public int getMyshyCount(String myIdx) {
+		int myshyCount = sqlsession.selectOne("pa.getmyshyCount",myIdx);
+		return myshyCount;
+	}
+	////
+	
+	// ===== 내 팔로우 가져오기 ===== //
+	public List<HashMap<String, String>> getMyfollows(String myIdx) {
+		List<HashMap<String, String>> myflwList = sqlsession.selectList("pa.getflwList", myIdx);
+		return myflwList;
+	}
+
+	// ===== 내 팔로우 수 가져오기 ===== //
+	public int getMyflwcnt(String myIdx) {
+		int fk_idxflwedcnt = sqlsession.selectOne("pa.getflwCnt", myIdx);
+		return fk_idxflwedcnt;
+	}
+
+	// ===== 좋아요 likeno 가져오기  ===== //
+	public String getLikeno(HashMap<String, String> likemap) {
+		String likeno = sqlsession.selectOne("pa.getLikeno",likemap);
+		return likeno;
+	}
+
+	// ===== 좋아요했을시, 알람 insert  ===== //
+	public void insertAlram(HashMap<String, String> likemap) {
+		sqlsession.insert("pa.insertLikeAlram",likemap);
+	}
+
+
+	
 
 }

@@ -253,7 +253,7 @@
 		from dual
 	</select>
 	
-	<!-- =====  나의 샤이 가져오기 , 내 정보 가져오기(join) =====  -->
+	<!-- =====  나의 샤이 가져오기 , 내 정보 가져오기(join) ===== 
 	<resultMap type="java.util.HashMap" id="myshies">
 		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
 		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
@@ -270,13 +270,18 @@
 		<result property="email" 		column="EMAIL" 			javaType="String"/>
 		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
 	</resultMap>
-	<select id="myshyList" parameterType="String" resultMap="myshies">
-		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+	<select id="myshyList" parameterType="java.util.HashMap" resultMap="myshies">
+		SELECT V.*
+		FROM
+		(
+		SELECT rownum as RNO,A.* , B.EMAIL, B.NAME , B.MYIMG
 		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
 		WHERE	 1=1 AND A.STATUS = 1 AND
-				 FK_IDX = #{fk_idx}
-		ORDER BY A.SNSNO DESC
-	</select>
+				 FK_IDX = #{myIdx}
+		ORDER BY A.SNSNO DESC)V
+        WHERE V.RNO > 0 and V.RNO <![CDATA[<=]]> #{end}
+        ORDER by V.RNO
+	</select> -->
 	
 	<!-- =====  이미지 가져오기 =====  -->
 	<select id="myshyImg" parameterType="String" resultType="String">
@@ -332,7 +337,99 @@
       (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 GROUP BY SNSNO) c on b.snsno=c.snsno
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
+	
+	<!-- =====  (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 =====  -->
+	<resultMap type="java.util.HashMap" id="getmyshies">
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="snsnocnt" 	column="SNSNOCNT" 			javaType="int"/>
+	</resultMap>
+	<select id="getmyshyList" parameterType="java.util.HashMap" resultMap="getmyshies">
+         SELECT X.*,NVL(Y.SNSNOCNT,0) AS SNSNOCNT
+        FROM          
+                (SELECT ROWNUM AS RNO,V.*
+		FROM
+		(
+				SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+				FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+				WHERE	 A.STATUS = 1 AND
+				FK_IDX = #{myIdx}
+                ORDER by A.SNSNO desc)V)X
+        LEFT JOIN
+                (SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
+                ON X.SNSNO = Y.SNSNO
+                WHERE RNO >= #{start} and RNO <![CDATA[<=]]> #{end}
+	</select>
+	
+	<!--  -->
+	<!-- =====  나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 =====  -->
+	<select id="getmyshyCount" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM
+		(
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX = #{myIdx}
+		ORDER BY A.SNSNO DESC) V
+	</select>
+	<!--  -->
+	
+	<!-- ===== 내 팔로우 가져오기 =====   -->
+   <resultMap type="java.util.HashMap" id="getflwListMap">
+      <result property="fk_idxflwed" column="FK_IDXFLWED" javaType="String" />
+      <result property="email" column="EMAIL" javaType="String" />
+      <result property="myimg" column="MYIMG" javaType="String" />
+   </resultMap>
+   <select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
+        SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+      FROM
+      (
+      SELECT *
+      FROM
+      (SELECT FK_IDXFLWED,FK_IDXFLW
+      FROM TBL_FOLLOW) A
+      INNER JOIN
+      (SELECT IDX, EMAIL,MYIMG
+      FROM TBL_SHYMEMBER
+      WHERE STATUS=1) B
+      ON A.FK_IDXFLWED = B.IDX
+      )V
+      WHERE V.FK_IDXFLW=#{myIdx}
+   </select>
+   
+   <!-- ===== 내 팔로우 수 가져오기 =====   -->
+   <select id="getflwCnt" parameterType="String" resultType="int">
+      SELECT COUNT(FK_IDXFLWED) AS FK_IDXFLWEDCNT
+      FROM TBL_FOLLOW
+      WHERE FK_IDXFLW = #{myIdx}
+   </select>
+   
+   <!-- ===== 좋아요 likeno 가져오기 =====   -->
+   <select id="getLikeno" parameterType="java.util.HashMap" resultType="String">
+      SELECT LIKENO
+      FROM TBL_LIKE
+      WHERE FK_LIKEIDX = #{fk_likeidx} AND SNSNO = #{likeseq}
+   </select>
+   
+   <!-- ===== 좋아요 알림 insert ===== -->	
+	<insert id="insertLikeAlram" parameterType="java.util.HashMap">
+		insert into tbl_alram(alramno,fk_idx,alramdate,astatus,likeno)
+		values(seq_tbl_alram.nextval,#{fk_likeidx},default,default,#{likeno})
+	</insert>
 	
 </mapper>	

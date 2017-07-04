@@ -447,7 +447,7 @@
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
 							안녕하세요
 						</span>
-						<a class="header-menu-number" href="#">5</a><div id="ajaxresult"></div>
+						<a class="header-menu-number" href="#"><!-- 알림카운트 --></a><div id="ajaxresult"></div>
 					</c:if>
 
 					<c:if test="${loginuser.name==null }">
