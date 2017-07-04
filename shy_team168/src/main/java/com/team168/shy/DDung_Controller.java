@@ -133,7 +133,7 @@ public class DDung_Controller {
 		
 		//path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
 		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
-		
+		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
 		
 		System.out.println("rootpath : "+ rootpath);
 		System.out.println("path : " +  path);
@@ -241,16 +241,34 @@ public class DDung_Controller {
 			String street_number = req.getParameter("street_number");
 			
 			HashMap<String,String> parameters = new HashMap<String, String>();
-			parameters.put("fk_snsno", shynow.get("snsno"));
-			parameters.put("shyplace", shyplace);
-			parameters.put("latitude", latitude);
-			parameters.put("longditude", longditude);
-			parameters.put("route", route);
-			parameters.put("locality", locality);
-			parameters.put("area1", area1);
-			parameters.put("postal_code",postal_code);
-			parameters.put("country",country);
-			parameters.put("street_number", street_number);
+			
+			if(latitude==null||country==null){
+				parameters.put("fk_snsno", shynow.get("snsno"));
+				parameters.put("shyplace", shyplace);
+				parameters.put("latitude", "X");
+				parameters.put("longditude", "X");
+				parameters.put("route", "X");
+				parameters.put("locality", "X");
+				parameters.put("area1", "X");
+				parameters.put("postal_code","X");
+				parameters.put("country","X");
+				parameters.put("street_number", "X");
+				
+			}
+			
+			else{
+				parameters.put("fk_snsno", shynow.get("snsno"));
+				parameters.put("shyplace", shyplace);
+				parameters.put("latitude", latitude);
+				parameters.put("longditude", longditude);
+				parameters.put("route", route);
+				parameters.put("locality", locality);
+				parameters.put("area1", area1);
+				parameters.put("postal_code",postal_code);
+				parameters.put("country",country);
+				parameters.put("street_number", street_number);
+			}
+			
 			service.insertGeo(parameters);
 			
 			
@@ -284,7 +302,7 @@ public class DDung_Controller {
 		
 		String rootpath = session.getServletContext().getRealPath("/");
 		String path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
-		
+		/*path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");*/
 		
 		System.out.println("rootpath : "+ rootpath);
 		System.out.println("path : " +  path);
