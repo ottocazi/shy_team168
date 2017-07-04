@@ -35,11 +35,11 @@ public class DDung_Controller {
 	@Autowired
 	private Juno_Service jservice;
 	
-	/*@RequestMapping(value="/*", method={RequestMethod.GET})
+	@RequestMapping(value="/logo.shy", method={RequestMethod.GET})
 	public String userpage(HttpServletRequest req, HttpSession session) {
 		 
-		return "";
-	}*/
+		return "shy_logo.notiles";
+	}
 	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
