@@ -231,7 +231,29 @@ public class DDung_Controller {
 		}
 		
 		if(staggeo.equals("1")){
-			// 위도값 경도값, 지정 이름(당산역)을 넣으세요
+			String latitude = req.getParameter("latitude");
+			String longditude= req.getParameter("longditude");
+			String route =req.getParameter("route");
+			String locality =req.getParameter("locality");
+			String area1 =req.getParameter("area1");
+			String postal_code =req.getParameter("postal_code");
+			String country=	req.getParameter("country");
+			String street_number = req.getParameter("street_number");
+			
+			HashMap<String,String> parameters = new HashMap<String, String>();
+			parameters.put("fk_snsno", shynow.get("snsno"));
+			parameters.put("shyplace", shyplace);
+			parameters.put("latitude", latitude);
+			parameters.put("longditude", longditude);
+			parameters.put("route", route);
+			parameters.put("locality", locality);
+			parameters.put("area1", area1);
+			parameters.put("postal_code",postal_code);
+			parameters.put("country",country);
+			parameters.put("street_number", street_number);
+			service.insertGeo(parameters);
+			
+			
 		}
 		
 		
@@ -302,6 +324,13 @@ public class DDung_Controller {
 	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
 		
 		return "ddung/accountenter.tiles";
+		
+	}
+	
+	@RequestMapping(value="/m.shy", method={RequestMethod.GET})
+	public String m(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		return "ddung/mainLine2.tiles";
 		
 	}
 	
