@@ -296,8 +296,10 @@
         
       </div>
       <div class="modal-body">
-        
-<p class="star_rating" align="right">
+
+
+<p class="star_rating" align="left">
+	
     <a href="#" class="on" onclick="starcount('1');">★</a>
     <a href="#" class="on" onclick="starcount('2');">★</a>
     <a href="#" class="on" onclick="starcount('3');">★</a>
@@ -305,14 +307,21 @@
     <a href="#" onclick="starcount('5');">★</a>
      
     
+	<select name="status" id="status" style="float: right; size: 30px;"> 
+	<option value="1">전체 공개</option>
+	<option value="2">친구 공개</option>
+	<option value="0">나만 보기</option>
+	</select>
+    
 </p>
 <input type="hidden" id="starcounter" value="0"/> 
 		
 
         <div class="form-group">
           <textarea class="form-control" rows="7" id="secondarea"  required></textarea>
+          
         </div>
- 
+ <input type="file" id="uploader" name="image" />
 
       </div>
       <div class="modal-footer">
