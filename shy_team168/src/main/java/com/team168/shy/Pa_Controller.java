@@ -594,22 +594,6 @@ public class Pa_Controller {
 		}
 		return "ddung_alert.notiles";
     }
-    
-    // ===== hearder 알람 띄우기 ===== //
- 	@RequestMapping(value="/myAlram.shy", method={RequestMethod.GET})
-     public String goMyAlram(ShyMemberVO loginuser,HttpServletRequest req,HttpSession session) {
- 		
- 		String myIdx = Integer.toString(loginuser.getIdx());
- 		System.out.println("myIdx="+myIdx);
- 		//req.setAttribute("myIdx", myIdx);
- 		
- 		//List<HashMap<String,String>> myflwlist = service.getMyfollow(myIdx);
- 		
- 		//List<HashMap<String,String>> myflwlist = service.getAlramlike(myIdx);
- 		
-		return myIdx;
- 			
- 	}
  	
  	// ===== 좋아요 insert ===== //
   	@RequestMapping(value="/like.shy", method={RequestMethod.GET})
@@ -619,8 +603,6 @@ public class Pa_Controller {
   		String fk_likeidx = req.getParameter("idx");
   		//System.out.println("fk_likeidx="+fk_likeidx);
   		
-  		String liketype = req.getParameter("liketype"); // 게시물 타입 1:게시물 2:댓글
-  		//System.out.println("liketype="+liketype);
   		String seqcolum = req.getParameter("seqcolum"); // snsno,storeboardno,grpboardseq 컬럼명
   		//System.out.println("seqcolum="+seqcolum);
   		String likeseq = req.getParameter("likeseq"); // snsno,storeboardno,grpboardseq 벨류값
@@ -628,7 +610,6 @@ public class Pa_Controller {
   		
   		HashMap<String, String> likemap = new HashMap<String, String>();
   		likemap.put("fk_likeidx", fk_likeidx);
-  		likemap.put("liketype", liketype);
   		likemap.put("seqcolum", seqcolum);
   		likemap.put("likeseq", likeseq);
   		
@@ -639,7 +620,10 @@ public class Pa_Controller {
   			
   			if(likeno!=null){ 
   				likemap.put("likeno", likeno);
-  				service.insertAlram(likemap);
+  				String alarm_target = service.alarmTarget(likeseq); // alarm_target을 가져온다.
+  				
+  				likemap.put("alarm_target", alarm_target);
+  				service.insertAlarm(likemap);
   			}
   		}
   		HashMap<String, Object> returnlike = new HashMap<String, Object>();
@@ -669,7 +653,13 @@ public class Pa_Controller {
    		int result = service.deletetLike(likemap);
    		
    		if(result>0){
-   			//service.getLikes(likemap);
+   			String likeno = service.getLikeno(likemap);
+   			
+   			if(likeno!=null){ 
+   				likemap.put("likeno", likeno);
+  				service.deleteAlarm(likemap); // alarm 테이블에서 삭제한다.
+  			}
+   			
    		}
    		HashMap<String, Object> returnunlike = new HashMap<String, Object>();
    		returnunlike.put("RESULT", result);
@@ -710,21 +700,36 @@ public class Pa_Controller {
    			
    	}
    	
-    // ===== 내 팔로우 가져오기 ===== //
-    @RequestMapping(value="/myfollowList.shy", method={RequestMethod.GET})
-       @ResponseBody
-        public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
-          
-          HttpSession session = req.getSession();
-       ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-       
-       String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
-       
-       List<HashMap<String,String>> myflwList = service.getMyfollows(myIdx);
-       
-          return myflwList;
-             
-       }
+	// ===== 내 팔로우 가져오기 ===== //
+	@RequestMapping(value = "/myfollowList.shy", method = { RequestMethod.GET })
+	@ResponseBody
+	public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
 
+		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+
+		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
+
+		List<HashMap<String, String>> myflwList = service.getMyfollows(myIdx);
+
+		return myflwList;
+
+	}
+	
+	// ===== 알림리스트 가져오기 ===== //
+	@RequestMapping(value = "/myAlarm.shy", method = { RequestMethod.POST })
+	@ResponseBody
+	public List<HashMap<String, String>> goAlarmlist(HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+
+		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
+		
+		List<HashMap<String, String>> myalarmList = service.getAlarmList(myIdx);
+		
+		return myalarmList;
+
+	}
     
 }

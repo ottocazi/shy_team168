@@ -7,6 +7,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- google map 스크립트 -->
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_sZM1PsNMiAuzi6F-aZRkDqqeOKTCA_Y&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
 	// This example displays an address form, using the autocomplete feature
@@ -77,12 +78,64 @@
 		}
 	}
 </script>
+<script>
+$(document).ready(function(){
+	
+	$("#ajaxresult").hide();
+	
+	$(function() {
+		/* timer = setInterval( function () { */
+
+			$.ajax ({
+				url : "/shy/myAlarm.shy", 
+				cache : false,
+				type: "POST",
+		        dataType: "JSON",
+				success : function (data) { 
+					
+					$.each(data,function(entryIndex,entry){
+						//alert(entry.cnt);
+						if(entryIndex==0){
+							$("#alarmcnt").html(entry.cnt);
+						}
+					 });
+					
+				}
+			/* }, 30000); // 30초에 한번씩 받아온다. */
+			});
+	});
+
+	$("#ajaxresult").click(function(e) {
+		$("#ajaxresult").hide();
+	})
+	
+});
+
+function Alramchk() {
+	
+	$.ajax ({
+		url : "/shy/myAlarm.shy",
+		cache : false,
+		type: "POST",
+        dataType: "JSON",
+		success : function (data) { 
+			var result="";
+			$.each(data,function(entryIndex,entry){
+				
+                var html = "<span>"+entry.name+"님이<br/>"
+                +"${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span><br/>";
+               
+                result += html;   
+            });
 			
-
-			
-
-
-
+			$("#ajaxresult").html(result).show();
+		},
+        error: function() { // 에러가 발생했을 때의 콜백함수
+            alert("error");
+        }
+	});
+}
+</script>
 
 
 
@@ -95,7 +148,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -117,7 +170,13 @@
 	position: relative;
 	width: 480px;
 } */
-
+#ajaxresult{
+	border: 1px solid gray;
+	display: table;
+    position: relative;
+    margin-left: 100px;
+    background: none;
+}
 
 
 </style>
@@ -518,14 +577,14 @@
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
 							안녕하세요
 						</span>
-						<a class="header-menu-number" href="#"><!-- 알림카운트 --></a><div id="ajaxresult"></div>
+						<a class="header-menu-number" onclick="Alramchk();"><span id="alarmcnt"></span></a><div id="ajaxresult"></div>
 					</c:if>
 
 					<c:if test="${loginuser.name==null }">
 						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님
 							안녕하세요
 						</span>
-						<div id="ajaxresult"></div>
+						<a class="header-menu-number" onclick="Alramchk();"><span id="alarmcnt"></span></a><div id="ajaxresult"></div>
 					</c:if>
 
 				</c:if>

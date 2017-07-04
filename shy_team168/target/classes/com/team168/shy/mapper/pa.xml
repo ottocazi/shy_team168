@@ -293,31 +293,31 @@
 	<!-- ===== 좋아요 insert ===== -->	
 	<insert id="insertlike" parameterType="java.util.HashMap">
 		<if test='seqcolum.equals("snsno")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,snsno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 		<if test='seqcolum.equals("storeboardno")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,storeboardno)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,storeboardno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 		<if test='seqcolum.equals("grpboardseq")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,grpboardseq)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,grpboardseq)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 	</insert>
 	
 	<!-- ===== 좋아요 delete ===== -->	
-	<delete id="deleteLike" parameterType="java.util.HashMap">
+	<update id="deleteLike" parameterType="java.util.HashMap">
 		<if test='seqcolum.equals("snsno")'>
-		delete from tbl_like where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
+		update tbl_like set lstatus = 0 where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
 		</if>
 		<if test='seqcolum.equals("storeboardno")'>
-		delete from tbl_like where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
+		update tbl_like set lstatus = 0 where where where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
 		</if>
 		<if test='seqcolum.equals("grpboardseq")'>
-		delete from tbl_like where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
+		update tbl_like set lstatus = 0 where where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
 		</if>
-	</delete>
+	</update>
 	
 	<!-- ===== 좋아요 가져오기 =====   -->
 	<resultMap type="java.util.HashMap" id="getlikeListMap">
@@ -334,10 +334,10 @@
 	  ) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE WHERE LSTATUS = 1 GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} GROUP BY SNSNO) c on b.snsno=c.snsno
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} AND LSTATUS = 1 GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
 	
 	<!-- =====  (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 =====  -->
@@ -427,9 +427,53 @@
    </select>
    
    <!-- ===== 좋아요 알림 insert ===== -->	
-	<insert id="insertLikeAlram" parameterType="java.util.HashMap">
-		insert into tbl_alram(alramno,fk_idx,alramdate,astatus,likeno)
-		values(seq_tbl_alram.nextval,#{fk_likeidx},default,default,#{likeno})
+	<insert id="insertLikeAlarm" parameterType="java.util.HashMap">
+		insert into tbl_alarm(alarmno,fk_idx,alarmdate,astatus,likeno,alarm_target)
+		values(seq_tbl_alarm.nextval,#{fk_likeidx},default,default,#{likeno},#{alarm_target})
 	</insert>
 	
+	<!-- ===== 알림 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="alarmListMap">
+		<result property="alarmno" column="ALARMNO" javaType="int" />
+		<result property="fk_idx" column="FK_IDX" javaType="String" />
+		<result property="alarmdate" column="ALARMDATE" javaType="String" />
+		<result property="astatus" column="ASTATUS" javaType="int" />
+		<result property="likeno" column="LIKENO" javaType="int" />
+		<result property="snsno" column="SNSNO" javaType="String" />
+		<result property="alarm_target" column="ALARM_TARGET" javaType="String" />
+		<result property="name" column="NAME" javaType="String" />
+		<result property="cnt" column="CNT" javaType="int" />
+	</resultMap>
+	<select id="alarmList" parameterType="java.util.HashMap" resultMap="alarmListMap"> 
+      	SELECT V.*,X.NAME,( SELECT COUNT(*)
+      						FROM TBL_ALARM
+      						WHERE ALARM_TARGET = #{MYIDX} AND ASTATUS=1) AS CNT
+		FROM 
+		(
+		SELECT A.ALARMNO,A.FK_IDX,A.ALARMDATE,A.ASTATUS,A.LIKENO,A.ALARM_TARGET,B.SNSNO
+		FROM
+		(
+		SELECT ALARMNO,FK_IDX,ALARMDATE,ASTATUS,LIKENO,ALARM_TARGET
+		FROM TBL_ALARM WHERE ASTATUS=1) A 
+		JOIN
+		(SELECT LIKENO,SNSNO FROM TBL_LIKE)B
+		ON A.LIKENO = B.LIKENO)V
+		LEFT JOIN
+		(SELECT IDX,NAME FROM TBL_SHYMEMBER)X
+		ON V.FK_IDX = X.IDX
+		WHERE V.ALARM_TARGET = #{myIdx}
+	</select>
+	
+    <!-- ===== 알람 타겟 가져오기 =====   -->
+    <select id="alarmTarget" parameterType="String" resultType="String">
+       SELECT FK_IDX
+       FROM TBL_SHYMEMO
+       WHERE SNSNO = #{likeseq}
+    </select>
+    
+    <!-- ===== 알람 delete(좋아요 취소시) ===== -->	
+	<delete id="deleteAlarm" parameterType="java.util.HashMap">
+		DELETE FROM TBL_ALARM WHERE LIKENO = #{likeno} AND FK_IDX = #{fk_likeidx} AND ASTATUS = 1
+	</delete>
+    
 </mapper>	

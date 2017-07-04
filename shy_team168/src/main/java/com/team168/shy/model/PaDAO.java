@@ -159,10 +159,26 @@ public class PaDAO {
 	}
 
 	// ===== 좋아요했을시, 알람 insert  ===== //
-	public void insertAlram(HashMap<String, String> likemap) {
-		sqlsession.insert("pa.insertLikeAlram",likemap);
+	public void insertAlarm(HashMap<String, String> likemap) {
+		sqlsession.insert("pa.insertLikeAlarm",likemap);
 	}
 
+	// ===== 알림 가져오기 ===== //
+	public List<HashMap<String, String>> getAlarmList(String myIdx) {
+		List<HashMap<String, String>> myalarmList = sqlsession.selectList("pa.alarmList",myIdx);
+		return myalarmList;
+	}
+
+	// ===== 알림타켓 가져오기 ===== //
+	public String alarmTarget(String likeseq) {
+		String alarm_target = sqlsession.selectOne("pa.alarmTarget",likeseq);
+		return alarm_target;
+	}
+
+	// ===== 알림좋아요 삭제하기기 ===== //
+	public void deleteAlarm(HashMap<String, String> likemap) {
+		sqlsession.delete("pa.deleteAlarm",likemap);
+	}
 
 	
 
