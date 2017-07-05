@@ -117,7 +117,13 @@
 	position: relative;
 	width: 480px;
 } */
-
+#ajaxresult{
+   border: 1px solid gray;
+   display: table;
+    position: relative;
+    margin-left: 100px;
+    background: none;
+}
 
 
 </style>
@@ -496,18 +502,18 @@
 				<c:if test="${loginuser!=null }">
 
 					<c:if test="${loginuser.name!=null }">
-						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
-							안녕하세요
-						</span>
-						<div id="ajaxresult"></div>
-					</c:if>
+                  <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
+                     안녕하세요
+                  </span>
+                  <a class="header-menu-number" onclick="Alramchk();"><span id="alarmcnt"></span></a><div id="ajaxresult"></div>
+               </c:if>
 
-					<c:if test="${loginuser.name==null }">
-						<span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님
-							안녕하세요
-						</span>
-						<div id="ajaxresult"></div>
-					</c:if>
+               <c:if test="${loginuser.name==null }">
+                  <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님
+                     안녕하세요
+                  </span>
+                  <a class="header-menu-number" onclick="Alramchk();"><span id="alarmcnt"></span></a><div id="ajaxresult"></div>
+               </c:if>
 
 				</c:if>
 				
@@ -717,3 +723,60 @@
 		<i class="fa fa-4x fa-angle-up"></i>
 	</div>
 </div>
+
+<script>
+/* $(document).ready(function(){
+   
+   $("#ajaxresult").hide();
+   
+   $(function() {
+
+         $.ajax ({
+            url : "/shy/myAlarm.shy", 
+            cache : false,
+            type: "POST",
+              dataType: "JSON",
+            success : function (data) { 
+               
+               $.each(data,function(entryIndex,entry){
+                  //alert(entry.cnt);
+                  if(entryIndex==0){
+                     $("#alarmcnt").html(entry.cnt);
+                  }
+                });
+               
+            }
+         });
+   });
+
+   $("#ajaxresult").click(function(e) {
+      $("#ajaxresult").hide();
+   })
+   
+});
+
+function Alramchk() {
+   
+   $.ajax ({
+      url : "/shy/myAlarm.shy",
+      cache : false,
+      type: "POST",
+        dataType: "JSON",
+      success : function (data) { 
+         var result="";
+         $.each(data,function(entryIndex,entry){
+            
+                var html = "<span>"+entry.name+"님이<br/>"
+                +"${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span><br/>";
+               
+                result += html;   
+            });
+         
+         $("#ajaxresult").html(result).show();
+      },
+        error: function() { // 에러가 발생했을 때의 콜백함수
+            alert("error");
+        }
+   });
+}  */
+</script>
