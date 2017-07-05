@@ -512,11 +512,8 @@
             </a>
             <c:if test="${loginuser!=null }">
 
-<<<<<<< HEAD
 					<c:if test="${loginuser.name!=null }">
-=======
                <c:if test="${loginuser.name!=null }">
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
                   <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
                      안녕하세요
                   </span>
@@ -532,7 +529,7 @@
 
             </c:if>
             
-            
+           </c:if> 
             
          </div>
          
@@ -740,64 +737,6 @@
 </div>
 
 <script>
-<<<<<<< HEAD
-/* $(document).ready(function(){
-   
-   $("#ajaxresult").hide();
-   
-   $(function() {
-
-         $.ajax ({
-            url : "/shy/myAlarm.shy", 
-            cache : false,
-            type: "POST",
-              dataType: "JSON",
-            success : function (data) { 
-               
-               $.each(data,function(entryIndex,entry){
-                  //alert(entry.cnt);
-                  if(entryIndex==0){
-                     $("#alarmcnt").html(entry.cnt);
-                  }
-                });
-               
-            }
-         });
-   });
-
-   $("#ajaxresult").click(function(e) {
-      $("#ajaxresult").hide();
-   })
-   
-});
-
-function Alramchk() {
-   
-   $.ajax ({
-      url : "/shy/myAlarm.shy",
-      cache : false,
-      type: "POST",
-        dataType: "JSON",
-      success : function (data) { 
-         var result="";
-         $.each(data,function(entryIndex,entry){
-            
-                var html = "<span>"+entry.name+"님이<br/>"
-                +"${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span><br/>";
-               
-                result += html;   
-            });
-         
-         $("#ajaxresult").html(result).show();
-      },
-        error: function() { // 에러가 발생했을 때의 콜백함수
-            alert("error");
-        }
-   });
-}  */
-</script>
-=======
-
  // 알림 Ajax 
  $(document).ready(function(){
    
@@ -854,4 +793,3 @@ function Alramchk() {
    });
 }
 </script>
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
