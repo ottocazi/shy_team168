@@ -19,4 +19,90 @@
 	    where idx = #{idx}
 	</update>
 	
+	
+	<!-- ===== 댓글 카운트 ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentCountMap">
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="cnt" column="cnt" javaType="int"/>
+	</resultMap>
+	
+	<select id="getCommentCount" resultMap="getCommentCountMap">
+		select snsno, count(snsno) as cnt
+		from tbl_comment
+		group by snsno
+	</select>
+	
+	
+	<!-- ===== 댓글 카운트 파라미터 Array ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentCountArrMap">
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="cnt" column="cnt" javaType="int"/>
+	</resultMap>
+	
+	<select id="getCommentCountArr" resultMap="getCommentCountArrMap" parameterType="String">
+		SELECT A.SNSNO , NVL(B.CNT , 0) as cnt
+		FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN 
+														<foreach collection="array" item="item" index="i"  separator="," open="(" close=")">
+															  ${array[i]}
+														</foreach>
+													    ) A 
+			  LEFT OUTER JOIN  
+      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT GROUP BY SNSNO) B
+      		  ON A.SNSNO = B.SNSNO
+	</select>
+	
+	<!-- ===== 댓글 리스트 ===== -->
+	<resultMap type="java.util.HashMap" id="getCommentListMap">
+		<result property="cmtno" column="cmtno" javaType="int"/>
+		<result property="snsno" column="snsno" javaType="String"/>
+		<result property="grpboardseq" column="grpboardseq" javaType="int"/>
+		<result property="storeboardno" column="storeboardno" javaType="int"/>
+		<result property="cmtcontent" column="cmtcontent" javaType="String"/>
+		<result property="updatetime" column="updatetime" javaType="String"/>
+		<result property="likecnt" column="likecnt" javaType="int"/>
+		<result property="status" column="status" javaType="int"/>
+		<result property="fk_idx" column="fk_idx" javaType="String"/>
+	</resultMap>
+	
+	<select id="getCommentList" resultMap="getCommentListMap">
+		select cmtno, snsno, grpboardseq, storeboardno, cmtcontent, updatetime, likecnt, blamecnt, status, fk_idx
+		from tbl_comment
+		where status = 1
+		order by cmtno asc
+	</select>
+	
+	
+	<!-- 임시 searchlistj  -->
+    
+    <resultMap type="java.util.HashMap" id="searchpeopleMap">
+		<result property="IDX" 			column="idx" 			javaType="String" />
+ 		<result property="NAME"  		column="name" 			javaType="String" />
+ 		<result property="EMAIL"  		column="email" 			javaType="String" />
+ 		<result property="PWD"  		column="pwd" 			javaType="String" />
+ 		<result property="REGISTERDATE" column="registerdate" 	javaType="String" />
+ 		<result property="MYIMG"  		column="myimg" 			javaType="String" />
+ 		<result property="MYINTRO"  	column="myintro" 		javaType="String" />
+ 		<result property="BIRTHDAY" 	column="birthday" 		javaType="String" />
+ 		<result property="GENDER"  		column="gender" 		javaType="String" />
+ 		<result property="PHONE"  		column="phone" 			javaType="String" />
+	</resultMap>
+	
+	<!-- if문에서의 표현문제?  -->
+	 <select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
+	    select *
+        from tbl_shymember
+        where status = 1
+        order by idx desc
+	</select> 
+	
+	<!-- ===== goFollow ===== -->
+	<insert id="goFollow" parameterType="java.util.HashMap">
+		insert into tbl_follow(followno,  fk_idxflw, fk_idxflwed, 	 followdate, status)
+		values (seq_tbl_follow.nextval,   #{idx},    #{fk_idxflwed}, sysdate,    1)
+	</insert>
+	<!-- ===== unFollow ===== -->
+	<delete id="unFollow" parameterType="java.util.HashMap">
+		delete from tbl_follow
+		where fk_idxflw = #{idx} and fk_idxflwed = #{fk_idxflwed}
+	</delete>
 </mapper>	

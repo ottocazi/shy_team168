@@ -1,6 +1,7 @@
 package com.team168.shy;
 
-import java.util.ArrayList;  
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Min_Service;
 
 
@@ -26,9 +28,25 @@ public class Min_Controller {
 	
 	private Min_Service service;
 	
-	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
-    public String goMypage(HttpServletRequest req) {
-    	
+	
+	
+
+	@RequestMapping(value="/place.shy", method={RequestMethod.GET})
+    public String goStore(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	
+		String geoidx = req.getParameter("geoidx");
+		
+		System.out.println("컨트롤에서 받은 geoidx : " + geoidx);
+		
+		HashMap<String, String> geomap = service.getgeoinfo(geoidx);
+		
+		List <HashMap<String, String>> geolist = service.getgeoList(geomap);
+		req.setAttribute("geomap", geomap);
+		req.setAttribute("geolist", geolist);
+		
+		 
+	
 		return "smin/busipage.tiles";
     	
     }
@@ -36,8 +54,101 @@ public class Min_Controller {
 	
 	
 	
+
+	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
+    public String geoPage(HttpServletRequest req) {
+    	
+		return "geo.notiles";
+    	
+    }
+	
+	@RequestMapping(value="/geotest.shy", method={RequestMethod.GET})
+    public String geoPage2(HttpServletRequest req) {
+    	
+		
+		return "geotest.notiles";
+    	
+    }
 	
 	
+	// == 마이페이지 불러오기 == 
+		@RequestMapping(value="/applybusi.shy", method={RequestMethod.GET})
+	    public String applybusi(HttpServletRequest req) {
+	    	
+			HttpSession session = req.getSession();
+		       
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			/*String str_idx = req.getParameter("idx");
+			int idx = Integer.parseInt(str_idx);
+			int idx = 33;*/
+			System.out.println("int idx : "+idx);
+			
+			// idx 로 memberVO 얻어오기 
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		        
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        return "smin/applybusi.tiles";
+
+	    }
+	
+
+		@RequestMapping(value="/applybusiEnd.shy", method={RequestMethod.POST})
+	    public String applybusiEnd(HttpServletRequest req, HttpSession session) throws IOException {
+			
+		
+			
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			
+			String str_idx = req.getParameter("idx");
+			System.out.println("컨트롤에서 받은 idx : "+ str_idx);
+			
+			String categoryno = req.getParameter("categoryno");
+			System.out.println("컨트롤에서 받은 categoryno : " + categoryno);
+			
+			String bname = req.getParameter("bname");
+			System.out.println("컨트롤에서 받은 bname : " + bname);
+			
+
+			String busicontent = req.getParameter("busicontent");
+			System.out.println("컨트롤에서 받은 busicontent : " + busicontent);
+
+			String busicall = req.getParameter("busicall");
+			System.out.println("컨트롤에서 받은 busicall : " + busicall);
+
+			String busimail = req.getParameter("busimail");
+			System.out.println("컨트롤에서 받은 busimail : " + busimail);
+			
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+	    	map.put("idx", str_idx);
+	    	map.put("categoryno", categoryno);
+	    	map.put("bname", bname);
+	    	map.put("busicontent", busicontent);
+	    	map.put("busicall", busicall);
+	    	map.put("busimail", busimail);
+	    	
+			int n = service.applybusiEnd(map);
+			
+			// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+			// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+			req.setAttribute("n", n);
+			idx = Integer.parseInt(str_idx);
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		       
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        
+
+			return "smin/applybusi.tiles";
+	    	
+	    }
 	
 	
 	
@@ -47,11 +158,12 @@ public class Min_Controller {
     @RequestMapping(value="/searchlist.shy", method={RequestMethod.GET})
     public String searchlist(HttpServletRequest req, HttpSession session){
 	    
+    		
 		   // ===== #108. 페이징 처리하기 =====
 		   // 페이징처리는 URL 주소창에 예를들어 /list.action?pageNo=3 와 같이 해주어야 한다.
 		    	
 		      String pageNo = req.getParameter("pageNo");
-		      String search = req.getParameter("search");
+		      String pageNo1 = req.getParameter("pageNo1");
 		      
 		      
 		      int totalCount = 0;        // 총게시물 건수
@@ -76,24 +188,64 @@ public class Min_Controller {
 		    	  // 현재 보여주고자 하는 페이지로 설정한다.
 		      }
 		      
-		       start = (currentShowPageNo - 1) * sizePerPage;
+		      start = (currentShowPageNo - 1) * sizePerPage;
 		       offset = sizePerPage;
-		      
-		      
+		       
 		      RowBounds rowBounds = new RowBounds(start, offset);
 
-		    	
+		      
+		      /////////////////////////////////////////////////////////////////////////////////
+		      
+		      int totalCount1 = 0;        // 총게시물 건수
+		      int sizePerPage1 = 10;      // 한 페이지당 보여줄 게시물 갯수 (예: 3, 5, 10) 
+		      int currentShowPageNo1 = 1; // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.
+		      int totalPage1 = 0;         // 총페이지수(웹브라우저상에 보여줄 총 페이지 갯수)
+		      
+		      int start1 = 0;             // 시작 행 번호
+		      int offset1 = 0;        // 끝 행 번호
+		      int startPageNo1 = 0;       // 페이지바에서 시작될 페이지 번호 
+		    
+		      int loop1 = 0;       // startPageNo 값이 증가할때 마다 1씩 증가하는 용도.
+		      int blocksize1 = 5;  // "페이지바" 에 보여줄 페이지의 갯수 
+		      
+		      if(pageNo1 == null) {
+		    	  currentShowPageNo1 = 1;
+		    	  
+		      }
+		      else {
+		    	  currentShowPageNo1 = Integer.parseInt(pageNo1);
+		    	  // GET 방식으로 파라미터 pageNo 에 넘어온 값을
+		    	  // 현재 보여주고자 하는 페이지로 설정한다.
+		      }
+		      
+		      start1 = (currentShowPageNo1 - 1) * sizePerPage1;
+		       offset1 = sizePerPage1;
+		       
+		      RowBounds rowBounds1 = new RowBounds(start1, offset1);
+
+		      ////////////////////////////////////////////////////////////////////////////////////////
+		      
+		      
+		      
+		      
+		      
+		      
+		     
+		      String search = req.getParameter("search");
 		    	
 		    	HashMap<String, String> map = new HashMap<String, String>();
-		    	//map.put("search", search);
+		    	map.put("search", search);
 		    	
 		    	
-		    	List<HashMap <String, String>> plist = service.peoplesearch(search,rowBounds);
-		    	List<HashMap <String, String>> glist = service.groupsearch(search,rowBounds);
+		    	List<HashMap <String, String>> plist = service.peoplesearch(map,rowBounds);
+		    	List<HashMap <String, String>> glist = service.groupsearch(map,rowBounds1);
 		   
 		    	totalCount = service.mTotalCount(map);
-		    	
+		    	totalCount1 = service.gTotalCount(map);
 		 
+		    	
+		    	
+		    	
 		    	totalPage = (int)Math.ceil((double)totalCount/sizePerPage);
 		    	
 		    	String pagebar = "";
@@ -167,9 +319,96 @@ public class Min_Controller {
 		        
 		        
 		        pagebar += "</ul>";
-		    	
-		        req.setAttribute("pagebar", pagebar);
+		        
+		        
+		        
+		        
+		        
+		        
+		        
 
+		    	totalPage1 = (int)Math.ceil((double)totalCount1/sizePerPage1);
+		    	
+		    	String pagebar1 = "";
+		    	pagebar1 += "<ul>";
+		    	
+		    	
+		        loop1 = 1;
+		        
+		        // **** !!! 페이지바의 시작 페이지번호(startPageNo)값 만들기 --- 공식임 !!!!
+		        startPageNo1 = ((currentShowPageNo1 - 1)/blocksize1)*blocksize1 + 1;
+		  
+		        
+		        // **** 이전5페이지 만들기 ****
+		        if(startPageNo1 == 1) {
+		        	// 첫 페이지바에 도달한 경우
+		        	pagebar1 += String.format("&nbsp;&nbsp;[이전%d페이지]", blocksize1);
+		        }
+		        else {
+		        	// 첫 페이지바가 아닌 두번째 이상 페이지바에 온 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo1-1, blocksize1); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d&search=%s'>[이전%d페이지]</a>&nbsp;&nbsp;", startPageNo1-1, search, blocksize1); // 검색어 있는 경우        		
+		        	}	
+		        }        
+		            	
+		        // **** 이전5페이지 와 다음5페이지 사이에 들어가는 것을 만드는 것
+		        while( !(loop1 > blocksize1 ||
+		        		 startPageNo1 > totalPage1) ) {
+		        	
+		        	if(startPageNo1 == currentShowPageNo1) {
+		        		pagebar1 += String.format("&nbsp;&nbsp;<span style='color:red; font-weight:bold; text-decoration:underline;'>%d</span>&nbsp;&nbsp;", startPageNo1);	
+		        	}
+		        	else {
+			        	if(search == null) {
+			        		// 검색어가 없는 경우
+			        		pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d'>%d</a>&nbsp;&nbsp;", startPageNo1, startPageNo1); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+			        	}
+			        	else{
+			        		// 검색어가 있는 경우
+			        	    pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d&search=%s'>%d</a>&nbsp;&nbsp;", startPageNo1,  search, startPageNo1); // 검색어 있는 경우        		
+			        	}
+		        	}
+		        	
+		        	loop1++;
+		        	startPageNo1++;
+		        	
+		        }// end of while--------------------
+		                
+		        // **** 다음5페이지 만들기 ****
+		        if(startPageNo1 > totalPage1) {
+		        	// 마지막 페이지바에 도달한 경우
+		        	pagebar1 += String.format("&nbsp;&nbsp;[다음%d페이지]", blocksize1);
+		        }
+		        else {
+		        	// 마지막 페이지바가 아닌 경우
+		        	
+		        	if(search == null) {
+		        		// 검색어가 없는 경우
+		        		pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo1, blocksize1); // 처음 %d 에는 startPageNo값 , 두번째 %d 에는 페이지바에 나타낼 startPageNo값 이다.		
+		        	}
+		        	else{
+		        		// 검색어가 있는 경우
+		        	    pagebar1 += String.format("&nbsp;&nbsp;<a href='/shy/searchlist.shy?pageNo1=%d&search=%s'>[다음%d페이지]</a>&nbsp;&nbsp;", startPageNo1, search, blocksize1); // 검색어 있는 경우        		
+		        	}	
+		        }
+		        
+		        
+		        pagebar1 += "</ul>";
+		        
+		        
+		        req.setAttribute("pagebar", pagebar);
+		        req.setAttribute("pagebar1", pagebar1);
+
+		        
+		        
+		        
+		        
 		        req.setAttribute("search", search);
 		    	
 		    	
@@ -181,70 +420,196 @@ public class Min_Controller {
 		    	
 		    }
     
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-    // ===== #148. Ajax 로 검색어 입력시 자동글 완성하기 3 =====
-//  ==> jackson JSON 라이브러리와 함께 @ResponseBoady 사용하여 JSON 파싱하기 === //
-	
-    /*   @ResponseBody란?
-	     메소드에 @ResponseBody Annotation이 되어 있으면 return 되는 값은 View 단을 통해서 출력되는 것이 아니라 
-	     HTTP Response Body에 바로 직접 쓰여지게 된다. 
-		
-	     그리고 jackson JSON 라이브러리를 사용할때 주의해야할 점은 
-	     메소드의 리턴타입은 행이 1개 일경우 HashMap<K,V> 이거나 
-	                                    Map<K,V> 이고 
-		                    행이 2개 이상일 경우 List<HashMap<K,V>> 이거나
-		                                    List<Map<K,V>> 이어야 한다.
-		                    행이 2개 이상일 경우  ArrayList<HashMap<K,V>> 이거나
-		                                     ArrayList<Map<K,V>> 이면 안된다.!!!
-	     
-	     이와같이 jackson JSON 라이브러리를 사용할때의 장점은 View 단이 필요없게 되므로 간단하게 작성하는 장점이 있다. 
-	*/
-    /*
-    @RequestMapping(value="/wordSearchShow.shy", method={RequestMethod.GET})
-    @ResponseBody
-    public List<HashMap<String, Object>> wordSearchShow(HttpServletRequest req) { 
-    	
-    	List<HashMap<String, Object>> returnmapList = new ArrayList<HashMap<String, Object>>(); 
-    	
-    	String colname = req.getParameter("colname");
-    	String search = req.getParameter("search");
-    	
-    	HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("colname", colname);
-    	map.put("search", search);
-    	
-    	List<HashMap<String, String>> searchWordCompleteList = service.searchWordCompleteList(map); 
-    	
-    	if(searchWordCompleteList != null) {
-    		for(HashMap<String, String> datamap : searchWordCompleteList) {
-    			
-    			HashMap<String, Object> submap = new HashMap<String, Object>();
-    			submap.put("RESULTDATA", datamap.get("SEARCHDATA")); 
-    			
-    			returnmapList.add(submap);
-    		}
-    	}
-    	
-    	return returnmapList;
-    }
-    */
+    
     
 	
+    
+    
+ // ===== mypage 페이지 요청하기 (내 shy계정) ===== //
+ 	@RequestMapping(value="/gainpage.shy", method={RequestMethod.GET})
+     public String Gainpage(HttpServletRequest req,HttpSession session) {
+ 		
+ 		
+ 		String myIdx = req.getParameter("myIdx");
+ 		req.setAttribute("myIdx", myIdx);
+		
+		System.out.println("컨트롤에서 받은 myIdx : " + myIdx);
+ 			// 기본 페이지번호를 1으로 설정하고
+ 	        int pageNo = 1;
+ 	 
+ 	        // 넘어온 파라미터가 있다면
+ 	        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+ 	        if(req.getParameter("pageNo") != null){
+ 	        pageNo = Integer.parseInt(req.getParameter("pageNo"));
+ 	        }
+ 	        
+ 	        int sizePerPage = 6;
+ 	        
+ 	        int start = (pageNo - 1) * sizePerPage + 1;
+ 	        int end = pageNo * sizePerPage;
+ 	        
+ 			// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
+ 			int myshyCount = service.getMyshyCount(myIdx);
+ 			req.setAttribute("myshyCount", myshyCount);
+ 			
+ 			// 팔로우 수 가져오기
+ 	        int fk_idxflwedcnt = service.getMyflwcnt(myIdx);
+ 	        req.setAttribute("fk_idxflwedcnt", fk_idxflwedcnt);
+ 			
+ 			HashMap<String, Object> mymap = new HashMap<String, Object>();
+ 			mymap.put("myIdx", myIdx);
+ 			mymap.put("start", String.valueOf(start));
+ 			mymap.put("end", String.valueOf(end));
+ 			
+ 			//mymap.put("myshyCount", String.valueOf());
+ 			
+ 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
+ 			List <HashMap<String, String>> myshyList = service.getMyshy(mymap);
+ 			
+ 			
+ 			if(myshyList!=null){
+ 				for(int i =0 ; i<myshyList.size(); i++){
+ 					
+ 					
+ 					// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+ 					// 페이징 처리 미완성
+ 					if("1".equals(myshyList.get(i).get("simage"))){
+ 						
+ 						String snsno = myshyList.get(i).get("snsno");
+ 						System.out.println("snsno = "+snsno);
+ 						// 이미지 가져오기
+ 						String imgfile = service.getImgaddr(snsno);
+ 						
+ 						System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+ 						myshyList.get(i).put("imageaddr", imgfile);
+ 						
+ 					}
+ 					
+ 					else if("0".equals(myshyList.get(i).get("simage"))){
+ 						myshyList.get(i).put("imageaddr", null);
+ 					}
+ 					
+ 					System.out.println("shies.simage : "+myshyList.get(i).get("simage"));
+ 					System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
+ 				}
+ 			
+ 			}
+ 			req.setAttribute("myshyList", myshyList);
+ 			
+ 			return "smin/gainpage.tiles";
+ 		
+ 		}
+ 	
 	
-	
-	
+    
+ // ===== mypage 페이지 요청하기 (Ajax) ===== //
+ 	@RequestMapping(value = "/gainpageList.shy", method = { RequestMethod.POST })
+ 	@ResponseBody
+ 	public List<HashMap<String, String>> GainpageAjax(HttpServletRequest req,HttpSession session) { 
+
+ 		// 기본 페이지번호를 1으로 설정하고
+         int pageNo = 1;
+  
+         // 넘어온 파라미터가 있다면
+         //if (req.getParameter("page") != null) {
+  
+             // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+         pageNo = Integer.parseInt(req.getParameter("pageNo"));
+         //}
+         
+         int sizePerPage = 6;
+         
+         int start = (pageNo - 1) * sizePerPage + 1;
+         int end = pageNo * sizePerPage;
+
+
+         String myIdx = req.getParameter("myIdx");
+         System.out.println("컨트롤에서 받은 myIdx : " + myIdx);
+ 		
+ 		
+ 		req.setAttribute("myIdx", myIdx);
+
+ 		HashMap<String, Object> mymap = new HashMap<String, Object>();
+ 		mymap.put("myIdx", myIdx);
+ 		mymap.put("start", String.valueOf(start));
+ 		mymap.put("end", String.valueOf(end));
+ 		
+ 		// (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기
+ 		List<HashMap<String, String>> myshyList = service.getMyshy(mymap);
+ 		
+ 		////
+ 		// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
+ 		int myshyCount = service.getMyshyCount(myIdx);
+ 		////
+ 		
+ 		if (myshyList != null) {
+ 			for (int i = 0; i < myshyList.size(); i++) {
+
+ 				// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를
+ 				// 확인하여 그 값을 추가하거나 null값을 부여한다.
+ 				// 페이징 처리 미완성
+ 				if ("1".equals(myshyList.get(i).get("simage"))) {
+
+ 					String snsno = myshyList.get(i).get("snsno");
+ 					System.out.println("snsno = " + snsno);
+ 					// 이미지 가져오기
+ 					String imgfile = service.getImgaddr(snsno);
+
+ 					System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+ 					myshyList.get(i).put("imageaddr", imgfile);
+
+ 				}
+
+ 				else if ("0".equals(myshyList.get(i).get("simage"))) {
+ 					myshyList.get(i).put("imageaddr", null);
+ 				}
+ 				
+ 				if (myshyCount != (start + i)) {
+ 					myshyList.get(i).put("end", "0");
+ 				}
+ 				
+ 				else {
+ 					myshyList.get(i).put("end", "1");
+ 				}
+
+ 				System.out.println("shies.simage : " + myshyList.get(i).get("simage"));
+ 				System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
+ 			}
+
+ 		}
+ 		
+ 		
+ 		return myshyList;
+
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+    
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

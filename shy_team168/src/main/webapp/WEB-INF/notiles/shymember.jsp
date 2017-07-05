@@ -29,6 +29,7 @@
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
+     
   </head>
 
   <body class="nav-md">
@@ -76,7 +77,7 @@
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      <li><a href="#">좋아요가 가장많은 유저</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">좋아요가 가장많은 유저</a></li>
                       <li><a href="#">신고를 많이받은 유저</a></li>
                     </ul>
                   </li>

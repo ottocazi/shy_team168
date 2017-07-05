@@ -1,5 +1,123 @@
 -------------------------------------------
 --파
+select V.*
+from
+(
+select *
+from
+(select snsno,fk_idx
+from tbl_shymemo
+)A 
+left join
+(select snsno,fk_likeidx,likedate
+from tbl_like) B
+on A.snsno = B.snsno)V
+where fk_idx = 31;
+
+insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
+values(seq_tbl_like.nextval,53,1,sysdate,76);
+select *
+from tbl_like;
+commit;
+select *
+from tbl_shymemo;
+delete from tbl_like ;
+select *
+from tbl_storeboard;
+
+select *
+from tbl_comment;
+
+select snsno,nvl2(case when count(*)>0 then count(*) else 0 end,0,count(*))
+from tbl_comment 
+where status = 1 and snsno =71
+group by snsno;
+
+select case when nvl(snsno,0)<1 then 0 else 1 end
+from
+(select snsno,case when count(*)>0 then count(*) else 0 end
+from tbl_comment 
+where status = 1 and snsno =null
+group by snsno)
+V;
+
+--내가 좋아요 누른 샤이
+select V.*
+from
+(select A.snsno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_shymemo A join tbl_like B
+on A.snsno = B.snsno)
+V
+where V.fk_likeidx=32;
+
+
+
+--가게리뷰글좋아요
+select A.storeboardno,A.fk_businessno,A.fk_idx,B.likeno,B.fk_likeidx, B.likedate
+from tbl_storeboard A join tbl_like B
+on A.storeboardno = B.storeboardno;
+
+--그룹게시글좋아요
+select A.grpboardseq,A.gpdetailno,B.likeno,B.fk_likeidx, B.likedate
+from tbl_grpboard A join tbl_like B
+on A.grpboardseq = B.grpboardseq;
+=======
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount,
+				 rank() over (order by A.gcount desc) as rank
+from
+(select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount,
+				 rank() over (order by gcount desc) as rank
+		 from tbl_group
+		 where status in(1,2)
+		 order by rank) A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+     select A.groupno, A.fk_idx, A.gname, A.description,A.groupdate, A.status, A.gimg, A.gcount,
+				 rank() over (order by A.gcount desc) as rank, B.myimg, B.name
+		 from
+		 (select  groupno, fk_idx, gname, description, gimg, status, groupdate, gcount
+		 from tbl_group
+		 where status in(1,2)
+		 order by groupdate desc) A
+	     left join tbl_shymember B
+	     on A.fk_idx = B.idx
+	     order by groupdate desc;
+     
+     delete from tbl_group;
+     delete from tbl_gmember;
+     delete from tbl_grpboard;
+ select  groupno, fk_idx, gname,to_char(groupdate,'yyyy-mm-dd hh:mi')
+		 from tbl_group
+		 where to_char(groupdate,'yyyy-mm-dd hh:mi') = to_char(sysdate,'yyyy-mm-dd hh:mi');
+commit;
+select *
+from tbl_gmember;
+select A.groupno, A.fk_idx, B.myimg,B.name ,gname, A.description, A.gimg, A.status, A.groupdate, A.gcount
+from
+(select  *
+		 from tbl_group
+		 where fk_idx=33 and status in(1,2,3))A
+     left join tbl_shymember B
+     on A.fk_idx = B.idx;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) as total , 
+case when (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76))>0 then (SELECT count(snsno) FROM TBL_like WHERE fk_likeidx=32 and SNSNO IN (77 , 90,76)) else 1 end as status
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      
+      ON A.SNSNO = B.SNSNO;
+
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT ,nvl(B.likeno,0) as likeno
+FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
+
+      LEFT OUTER JOIN  
+      (SELECT likeno ,SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO,likeno) B
+      
+      ON A.SNSNO = B.SNSNO LEFT OUTER join 
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 GROUP BY SNSNO) c on b.snsno=c.snsno;
+
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
@@ -484,9 +602,10 @@ ALTER TABLE tbl_shymember
 		);
 
 ------------------------------------------------------------------------
-insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status) 
-		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1);
+insert into tbl_comment(cmtno,snsno,grpboardseq,storeboardno,cmtcontent,updatetime,likecnt,blamecnt,status,fk_idx) 
+		values(seq_tbl_comment.nextval,77,default,default,'뭐야이거',sysdate,0,0,1,53);
  select * from tbl_shymemo;
+ select * from tbl_comment;
 /* 댓글 */
 CREATE TABLE tbl_comment (
 	cmtno NUMBER NOT NULL, /* 댓글seq */
