@@ -103,6 +103,39 @@ public class Min_Service {
 		}
 
 
+		// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+		public int getMyshyCount(String myIdx) {
+			int myshyCount = dao.getMyshyCount(myIdx);
+			return myshyCount;
+		}
+		////
+
+		// ===== 내 팔로우 수 가져오기  ===== //
+	 public int getMyflwcnt(String myIdx) {
+	    int fk_idxflwedcnt = dao.getMyflwcnt(myIdx);
+	    return fk_idxflwedcnt;
+	 }
+
+	 
+	// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+		public List<HashMap<String, String>> getMyshy(HashMap<String, Object> mymap) {
+			List<HashMap<String, String>> myshyList = dao.getMyshy(mymap);
+			return myshyList;
+		}
+
+		// ===== 이미지 가져오기 =====
+		public String getImgaddr(String snsno) {
+			String imgfile = dao.getImgaddr(snsno);
+			return imgfile;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 

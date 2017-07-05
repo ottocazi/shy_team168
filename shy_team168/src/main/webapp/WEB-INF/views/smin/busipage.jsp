@@ -400,7 +400,7 @@
       
       <div class="wrapper">
       
-      <div style="font-size: 20px; font-weight: bold;">${geomap.shyplace } 의 페이지</div>
+      <div style="font-size: 25px; font-weight: bold; color:  #2952a3" align="center">${geomap.shyplace }</div>
       <br><br><br>
       
       
@@ -432,17 +432,32 @@
      <li>
 
 
-      <div>
+      <div style="border: double 5px #ccdcff;">
+      
       <h4>
       <small>${geolist.shyplace}에서 OO님과 함께</small>
-      <small>${geolist.sdatedtime}</small>
+      
       </h4>
-      <hr>
-      <h2>${geolist.name}님의 글</h2>
+      
+      
+      <c:if test="${gvo.gimg != null}">
+      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+      </c:if>
+      <c:if test="${gvo.gimg == null}">
+      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+      </c:if>
+      <h2 style="font-style: inherit; font-size: 23px;">
+      
+      <a style="color:  #2952a3; " href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${geolist.idx}">
+      ${geolist.name}</a>님의 글
+      
+      </h2>
+      
+      
       <h5><span class="glyphicon glyphicon-time"></span>${geolist.sdatedtime}</h5>
       <h5><span class="label label-danger">#여기서</span> <span class="label label-primary">#누구와</span></h5><br>
       
-      <p> ${geolist.scontent} </p>
+      <p style="border-top: double 5px #ccdcff;"> ${geolist.scontent} </p>
       <br><br>
       </div>
       

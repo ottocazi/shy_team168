@@ -110,16 +110,49 @@ public class Min_DAO{
 			List<HashMap<String, String>> geolist = sqlsession.selectList("min.getgeolist", geomap);
 			return geolist;
 		}
-	
-	
-	
-		// ===== #150. Ajax 로 검색어 입력시 자동글 완성하기 5 =====	
-		/*@Override
-		public List<HashMap<String, String>> searchWordCompleteList(HashMap<String, String> map) {
-			List<HashMap<String, String>> list = sqlsession.selectList("board.searchWordCompleteList", map);
-			return list;
+
+
+
+
+
+		// ===== 이미지 가져오기 =====
+		public String getImgaddr(String snsno) {
+			String imgfile = sqlsession.selectOne("pa.myshyImg",snsno);
+			return imgfile;
 		}
-		*/
+
+
+
+
+
+		// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+		public List<HashMap<String, String>> getMyshy(HashMap<String, Object> mymap) {
+			List<HashMap<String, String>> myshyList = sqlsession.selectList("pa.getmyshyList",mymap);
+			return myshyList;
+		}
+
+
+
+		// ===== 내 팔로우 수 가져오기 ===== //
+		public int getMyflwcnt(String myIdx) {
+			int fk_idxflwedcnt = sqlsession.selectOne("pa.getflwCnt", myIdx);
+			return fk_idxflwedcnt;
+		}
+
+
+
+
+		// =====  나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 ===== //
+		public int getMyshyCount(String myIdx) {
+			int myshyCount = sqlsession.selectOne("pa.getmyshyCount",myIdx);
+			return myshyCount;
+		}
+		////
+		
+		
+		
+		
+	
 		
 		
 		

@@ -163,6 +163,7 @@
 	<result property="scontent"  		column="SCONTENT" 		javaType="String" />
 	<result property="name"  			column="NAME" 			javaType="String" />
 	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
+	<result property="idx"  			column="IDX" 			javaType="String" />
 	</resultMap>
 	
 	
@@ -172,10 +173,6 @@
      left outer join tbl_shymember c on b.fk_idx=c.idx
      where a.latitude = #{latitude} and a.longditude= #{longditude}
 	</select>
-	
-	
-	
-	
 	
 	
 	
