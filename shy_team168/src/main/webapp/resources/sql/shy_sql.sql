@@ -1,12 +1,18 @@
 -------------------------------------------
 --파
+select V.*
+from
+(
 select *
 from
 (select snsno,fk_idx
 from tbl_shymemo
 )A 
 left join
-;
+(select snsno,fk_likeidx,likedate
+from tbl_like) B
+on A.snsno = B.snsno)V
+where fk_idx = 31;
 
 insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
 values(seq_tbl_like.nextval,53,1,sysdate,76);
@@ -103,15 +109,15 @@ FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A
       
       ON A.SNSNO = B.SNSNO;
 
-SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT ,nvl(B.likeno,0) as likeno
 FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      (SELECT likeno ,SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO,likeno) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 GROUP BY SNSNO) c on b.snsno=c.snsno;
+
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
