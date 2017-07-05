@@ -69,9 +69,15 @@ public class Meong_DAO{
 	}
 
 	// 관리자페이지 오늘 방문자 수 보여주는 메소드
-	public String gettodaytotal() {
-		String todaytotal = sqlsession.selectOne("mangu.gettodaytotal");
+	public String gettodaytotal(HashMap<String, Object> map) {
+		String todaytotal = sqlsession.selectOne("mangu.gettodaytotal", map);
 		return todaytotal;
+	}
+	
+	// 관리자페이지 오늘 게시물 수 보여주는 메소드
+	public String gettodaytotalshymemo(HashMap<String, Object> map) {
+		String todaytotalshymemo = sqlsession.selectOne("mangu.gettodaytotalshymemo", map);
+		return todaytotalshymemo;
 	}
 	
 	// 관리자페이지 회원목록 보여주는 메소드
@@ -176,4 +182,6 @@ public class Meong_DAO{
 		int n = sqlsession.insert("mangu.AddShare", map);
 		return n;
 	}
+
+
 }

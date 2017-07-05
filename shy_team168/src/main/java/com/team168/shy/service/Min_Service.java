@@ -86,6 +86,23 @@ public class Min_Service {
 			return n;
 		}
 
+		
+		
+		
+		// 사업자 페이지 정보불러오기
+		
+		public HashMap<String, String> getgeoinfo(String geoidx) {
+			
+			HashMap<String, String> geomap = dao.getgeoinfo(geoidx);
+			return geomap;
+		}
+
+		public List<HashMap<String, String>> getgeoList(HashMap<String, String> geomap) {
+			List<HashMap<String, String>> geolist = dao.getgeolist(geomap);
+			return geolist;
+		}
+
+
 
 
 

@@ -677,12 +677,13 @@
 						</p>
 					</header>
 
-
+				
 					<p class="subinfo">
-
-						<a class="location" title="Location" href=""> 당산역 맥도날드 앞 사거리에서
+						<c:if test="${shies.shyplace!=null }">
+							
+						<a class="location" title="Location" href="/shy/place.shy?geoidx=${shies.geoseq}"> <span style="color: #54c987;">${shies.shyplace }</span>에서
 							shy </a>
-
+						</c:if>
 					</p>
 
 

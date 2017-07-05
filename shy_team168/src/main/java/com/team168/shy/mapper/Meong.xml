@@ -75,10 +75,16 @@
 		where gender = '여자'
 	</select>		
 		
-	<select id="gettodaytotal" resultType="String">
-		select distinct count(fk_idx) 
+	<select id="gettodaytotal" resultType="String" parameterType="java.util.HashMap">
+		select distinct count(*)
 		from tbl_log 
-		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx)
+		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx) and to_date(logtime) = #{today}
+	</select>
+	
+	<select id="gettodaytotalshymemo" resultType="String" parameterType="java.util.HashMap">
+		select count(*)
+		from tbl_shymemo 
+		where to_date(sdatedtime) = #{today}
 	</select>		
 	
 	<!-- 공지사항(미정)부분에서 회원목록 보여주는 select 문 -->

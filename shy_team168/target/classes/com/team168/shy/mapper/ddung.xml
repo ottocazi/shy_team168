@@ -73,15 +73,20 @@
 		<result property="name" 		column="NAME" 			javaType="String"/>
 		<result property="email" 		column="EMAIL" 			javaType="String"/>
 		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="shyplace" 	column="shyplace" 		javaType="String"/>
+		<result property="geoseq" 	column="geoseq" 		javaType="String"/>
+		<result property="geofk_snsno" 	column="geofk_snsno" 		javaType="String"/>
+		
 		
 	</resultMap>
 	
 	<select id="shies" parameterType="java.util.List" resultMap="shies">
-		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
-		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+	
+    SELECT A.* , B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq, c.fk_snsno as geofk_snsno
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join tbl_geo c on a.snsno = c.fk_snsno
 		WHERE	 1=1 AND A.STATUS = 1 AND
-				 FK_IDX IN
-				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+				 FK_IDX IN 
+				 <foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
 					${item}
 				</foreach>
 		ORDER BY A.SDATEDTIME DESC
