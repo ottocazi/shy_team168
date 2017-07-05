@@ -121,11 +121,22 @@ public class DDung_Controller {
 		String shyplace = req.getParameter("shyplace");
 		
 		
-		String image = req.getMultipartContentType("image");
-		System.out.println("image = " + image);
+		/*String image = req.getMultipartContentType("image");
+		System.out.println("image = " + image);*/
 		
 		MultipartFile imagefile = req.getFile("image");
 		byte[] imagebytes = imagefile.getBytes();
+		int bytesize = imagebytes.length;
+		System.out.println("bytesize는 ***"+bytesize);
+		
+		String newFilename ="";
+		
+		if(bytesize==0){
+			imagefile = null;
+		}
+		
+		
+		else {
 		String fileExt = imagefile.getOriginalFilename();
 		
 		String rootpath = session.getServletContext().getRealPath("/");
@@ -144,7 +155,7 @@ public class DDung_Controller {
 			rootpath : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\
 			path : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\resources\images/shydb*/
 		
-		String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+		newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
 		newFilename += System.nanoTime();
 		newFilename += fileExt;
 		System.out.println("newFilename = "+ newFilename);
@@ -158,7 +169,7 @@ public class DDung_Controller {
 		FileOutputStream fos = new FileOutputStream(pathname);
 		fos.write(imagebytes);
 		fos.close();
-		
+		}
 		
 		String ftagstatus = "0";
 		if(ftag!=null){
@@ -196,7 +207,7 @@ public class DDung_Controller {
 		}
 		
 		String simage = "0";
-		if(newFilename!=null){
+		if(imagefile!=null){
 			simage = "1";
 			
 		}

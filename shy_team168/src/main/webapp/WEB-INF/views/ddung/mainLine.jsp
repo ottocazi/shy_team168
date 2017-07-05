@@ -32,7 +32,6 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	countComment();
-       	
     	getLike();
        
        

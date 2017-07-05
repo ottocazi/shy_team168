@@ -117,6 +117,16 @@
    position: relative;
    width: 480px;
 } */
+<<<<<<< HEAD
+#ajaxresult{
+   border: 1px solid gray;
+   display: table;
+    position: relative;
+    margin-left: 100px;
+    background: none;
+}
+
+=======
 
 #ajaxresult{
    border: 1px solid gray;
@@ -125,6 +135,7 @@
     margin-left: 100px;
     background: none;
 }
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 
 </style>
 
@@ -281,7 +292,7 @@
    
    function new_shynow_enter(){
       
-      document.shynowform.method = "post";
+	  document.shynowform.method = "post";
       document.shynowform.action = "shynow.shy";
       document.shynowform.submit();
    }
@@ -501,6 +512,7 @@
             </a>
             <c:if test="${loginuser!=null }">
 
+					<c:if test="${loginuser.name!=null }">
                <c:if test="${loginuser.name!=null }">
                   <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
                      안녕하세요
@@ -517,7 +529,7 @@
 
             </c:if>
             
-            
+           </c:if> 
             
          </div>
          
@@ -725,7 +737,6 @@
 </div>
 
 <script>
-
  // 알림 Ajax 
  $(document).ready(function(){
    

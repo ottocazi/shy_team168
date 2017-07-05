@@ -206,11 +206,19 @@ function moreList(){
             	
             $.each(data,function(entryIndex,entry){
               
+<<<<<<< HEAD
       		  var  html = "<article class='card-60 social'>";
       	     			  if(entry.imageaddr!=null){
       	     				html += "<img src='/shy/resources/images/shydb/"+entry.imageaddr+"' alt='shy' id='nike'>"; 
       	     			  }
       	     			  html += "<div class='flex-content'><p style='text-align: left'>"+entry.scontent+"</p><footer><p>";
+=======
+      		  var  html = "<article class='card-60 social'>"+
+      	     			  "<img src='/shy/resources/images/shydb/"+entry.simage+"' alt='shy' id='nike'>"+
+          				  "<div class='flex-content'>"+
+            			  "<p style='text-align: left'>"+
+            			  entry.scontent+"</p><footer><p>";
+>>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
             			  if(entry.slikecnt==0){
             			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
             			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
