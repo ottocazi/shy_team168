@@ -32,16 +32,15 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	countComment();
-       	getLike();
+    	getLike();
        
        
        
     });// end of $(document).ready() --------
     
-    function goLike(idx,likeseq,liketype,seqcolum){
+    function goLike(idx,likeseq,seqcolum){
       var form_data = {idx : idx,
                    likeseq   : likeseq,
-                   liketype   : liketype,
                    seqcolum   : seqcolum};
       
        // 좋아요 Ajax 불러오기
@@ -63,60 +62,77 @@
    }
     
     function getLike(){
-       var snsnoArr = new Array();
+        var snsnoArr = new Array();
+        
+         <c:if test="${shies!=null}">
+         <c:forEach items="${shies}" var="shies">
+         //alert('${shies.snsno}');
+         snsnoArr.push("${shies.snsno}");
+         </c:forEach>
+         </c:if>
+         //alert(snsnoArr);
+          
+         jQuery.ajaxSettings.traditional = true;
        
-       <c:if test="${shies!=null}">
+        // 좋아요목록 Ajax 불러오기
+         $.ajax({
+             url: "/shy/likeList.shy",
+             type: "GET",
+             dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+             data: {snsnoArr:snsnoArr},
+             success: function(data) { // 성공했을 때의 처리 콜백함수
+                var snsnoObjArr = [];
+                
+                $.each(data,function(entryIndex,entry){
+                   snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat),Number(entry.likeno) ]);
+                   if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 1){
+                         $('#bt-love'+entry.snsno).hide();
+                         $('#love'+entry.snsno).empty();
+                         
+                         var html = "<span>"+entry.totalcount+"</span>";
+                         $('#love'+entry.snsno).html(html).show();
+                         
+                   }else if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 0){
+                 	  	var html = "<span>"+entry.totalcount+"</span>";
+                 	  	$('#bt-love'+entry.snsno).html(html).show();
+                 	  	$('#love'+entry.snsno).hide();
+                 	  	
+                   }else{
+                        $('#bt-love'+entry.snsno).show();
+                        $('#love'+entry.snsno).hide();
+                    } 
+                });
+                
+             },
+             error: function() { // 에러가 발생했을 때의 콜백함수
+                 alert("error");
+             }
+         });
         
-        <c:forEach items="${shies}" var="shies">
-        // alert('${shies.snsno}');
-        snsnoArr.push('${shies.snsno}');
-        </c:forEach>
-        
-        </c:if>
-        
-        jQuery.ajaxSettings.traditional = true;
-      
-       // 좋아요목록 Ajax 불러오기
-        $.ajax({
-            url: "/shy/likeList.shy",
-            type: "GET",
-            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-            data: {snsnoArr:snsnoArr},
-            success: function(data) { // 성공했을 때의 처리 콜백함수
-               var snsnoObjArr = [];
-               
-               $.each(data,function(entryIndex,entry){
-                  snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat) ]);
-                  if(Number(entry.mylikestat) == 1) {
-                     if(Number(entry.totalcount) >0){
-                        $('#bt-love'+entry.snsno).hide();
-                        $('#love'+entry.snsno).empty();
-                        
-                        var html = '<span style="cursor:pointer">'+entry.totalcount+'</span>';
-                        $('#love'+entry.snsno).html(html).show();
-                     }else{
-                        $('#bt-love'+entry.snsno).hide();
-                        $('#love'+entry.snsno).show();
-                     }
-                     
-                  }else{
-                     $('#bt-love'+entry.snsno).show();
-                     $('#love'+entry.snsno).hide();
-                  }
-                  
-               });
-               
-
-               
-            },
-            error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
-            }
-        });
-       
-   }
+    }
    
-    
+    function goUnlike(idx,likeseq,seqcolum){
+        var form_data = {idx : idx,
+                     likeseq   : likeseq,
+                     seqcolum   : seqcolum};
+        
+         // 좋아요 Ajax 불러오기
+          $.ajax({
+              url: "/shy/unlike.shy",
+              type: "GET",
+              dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+              data: form_data ,// 파라미터     
+              success: function(data) { // 성공했을 때의 처리 콜백함수
+                 
+                 getLike();
+                 
+              },
+              error: function() { // 에러가 발생했을 때의 콜백함수
+                  alert("error");
+              }
+          });
+         
+     }
     
     function openComment(snsno) {
 	   
@@ -623,9 +639,7 @@
 			<article class="card-60 social">
 				<figure>
 
-					<img
-						src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}"
-						alt="shy" id="nike">
+					<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}" alt="shy" id="nike">
 
 				</figure>
 				<!-- end figure-->
@@ -673,20 +687,13 @@
 
 					<p>${shies.scontent}</p>
 					<footer>
-						<p>
-							<a class="bt-love" title="Love"
-								onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','1','snsno')"
-								id="bt-love${shies.snsno }"> Love </a> <a class="bt-love_chg"
-								title="Love" id="love${shies.snsno }" style="cursor:pointer"> </a> <a class="bt-share"
-								title="Share" href="#"> 공유하기 </a> <a
-								href="javascript:openComment('${shies.snsno}');"
-								class="bt-comment" title="Comment" id="comment${shies.snsno}">
-							</a>
-
-
-
-						</p>
-					</footer>
+				        <p>
+				         <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
+						 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
+						 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
+						 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
+				        </p>
+				      </footer>
 				</div>
 
 				<!--new댓글창  -->

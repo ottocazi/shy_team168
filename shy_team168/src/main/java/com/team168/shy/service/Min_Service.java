@@ -86,6 +86,56 @@ public class Min_Service {
 			return n;
 		}
 
+		
+		
+		
+		// 사업자 페이지 정보불러오기
+		
+		public HashMap<String, String> getgeoinfo(String geoidx) {
+			
+			HashMap<String, String> geomap = dao.getgeoinfo(geoidx);
+			return geomap;
+		}
+
+		public List<HashMap<String, String>> getgeoList(HashMap<String, String> geomap) {
+			List<HashMap<String, String>> geolist = dao.getgeolist(geomap);
+			return geolist;
+		}
+
+
+		// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+		public int getMyshyCount(String myIdx) {
+			int myshyCount = dao.getMyshyCount(myIdx);
+			return myshyCount;
+		}
+		////
+
+		// ===== 내 팔로우 수 가져오기  ===== //
+	 public int getMyflwcnt(String myIdx) {
+	    int fk_idxflwedcnt = dao.getMyflwcnt(myIdx);
+	    return fk_idxflwedcnt;
+	 }
+
+	 
+	// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+		public List<HashMap<String, String>> getMyshy(HashMap<String, Object> mymap) {
+			List<HashMap<String, String>> myshyList = dao.getMyshy(mymap);
+			return myshyList;
+		}
+
+		// ===== 이미지 가져오기 =====
+		public String getImgaddr(String snsno) {
+			String imgfile = dao.getImgaddr(snsno);
+			return imgfile;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 
