@@ -174,12 +174,6 @@ public class PaDAO {
 		String alarm_target = sqlsession.selectOne("pa.alarmTarget",likeseq);
 		return alarm_target;
 	}
-
-	// ===== 알림좋아요 삭제하기기 ===== //
-	public void deleteAlarm(HashMap<String, String> likemap) {
-		sqlsession.delete("pa.deleteAlarm",likemap);
-	}
-
 	
 
 }

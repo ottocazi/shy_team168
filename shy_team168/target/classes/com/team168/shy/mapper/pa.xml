@@ -307,17 +307,17 @@
 	</insert>
 	
 	<!-- ===== 좋아요 delete ===== -->	
-	<update id="deleteLike" parameterType="java.util.HashMap">
+	<delete id="deleteLike" parameterType="java.util.HashMap">
 		<if test='seqcolum.equals("snsno")'>
-		update tbl_like set lstatus = 0 where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
 		</if>
 		<if test='seqcolum.equals("storeboardno")'>
-		update tbl_like set lstatus = 0 where where where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
 		</if>
 		<if test='seqcolum.equals("grpboardseq")'>
-		update tbl_like set lstatus = 0 where where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
 		</if>
-	</update>
+	</delete>
 	
 	<!-- ===== 좋아요 가져오기 =====   -->
 	<resultMap type="java.util.HashMap" id="getlikeListMap">
@@ -334,10 +334,10 @@
 	  ) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE WHERE LSTATUS = 1 GROUP BY SNSNO) B
+      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} AND LSTATUS = 1 GROUP BY SNSNO) c on b.snsno=c.snsno
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
 	
 	<!-- =====  (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 =====  -->
@@ -471,9 +471,5 @@
        WHERE SNSNO = #{likeseq}
     </select>
     
-    <!-- ===== 알람 delete(좋아요 취소시) ===== -->	
-	<delete id="deleteAlarm" parameterType="java.util.HashMap">
-		DELETE FROM TBL_ALARM WHERE LIKENO = #{likeno} AND FK_IDX = #{fk_likeidx} AND ASTATUS = 1
-	</delete>
     
 </mapper>	

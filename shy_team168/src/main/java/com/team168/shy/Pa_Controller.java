@@ -613,19 +613,19 @@ public class Pa_Controller {
   		likemap.put("seqcolum", seqcolum);
   		likemap.put("likeseq", likeseq);
   		
-  		int result = service.insertLike(likemap);
-  		
-  		if(result>0){ //좋아요 insert가 되면,
-  			String likeno = service.getLikeno(likemap); // likeno를 가져온다.
-  			
-  			if(likeno!=null){ 
-  				likemap.put("likeno", likeno);
-  				String alarm_target = service.alarmTarget(likeseq); // alarm_target을 가져온다.
-  				
-  				likemap.put("alarm_target", alarm_target);
-  				service.insertAlarm(likemap);
-  			}
-  		}
+  		int	result = service.insertLike(likemap);
+	  		
+	  		if(result>0){ //좋아요 insert가 되면,
+	  			String likeno = service.getLikeno(likemap); // likeno를 가져온다.
+	  			
+	  			if(likeno!=null){ 
+	  				likemap.put("likeno", likeno);
+	  				String alarm_target = service.alarmTarget(likeseq); // alarm_target을 가져온다.
+	  				
+	  				likemap.put("alarm_target", alarm_target);
+	  				service.insertAlarm(likemap);
+	  			}
+	  		}
   		HashMap<String, Object> returnlike = new HashMap<String, Object>();
   		returnlike.put("RESULT", result);
   		
@@ -653,18 +653,10 @@ public class Pa_Controller {
    		int result = service.deletetLike(likemap);
    		
    		if(result>0){
-   			String likeno = service.getLikeno(likemap);
-   			
-   			if(likeno!=null){ 
-   				likemap.put("likeno", likeno);
-  				service.deleteAlarm(likemap); // alarm 테이블에서 삭제한다.
-  			}
    			
    		}
    		HashMap<String, Object> returnunlike = new HashMap<String, Object>();
    		returnunlike.put("RESULT", result);
-   		
-   		
    		
    		return returnunlike;
    			
