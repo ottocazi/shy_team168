@@ -640,9 +640,7 @@
 			<article class="card-60 social">
 				<figure>
 
-					<img
-						src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}"
-						alt="shy" id="nike">
+					<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}" alt="shy" id="nike">
 
 				</figure>
 				<!-- end figure-->

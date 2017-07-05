@@ -206,11 +206,11 @@ function moreList(){
             	
             $.each(data,function(entryIndex,entry){
               
-      		  var  html = "<article class='card-60 social'>"+
-      	     			  "<img src='/shy/resources/images/shydb/"+entry.myimg+"' alt='shy' id='nike'>"+
-          				  "<div class='flex-content'>"+
-            			  "<p style='text-align: left'>"+
-            			  entry.scontent+"</p><footer><p>";
+      		  var  html = "<article class='card-60 social'>";
+      	     			  if(entry.imageaddr!=null){
+      	     				html += "<img src='/shy/resources/images/shydb/"+entry.imageaddr+"' alt='shy' id='nike'>"; 
+      	     			  }
+      	     			  html += "<div class='flex-content'><p style='text-align: left'>"+entry.scontent+"</p><footer><p>";
             			  if(entry.slikecnt==0){
             			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
             			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
@@ -363,6 +363,7 @@ function moreList(){
     
       
       <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
+  
     <div class="flex-content">
       <p style="text-align: left">
        	${shies.scontent }
