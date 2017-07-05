@@ -438,11 +438,10 @@
       <small>${geolist.sdatedtime}</small>
       </h4>
       <hr>
-      <h2> 이름 : ${geolist.name}</h2>
+      <h2>${geolist.name}님의 글</h2>
       <h5><span class="glyphicon glyphicon-time"></span>${geolist.sdatedtime}</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <img src="../images/iyou.jpg" class="img-thumbnail" alt="Cinque Terre" >
-      <img src="../images/iyou.jpg" class="img-thumbnail" alt="Cinque Terre" >
+      <h5><span class="label label-danger">#여기서</span> <span class="label label-primary">#누구와</span></h5><br>
+      
       <p> ${geolist.scontent} </p>
       <br><br>
       </div>

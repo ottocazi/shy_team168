@@ -207,7 +207,7 @@ function moreList(){
             $.each(data,function(entryIndex,entry){
               
       		  var  html = "<article class='card-60 social'>"+
-      	     			  "<img src='/shy/resources/images/shydb/"+entry.myimg+"' alt='shy' id='nike'>"+
+      	     			  "<img src='/shy/resources/images/shydb/"+entry.simage+"' alt='shy' id='nike'>"+
           				  "<div class='flex-content'>"+
             			  "<p style='text-align: left'>"+
             			  entry.scontent+"</p><footer><p>";

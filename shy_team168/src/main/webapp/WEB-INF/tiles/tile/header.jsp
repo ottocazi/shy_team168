@@ -292,7 +292,7 @@
    
    function new_shynow_enter(){
       
-      document.shynowform.method = "post";
+	  document.shynowform.method = "post";
       document.shynowform.action = "shynow.shy";
       document.shynowform.submit();
    }

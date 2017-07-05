@@ -32,12 +32,7 @@
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
     	countComment();
-<<<<<<< HEAD
-       	//getLike();
-=======
-       	
     	getLike();
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
        
        
        
