@@ -21,14 +21,19 @@
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-
-<script type="text/javascript">
-
-</script>
-
+  	
+  	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+  
   </head>
 
   <body class="nav-md">
+
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -73,9 +78,7 @@
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      
-                      
-                      <li><a href="<%= request.getContextPath() %>/gesimulTK.shy">좋아요가 가장많은 유저</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">좋아요가 가장많은 유저</a></li>
                       <li><a href="#">신고를 많이받은 유저</a></li>
                     </ul>
                   </li>
@@ -230,17 +233,10 @@
             <div class="clearfix"></div>
 
             <div class="row">
-<%--               <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel_ym">
-                  <div class="x_title" style="margin-bottom: 10px;">
-                    <h2>${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h2>
-                    
-<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
-                    <input type="date" required="required" name="today" value="${today2}"/> 
-                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
-                    <button type="button" onClick="goday();">확인</button>
-</form>
-
+              <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title_ym">
+                    <h2>일주일간 회원,그룹 게시물 수 비교</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -258,14 +254,16 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
-                    <canvas id="lineChart_ym"></canvas>
+                  <div class="x_content_ym">
+
+                   <div id="container" style="height: 400%;"></div>
+
                   </div>
-                  <div>
-     			  </div> 
                 </div>
-              </div> --%>
- 
+              </div>
+
+
+<!-- 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -294,7 +292,7 @@
                   </div>
                 </div>
               </div>
-
+               -->
             </div>
 
           </div>
@@ -303,7 +301,97 @@
 
       </div>
     </div>
-
+	
+<script type="text/javascript">
+	var dom = document.getElementById("container");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+	    title : {
+	        text: '0',
+	        subtext: '일자별 회원,그룹 게시물비교'
+	    },
+	    tooltip : {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	        data:['회원게시물','그룹게시물']
+	    },
+	    toolbox: {
+	        show : true,
+	        feature : {
+	            dataView : {show: true, readOnly: false},
+	            magicType : {show: true, type: ['line', 'bar']},
+	            restore : {show: true},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    calculable : true,
+	    xAxis : [
+	        {
+	            type : 'category',
+	            data : [
+	            	<c:forEach var="map" items="${bartkList}"  varStatus="status">
+					"${map.MONTH}일",
+					</c:forEach>
+	            ]
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'value'
+	        }
+	    ],
+	    series : [
+	        {
+	            name:'회원게시물',
+	            type:'bar',
+	            data:[
+                 	<c:forEach var="map" items="${bartkList}"  varStatus="status">
+					"${map.CNT}",
+					</c:forEach>
+	            ],
+	            markPoint : {
+	                data : [
+	                    {type : 'max', name: '最大值'},
+	                    {type : 'min', name: '最小值'}
+	                ]
+	            },
+	            markLine : {
+	                data : [
+	                    {type : 'average', name: '平均值'}
+	                ]
+	            }
+	        },
+	        {
+	            name:'그룹게시물',
+	            type:'bar',
+	            data:[
+                 	<c:forEach var="map" items="${bartkList2}"  varStatus="status">
+					"${map.CNT}",
+					</c:forEach>
+	            ],
+	            markPoint : {
+	                data : [
+	                    {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
+	                    {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
+	                ]
+	            },
+	            markLine : {
+	                data : [
+	                    {type : 'average', name : '平均值'}
+	                ]
+	            }
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+</script>  
+	
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -313,13 +401,13 @@
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
 <%--     <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script> --%>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
 	<!-- ECharts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
     <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
-	
+	 --%>
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
-	
+
   </body>
 </html>

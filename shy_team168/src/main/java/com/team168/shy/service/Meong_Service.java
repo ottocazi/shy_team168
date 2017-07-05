@@ -166,6 +166,16 @@ public class Meong_Service implements Interface_CommonService  {
 		return n;
 	}
 
+	public List<HashMap<String, Object>> getBarTKList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList = dao.getBarTKList(map);
+		return bartkList;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList2 = dao.getBarTKList2(map);
+		return bartkList2;
+	}
+
 
 
 }

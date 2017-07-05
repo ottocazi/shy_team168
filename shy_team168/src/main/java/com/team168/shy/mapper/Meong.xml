@@ -331,6 +331,38 @@
 		values(seq_tbl_share.nextval, #{fk_idx}, #{snsno}, default, default)
 	</insert>
 	
+	<!-- 하루(시간대별) 게시물통계(BAR)를 위한 쿼리문(회원) -->
+	<resultMap type="java.util.HashMap" id="getbarListmap">
+		<result property="MONTH" 	        column="month" 	    javaType="String" />
+ 		<result property="DAY" 		    column="day" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="getBarTKList" resultMap="getbarListmap" parameterType="java.util.HashMap">
+		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
+		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
+		
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(sdatedtime, 'YYYY-MM-DD') as day from tbl_shymemo where to_char(sdatedtime, 'yyyy-mm') = '2017-06') group by day) B
+		
+		on A.time = B.day
+		order by time asc
+	</select>
+	
+	<!-- 하루(시간대별) 게시물통계(BAR)를 위한 쿼리문(그룹) -->
+	<resultMap type="java.util.HashMap" id="getbarList2map">
+		<result property="MONTH" 	        column="month" 	    javaType="String" />
+ 		<result property="DAY" 		    column="day" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="getBarTKList2" resultMap="getbarList2map" parameterType="java.util.HashMap">
+		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
+		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
+		
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(writedate, 'YYYY-MM-DD') as day from tbl_grpboard where to_char(writedate, 'yyyy-mm') = '2017-06') group by day) B
+		
+		on A.time = B.day
+		order by time asc
+	</select>
+	
 </mapper>
 
 
