@@ -28,12 +28,29 @@ public class Min_Controller {
 	private Min_Service service;
 	
 	
-	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
-    public String goMypage(HttpServletRequest req) {
-    	
+	
+
+	@RequestMapping(value="/place.shy", method={RequestMethod.GET})
+    public String goMypage(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	
+		String geoidx = req.getParameter("geoidx");
+		
+		System.out.println("컨트롤에서 받은 geoidx : " + geoidx);
+		
+		HashMap<String, String> geomap = service.getgeoinfo(geoidx);
+		
+		List <HashMap<String, String>> geolist = service.getgeoList(geomap);
+		req.setAttribute("geomap", geomap);
+		req.setAttribute("geolist", geolist);
+		
+		 
+	
 		return "smin/busipage.tiles";
     	
     }
+	
+	
 	
 	
 

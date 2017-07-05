@@ -204,15 +204,23 @@ public class Meong_Controller {
     @RequestMapping(value="/admin.shy", method={RequestMethod.GET})
     public String admin(HttpServletRequest req, HttpSession session){
     	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("today", today);
+    	
     	String totaluser = service.gettotaluser();   // 총 사용자수
     	String mentotal = service.getmentotal();     // 총 남자 사용자수
     	String womantotal = service.getwomantotal(); // 총 여자 사용자수
-    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+    	String todaytotal = service.gettodaytotal(map); // 오늘방문자 수
+    	String todaytotalshymemo = service.gettodaytotalshymemo(map); // 오늘게시물 수
     			
     	req.setAttribute("totaluser", totaluser);
     	req.setAttribute("mentotal", mentotal);
     	req.setAttribute("womantotal", womantotal);
     	req.setAttribute("todaytotal", todaytotal);
+    	req.setAttribute("todaytotalshymemo", todaytotalshymemo);
 
     	return "admin.notiles";
     }
