@@ -126,6 +126,71 @@
 	
 	
 	
+	<resultMap type="java.util.HashMap" id="geomap">
+		<result property="seq" 		column="seq" 		javaType="String" />
+ 		<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+ 		<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+ 		<result property="longditude"  		column="LONGDITUDE" 		javaType="String" />
+ 		<result property="latitude"  		column="LATITUDE" 		javaType="String" />
+ 		<result property="country"  		column="COUNTRY" 		javaType="String" />
+ 		<result property="postal_code"  		column="POSTAL_CODE" 		javaType="String" />
+ 		<result property="area1"  		column="AREA1" 		javaType="String" />
+ 		<result property="locality"  		column="LOCALITY" 		javaType="String" />
+ 		<result property="route"  		column="ROUTE" 		javaType="String" />
+ 		<result property="street_number"  		column="STREET_NUMBER" 		javaType="String" />
+ 		
+ 		
+	</resultMap>
+	
+	
+	 <select id="getgeoinfo" parameterType="String" resultMap="geomap">
+	
+	    select *
+        from tbl_geo
+        where seq = #{geoidx}
+		
+	</select>
+	
+	
+	
+	
+	
+	
+	<resultMap type="java.util.HashMap" id="geolist">
+	<result property="seq"  			column="SEQ" 			javaType="String" />
+	<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+	<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+	<result property="scontent"  		column="SCONTENT" 		javaType="String" />
+	<result property="name"  			column="NAME" 			javaType="String" />
+	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
+	<result property="idx"  			column="IDX" 			javaType="String" />
+	</resultMap>
+	
+	
+	 <select id="getgeolist" parameterType="java.util.HashMap" resultMap="geolist">
+	 select *
+     from tbl_geo a left outer join tbl_shymemo b on a.fk_snsno = b.snsno
+     left outer join tbl_shymember c on b.fk_idx=c.idx
+     where a.latitude = #{latitude} and a.longditude= #{longditude}
+	</select>
+	
+	
+	
+	<!-- ===== 개인 사용자 정보 가져오기 ===== -->	
+	<select id="getgain" parameterType="java.util.HashMap" resultType="String"> 
+		select name
+		from TBL_SHYMEMBER
+		where idx = #{myIdx}
+	</select>  
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

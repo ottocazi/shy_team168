@@ -35,11 +35,11 @@ public class DDung_Controller {
 	@Autowired
 	private Juno_Service jservice;
 	
-	/*@RequestMapping(value="/*", method={RequestMethod.GET})
+	@RequestMapping(value="/logo.shy", method={RequestMethod.GET})
 	public String userpage(HttpServletRequest req, HttpSession session) {
 		 
-		return "";
-	}*/
+		return "shy_logo.notiles";
+	}
 	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
@@ -121,11 +121,22 @@ public class DDung_Controller {
 		String shyplace = req.getParameter("shyplace");
 		
 		
-		String image = req.getMultipartContentType("image");
-		System.out.println("image = " + image);
+		/*String image = req.getMultipartContentType("image");
+		System.out.println("image = " + image);*/
 		
 		MultipartFile imagefile = req.getFile("image");
 		byte[] imagebytes = imagefile.getBytes();
+		int bytesize = imagebytes.length;
+		System.out.println("bytesize는 ***"+bytesize);
+		
+		String newFilename ="";
+		
+		if(bytesize==0){
+			imagefile = null;
+		}
+		
+		
+		else {
 		String fileExt = imagefile.getOriginalFilename();
 		
 		String rootpath = session.getServletContext().getRealPath("/");
@@ -144,7 +155,7 @@ public class DDung_Controller {
 			rootpath : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\
 			path : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\resources\images/shydb*/
 		
-		String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+		newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
 		newFilename += System.nanoTime();
 		newFilename += fileExt;
 		System.out.println("newFilename = "+ newFilename);
@@ -158,7 +169,7 @@ public class DDung_Controller {
 		FileOutputStream fos = new FileOutputStream(pathname);
 		fos.write(imagebytes);
 		fos.close();
-		
+		}
 		
 		String ftagstatus = "0";
 		if(ftag!=null){
@@ -196,7 +207,7 @@ public class DDung_Controller {
 		}
 		
 		String simage = "0";
-		if(newFilename!=null){
+		if(imagefile!=null){
 			simage = "1";
 			
 		}
@@ -338,10 +349,10 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/account.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/auth.shy", method={RequestMethod.GET})
 	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
 		
-		return "ddung/accountenter.tiles";
+		return "ddung/shy_auth.tiles";
 		
 	}
 	
@@ -390,6 +401,21 @@ public class DDung_Controller {
 		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
 		
 		return comments;
+		
+		
+	}
+	
+	@RequestMapping(value="/banking.shy", method={RequestMethod.POST})
+	public String banking(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		String snsno = req.getParameter("snsno");
+		
+		System.out.println("댓글을 출력할 샤이 번호는 : "+snsno);
+		
+		List <HashMap <String, String>> comments = service.getComments(snsno);
+		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
+		
+		return "banking.tiles";
 		
 		
 	}
