@@ -128,6 +128,11 @@ public class Min_Service {
 			String imgfile = dao.getImgaddr(snsno);
 			return imgfile;
 		}
+
+		public String getGain(String myIdx) {
+			String getgain = dao.getGain(myIdx);
+			return getgain;
+		}
 		
 		
 		

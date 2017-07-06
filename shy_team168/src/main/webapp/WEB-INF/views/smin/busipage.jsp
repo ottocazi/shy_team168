@@ -20,6 +20,8 @@
   
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpqeGEfswdtP2VPArIjCJ7_ycPxqvq640"></script>
   
+  
+
   <style>    
     /* Set black background color, white text and some padding */
    
@@ -234,17 +236,60 @@
 		$("#starcounter").val(count);
 	}
 	
+	var myCenter=new google.maps.LatLng(${geomap.latitude} , ${geomap.longditude});
+
+	
+	
 	
 	function initialize() {
 		  var mapProp = {
-		    center:new google.maps.LatLng(${geomap.latitude},${geomap.longditude}),
-		    zoom:18,
+		    center:myCenter ,
+		    zoom:15,
 		    mapTypeId:google.maps.MapTypeId.ROADMAP
 		  };
 		  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		  
+		  
+
+		  var marker=new google.maps.Marker({
+		    position:myCenter,
+		    animation:google.maps.Animation.BOUNCE
+		    });
+
+		  marker.setMap(map);
+		  
+		  var myCity = new google.maps.Circle({
+			  center:myCenter ,
+			  radius:400,
+			  strokeColor:"#ff4d4d",
+			  strokeOpacity:0.8,
+			  strokeWeight:2,
+			  fillColor:"#ffcce0",
+			  fillOpacity:0.4
+			});
+		  
+
+		  myCity.setMap(map);
+		  
+		  
+
+		  var infowindow = new google.maps.InfoWindow({
+		    content:"Hello World!"
+		    });
+
+		  google.maps.event.addListener(marker, 'click', function() {
+		    infowindow.open(map,marker);
+		    });
+		  
+		  
 		}
+	
+	
+	
 		google.maps.event.addDomListener(window, 'load', initialize);
 	
+		
+		
   </script>
   
 </head>
@@ -365,8 +410,8 @@
 
 
 
-<div class="container" style="width: 70%;" >    
-  <div class="row">
+<div class="container" style="width: 90%; " >    
+  <div class="row" >
   
   
   
@@ -377,7 +422,7 @@
     	<!-- 구글맵 해버리기~  Google map-->
 
 
-<div id="googleMap" style="width:300px;height:300px;"></div>
+<div id="googleMap" style="width:100%; height:300px;"></div>
 <br><br>
 
 
@@ -385,8 +430,8 @@
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-        <p><strong>마음에 드시나요?</strong></p>
-        방문한 페이지에 대해 글을 남겨 평가해주세요.
+        <p><strong>내 주변 Shy보기</strong></p>
+        위 지도의 마커를 클릭해 보세요!
       </div>
       <p><a href="#">친구 추가하기</a></p>
       <p><a href="#">공유하기</a></p>
@@ -400,15 +445,16 @@
       
       <div class="wrapper">
       
-      <div style="font-size: 25px; font-weight: bold; color:  #2952a3" align="center">${geomap.shyplace }</div>
+      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; margin-left: 130px;">${geomap.shyplace }</div>
       <br><br><br>
       
       
         <div>
-      <h4>메인 글남기기</h4>
+      
       <form role="form" name="gogo">
         <div class="form-group">
-          <textarea class="form-control" rows="7" id="firstarea"  required></textarea>
+          <textarea class="form-control" rows="7" id="firstarea" placeholder="메인에 남길 글을 작성해보세요!" 
+           required></textarea>
         </div>
         
       </form>
@@ -441,10 +487,12 @@
       
       
       <c:if test="${gvo.gimg != null}">
-      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+      	<img class="grp_boxImage" style="width: 100%;"
+      	 src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
       </c:if>
       <c:if test="${gvo.gimg == null}">
-      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+      	<img class="grp_boxImage" style="width: 100%;"
+      	src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
       </c:if>
       <h2 style="font-style: inherit; font-size: 23px;">
       

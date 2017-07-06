@@ -305,7 +305,13 @@ function moreList(){
          </c:if>
          </div>
          <div class="myIntro">
-            <h2 style="display: -webkit-inline-box;">${loginuser.email}</h2>
+         
+         
+            <h2 style="display: -webkit-inline-box;">${getgain.name}</h2>
+            
+            
+            
+            
             <button class="bt" title="Follow" onclick="goFollow();">
                Follow
             </button>
@@ -326,21 +332,16 @@ function moreList(){
                ${fk_idxflwedcnt } 
                </c:if>
                       명</span>&nbsp;&nbsp;
-            <div id="showFlwList">
+            <div id="showFlwList" style="padding-top:30px;">
             </div>
 
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
-            <button class="proedit" onclick="goEdit();">프로필편집</button>
-            <c:if test="${loginuser.myintro != null}">
-            <p style="padding-top:30px;">
-                ${loginuser.myintro}
+            
+           
+            <p >
+               	   
             </p>
-            </c:if>
-            <c:if test="${loginuser.myintro == null}">
-            <p style="padding-top:30px;">
-               	 자기소개가 없습니다.
-            </p>
-            </c:if>
+         
          </div>
       </div>
       </form>

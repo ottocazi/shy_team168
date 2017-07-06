@@ -151,11 +151,17 @@ public class Min_DAO{
 		
 		
 		
-		
-	
-		
-		
-		
+
+		public String getGain(String myIdx) {
+			
+			String getgain = sqlsession.selectOne("min.getgain", myIdx);
+			return getgain;
+		}
+
+
+
+
+
 		
 
     
