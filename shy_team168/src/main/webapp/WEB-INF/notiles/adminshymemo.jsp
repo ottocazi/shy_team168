@@ -214,7 +214,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>회원관리</h3>
+                <h3>게시물관리</h3>
               </div>
 
             </div>
@@ -225,7 +225,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>SHY유저 관리</h2>
+                    <h2>SHY게시물 관리</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -246,35 +246,37 @@
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
                       <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
-                             회원들의 상세정보와 버튼을 통해 활성화/비활성화를 할수있는 페이지
+                             회원들의 게시물과 버튼을 통해 활성화/비활성화를 할수있는 페이지
                     </p>
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>회원번호</th>
+                          <th>게시물번호</th>
                           <th>이름</th>
                           <th>성별</th>
-                          <th>이메일</th>
-                          <th>나이</th>
-                          <th>가입일자</th>
-                          <th>회원상태</th>
+                          <th>게시물내용</th>
+                          <th>최종수정일</th>
+                          <th>좋아요수</th>
+                          <th>신고수</th>
+                          <th>게시물상태</th>
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="map" items="${shyList}" varStatus="status">
+                      <c:forEach var="map" items="${memoList}" varStatus="status">
                         <tr align="center">
-                          <td>${map.IDX}</td>
+                          <td>${map.SNSNO}</td>
                           <td>${map.NAME}</td>
                           <td>${map.GENDER}</td>
-                          <td>${map.EMAIL}</td>
-                          <td>${map.BIRTHDAY}</td>
-                          <td>${map.REGISTERDATE}</td>
-                          <td>
+                          <td>${map.SCONTENT}</td>
+                          <td>${map.SDATEDTIME}</td>
+                          <td>${map.SLIKECNT}</td>
+                          <td>${map.SBLAMECNT}</td>
+                        <td>
                         <c:if test="${map.STATUS != 0}">  
-                  		<button onClick="javascript:location.href='shystatusDown.shy?idx=${map.IDX}&email=${map.EMAIL}'">활성화</button>
+                  		<button onClick="javascript:location.href='shymemostatusDown.shy?snsno=${map.SNSNO}&name=${map.NAME}'">활성화</button>
                   		</c:if>
                   		<c:if test="${map.STATUS == 0}">
-                  		<button onClick="javascript:location.href='shystatusUp.shy?idx=${map.IDX}&email=${map.EMAIL}'">비활성화</button>
+                  		<button onClick="javascript:location.href='shymemostatusUp.shy?snsno=${map.SNSNO}&name=${map.NAME}'">비활성화</button>
                   		</c:if>
                           </td>
                         </tr>

@@ -21,14 +21,19 @@
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-
-<script type="text/javascript">
-
-</script>
-
+  	
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+  
   </head>
 
   <body class="nav-md">
+
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -57,13 +62,13 @@
               <div class="menu_section">
                 <h3>메뉴</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> 회원관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저조회</a></li>
-                      <li><a href="#">게시물관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
                       <li><a href="#">회사개요</a></li>
                       <li><a href="#">채용공고</a></li>
@@ -72,11 +77,9 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      
-                      
-                      <li><a href="<%= request.getContextPath() %>/gesimulTK.shy">좋아요가 가장많은 유저</a></li>
-                      <li><a href="#">신고를 많이받은 유저</a></li>
+					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
@@ -211,36 +214,18 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left">
-                <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
-              </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
+			  <div class="title_left">
+                <h3 style="color: red;">지역,국가별 회원수 통계</h3>
               </div>
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-<%--               <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel_ym">
-                  <div class="x_title" style="margin-bottom: 10px;">
-                    <h2>${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h2>
-                    
-<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
-                    <input type="date" required="required" name="today" value="${today2}"/> 
-                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
-                    <button type="button" onClick="goday();">확인</button>
-</form>
-
+              <div class="col-md-8 col-sm-8 col-xs-12" style="width:100%;">
+                <div class="x_panel"style="width: 45%;" >
+                  <div class="x_title_ym">
+                    <h2>지역별 회원 PIE 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -258,18 +243,18 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
-                    <canvas id="lineChart_ym"></canvas>
+                  <div class="x_content_ym">
+
+                   <div id="pietonke" style="height: 400%;"></div>
+
                   </div>
-                  <div>
-     			  </div> 
                 </div>
-              </div> --%>
- 
-              <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Bar Graph</h2>
+              <!-- </div>
+
+              <div class="col-md-8 col-sm-8 col-xs-12" style="display: inline-block;">
+ -->                <div class="x_panel" style="width: 45%;" >
+                  <div class="x_title_ym">
+                    <h2>국가별 회원 PIE 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -287,14 +272,13 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div class="x_content_ym">
 
-                    <div id="mainb" style="height:350px;"></div>
+                   <div id="doughnut" style="height: 400%;"></div>
 
                   </div>
                 </div>
               </div>
-
             </div>
 
           </div>
@@ -303,7 +287,117 @@
 
       </div>
     </div>
+	
+<script type="text/javascript">
+	var dom = document.getElementById("pietonke");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+	    title : {
+	        text: '지역별 회원수',
+	        subtext: 'shy',
+	        x:'center'
+	    },
+	    tooltip : {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        left: 'left',
+	        data: [
+	        	<c:forEach var="map" items="${pietkList}"  varStatus="status">
+				"${map.CITY}",
+				</c:forEach>
+				]
+	    },
+	    series : [
+	        {
+	            name: '지역',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data:[
+	            	<c:forEach var="map" items="${pietkList}">
+	                {value:"${map.CNT}", name:"${map.CITY}"},
+	                </c:forEach>
+	            ],
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+	
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+	var dom = document.getElementById("doughnut");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	app.title = '环形图';
+	
+	option = {
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data:[
+	        	<c:forEach var="map" items="${doughnutList}">
+				"${map.COUNTRY}",
+				</c:forEach>
+	        ]
+	    },
+	    series: [
+	        {
+	            name:'국가',
+	            type:'pie',
+	            radius: ['50%', '70%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    show: false,
+	                    position: 'center'
+	                },
+	                emphasis: {
+	                    show: true,
+	                    textStyle: {
+	                        fontSize: '30',
+	                        fontWeight: 'bold'
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    show: false
+	                }
+	            },
+	            data:[	<c:forEach var="map" items="${doughnutList}">
+	                	{value:'${map.CNT}', name:'${map.COUNTRY}'},
+						</c:forEach>
+	            ]
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+
+</script>  
+	
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -312,14 +406,9 @@
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-<%--     <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script> --%>
-	<!-- ECharts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
-	
+
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
-	
+
   </body>
 </html>

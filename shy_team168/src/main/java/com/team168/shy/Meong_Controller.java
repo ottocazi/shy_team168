@@ -121,7 +121,6 @@ public class Meong_Controller {
     		loginuser = service.getLoginMember(email);
     		session.setAttribute("loginuser", loginuser);
     	}
-
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
     		type = "error";
@@ -479,7 +478,8 @@ public class Meong_Controller {
     	int day = calendar.get(Calendar.DAY_OF_MONTH);
     	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
     	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
-    	//System.out.println(yesterday);
+    	System.out.println(today);
+    	System.out.println(yesterday);
     	
     	HashMap<String, String> map = new HashMap<String, String>();
     	
@@ -644,7 +644,151 @@ public class Meong_Controller {
     	return "msg.notiles";
     	
     }
+    
+    // 게시물 통계 페이지 요청
+    @RequestMapping(value="/bartongke.shy", method={RequestMethod.GET})
+    public String bartongke(HttpServletRequest req, HttpSession session){
+    	
+    	String today2 = req.getParameter("today");
+    	String yesterday2 = req.getParameter("yesterday");
+//    	System.out.println("today2 는 ==> " + today2);
+//    	System.out.println("yesterday2 는 ==> " + yesterday2);
+    	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = calendar.get(Calendar.YEAR);
+    	int month = (calendar.get(Calendar.MONTH) + 1);
+    	int day = calendar.get(Calendar.DAY_OF_MONTH);
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+    	//System.out.println(yesterday);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("today", today);
+    	map.put("yesterday", yesterday);
+    	map.put("today2", today2);
+    	map.put("yesterday2", yesterday2);
+    	
+    	List<HashMap<String, Object>> bartkList = service.getBarTKList(map);
+    	req.setAttribute("bartkList", bartkList);
+    	List<HashMap<String, Object>> bartkList2 = service.getBarTKList2(map);
+    	req.setAttribute("bartkList2", bartkList2);
+    	
+    	/*if(today2 == null && yesterday2 == null){
+    		
+        	List<HashMap<String, Object>> bartkList = service.getBarTKList(map);
+        	List<HashMap<String, Object>> bartkList2 = service.getBarTKList2(map);
+        	
+        	req.setAttribute("bartkList", bartkList);
+        	req.setAttribute("bartkList2", bartkList2);
+    				
+    	}
+    	else{ // 달력으로 날짜조정했을때
+    		
+        	List<HashMap<String, Object>> tkList = service.gettongkeList3(map);
+        	List<HashMap<String, Object>> tkList2 = service.gettongkeList4(map);
+        	
+        	req.setAttribute("tkList", tkList);
+        	req.setAttribute("tkList2", tkList2);
+    	}*/
+    	
+    	//System.out.println(map);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
+    	req.setAttribute("today2", today2);
+    	req.setAttribute("yesterday2", yesterday2);
 
-
+    	return "bartongke.notiles";
+    }	
+    
+    // 게시물관리 페이지 요청
+    @RequestMapping(value="/adminshymemo.shy", method={RequestMethod.GET})
+    public String adminshymemo(HttpServletRequest req, HttpSession session){
+    	
+    	List<HashMap<String, Object>> memoList = service.getshymemoList(); 
+		 
+		req.setAttribute("memoList", memoList);
+    	
+    	return "adminshymemo.notiles";	
+    }
 	
+    // 관리자 페이지 게시물관리 페이지 비활성화버튼요청
+    @RequestMapping(value="/shymemostatusDown.shy", method={RequestMethod.GET})
+    public String shymemostatusDown(HttpServletRequest req, HttpSession session){
+    	
+    	String snsno = req.getParameter("snsno");
+    	String name = req.getParameter("name");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("snsno", snsno);
+    	
+    	int n = service.memostatusDown(map);
+    	
+    	if(n == 1) {
+    		title = name + "님의 "+ snsno +"번 게시물을 비활성화 했습니다.";
+    		type = "warning";
+    		loc = "adminshymemo.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }
+	
+    // 관리자 페이지 게시물관리 페이지 활성화버튼요청
+    @RequestMapping(value="/shymemostatusUp.shy", method={RequestMethod.GET})
+    public String shymemostatusUp(HttpServletRequest req, HttpSession session){
+    	
+    	String snsno = req.getParameter("snsno");
+    	String name = req.getParameter("name");
+    	
+    	String title = "";
+    	String type = "";
+    	String msg = "";
+    	String loc = "";
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("snsno", snsno);
+    	
+    	int n = service.memostatusUp(map);
+    	
+    	if(n == 1) {
+    		title = name + "님의 "+ snsno +"번 게시물을 활성화 했습니다.";
+    		type = "success";
+    		loc = "adminshymemo.shy";
+
+    		req.setAttribute("title", title);
+			req.setAttribute("type", type);
+			req.setAttribute("msg", msg);
+			req.setAttribute("loc", loc);
+    	}
+    	return "ddung_alert.notiles";
+    }	
+    
+	
+    // 관리자 페이지 게시물관리 페이지 활성화버튼요청
+    @RequestMapping(value="/pietongke.shy", method={RequestMethod.GET})
+    public String pietongke(HttpServletRequest req, HttpSession session){
+    	
+    	List<HashMap<String, Object>> pietkList = service.getpietkList();
+    	req.setAttribute("pietkList", pietkList);
+    	
+    	List<HashMap<String, Object>> doughnutList = service.getdoughnutList();
+    	req.setAttribute("doughnutList", doughnutList);
+    
+    	
+    	
+    	return "pietongke.notiles";
+    }	
+    
 }

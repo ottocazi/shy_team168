@@ -183,5 +183,40 @@ public class Meong_DAO{
 		return n;
 	}
 
+	public List<HashMap<String, Object>> getBarTKList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList = sqlsession.selectList("mangu.getBarTKList" , map);
+		return bartkList;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList2 = sqlsession.selectList("mangu.getBarTKList2" , map);
+		return bartkList2;
+	}
+
+	public List<HashMap<String, Object>> getshymemoList() {
+		List<HashMap<String, Object>> memoList = sqlsession.selectList("mangu.getshymemoList");
+		return memoList;
+	}
+
+	public int memostatusDown(HashMap<String, String> map) {
+		int n = sqlsession.update("mangu.memostatusDown", map);
+		return n;
+	}
+
+	public int memostatusUp(HashMap<String, String> map) {
+		int n = sqlsession.update("mangu.memostatusUp", map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> getpietkList() {
+		List<HashMap<String, Object>> pietkList = sqlsession.selectList("mangu.getpietkList");
+		return pietkList;
+	}
+
+	public List<HashMap<String, Object>> getdoughnutList() {
+		List<HashMap<String, Object>> doughnutList = sqlsession.selectList("mangu.getdoughnutList");
+		return doughnutList;
+	}
+
 
 }

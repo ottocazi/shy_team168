@@ -163,6 +163,7 @@
 	<result property="scontent"  		column="SCONTENT" 		javaType="String" />
 	<result property="name"  			column="NAME" 			javaType="String" />
 	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
+	<result property="idx"  			column="IDX" 			javaType="String" />
 	</resultMap>
 	
 	
@@ -175,9 +176,12 @@
 	
 	
 	
-	
-	
-	
+	<!-- ===== 개인 사용자 정보 가져오기 ===== -->	
+	<select id="getgain" parameterType="java.util.HashMap" resultType="String"> 
+		select name
+		from TBL_SHYMEMBER
+		where idx = #{myIdx}
+	</select>  
 	
 	
 	
