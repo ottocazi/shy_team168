@@ -183,5 +183,15 @@ public class Meong_DAO{
 		return n;
 	}
 
+	public List<HashMap<String, Object>> getBarTKList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList = sqlsession.selectList("mangu.getBarTKList" , map);
+		return bartkList;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList2 = sqlsession.selectList("mangu.getBarTKList2" , map);
+		return bartkList2;
+	}
+
 
 }

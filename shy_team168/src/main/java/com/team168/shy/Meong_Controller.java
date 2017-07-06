@@ -479,7 +479,8 @@ public class Meong_Controller {
     	int day = calendar.get(Calendar.DAY_OF_MONTH);
     	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
     	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
-    	//System.out.println(yesterday);
+    	System.out.println(today);
+    	System.out.println(yesterday);
     	
     	HashMap<String, String> map = new HashMap<String, String>();
     	
@@ -644,6 +645,64 @@ public class Meong_Controller {
     	return "msg.notiles";
     	
     }
+    
+    @RequestMapping(value="/bartongke.shy", method={RequestMethod.GET})
+    public String bartongke(HttpServletRequest req, HttpSession session){
+    	
+    	String today2 = req.getParameter("today");
+    	String yesterday2 = req.getParameter("yesterday");
+    	System.out.println("today2 는 ==> " + today2);
+    	System.out.println("yesterday2 는 ==> " + yesterday2);
+    	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = calendar.get(Calendar.YEAR);
+    	int month = (calendar.get(Calendar.MONTH) + 1);
+    	int day = calendar.get(Calendar.DAY_OF_MONTH);
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+    	//System.out.println(yesterday);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("today", today);
+    	map.put("yesterday", yesterday);
+    	map.put("today2", today2);
+    	map.put("yesterday2", yesterday2);
+    	
+    	List<HashMap<String, Object>> bartkList = service.getBarTKList(map);
+    	req.setAttribute("bartkList", bartkList);
+    	List<HashMap<String, Object>> bartkList2 = service.getBarTKList2(map);
+    	req.setAttribute("bartkList2", bartkList2);
+    	
+    	/*if(today2 == null && yesterday2 == null){
+    		
+        	List<HashMap<String, Object>> bartkList = service.getBarTKList(map);
+        	List<HashMap<String, Object>> bartkList2 = service.getBarTKList2(map);
+        	
+        	req.setAttribute("bartkList", bartkList);
+        	req.setAttribute("bartkList2", bartkList2);
+    				
+    	}
+    	else{ // 달력으로 날짜조정했을때
+    		
+        	List<HashMap<String, Object>> tkList = service.gettongkeList3(map);
+        	List<HashMap<String, Object>> tkList2 = service.gettongkeList4(map);
+        	
+        	req.setAttribute("tkList", tkList);
+        	req.setAttribute("tkList2", tkList2);
+    	}*/
+    	
+    	//System.out.println(map);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
+    	req.setAttribute("today2", today2);
+    	req.setAttribute("yesterday2", yesterday2);
+
+    	return "bartongke.notiles";
+    }	
 
 
 	
