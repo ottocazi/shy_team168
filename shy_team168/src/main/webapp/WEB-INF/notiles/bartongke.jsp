@@ -62,13 +62,13 @@
               <div class="menu_section">
                 <h3>메뉴</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> 회원관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저조회</a></li>
-                      <li><a href="#">게시물관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
                       <li><a href="#">회사개요</a></li>
                       <li><a href="#">채용공고</a></li>
@@ -77,9 +77,9 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">좋아요가 가장많은 유저</a></li>
-                      <li><a href="#">신고를 많이받은 유저</a></li>
+					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
@@ -214,19 +214,8 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left">
-                <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
-              </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
+			  <div class="title_left">
+                <h3 style="color: red">일주일간 회원,그룹 게시물 수 비교</h3>
               </div>
             </div>
 
@@ -236,7 +225,7 @@
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title_ym">
-                    <h2>일주일간 회원,그룹 게시물 수 비교</h2>
+                    <h2>게시물별 BAR 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
