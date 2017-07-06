@@ -166,4 +166,56 @@
 		insert into tbl_blame(blameno, snsno,    fk_blameidx, fk_blamedidx, bladate, fk_cmtno, reason, 	  resondetail)
 		values (seq_tbl_blame.nextval, #{snsno}, #{idx},      #{fk_idx},    sysdate, #{cmtno}, #{result}, #{value})
 	</insert>
+	
+	<!-- ===== 위치 태그가 있는 snsno list 뽑아오기 ===== -->
+	<resultMap type="java.util.HashMap" id="getGeoSnsnoListMap">
+		<result property="FK_SNSNO" 	column="fk_snsno" 		javaType="int" />
+ 		<result property="LOGDITUDE" 	column="logditude" 		javaType="String" />
+ 		<result property="LATITUDE" 	column="latitde" 	javaType="String" />
+ 	</resultMap>
+	<select id="getGeoSnsnoList" resultMap="getGeoSnsnoListMap" parameterType="String">
+		select fk_snsno, longditude, latitude 
+		from tbl_geo
+	</select>
+	
+	<!-- ===== 지역별 shy :  cnt 통계 지도 ===== -->
+	<resultMap type="java.util.HashMap" id="getdrawRegionsMap">
+		<result property="Seoul" 			column="Seoul" 				javaType="int" />
+ 		<result property="Busan" 			column="Busan" 				javaType="int" />
+ 		<result property="Daegu" 			column="Daegu" 				javaType="int" />
+ 		<result property="Daejeon" 			column="Daejeon" 			javaType="int" />
+ 		<result property="Gwangju" 			column="Gwangju" 			javaType="int" />
+ 		<result property="Incheon" 			column="Incheon" 			javaType="int" />
+ 		<result property="Ulsan" 			column="Ulsan" 				javaType="int" />
+ 		<result property="Chungcheongbugdo"	column="Chungcheongbugdo" 	javaType="int" />
+ 		<result property="Chungcheongnamdo" column="Chungcheongnamdo" 	javaType="int" />
+ 		<result property="Gangweondo" 		column="Gangweondo" 		javaType="int" />
+ 		<result property="Gyeonggido" 		column="Gyeonggido" 		javaType="int" />
+ 		<result property="Gyeongsangbugdo" 	column="Gyeongsangbugdo" 	javaType="int" />
+ 		<result property="Gyeongsangnamdo" 	column="Gyeongsangnamdo" 	javaType="int" />
+ 		<result property="Jejudo" 			column="Jejudo" 			javaType="int" />
+ 		<result property="Jeonrabugdo" 		column="Jeonrabugdo" 		javaType="int" />
+ 		<result property="Jeonranamdo" 		column="Jeonranamdo" 		javaType="int" />
+ 		<result property="ect" 				column="ect" 				javaType="int" />
+ 	</resultMap>
+	<select id="drawRegionsMap"  resultMap="getdrawRegionsMap">
+	select DISTINCT(select count(*) from tbl_geo where area1='서울특별시' ) as Seoul,
+	      (select count(*) from tbl_geo where area1='부산광역시' ) as Busan,
+	      (select count(*) from tbl_geo where area1='대구광역시' ) as Daegu,
+	      (select count(*) from tbl_geo where area1='대전광역시' ) as Daejeon,
+	      (select count(*) from tbl_geo where area1='광주광역시' ) as Gwangju,
+	      (select count(*) from tbl_geo where area1='인천광역시' ) as Incheon,
+	      (select count(*) from tbl_geo where area1='울산광역시' ) as Ulsan,
+	      (select count(*) from tbl_geo where area1='충청북도' )   as Chungcheongbugdo,
+	      (select count(*) from tbl_geo where area1='충청남도' )   as Chungcheongnamdo,
+	      (select count(*) from tbl_geo where area1='강원도' ) 	   as Gangweondo,
+	      (select count(*) from tbl_geo where area1='경기도' )     as Gyeonggido,
+	      (select count(*) from tbl_geo where area1='경상북도' )   as Gyeongsangbugdo,
+	      (select count(*) from tbl_geo where area1='경상남도' )   as Gyeongsangnamdo,
+	      (select count(*) from tbl_geo where area1='제주도' )     as Jejudo,
+	      (select count(*) from tbl_geo where area1='전라북도' )   as Jeonrabugdo,
+	      (select count(*) from tbl_geo where area1='전라남도' )   as Jeonranamdo,
+	      (select count(*) from(select nvl(area1, 'x')as n from tbl_geo) where n='x') as ect
+	from tbl_geo
+	</select>
 </mapper>	

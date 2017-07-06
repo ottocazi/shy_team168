@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
@@ -384,5 +385,87 @@ public class Juno_Controller {
     	map.put("n", n);
 		return returnN;
 	}
+	
+	// 임시 관리자 페이지요청
+    @RequestMapping(value="/adminj.shy", method={RequestMethod.GET})
+    public String admin(HttpServletRequest req, HttpSession session){
+    	
+//    	String totaluser = service.gettotaluser();   // 총 사용자수
+//    	String mentotal = service.getmentotal();     // 총 남자 사용자수
+//    	String womantotal = service.getwomantotal(); // 총 여자 사용자수
+//    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+//    			
+//    	req.setAttribute("totaluser", totaluser);
+//    	req.setAttribute("mentotal", mentotal);
+//    	req.setAttribute("womantotal", womantotal);
+//    	req.setAttribute("todaytotal", todaytotal);
 
+    	return "adminj.notiles";
+    }
+    
+    // 임시 관리자 페이지 GeoShy
+    @RequestMapping(value="/GeoShy.shy", method={RequestMethod.GET})
+    public String tongke(HttpServletRequest req, HttpSession session){
+    	
+    	String today2 = req.getParameter("today");
+    	String yesterday2 = req.getParameter("yesterday");
+    	System.out.println("today2 는 ==> " + today2);
+    	System.out.println("yesterday2 는 ==> " + yesterday2);
+    	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = calendar.get(Calendar.YEAR);
+    	int month = (calendar.get(Calendar.MONTH) + 1);
+    	int day = calendar.get(Calendar.DAY_OF_MONTH);
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+    	//System.out.println(yesterday);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("today", today);
+    	map.put("yesterday", yesterday);
+    	map.put("today2", today2);
+    	map.put("yesterday2", yesterday2);
+    	
+//    	if(today2 == null && yesterday2 == null){
+//    		
+//        	List<HashMap<String, Object>> tkList = service.gettongkeList(map);
+//        	List<HashMap<String, Object>> tkList2 = service.gettongkeList2(map);
+//        	
+//        	req.setAttribute("tkList", tkList);
+//        	req.setAttribute("tkList2", tkList2);
+//    				
+//    	}
+//    	else{ // 달력으로 날짜조정했을때
+//    		
+//        	List<HashMap<String, Object>> tkList = service.gettongkeList3(map);
+//        	List<HashMap<String, Object>> tkList2 = service.gettongkeList4(map);
+//        	
+//        	req.setAttribute("tkList", tkList);
+//        	req.setAttribute("tkList2", tkList2);
+//    	}
+    	
+    	//System.out.println(map);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
+    	req.setAttribute("today2", today2);
+    	req.setAttribute("yesterday2", yesterday2);
+    	
+    	return "GeoShy.notiles";
+    }
+    
+    @RequestMapping(value="/drawRegionsMap.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> drawRegionsMap(HttpServletRequest req, HttpServletResponse res) {
+		System.out.println(" drawRegionsMap 컨트롤 시작 !");
+		
+		// city, cnt
+		HashMap<String, Object> countRegions = service.drawRegionsMap(); // 
+		
+		System.out.println("리턴값 countRegions : "+countRegions);
+		return countRegions;
+	}
 }

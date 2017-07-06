@@ -97,4 +97,16 @@ public class JunoDAO {
 		int n = sqlsession.insert("juno.goBlameEnd", map);
 		return n;
 	}
+	
+	// 위치 태그가 있는 snsno list 뽑아오기
+	public List<HashMap<String, String>> getGeoSnsnoList() {
+		List<HashMap<String, String>> list = sqlsession.selectList("juno.getGeoSnsnoList");
+		return list;
+	}
+	
+	// 지역별 shy :  cnt 통계 지도
+	public HashMap<String, Object> drawRegionsMap() {
+		HashMap<String, Object> countRegions = sqlsession.selectOne("juno.drawRegionsMap");
+		return countRegions;
+	}
 }
