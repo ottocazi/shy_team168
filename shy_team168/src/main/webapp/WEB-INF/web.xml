@@ -31,6 +31,18 @@
 		<url-pattern>*.shy</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<!-- ===== #13. URL 패턴의 모든 확장자는 *.shy로 요청하면 받아주겠다. ===== -->
+		<url-pattern>/</url-pattern>
+		
+	</servlet-mapping>
+	
+	<error-page>
+	<error-code>404</error-code>
+	<location>/error404</location>
+	</error-page>
+	
 	<!-- ===== #14. POST 방식으로 요청시 데이터 인코딩 처리(UTF-8)를 위한 필터 추가 ===== -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -50,5 +62,7 @@
 	<welcome-file-list>
     	<welcome-file>open.shy</welcome-file>
   	</welcome-file-list>
+  	
+  	
 
 </web-app>
