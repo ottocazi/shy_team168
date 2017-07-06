@@ -33,7 +33,41 @@
     	$('.bt-love_chg').hide();
     	countComment();
     	getLike();
-       
+    	
+    	//var content = $(".hashcheck").text();
+    	//alert(content);
+    	var content = document.getElementById('mycontent').innerHTML;
+    	// html 안에 'scontent'라는 아이디를 content 라는 변수로 정의한다.
+    	//content = content.replace(/^\s+/,"");
+    	
+    	//alert(content.indexOf('#'));
+    	/* if(content.indexOf('"#')==0){
+    		alert("check"+content);
+    		var plus = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>';
+    		var plusend = '</a>';
+    		var position = content.indexOf(" "||"#",1);
+    		var front = content.substring(0, position);
+    		var behind = content.substr(position);
+    		
+    		var front = plus.concat(front);
+    		var behind = plusend.concat(behind);
+    		content = front.concat(behind);
+    		alert(content);
+    	} */
+    	var splitedArray = content.split(' '); // 공백을 기준으로 문자열을 자른다.
+    	var linkedContent = ' ';
+    	for(var word in splitedArray)
+    	{
+    	  word = splitedArray[word];
+    	
+    	   if(word.indexOf('#') == 0) // # 문자를 찾는다.
+    	   {
+    	      word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+    	   }
+    	   linkedContent += word+' ';
+    	}
+    	document.getElementById('mycontent').innerHTML = linkedContent; 
+    	
        
        
     });// end of $(document).ready() --------
@@ -307,9 +341,6 @@
  		    }
    		});
     } 
-    
-    
-    
     
     
  function insertReply(shyidx){
@@ -620,7 +651,8 @@
           });
      
   }
-     </script>
+  
+</script>
 </head>
 <body>
 
@@ -683,9 +715,10 @@
 						</c:if>
 					</p>
 
-
-
-					<p>${shies.scontent}</p>
+					<div id="scontent">
+					<p class="hashcheck">${shies.scontent}</p>
+					</div>
+					
 					<footer>
 				        <p>
 				         <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
