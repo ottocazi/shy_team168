@@ -35,11 +35,11 @@ public class DDung_Controller {
 	@Autowired
 	private Juno_Service jservice;
 	
-	/*@RequestMapping(value="/*", method={RequestMethod.GET})
+	@RequestMapping(value="/logo.shy", method={RequestMethod.GET})
 	public String userpage(HttpServletRequest req, HttpSession session) {
 		 
-		return "";
-	}*/
+		return "shy_logo.notiles";
+	}
 	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
@@ -62,7 +62,7 @@ public class DDung_Controller {
 		// 로그인 유저의 팔로우 명단 가져오기 
 		List <String> followlist = service.followlist(smvo.getIdx());
 		
-		
+
 		// 팔로워 명단에 내 계정도 추가해서 내 계정의 글들도 같이 볼수 있도록 하기
 		String myIdx = Integer.toString(smvo.getIdx());
 		System.out.println("myIdx = "+ myIdx);
@@ -121,11 +121,22 @@ public class DDung_Controller {
 		String shyplace = req.getParameter("shyplace");
 		
 		
-		String image = req.getMultipartContentType("image");
-		System.out.println("image = " + image);
+		/*String image = req.getMultipartContentType("image");
+		System.out.println("image = " + image);*/
 		
 		MultipartFile imagefile = req.getFile("image");
 		byte[] imagebytes = imagefile.getBytes();
+		int bytesize = imagebytes.length;
+		System.out.println("bytesize는 ***"+bytesize);
+		
+		String newFilename ="";
+		
+		if(bytesize==0){
+			imagefile = null;
+		}
+		
+		
+		else {
 		String fileExt = imagefile.getOriginalFilename();
 		
 		String rootpath = session.getServletContext().getRealPath("/");
@@ -133,7 +144,7 @@ public class DDung_Controller {
 		
 		//path = "C:/github_shy_team168/shy_team168/shy_team168/src/main/webapp/resources/images/shydb";
 		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
-		
+		path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
 		
 		System.out.println("rootpath : "+ rootpath);
 		System.out.println("path : " +  path);
@@ -144,7 +155,7 @@ public class DDung_Controller {
 			rootpath : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\
 			path : C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\shy_team168\resources\images/shydb*/
 		
-		String newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
+		newFilename = String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
 		newFilename += System.nanoTime();
 		newFilename += fileExt;
 		System.out.println("newFilename = "+ newFilename);
@@ -158,7 +169,7 @@ public class DDung_Controller {
 		FileOutputStream fos = new FileOutputStream(pathname);
 		fos.write(imagebytes);
 		fos.close();
-		
+		}
 		
 		String ftagstatus = "0";
 		if(ftag!=null){
@@ -196,7 +207,7 @@ public class DDung_Controller {
 		}
 		
 		String simage = "0";
-		if(newFilename!=null){
+		if(imagefile!=null){
 			simage = "1";
 			
 		}
@@ -231,7 +242,47 @@ public class DDung_Controller {
 		}
 		
 		if(staggeo.equals("1")){
-			// 위도값 경도값, 지정 이름(당산역)을 넣으세요
+			String latitude = req.getParameter("latitude");
+			String longditude= req.getParameter("longditude");
+			String route =req.getParameter("route");
+			String locality =req.getParameter("locality");
+			String area1 =req.getParameter("area1");
+			String postal_code =req.getParameter("postal_code");
+			String country=	req.getParameter("country");
+			String street_number = req.getParameter("street_number");
+			
+			HashMap<String,String> parameters = new HashMap<String, String>();
+			
+			if(latitude==null||country==null){
+				parameters.put("fk_snsno", shynow.get("snsno"));
+				parameters.put("shyplace", shyplace);
+				parameters.put("latitude", "X");
+				parameters.put("longditude", "X");
+				parameters.put("route", "X");
+				parameters.put("locality", "X");
+				parameters.put("area1", "X");
+				parameters.put("postal_code","X");
+				parameters.put("country","X");
+				parameters.put("street_number", "X");
+				
+			}
+			
+			else{
+				parameters.put("fk_snsno", shynow.get("snsno"));
+				parameters.put("shyplace", shyplace);
+				parameters.put("latitude", latitude);
+				parameters.put("longditude", longditude);
+				parameters.put("route", route);
+				parameters.put("locality", locality);
+				parameters.put("area1", area1);
+				parameters.put("postal_code",postal_code);
+				parameters.put("country",country);
+				parameters.put("street_number", street_number);
+			}
+			
+			service.insertGeo(parameters);
+			
+			
 		}
 		
 		
@@ -262,7 +313,7 @@ public class DDung_Controller {
 		
 		String rootpath = session.getServletContext().getRealPath("/");
 		String path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");
-		
+		/*path = req.getSession().getServletContext().getRealPath("/resources/images/shydb");*/
 		
 		System.out.println("rootpath : "+ rootpath);
 		System.out.println("path : " +  path);
@@ -302,6 +353,13 @@ public class DDung_Controller {
 	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
 		
 		return "ddung/accountenter.tiles";
+		
+	}
+	
+	@RequestMapping(value="/m.shy", method={RequestMethod.GET})
+	public String m(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		return "ddung/mainLine2.tiles";
 		
 	}
 	

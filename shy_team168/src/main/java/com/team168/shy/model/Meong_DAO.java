@@ -69,9 +69,15 @@ public class Meong_DAO{
 	}
 
 	// 관리자페이지 오늘 방문자 수 보여주는 메소드
-	public String gettodaytotal() {
-		String todaytotal = sqlsession.selectOne("mangu.gettodaytotal");
+	public String gettodaytotal(HashMap<String, Object> map) {
+		String todaytotal = sqlsession.selectOne("mangu.gettodaytotal", map);
 		return todaytotal;
+	}
+	
+	// 관리자페이지 오늘 게시물 수 보여주는 메소드
+	public String gettodaytotalshymemo(HashMap<String, Object> map) {
+		String todaytotalshymemo = sqlsession.selectOne("mangu.gettodaytotalshymemo", map);
+		return todaytotalshymemo;
 	}
 	
 	// 관리자페이지 회원목록 보여주는 메소드
@@ -151,4 +157,41 @@ public class Meong_DAO{
 		List<HashMap<String, Object>> tkList4 = sqlsession.selectList("mangu.gettongkeList4" , map);
 		return tkList4;
 	}
+
+	public int CheckEmail(String joinemail) {
+		int n = sqlsession.selectOne("mangu.CheckEmail", joinemail);
+		return n;
+	}
+
+	public List<String> followlist(int idx) {
+		List<String> followlist = sqlsession.selectList("mangu.followlist", idx);
+		return followlist;
+	}
+
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = sqlsession.selectList("mangu.shies", followlist);
+		return shies;
+	}
+
+	public String imgaddr(String snsno) {
+		String imgaddr = sqlsession.selectOne("mangu.imgaddr", snsno);
+		return imgaddr;
+	}
+
+	public int AddShare(HashMap<String, Object> map) {
+		int n = sqlsession.insert("mangu.AddShare", map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList = sqlsession.selectList("mangu.getBarTKList" , map);
+		return bartkList;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList2 = sqlsession.selectList("mangu.getBarTKList2" , map);
+		return bartkList2;
+	}
+
+
 }

@@ -1,48 +1,18 @@
 -------------------------------------------
 --파
-select V.snsno,nvl(V.fk_likeidx,0) as fk_likeidx
+select V.*
 from
-(select A.snsno,A.fk_idx,B.fk_likeidx
+(
+select *
 from
 (select snsno,fk_idx
 from tbl_shymemo
 )A 
 left join
- (select snsno,fk_likeidx
-  from tbl_like) B
-on A.snsno = B.snsno
-)V
-where V.fk_idx=32;
-
-select count(snsno) as snsnocnt
-from tbl_shymemo
-where fk_idx=32;
-
-select count(fk_idxflwed) as fk_idxflwedcnt
-from tbl_follow
-where fk_idxflw=53; -- 32가 팔로우한 사람들은 4명
-
-select V.fk_idxflwed,V.email,V.myimg
-from
-(
-select *
-from
-(select fk_idxflwed,fk_idxflw
-from tbl_follow) A
-inner join
-(select idx, email,myimg
-from tbl_shymember
-where status=1) B
-on A.fk_idxflwed = B.idx
-)V
-where V.fk_idxflw=32;
-
-select count(*)
-from tbl_gmember
-where FK_GROUPIDX=32;
-
-select *
-from tbl_follow;
+(select snsno,fk_likeidx,likedate
+from tbl_like) B
+on A.snsno = B.snsno)V
+where fk_idx = 31;
 
 insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
 values(seq_tbl_like.nextval,53,1,sysdate,76);
@@ -139,15 +109,15 @@ FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90,76)) A
       
       ON A.SNSNO = B.SNSNO;
 
-SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT ,nvl(B.likeno,0) as likeno
 FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN (77 , 90, 76)) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      (SELECT likeno ,SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO,likeno) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno;
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=32 GROUP BY SNSNO) c on b.snsno=c.snsno;
+
 
 alter table tbl_grpboard
 add imgyn NUMBER default 0;
@@ -156,7 +126,6 @@ select * from tbl_group;
 delete from tbl_group where groupno=14;
 
 commit;
-delete from tbl_like;
 
 alter table tbl_grpboard
 drop column imgyn;

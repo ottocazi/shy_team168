@@ -106,11 +106,11 @@ public class PaService {
 		return check;
 	}
 
-	// ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
-	public List<HashMap<String, String>> getMyshy(String myIdx) {
-		List<HashMap<String, String>> myshyList = dao.getMyshy(myIdx);
+	/* ===== 나의 샤이 가져오기 , 내 정보 가져오기(join) =====
+	public List<HashMap<String, String>> getMyshys(HashMap<String, Object> mymap) {
+		List<HashMap<String, String>> myshyList = dao.getMyshy(mymap);
 		return myshyList;
-	}
+	}*/
 
 	// ===== 이미지 가져오기 =====
 	public String getImgaddr(String snsno) {
@@ -130,25 +130,72 @@ public class PaService {
 		return likeList;
 	}
 
-	// ===== 게시글 수 가져오기  ===== //
-	public int getMyshycnt(String myIdx) {
-		int snsnocnt = dao.getMyshycnt(myIdx);
-		return snsnocnt;
+	// ===== 좋아요 취소하기 ===== //
+	public int deletetLike(HashMap<String, String> likemap) {
+		int n = dao.deletetLike(likemap);
+		return n;
 	}
 
-	// ===== 내 팔로우 가져오기  ===== //
-	public List<HashMap<String, String>> getMyfollows(String myIdx) {
-		List<HashMap<String, String>> myflwList = dao.getMyfollows(myIdx);
-		return myflwList;
+	// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+	public List<HashMap<String, String>> getMyshy(HashMap<String, Object> mymap) {
+		List<HashMap<String, String>> myshyList = dao.getMyshy(mymap);
+		return myshyList;
 	}
-
-	// ===== 내 팔로우 수 가져오기  ===== //
-	public int getMyflwcnt(String myIdx) {
-		int fk_idxflwedcnt = dao.getMyflwcnt(myIdx);
-		return fk_idxflwedcnt;
-	}
-
-
-
 	
+	////
+	// ===== (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 ===== //
+	public int getMyshyCount(String myIdx) {
+		int myshyCount = dao.getMyshyCount(myIdx);
+		return myshyCount;
+	}
+	////
+	
+	 // ===== 내 팔로우 가져오기  ===== //
+	 public List<HashMap<String, String>> getMyfollows(String myIdx) {
+	    List<HashMap<String, String>> myflwList = dao.getMyfollows(myIdx);
+	    return myflwList;
+	 }
+
+	 // ===== 내 팔로우 수 가져오기  ===== //
+	 public int getMyflwcnt(String myIdx) {
+	    int fk_idxflwedcnt = dao.getMyflwcnt(myIdx);
+	    return fk_idxflwedcnt;
+	 }
+
+	// ===== 좋아요 likeno 가져오기  ===== //
+	public String getLikeno(HashMap<String, String> likemap) {
+		String likeno = dao.getLikeno(likemap);
+		return likeno;
+	}
+
+	// ===== 좋아요했을시, 알람 insert  ===== //
+	public void insertAlarm(HashMap<String, String> likemap) {
+		dao.insertAlarm(likemap);
+		
+	}
+
+	// ===== 알림 가져오기 ===== //
+	public List<HashMap<String, String>> getAlarmList(String myIdx) {
+		List<HashMap<String, String>> myalarmList = dao.getAlarmList(myIdx);
+		return myalarmList;
+	}
+
+	// ===== 알림타켓 가져오기 ===== //
+	public String alarmTarget(String likeseq) {
+		String alarm_target = dao.alarmTarget(likeseq);
+		return alarm_target;
+	}
+
+	// ===== 알림카운트 가져오기 ===== //
+	public int getAlarmCnt(String myIdx) {
+		int result = dao.getAlarmCnt(myIdx);
+		return result;
+	}
+
+	// ===== 알림카운트 업데이트 ===== //
+	public int updateAlarm(HashMap<String, Object> resultMap) {
+		int n = dao.updateAlarm(resultMap);
+		return n;
+	}
+
 }
