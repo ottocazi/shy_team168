@@ -186,4 +186,16 @@ public class PaService {
 		return alarm_target;
 	}
 
+	// ===== 알림카운트 가져오기 ===== //
+	public int getAlarmCnt(String myIdx) {
+		int result = dao.getAlarmCnt(myIdx);
+		return result;
+	}
+
+	// ===== 알림카운트 업데이트 ===== //
+	public int updateAlarm(HashMap<String, Object> resultMap) {
+		int n = dao.updateAlarm(resultMap);
+		return n;
+	}
+
 }
