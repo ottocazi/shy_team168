@@ -1,12 +1,48 @@
 -------------------------------------------
 --파
-select *
+select V.snsno,nvl(V.fk_likeidx,0) as fk_likeidx
+from
+(select A.snsno,A.fk_idx,B.fk_likeidx
 from
 (select snsno,fk_idx
 from tbl_shymemo
 )A 
 left join
-;
+ (select snsno,fk_likeidx
+  from tbl_like) B
+on A.snsno = B.snsno
+)V
+where V.fk_idx=32;
+
+select count(snsno) as snsnocnt
+from tbl_shymemo
+where fk_idx=32;
+
+select count(fk_idxflwed) as fk_idxflwedcnt
+from tbl_follow
+where fk_idxflw=53; -- 32가 팔로우한 사람들은 4명
+
+select V.fk_idxflwed,V.email,V.myimg
+from
+(
+select *
+from
+(select fk_idxflwed,fk_idxflw
+from tbl_follow) A
+inner join
+(select idx, email,myimg
+from tbl_shymember
+where status=1) B
+on A.fk_idxflwed = B.idx
+)V
+where V.fk_idxflw=32;
+
+select count(*)
+from tbl_gmember
+where FK_GROUPIDX=32;
+
+select *
+from tbl_follow;
 
 insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
 values(seq_tbl_like.nextval,53,1,sysdate,76);

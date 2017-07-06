@@ -39,7 +39,44 @@
     	$('.bt-love_chg').hide();
     	//countComment();
       
+    	$('#showFlwList').hide();
+    	
         getLike();
+        
+        $('#showFlwList').click(function(e){
+     	   $('#showFlwList').hide(); 
+        });
+       
+        $('.flwList').click(function(e){
+           
+            // 팔로우목록 Ajax 불러오기
+             $.ajax({
+                 url: "/shy/myfollowList.shy",
+                 type: "GET",
+                 dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+                 /* data: , */
+                 success: function(data) { // 성공했을 때의 처리 콜백함수
+                	 if(data.length > 0) {
+	                	 var Result="";
+	                 
+	                    $.each(data,function(entryIndex,entry){
+	                     var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+	                     			+"<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
+	                     	Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
+	                     	
+	                    });
+	                    $("#showFlwList").html(Result).show(); 
+	                    
+                	}else{
+                		$('#showFlwList').hide();	
+                	}
+                 },
+                 error: function() { // 에러가 발생했을 때의 콜백함수
+                     alert("error");
+                 }
+             });
+            
+        });
        
        
        
@@ -121,6 +158,7 @@
         });
        
    }
+    
 </script>
 <style type="text/css">
 .bt, .proedit {
@@ -171,8 +209,24 @@
                Follow
             </button>
             <hr>
-            <span>게시물&nbsp; 10개</span>&nbsp;&nbsp;
-            <span>팔로우&nbsp; 6명</span>&nbsp;&nbsp;
+            <span>게시물&nbsp; 
+            	<c:if test="${snsnocnt==0}" >
+	            0
+	            </c:if>
+            	<c:if test="${snsnocnt>0}" >
+	            ${snsnocnt }
+	            </c:if>
+            	개</span>&nbsp;&nbsp;
+            <span class="flwList">팔로우&nbsp; 
+	            <c:if test="${fk_idxflwedcnt==0 }" >
+	            0
+	            </c:if>
+	            <c:if test="${fk_idxflwedcnt>0 }" >
+	            ${fk_idxflwedcnt } 
+	            </c:if>
+                      명</span>&nbsp;&nbsp;
+            <div id="showFlwList">
+            </div>
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
             <button class="proedit" onclick="goEdit();">프로필편집</button>
             <c:if test="${loginuser.myintro != null}">
@@ -201,7 +255,7 @@
   </c:if>
   
   <c:if test="${myshyList!=null}">
-  <c:forEach items="${myshyList }" var="shies">
+  <c:forEach items="${myshyList }" var="shies" varStatus="status" >
   <c:set var="myimg" value="${shies.myimg }"/>	
   	<article class="card-60 social">
     <figure>

@@ -322,4 +322,41 @@
       (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
 	
+	<!-- ===== 게시글 수 가져오기 =====   -->
+	<select id="getshyCnt" parameterType="String" resultType="int">
+		SELECT COUNT(SNSNO) AS SNSNOCNT
+		FROM TBL_SHYMEMO
+		WHERE FK_IDX = #{myIdx}
+	</select>
+	
+	<!-- ===== 내 팔로우 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="getflwListMap">
+		<result property="fk_idxflwed" column="FK_IDXFLWED" javaType="String" />
+		<result property="email" column="EMAIL" javaType="String" />
+		<result property="myimg" column="MYIMG" javaType="String" />
+	</resultMap>
+	<select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
+	  	SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+		FROM
+		(
+		SELECT *
+		FROM
+		(SELECT FK_IDXFLWED,FK_IDXFLW
+		FROM TBL_FOLLOW) A
+		INNER JOIN
+		(SELECT IDX, EMAIL,MYIMG
+		FROM TBL_SHYMEMBER
+		WHERE STATUS=1) B
+		ON A.FK_IDXFLWED = B.IDX
+		)V
+		WHERE V.FK_IDXFLW=#{myIdx}
+	</select>
+	
+	<!-- ===== 내 팔로우 수 가져오기 =====   -->
+	<select id="getflwCnt" parameterType="String" resultType="int">
+		SELECT COUNT(FK_IDXFLWED) AS FK_IDXFLWEDCNT
+		FROM TBL_FOLLOW
+		WHERE FK_IDXFLW = #{myIdx}
+	</select>
+	
 </mapper>	

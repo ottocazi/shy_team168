@@ -130,6 +130,24 @@ public class PaService {
 		return likeList;
 	}
 
+	// ===== 게시글 수 가져오기  ===== //
+	public int getMyshycnt(String myIdx) {
+		int snsnocnt = dao.getMyshycnt(myIdx);
+		return snsnocnt;
+	}
+
+	// ===== 내 팔로우 가져오기  ===== //
+	public List<HashMap<String, String>> getMyfollows(String myIdx) {
+		List<HashMap<String, String>> myflwList = dao.getMyfollows(myIdx);
+		return myflwList;
+	}
+
+	// ===== 내 팔로우 수 가져오기  ===== //
+	public int getMyflwcnt(String myIdx) {
+		int fk_idxflwedcnt = dao.getMyflwcnt(myIdx);
+		return fk_idxflwedcnt;
+	}
+
 
 
 	

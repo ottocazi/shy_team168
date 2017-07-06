@@ -40,6 +40,8 @@ public class Pa_Controller {
 		System.out.println("loginuser="+loginuser);
 		//ShyMemberVO shymemvo = (ShyMemberVO)loginuser;
 		
+		int pageNo = Integer.parseInt(req.getParameter("pageNo"));
+		
 		
 		if(loginuser == null) {
 			String msg = "♥ 먼저 로그인 하세요 ♥";
@@ -52,6 +54,20 @@ public class Pa_Controller {
 		}else{
 			String myIdx = Integer.toString(loginuser.getIdx());
 			req.setAttribute("loginuser", loginuser);
+			
+			// 게시글 수 가져오기
+			int snsnocnt = service.getMyshycnt(myIdx);
+			req.setAttribute("snsnocnt", snsnocnt);
+			
+			// 팔로우 수 가져오기
+			int fk_idxflwedcnt = service.getMyflwcnt(myIdx);
+			req.setAttribute("fk_idxflwedcnt", fk_idxflwedcnt);
+			
+			int sizePerPage = 6;
+			
+			int start = (pageNo - 1) * sizePerPage;
+			int end = pageNo * sizePerPage;
+			
 			
 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
 			List <HashMap<String, String>> myshyList = service.getMyshy(myIdx);
@@ -90,6 +106,22 @@ public class Pa_Controller {
 		
 		}
 	}
+	
+	// ===== 내 팔로우 가져오기 ===== //
+	@RequestMapping(value="/myfollowList.shy", method={RequestMethod.GET})
+   	@ResponseBody
+       public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
+   		
+   		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+		
+		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
+		
+		List<HashMap<String,String>> myflwList = service.getMyfollows(myIdx);
+		
+   		return myflwList;
+   			
+   	}
 
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
