@@ -22,13 +22,13 @@
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
   	
-  	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
   
   </head>
 
@@ -215,17 +215,17 @@
           <div class="">
             <div class="page-title">
 			  <div class="title_left">
-                <h3 style="color: red">일주일간 회원,그룹 게시물 수 비교</h3>
+                <h3 style="color: red;">지역,국가별 회원수 통계</h3>
               </div>
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="x_panel">
+              <div class="col-md-8 col-sm-8 col-xs-12" style="width:100%;">
+                <div class="x_panel"style="width: 45%;" >
                   <div class="x_title_ym">
-                    <h2>게시물별 BAR 그래프</h2>
+                    <h2>지역별 회원 PIE 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -245,18 +245,16 @@
                   </div>
                   <div class="x_content_ym">
 
-                   <div id="container" style="height: 400%;"></div>
+                   <div id="pietonke" style="height: 400%;"></div>
 
                   </div>
                 </div>
-              </div>
+              <!-- </div>
 
-
-<!-- 
-              <div class="col-md-8 col-sm-8 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Bar Graph</h2>
+              <div class="col-md-8 col-sm-8 col-xs-12" style="display: inline-block;">
+ -->                <div class="x_panel" style="width: 45%;" >
+                  <div class="x_title_ym">
+                    <h2>국가별 회원 PIE 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -274,14 +272,13 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div class="x_content_ym">
 
-                    <div id="mainb" style="height:350px;"></div>
+                   <div id="doughnut" style="height: 400%;"></div>
 
                   </div>
                 </div>
               </div>
-               -->
             </div>
 
           </div>
@@ -292,85 +289,46 @@
     </div>
 	
 <script type="text/javascript">
-	var dom = document.getElementById("container");
+	var dom = document.getElementById("pietonke");
 	var myChart = echarts.init(dom);
 	var app = {};
 	option = null;
 	option = {
 	    title : {
-	        text: '0',
-	        subtext: '일자별 회원,그룹 게시물비교'
+	        text: '지역별 회원수',
+	        subtext: 'shy',
+	        x:'center'
 	    },
 	    tooltip : {
-	        trigger: 'axis'
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
 	    },
 	    legend: {
-	        data:['회원게시물','그룹게시물']
+	        orient: 'vertical',
+	        left: 'left',
+	        data: [
+	        	<c:forEach var="map" items="${pietkList}"  varStatus="status">
+				"${map.CITY}",
+				</c:forEach>
+				]
 	    },
-	    toolbox: {
-	        show : true,
-	        feature : {
-	            dataView : {show: true, readOnly: false},
-	            magicType : {show: true, type: ['line', 'bar']},
-	            restore : {show: true},
-	            saveAsImage : {show: true}
-	        }
-	    },
-	    calculable : true,
-	    xAxis : [
-	        {
-	            type : 'category',
-	            data : [
-	            	<c:forEach var="map" items="${bartkList}"  varStatus="status">
-					"${map.MONTH}일",
-					</c:forEach>
-	            ]
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'value'
-	        }
-	    ],
 	    series : [
 	        {
-	            name:'회원게시물',
-	            type:'bar',
+	            name: '지역',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
 	            data:[
-                 	<c:forEach var="map" items="${bartkList}"  varStatus="status">
-					"${map.CNT}",
-					</c:forEach>
+	            	<c:forEach var="map" items="${pietkList}">
+	                {value:"${map.CNT}", name:"${map.CITY}"},
+	                </c:forEach>
 	            ],
-	            markPoint : {
-	                data : [
-	                    {type : 'max', name: '最大值'},
-	                    {type : 'min', name: '最小值'}
-	                ]
-	            },
-	            markLine : {
-	                data : [
-	                    {type : 'average', name: '平均值'}
-	                ]
-	            }
-	        },
-	        {
-	            name:'그룹게시물',
-	            type:'bar',
-	            data:[
-                 	<c:forEach var="map" items="${bartkList2}"  varStatus="status">
-					"${map.CNT}",
-					</c:forEach>
-	            ],
-	            markPoint : {
-	                data : [
-	                    {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
-	                    {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
-	                ]
-	            },
-	            markLine : {
-	                data : [
-	                    {type : 'average', name : '平均值'}
-	                ]
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
 	            }
 	        }
 	    ]
@@ -379,6 +337,65 @@
 	if (option && typeof option === "object") {
 	    myChart.setOption(option, true);
 	}
+	
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+	var dom = document.getElementById("doughnut");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	app.title = '环形图';
+	
+	option = {
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data:[
+	        	<c:forEach var="map" items="${doughnutList}">
+				"${map.COUNTRY}",
+				</c:forEach>
+	        ]
+	    },
+	    series: [
+	        {
+	            name:'국가',
+	            type:'pie',
+	            radius: ['50%', '70%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    show: false,
+	                    position: 'center'
+	                },
+	                emphasis: {
+	                    show: true,
+	                    textStyle: {
+	                        fontSize: '30',
+	                        fontWeight: 'bold'
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    show: false
+	                }
+	            },
+	            data:[	<c:forEach var="map" items="${doughnutList}">
+	                	{value:'${map.CNT}', name:'${map.COUNTRY}'},
+						</c:forEach>
+	            ]
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+
 </script>  
 	
     <!-- jQuery -->
@@ -389,12 +406,7 @@
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-<%--     <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
-	<!-- ECharts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
-	 --%>
+
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
 

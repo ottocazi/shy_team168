@@ -341,7 +341,7 @@
 		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
 		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
 		
-		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(sdatedtime, 'YYYY-MM-DD') as day from tbl_shymemo where to_char(sdatedtime, 'yyyy-mm') = '2017-06') group by day) B
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(sdatedtime, 'YYYY-MM-DD') as day from tbl_shymemo) group by day) B
 		
 		on A.time = B.day
 		order by time asc
@@ -357,11 +357,69 @@
 		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
 		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
 		
-		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(writedate, 'YYYY-MM-DD') as day from tbl_grpboard where to_char(writedate, 'yyyy-mm') = '2017-06') group by day) B
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(writedate, 'YYYY-MM-DD') as day from tbl_grpboard) group by day) B
 		
 		on A.time = B.day
 		order by time asc
 	</select>
+	
+	<!-- 게시물조회 -->
+	<resultMap type="java.util.HashMap" id="getshymemoListmap">
+		<result property="SNSNO" 		        column="snsno" 	        javaType="String" />
+		<result property="FK_IDX" 		        column="fk_idx" 	        javaType="String" />
+ 		<result property="NAME" 	        	column="name" 	        	javaType="String" />
+ 		<result property="GENDER" 		    	column="gender" 	        javaType="String" />
+ 		<result property="SCONTENT" 	        column="scontent" 	    	javaType="String" />
+ 		<result property="SDATEDTIME"			column="sdatedtime" 		javaType="String" />
+ 		<result property="SLIKECNT" 	        column="slikecnt" 	    	javaType="int" />
+ 		<result property="SBLAMECNT" 		    column="sblamecnt" 	        javaType="int" />
+ 		<result property="STATUS" 	       	 	column="status" 	    	javaType="int" />
+	</resultMap>
+	<select id="getshymemoList" resultMap="getshymemoListmap">
+		select E.snsno, E.fk_idx, D.name, D.gender, E.scontent, E.sdatedtime, E.slikecnt, E.sblamecnt, E.status 
+		from tbl_shymemo E left join tbl_shymember D 
+		on E.fk_idx  =  D.idx
+		order by sdatedtime desc
+	</select>
+	
+	<update id="memostatusDown"  parameterType="java.util.HashMap">
+		update tbl_shymemo
+		set status = 0
+		where snsno = #{snsno}
+	</update>
+
+	<update id="memostatusUp"  parameterType="java.util.HashMap">
+		update tbl_shymemo
+		set status = 1
+		where snsno = #{snsno}
+	</update>
+	
+	<!-- 지역별 회원수 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="getpietkListmap">
+		<result property="CITY" 	        column="city" 	    javaType="String" />
+ 		<result property="CNT" 		    column="cnt" 	        javaType="int" />
+	</resultMap>
+	<select id="getpietkList" resultMap="getpietkListmap">
+		SELECT case nvl(area1, '기타지역') when 'X' then '지역미입력'
+		                                 else nvl(area1, '기타지역')
+		       end as city, COUNT(*) AS CNT 
+		FROM tbl_geo
+		GROUP BY area1
+	</select>
+	
+	<!-- 국가별 회원수 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="getdoughnutListmap">
+		<result property="COUNTRY" 	        column="country" 	    javaType="String" />
+ 		<result property="CNT" 		    column="cnt" 	        javaType="int" />
+	</resultMap>
+	<select id="getdoughnutList" resultMap="getdoughnutListmap">
+		SELECT nvl(country, '기타지역') as country, COUNT(*) AS CNT 
+		FROM tbl_geo
+		where not shyplace is null
+		GROUP BY country
+	</select>
+	
+	
 	
 </mapper>
 
