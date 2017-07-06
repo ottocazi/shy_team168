@@ -58,7 +58,7 @@ public class Min_Controller {
 	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
     public String geoPage(HttpServletRequest req) {
     	
-		return "geo.notiles";
+		return "testmap.notiles";
     	
     }
 	
@@ -433,6 +433,9 @@ public class Min_Controller {
  		String myIdx = req.getParameter("myIdx");
  		req.setAttribute("myIdx", myIdx);
 		
+ 		String getgain = service.getGain(myIdx);
+ 		req.setAttribute("getgain", getgain);
+ 		
 		System.out.println("컨트롤에서 받은 myIdx : " + myIdx);
  			// 기본 페이지번호를 1으로 설정하고
  	        int pageNo = 1;
