@@ -52,6 +52,25 @@ public class DDung_Service {
 			String imgaddr = dao.imgaddr(snsno);
 			return imgaddr;
 		}
+
+		public void insertReply(HashMap<String, String> parameters) {
+		
+			dao.insertReply(parameters);
+			
+		}
+
+		public List<HashMap<String, String>> getComments(String snsno) {
+			
+			List <HashMap <String, String>> comments = dao.getComments(snsno);
+			return comments;
+			
+		}
+
+		public void insertGeo(HashMap<String, String> parameters) {
+			
+			dao.insertGeo(parameters);
+			
+		}
 		
 	
 	

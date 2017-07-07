@@ -13,6 +13,8 @@
       
       $("#sign").hide();
       $("#joinus").hide();
+      $("#idok").hide();
+      $("#notokay").hide();
       
       $(".goRegister").click(function(){
          $("#sign").show();
@@ -57,13 +59,78 @@
 			 document.loginform.action = "loginEnd.shy";
 			 document.loginform.method = "post";
 			 document.loginform.submit();
-		}); 
+		});
       
+		$("#joinemail").blur(function(){
+			$.ajax({
+				url: "CheckEmail.shy",
+				type: "POST",
+				data: {"joinemail" : $("#joinemail").val()},
+				dataType: "JSON",
+				success: function(data){
+					if(data=="0"){
+						$("#notokay").hide();
+						$("#idok").show();				
+					}
+					if(data=="1"){
+						$("#notokay").show();
+						$("#idok").hide();				
+						}
+				},
+				error: function(){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+				
+			});
+			
+		});
+		 
    });
    
 	function goAdd() {
 		var addFrm = document.addFrm;
-		addFrm.submit();
+		var joinpwd = $("#joinpwd").val();
+		var joinchkpwd = $("#joinchkpwd").val();
+ 		var joinname = $("#joinname").val();
+		var joinemail = $("#joinemail").val();
+
+ 		if(joinpwd != joinchkpwd){
+			swal({title: "비밀번호가 일치하지않습니다.", type: "error"},		  
+					function(){
+						$("#joinchkpwd").val("");
+						$("#joinchkpwd").focus();
+					});
+					 event.preventDefault();
+					 return;
+		}
+ 		else if (joinname==""){
+			swal({title: "성함을 입력하세요", type: "error"},		  
+					function(){
+						$("#joinname").focus();
+					});
+					 event.preventDefault();
+					 return;
+ 		}
+ 		else if (joinemail==""){
+			swal({title: "이메일을 입력하세요", type: "error"},		  
+					function(){
+						$("#joinemail").focus();
+					});
+					 event.preventDefault();
+					 return;
+ 		}
+ 		else if ($("#notokay").is(":visible") == true||$("#idok").is(":visible") == false){ 
+ 			// .is(":visible")뜻은 보인다 .is(":visible") == true(보이는게 참이면)
+			swal({title: "이메일을 다시 입력하세요", type: "error"},		  
+					function(){
+						$("#joinemail").val("");
+					});
+					 event.preventDefault();
+					 return; 
+ 		}
+		else{
+			addFrm.submit();
+		}
 	}
    
 </script>
@@ -87,16 +154,19 @@
    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
    </div>
    <p style="color: #BBBBBB; font-size: 10pt">친구들의 새소식이 궁금하시다면 <br>지금 바로 샤이로 로그인하세요</p>
+   <form name="loginform">
    <div class="form-input">
-		<form name="loginform">
+		
       		<input type="text" placeholder="email" name="email" id="email"/>
       		<input type="password" placeholder="password" name="pwd" id="pwd"/>
-     	</form> 
+     	
    </div>
    <br>
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
-   <button class="login" id="loginend" type="button">Login</button>
+   <button class="login" id="loginend" type="submit">Login</button>
+   </form> 
    </div>
+   
    <div id="joinus" style="min-height: 385px;">
    <div class="form-title">
    <span class="letter" id="shy" data-letter="s">s</span>
@@ -106,14 +176,18 @@
    <p style="color: #BBBBBB; font-size: 10pt">가족, 친구와 함께하는 <br>즐거운 경제활동에 참여하세요 </p>
    <div class="form-input" >
    	  <form name="addFrm" action="<%= request.getContextPath() %>/addregistorEnd.shy" method="post">
-	      <input type="text" placeholder="name" name="name" id="name"/>
-	      <input type="text" placeholder="email" name="email" id="email"/>
-	      <input type="password" placeholder="password" name="pwd" id="pwd"/>
-	      <input type="password" placeholder="password" name="chkpwd" id="chkpwd"/>
+	      <input type="text" placeholder="name" name="name" id="joinname" required/>
+	      <input type="text" placeholder="email" name="email" id="joinemail" required/>
+	      <br><span id="idok" style="font-size: 10pt;">사용하실수 있는 이메일입니다</span>
+	      <span id="notokay" style="font-size: 10pt; color: red;">이미 사용 중인 이메일입니다.</span>
+	      <input type="password" placeholder="password" name="pwd" id="joinpwd" required/> 
+	      <input type="password" placeholder="password" name="chkpwd" id="joinchkpwd" required/>
+	      
 	  </form>    
    </div>
    
-   <button class="login" onClick="goAdd();">JOIN</button>
+   <button class="login" id ="add" type="button" onClick="goAdd();">JOIN</button>
+   
    </div>
   
      <div id="register">

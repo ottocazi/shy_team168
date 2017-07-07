@@ -21,6 +21,67 @@
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
+
+<script type="text/javascript">
+function goday(){
+	var godayForm = document.godayForm;
+	godayForm.submit();
+}
+
+ function ym_init_charts() {
+	if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) {	 
+	 if($("#lineChart_ym").length) {
+        var f = document.getElementById("lineChart_ym");
+        new Chart(f, {
+            type: "line",
+            data: {
+            	labels: [
+            		<c:forEach var="map" items="${tkList}"  varStatus="status">
+					"${map.TIME}시",
+					</c:forEach>
+            	],
+                datasets: [{
+                    label: 
+                    	<c:if test="${empty today2}">"오늘",</c:if>
+                    	<c:if test="${not empty today2}">"${today2}",</c:if>
+                    	
+                    backgroundColor: "rgba(38, 185, 154, 0.31)",
+                    borderColor: "rgba(38, 185, 154, 0.7)",
+                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointBorderWidth: 1,
+                    data: [
+                     	<c:forEach var="map" items="${tkList}"  varStatus="status">
+						"${map.CNT}",
+						</c:forEach>
+                    ]
+                }, {
+                    label: 
+                    	<c:if test="${empty yesterday2}">"어제",</c:if>
+                    	<c:if test="${not empty yesterday2}">"${yesterday2}",</c:if>
+                    	
+                    backgroundColor: "rgba(3, 88, 106, 0.3)",
+                    borderColor: "rgba(3, 88, 106, 0.70)",
+                    pointBorderColor: "rgba(3, 88, 106, 0.70)",
+                    pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(151,187,205,1)",
+                    pointBorderWidth: 1,
+                    data: [
+                    	<c:forEach var="map" items="${tkList2}"  varStatus="status">
+						"${map.CNT}",
+						</c:forEach>
+                    	]
+                } ]
+            }
+        })
+       }
+	}
+ }
+</script>
+    
   </head>
 
   <body class="nav-md">
@@ -29,7 +90,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -47,18 +108,18 @@
 
             <br />
 
-<!-- sidebar menu -->
+			<!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>메뉴</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> 회원관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저조회</a></li>
-                      <li><a href="#">게시물관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
                     <ul class="nav child_menu">
                       <li><a href="#">회사개요</a></li>
                       <li><a href="#">채용공고</a></li>
@@ -67,11 +128,9 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      
-                      
-                      <li><a href="#">좋아요가 가장많은 유저</a></li>
-                      <li><a href="#">신고를 많이받은 유저</a></li>
+					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
@@ -207,11 +266,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>통계상세보기 <small>통계상세보기페이지</small></h3>
-                	<c:forEach var="map" items="${tkList}"  varStatus="status">
-						${map.S_DATE} ,
-						${map.CNT} , 
-					</c:forEach>
+                <h3 style="color: red;">${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h3>
               </div>
 
               <div class="title_right">
@@ -230,9 +285,16 @@
 
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
+                <div class="x_panel_ym">
                   <div class="x_title">
-                    <h2>시간대별 로그인 통계</h2>
+                    <h2>시간대별 LINE 그래프</h2>
+                    
+<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
+                    <input type="date" required="required" name="today" value="${today2}"/> 
+                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
+                    <button type="button" onClick="goday();">확인</button>
+</form>
+
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -250,167 +312,49 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
-                    <canvas id="lineChart"></canvas>
+                  <div class="x_content" >
+                    <canvas id="lineChart_ym"></canvas>
                   </div>
                   <div>
      			  </div> 
                 </div>
               </div>
-              
+<!-- 
+              <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Bar Graph</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
 
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Bar graph <small>Sessions</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="mybarChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Radar <small>Sessions</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="canvasRadar"></canvas>
-                  </div>
-                </div>
-              </div>
+                    <div id="mainb" style="height:350px;"></div>
 
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Donut Graph <small>Sessions</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="canvasDoughnut"></canvas>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Pie Graph Chart <small>Sessions</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="pieChart"></canvas>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Pie Area Graph <small>Sessions</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <canvas id="polarArea"></canvas>
-                  </div>
-                </div>
-              </div>
+               -->
             </div>
 
           </div>
         </div>
         <!-- page content -->
 
-        <!-- footer content -->
-<!--         <footer>
-          <div class="pull-right">
-            <a href="open.shy">Shy</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer> -->
-        <!-- footer content -->
       </div>
     </div>
 
@@ -424,7 +368,10 @@
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
     <!-- Chart.js -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
-
+	<!-- ECharts -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
+	
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
 	

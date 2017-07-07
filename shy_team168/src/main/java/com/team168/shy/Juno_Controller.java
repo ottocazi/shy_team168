@@ -3,17 +3,25 @@ package com.team168.shy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -59,7 +67,7 @@ public class Juno_Controller {
     }
 	
 	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.POST})
-    public String myInfoEditEnd(MultipartHttpServletRequest req, HttpSession session) throws IOException {
+    public String myInfoEditEnd(HttpServletRequest req, HttpSession session) throws IOException {
 		
 	
 		
@@ -98,4 +106,96 @@ public class Juno_Controller {
     	
     }
 	
+
+	@RequestMapping(value="/getCommentCount.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public List<HashMap<String, Object>> getCommentCount(HttpServletRequest req) {
+
+		System.out.println("댓글 개수 확인시작");
+		String[] snsnoArr = req.getParameterValues("snsnoArr");
+		System.out.println("길이" + snsnoArr.length);
+
+		List<HashMap<String, Object>> returnCountList = service.getCommentCountArr(snsnoArr);
+		System.out.println("사이즈"+returnCountList.size());
+		
+		return returnCountList;
+	}
+	
+	@RequestMapping(value="/getCommentList.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public List<HashMap<String, Object>> getCommentList(HttpServletRequest req) {
+		
+		List<HashMap<String, Object>> CommentList = service.getCommentList();
+		
+		
+		return CommentList;
+	}
+	
+	 // 관리자 공지사항 페이지요청
+    @RequestMapping(value="/searchlistj.shy", method={RequestMethod.GET})
+    public String searchlist(HttpServletRequest req, HttpSession session){
+	    
+
+    	List<HashMap <String, String>> plist = service.peoplesearch();        
+		        
+    	req.setAttribute("plist", plist);        
+		        
+		    	
+    	return "juno/searchlist.tiles";
+		    	
+    }
+    
+	@RequestMapping(value="/goFollow.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> goFollow(HttpServletRequest req, HttpSession session) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	System.out.println("idx : " + idx);
+		
+    	String str_fk_idxflwed = req.getParameter("fk_idxflwed");
+    	int fk_idxflwed = Integer.parseInt(str_fk_idxflwed);
+    	System.out.println("fk_idxflwed : "+fk_idxflwed);
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("idx", idx);
+    	map.put("fk_idxflwed", fk_idxflwed);
+    	
+		int result = service.goFollow(map);
+		
+		if(result==0){
+			
+		}
+		
+		HashMap<String, Object> returnresult = new HashMap<String, Object>();
+    	map.put("result", result);
+		return returnresult;
+	}
+	
+	@RequestMapping(value="/unFollow.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> unFollow(HttpServletRequest req, HttpSession session) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	System.out.println("idx : " + idx);
+		
+    	String str_fk_idxflwed = req.getParameter("fk_idxflwed");
+    	int fk_idxflwed = Integer.parseInt(str_fk_idxflwed);
+    	System.out.println("fk_idxflwed : "+fk_idxflwed);
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("idx", idx);
+    	map.put("fk_idxflwed", fk_idxflwed);
+    	
+		int result = service.unFollow(map);
+		
+		if(result==0){
+			
+		}
+		HashMap<String, Object> returnresult = new HashMap<String, Object>();
+    	map.put("result", result);
+		return returnresult;
+	}
+	
+	
+
 }

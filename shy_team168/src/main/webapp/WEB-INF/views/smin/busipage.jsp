@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 
@@ -17,8 +18,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
   
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpqeGEfswdtP2VPArIjCJ7_ycPxqvq640"></script>
   
   
+
   <style>    
     /* Set black background color, white text and some padding */
    
@@ -131,7 +134,7 @@
     font-size:22px;
     letter-spacing:0;
     display:inline-block;
-    margin-left:5px;
+    margin-left:1px;
     color:#ccc;
     text-decoration:none;
 }
@@ -156,7 +159,7 @@
       if (numInList > numToShow) {
         button.show();
       }
-      list.slice(0, numToShow).show();
+      list.slice(1, numToShow).show();
 
       button.click(function(){
           var showing = list.filter(':visible').length;
@@ -211,7 +214,6 @@
 		
 		var test = $("#firstarea").val();
 	
-
 		$("#secondarea").val(test);
 		
 
@@ -228,7 +230,66 @@
 		  
 		}
 	
+	function starcount(count){
+		
+		alert(count);
+		$("#starcounter").val(count);
+	}
 	
+	var myCenter=new google.maps.LatLng(${geomap.latitude} , ${geomap.longditude});
+
+	
+	
+	
+	function initialize() {
+		  var mapProp = {
+		    center:myCenter ,
+		    zoom:15,
+		    mapTypeId:google.maps.MapTypeId.ROADMAP
+		  };
+		  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+		  
+		  
+
+		  var marker=new google.maps.Marker({
+		    position:myCenter,
+		    animation:google.maps.Animation.BOUNCE
+		    });
+
+		  marker.setMap(map);
+		  
+		  var myCity = new google.maps.Circle({
+			  center:myCenter ,
+			  radius:400,
+			  strokeColor:"#ff4d4d",
+			  strokeOpacity:0.8,
+			  strokeWeight:2,
+			  fillColor:"#ffcce0",
+			  fillOpacity:0.4
+			});
+		  
+
+		  myCity.setMap(map);
+		  
+		  
+
+		  var infowindow = new google.maps.InfoWindow({
+		    content:"Hello World!"
+		    });
+
+		  google.maps.event.addListener(marker, 'click', function() {
+		    infowindow.open(map,marker);
+		    });
+		  
+		  
+		}
+	
+	
+	
+		google.maps.event.addDomListener(window, 'load', initialize);
+	
+		
+		
   </script>
   
 </head>
@@ -291,13 +352,32 @@
         
       </div>
       <div class="modal-body">
-        
+
+
+<p class="star_rating" align="left">
+	
+    <a href="#" class="on" onclick="starcount('1');">★</a>
+    <a href="#" class="on" onclick="starcount('2');">★</a>
+    <a href="#" class="on" onclick="starcount('3');">★</a>
+    <a href="#" onclick="starcount('4');">★</a>
+    <a href="#" onclick="starcount('5');">★</a>
+     
+    
+	<select name="status" id="status" style="float: right; size: 30px;"> 
+	<option value="1">전체 공개</option>
+	<option value="2">친구 공개</option>
+	<option value="0">나만 보기</option>
+	</select>
+    
+</p>
+<input type="hidden" id="starcounter" value="0"/> 
 		
 
         <div class="form-group">
           <textarea class="form-control" rows="7" id="secondarea"  required></textarea>
+          
         </div>
- 
+ <input type="file" id="uploader" name="image" />
 
       </div>
       <div class="modal-footer">
@@ -330,43 +410,28 @@
 
 
 
-<div class="container ">    
-  <div class="row">
+<div class="container" style="width: 90%; " >    
+  <div class="row" >
   
   
   
     <div class="col-sm-3 well">
     	
-<!-- Add Google Maps -->
-<div id="googleMap" style="height:300px;width:100%;"></div>
-<script>
-function myMap() {
-var myCenter = new google.maps.LatLng(37.539578, 126.899568);
-var mapProp = {center:myCenter, zoom:15, scrollwheel:false, draggable:true, mapTypeId:google.maps.MapTypeId.ROADMAP};
-var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
-var marker = new google.maps.Marker({position:myCenter});
-marker.setMap(map);
-}
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm5ys8Aqru_hi_-arUTuHNDxR0Gmx4HxU&callback=myMap"></script>
+    	
+    	
+    	<!-- 구글맵 해버리기~  Google map-->
 
+
+<div id="googleMap" style="width:100%; height:300px;"></div>
 <br><br>
 
 
-<p class="star_rating" align="center">
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#" class="on">★</a>
-    <a href="#">★</a>
-    <a href="#">★</a>
-    <button type="button" class="btn btn-info" style="margin-left: 30px;"> 확인 </button>
-</p> 
 
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-        <p><strong>추천하기!</strong></p>
-        방문한 페이지가 마음에 든다면 별표로 평가해주세요~
+        <p><strong>내 주변 Shy보기</strong></p>
+        위 지도의 마커를 클릭해 보세요!
       </div>
       <p><a href="#">친구 추가하기</a></p>
       <p><a href="#">공유하기</a></p>
@@ -380,16 +445,16 @@ marker.setMap(map);
       
       <div class="wrapper">
       
+      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; margin-left: 130px;">${geomap.shyplace }</div>
+      <br><br><br>
       
-	 <ul class="list">
-	 
-     <li>
-
-      <div>
-      <h4>메인 글남기기</h4>
+      
+        <div>
+      
       <form role="form" name="gogo">
         <div class="form-group">
-          <textarea class="form-control" rows="7" id="firstarea"  required></textarea>
+          <textarea class="form-control" rows="7" id="firstarea" placeholder="메인에 남길 글을 작성해보세요!" 
+           required></textarea>
         </div>
         
       </form>
@@ -398,137 +463,60 @@ marker.setMap(map);
       
       <br><br>
       </div>
-
-	
-	
-
-      </li>
+      
+      
+	 <ul class="list">
+	 
       
      <li>
 
      
-      <h4><small>RECENT POSTS</small></h4>
-      <hr>
-      <h2>Officially Blogging</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.</h5>
-      <h5><span class="label label-success">Lorem</span></h5><br>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <hr>
-
-      <h4>Leave a Comment:</h4>
-      <form role="form">
-        <div class="form-group">
-          
-          <textarea class="form-control" rows="4"  data-toggle="modal" data-target="#my80sizeCenterModal" required></textarea>
-        </div>
-        
-        <!-- 
-        <div class="dropdown">
-  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"> 코멘트
-  <span class="badge">2</span></button>
-  <ul class="dropdown-menu">
-    
-      
-      <div class="row">
-        <div class="col-sm-2 text-center">
-          <img src="bandmember.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <div class="col-sm-10">
-          <h4>Anja <small>Sep 29, 2015, 9:12 PM</small>
-		<button style="float: right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#my80sizeCenterModal">댓글달기</button></h4>
-          <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-        </div>
-        <div class="col-sm-2 text-center">
-          <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <div class="col-sm-10">
-          <h4>John Row <small>Sep 25, 2015, 8:25 PM</small>
-			<button style="float: right;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#my80sizeCenterModal">댓글달기</button></h4>
-
-          <p>I am so happy for you man! Finally. I am looking forward to read about your trendy life. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-          <p><span class="badge">1</span> Comment:</p><br>
-          <div class="row">
-            <div class="col-sm-2 text-center">
-              <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-            <div class="col-xs-10">
-              <h4>Nested Bro <small>Sep 25, 2015, 8:28 PM</small></h4>
-              <p>Me too! WOW!</p>
-              <br>
-            </div>
-          </div>
-        </div>
-        </div>
-
-  </ul>
-</div> -->
-        
-      </form>
-      <br><br>
-      
      
 </li>
 
+	<c:forEach items="${geolist}" var="geolist" varStatus="status">
      <li>
 
 
-
-
-     
-      <div>
-      <h4><small>RECENT POSTS</small></h4>
-      <hr>
-      <h2>7번 글이요</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <img src="../images/iyou.jpg" class="img-thumbnail" alt="Cinque Terre" >
-      <img src="../images/iyou.jpg" class="img-thumbnail" alt="Cinque Terre" >
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <div style="border: double 5px #ccdcff;">
+      
+      <h4>
+      <small>${geolist.shyplace}에서 OO님과 함께</small>
+      
+      </h4>
+      
+      
+      <c:if test="${gvo.gimg != null}">
+      	<img class="grp_boxImage" style="width: 100%;"
+      	 src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+      </c:if>
+      <c:if test="${gvo.gimg == null}">
+      	<img class="grp_boxImage" style="width: 100%;"
+      	src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+      </c:if>
+      <h2 style="font-style: inherit; font-size: 23px;">
+      
+      <a style="color:  #2952a3; " href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${geolist.idx}">
+      ${geolist.name}</a>님의 글
+      
+      </h2>
+      
+      
+      <h5><span class="glyphicon glyphicon-time"></span>${geolist.sdatedtime}</h5>
+      <h5><span class="label label-danger">#여기서</span> <span class="label label-primary">#누구와</span></h5><br>
+      
+      <p style="border-top: double 5px #ccdcff;"> ${geolist.scontent} </p>
       <br><br>
       </div>
       
-      
-      
-      
 </li>
-     
-     <li>
-
-      
-      <div>
-      <h4><small>RECENT POSTS</small></h4>
-      <hr>
-      <h2>7번 글이요</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <br><br>
-      </div>
-
-</li>
-     
-     <li>
-
-      
-      <div>
-      <h4><small>RECENT POSTS</small></h4>
-      <hr>
-      <h2>7번 글이요</h2>
-      <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
-      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <br><br>
-      </div>
-
-</li>
-     
-     <li>
+     </c:forEach>
      
      
-
-</li>
+     
+     
+     
+     
      
      <li>Item 7</li>
      

@@ -3,6 +3,8 @@ package com.team168.shy.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,9 +57,14 @@ public class Meong_Service implements Interface_CommonService  {
 		return womantotal;
 	}
 
-	public String gettodaytotal() {
-		String todaytotal = dao.gettodaytotal();
+	public String gettodaytotal(HashMap<String, Object> map) {
+		String todaytotal = dao.gettodaytotal(map);
 		return todaytotal;
+	}
+	
+	public String gettodaytotalshymemo(HashMap<String, Object> map) {
+		String todaytotalshymemo = dao.gettodaytotalshymemo(map);
+		return todaytotalshymemo;
 	}
 
 	public List<HashMap<String, String>> getshyList(HashMap<String, String> map) {
@@ -89,10 +96,110 @@ public class Meong_Service implements Interface_CommonService  {
 		int n = dao.shystatusUp(map);
 		return n;
 	}
-
+/*
 	public List<HashMap<String, Object>> gettongkeList() {
 		List<HashMap<String, Object>> tkList = dao.gettongkeList();
 		return tkList;
+	}*/
+/*
+	public List<HashMap<String, Object>> gettongkeList2() {
+		List<HashMap<String, Object>> tkList2 = dao.gettongkeList2();
+		return tkList2;
+	}*/
+
+	public List<HashMap<String, String>> peoplesearch() {
+		List<HashMap<String, String>> plist = dao.plist();
+		return plist;
+	}
+
+	public List<HashMap<String, Object>> follow(HashMap<String, Object> map) {
+		List<HashMap<String, Object>> FollowList = dao.getFollowListArr(map);
+		return FollowList;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList = dao.gettongkeList(map);
+		return tkList;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList2 = dao.gettongkeList2(map);
+		return tkList2;
+	}
+
+	public List<HashMap<String, String>> getadminList(HashMap<String, String> map, RowBounds rowBounds) {
+		List<HashMap <String, String>> adminList = dao.groupsearch(map, rowBounds);
+		return adminList;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList3(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList3 = dao.gettongkeList3(map);
+		return tkList3;
+	}
+
+	public List<HashMap<String, Object>> gettongkeList4(HashMap<String, String> map) {
+		List<HashMap<String, Object>> tkList4 = dao.gettongkeList4(map);
+		return tkList4;
+	}
+
+	public int CheckEmail(String joinemail) {
+		int n = dao.CheckEmail(joinemail);
+		return n;
+	}
+
+	public List<String> followlist(int idx) {
+		List<String> followlist = dao.followlist(idx);
+		return followlist;
+	}
+
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = dao.getmainshy(followlist);
+		return shies;
+	}
+
+	public String imgaddr(String snsno) {
+		String imgaddr = dao.imgaddr(snsno);
+		return imgaddr;
+	}
+
+	public int AddShare(HashMap<String, Object> map) {
+		int n = dao.AddShare(map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList = dao.getBarTKList(map);
+		return bartkList;
+	}
+
+	public List<HashMap<String, Object>> getBarTKList2(HashMap<String, String> map) {
+		List<HashMap<String, Object>> bartkList2 = dao.getBarTKList2(map);
+		return bartkList2;
+	}
+
+	public List<HashMap<String, Object>> getshymemoList() {
+		List<HashMap<String, Object>> memoList = dao.getshymemoList();
+		return memoList;
+	}
+
+	public int memostatusDown(HashMap<String, String> map) {
+		int n = dao.memostatusDown(map);
+		return n;
+	}
+
+	public int memostatusUp(HashMap<String, String> map) {
+		int n = dao.memostatusUp(map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> getpietkList() {
+		List<HashMap<String, Object>> pietkList = dao.getpietkList();
+		return pietkList;
+	}
+
+	public List<HashMap<String, Object>> getdoughnutList() {
+		List<HashMap<String, Object>> doughnutList = dao.getdoughnutList();
+		return doughnutList;
 	}
 
 

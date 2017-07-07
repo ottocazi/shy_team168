@@ -25,4 +25,40 @@ public class JunoDAO {
 		int n = sqlsession.insert("juno.myInfoEditEnd", map);
 		return n;
 	}
+	
+	// 댓글 카운트 리스트
+	public List<HashMap<String, Object>> getCommentCount() {
+		List<HashMap<String, Object>> returnCountList = sqlsession.selectList("juno.getCommentCount");
+		return returnCountList;
+	}
+	
+	// 댓글 리스트 불러오기
+	public List<HashMap<String, Object>> getCommentList() {
+		List<HashMap<String, Object>> CommentList = sqlsession.selectList("juno.getCommentList");
+		return CommentList;
+	}
+	
+	// 배열 파라미터 리스트
+	public List<HashMap<String, Object>> getCommentCountArr(String[] snsnoArr) {
+		List<HashMap<String, Object>> CommentList = sqlsession.selectList("juno.getCommentCountArr" , snsnoArr);
+		return CommentList;
+	}
+
+	public List<HashMap<String, String>> peoplesearch() {
+		List<HashMap<String, String>> plist = sqlsession.selectList("juno.peoplesearch");
+		
+		return plist;
+	}
+	
+	// gofollow
+	public int goFollow(HashMap<String, Object> map) {
+		int result = sqlsession.insert("juno.goFollow", map);
+		return result;
+	}
+	
+	// unfollow
+	public int unFollow(HashMap<String, Object> map) {
+		int result = sqlsession.update("juno.unFollow", map);
+		return result;
+	}
 }
