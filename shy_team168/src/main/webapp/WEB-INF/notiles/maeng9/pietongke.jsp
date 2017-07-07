@@ -18,27 +18,28 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/green.css" rel="stylesheet">
-    <!-- Datatables -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/scroller.bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-     
+  	
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+  
   </head>
 
   <body class="nav-md">
+
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -46,10 +47,10 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -59,40 +60,48 @@
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
-                    </ul>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
               </div>
 
             </div> 
-            <!-- /sidebar menu -->
 
+            <!-- /sidebar menu -->
+            
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
@@ -123,7 +132,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -213,19 +222,18 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left">
-                <h3>게시물관리</h3>
+			  <div class="title_left">
+                <h3 style="color: red;">지역,국가별 게시물 통계</h3>
               </div>
-
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
+              <div class="col-md-8 col-sm-8 col-xs-12" style="width:100%;">
+                <div class="x_panel"style="width: 49.5%;" >
                   <div class="x_title">
-                    <h2>SHY게시물 관리</h2>
+                    <h2>지역별 게시물 PIE 그래프</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -243,66 +251,159 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                      <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
-                             회원들의 게시물과 버튼을 통해 활성화/비활성화를 할수있는 페이지
-                    </p>
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>게시물번호</th>
-                          <th>이름</th>
-                          <th>성별</th>
-                          <th>게시물내용</th>
-                          <th>최종수정일</th>
-                          <th>좋아요수</th>
-                          <th>신고수</th>
-                          <th>게시물상태</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <c:forEach var="map" items="${memoList}" varStatus="status">
-                        <tr align="center">
-                          <td>${map.SNSNO}</td>
-                          <td>${map.NAME}</td>
-                          <td>${map.GENDER}</td>
-                          <td>${map.SCONTENT}</td>
-                          <td>${map.SDATEDTIME}</td>
-                          <td>${map.SLIKECNT}</td>
-                          <td>${map.SBLAMECNT}</td>
-                        <td>
-                        <c:if test="${map.STATUS != 0}">  
-                  		<button onClick="javascript:location.href='shymemostatusDown.shy?snsno=${map.SNSNO}&name=${map.NAME}'">활성화</button>
-                  		</c:if>
-                  		<c:if test="${map.STATUS == 0}">
-                  		<button onClick="javascript:location.href='shymemostatusUp.shy?snsno=${map.SNSNO}&name=${map.NAME}'">비활성화</button>
-                  		</c:if>
-                          </td>
-                        </tr>
-                      </c:forEach>
-                      </tbody>
-                    </table>
-                  </div>
+
+                   <div id="pietonke" style="height: 600%;"></div>
+
                 </div>
-              </div>			
+              <!-- </div>
+
+              <div class="col-md-8 col-sm-8 col-xs-12" style="display: inline-block;">
+ -->                <div class="x_panel" style="width: 49.5%;" >
+                  <div class="x_title">
+                    <h2>국가별 게시물 PIE 그래프</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
                   </div>
+
+
+                   <div id="doughnut" style="height: 600%;"></div>
+
+
                 </div>
               </div>
             </div>
+
           </div>
+        </div>
+        <!-- page content -->
 
-        <!-- /page content -->
+      </div>
+    </div>
+	
+<script type="text/javascript">
+	var dom = document.getElementById("pietonke");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+	    title : {
+	        text: '지역별 회원수',
+	        subtext: 'shy',
+	        x:'center'
+	    },
+	    tooltip : {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        left: 'left',
+	        data: [
+	        	<c:forEach var="map" items="${pietkList}"  varStatus="status">
+				"${map.CITY}",
+				</c:forEach>
+				]
+	    },
+	    series : [
+	        {
+	            name: '지역',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data:[
+	            	<c:forEach var="map" items="${pietkList}">
+	                {value:"${map.CNT}", name:"${map.CITY}"},
+	                </c:forEach>
+	            ],
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+	
+/////////////////////////////////////////////////////////////////////////////////////////////
 
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            <a href="open.shy">Shy</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+	var dom = document.getElementById("doughnut");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	app.title = '环形图';
+	
+	option = {
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data:[
+	        	<c:forEach var="map" items="${doughnutList}">
+				"${map.COUNTRY}",
+				</c:forEach>
+	        ]
+	    },
+	    series: [
+	        {
+	            name:'국가',
+	            type:'pie',
+	            radius: ['50%', '70%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    show: false,
+	                    position: 'center'
+	                },
+	                emphasis: {
+	                    show: true,
+	                    textStyle: {
+	                        fontSize: '30',
+	                        fontWeight: 'bold'
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                normal: {
+	                    show: false
+	                }
+	            },
+	            data:[	<c:forEach var="map" items="${doughnutList}">
+	                	{value:'${map.CNT}', name:'${map.COUNTRY}'},
+						</c:forEach>
+	            ]
+	        }
+	    ]
+	};
+	;
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
 
+</script>  
+	
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -311,24 +412,6 @@
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- iCheck -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/icheck.min.js"></script>
-    <!-- Datatables -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.dataTables.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.bootstrap.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.buttons.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/meong/buttons.flash.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.html5.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.print.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.fixedHeader.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.keyTable.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.responsive.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/responsive.bootstrap.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.scroller.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/jszip.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/pdfmake.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>

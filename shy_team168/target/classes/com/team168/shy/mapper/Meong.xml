@@ -87,6 +87,12 @@
 		where to_date(sdatedtime) = #{today}
 	</select>		
 	
+	<select id="gettodaytotalgrpboard" resultType="String" parameterType="java.util.HashMap">
+		select count(*)
+		from tbl_grpboard 
+		where to_date(writedate) = #{today}
+	</select>
+	
 	<!-- 공지사항(미정)부분에서 회원목록 보여주는 select 문 -->
 	<resultMap type="java.util.HashMap" id="getshyListMap">
 		<result property="IDX" 		        column="idx" 	        javaType="String" />
@@ -415,7 +421,7 @@
 	<select id="getdoughnutList" resultMap="getdoughnutListmap">
 		SELECT nvl(country, '기타지역') as country, COUNT(*) AS CNT 
 		FROM tbl_geo
-		where not shyplace is null
+		WHERE NOT COUNTRY = 'X'
 		GROUP BY country
 	</select>
 	

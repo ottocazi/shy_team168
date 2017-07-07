@@ -67,6 +67,11 @@ public class Meong_Service implements Interface_CommonService  {
 		return todaytotalshymemo;
 	}
 
+	public String gettodaytotalgrpboard(HashMap<String, Object> map) {
+		String todaytotalgrpboard = dao.gettodaytotalgrpboard(map);
+		return todaytotalgrpboard;
+	}
+
 	public List<HashMap<String, String>> getshyList(HashMap<String, String> map) {
 		List<HashMap<String, String>> shyList = dao.getshyList(map);
 		return shyList;	
@@ -201,6 +206,7 @@ public class Meong_Service implements Interface_CommonService  {
 		List<HashMap<String, Object>> doughnutList = dao.getdoughnutList();
 		return doughnutList;
 	}
+
 
 
 
