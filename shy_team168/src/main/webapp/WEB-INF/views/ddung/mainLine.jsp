@@ -36,9 +36,13 @@
     	
     	//var content = $(".hashcheck").text();
     	//alert(content);
-    	var content = document.getElementById('mycontent').innerHTML;
+    	// var content = document.getElementById('scontent').innerHTML;
     	// html 안에 'scontent'라는 아이디를 content 라는 변수로 정의한다.
     	//content = content.replace(/^\s+/,"");
+    	
+    	var arr = $(".hashcheck").map(function(){
+    		return $(this).text();
+    	}).get();
     	
     	//alert(content.indexOf('#'));
     	/* if(content.indexOf('"#')==0){
@@ -54,6 +58,8 @@
     		content = front.concat(behind);
     		alert(content);
     	} */
+    	
+    	/* 
     	var splitedArray = content.split(' '); // 공백을 기준으로 문자열을 자른다.
     	var linkedContent = ' ';
     	for(var word in splitedArray)
@@ -66,10 +72,28 @@
     	   }
     	   linkedContent += word+' ';
     	}
-    	document.getElementById('mycontent').innerHTML = linkedContent; 
     	
-       
-       
+    	document.getElementById('scontent').innerHTML = linkedContent; 
+     	*/
+     	
+     	for(var i = 0; i < arr.length; ++i) {
+     		var splitedArray = arr[i].split(' ');
+     		var linkedContent = '';
+
+     		for(var word in splitedArray)
+        	{
+        	  	word = splitedArray[word];
+        	
+	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
+	        	{
+	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        	}
+	        	
+	        	linkedContent += word+' ';
+        	}
+     		
+     		$('#hashcheck' + i).html(linkedContent);
+     	}
     });// end of $(document).ready() --------
     
     function goLike(idx,likeseq,seqcolum){
@@ -690,9 +714,8 @@
 									src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif"
 									alt="Avatar">
 							</c:if>
-							<strong> <a title="Full Name" href="#"> <span
-									style="font-size: 12pt; margin: 0; color: black;"> <c:if
-											test="${shies.name!=null }">
+							<strong> <a title="Full Name" href="<%=request.getContextPath() %>/mypage.shy?idx=${shies.fk_idx }"> 
+							<span style="font-size: 12pt; margin: 0; color: black;"> <c:if test="${shies.name!=null }">
 	                ${shies.name }
 	                </c:if> <c:if test="${shies.name==null }">
                   	${shies.email }
@@ -716,7 +739,7 @@
 					</p>
 
 					<div id="scontent">
-					<p class="hashcheck">${shies.scontent}</p>
+						<p id="hashcheck${status.index}" class="hashcheck">${shies.scontent}</p>
 					</div>
 					
 					<footer>
