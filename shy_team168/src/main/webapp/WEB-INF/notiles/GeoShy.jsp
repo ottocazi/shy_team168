@@ -22,11 +22,17 @@
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
 
-<!-- Google chart  -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type='text/javascript' src='http://www.google.com/jsapi'></script>
+	<!-- Google chart  -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type='text/javascript' src='http://www.google.com/jsapi'></script>
+		
+	<!-- sweetalert2 -->
+	<script src="https://cdn.jsdelivr.net/sweetalert2/latest/sweetalert2.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css" rel="stylesheet" />
 	
-
+	<!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+	
 <script type="text/javascript">
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Create the chart
@@ -38,7 +44,6 @@ google.charts.load('current', {
     //					https://console.developers.google.com/apis/credentials/key/296?authuser=0&project=my-project-1495672880322&pli=1
     'mapsApiKey': 'AIzaSyCAcG-iSP1ZgpFHIX_lERGlomJZLls3i0s'
 });
-//google.charts.setOnLoadCallback(drawRegionsMap);
 
 function drawRegionsMap() {
 	
@@ -74,57 +79,54 @@ function drawRegionsMap() {
 			data.addColumn('string', 'Country');
 			data.addColumn('number', 'Count'); 
 			data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
-			
+			// c: cell, v: value, f: format
 			data.addRows([[{v:'KR-11', f:'서울특별시'},count.Seoul,'shy : '+count.Seoul+' 개']]);
-			ivalue['KR-11'] = '#3182BD';
+			ivalue['KR-11'] = count.Seoul;
 			
 			data.addRows([[{v:'KR-26', f:'부산광역시'},count.Busan,'shy : '+count.Busan+' 개']]);
-			ivalue['KR-26'] = '#3182BD';
+			ivalue['KR-26'] = count.Busan;
 			
 			data.addRows([[{v:'KR-27',f:'대구광역시'},count.Daegu,'shy : '+count.Daegu+' 개']]);
-			ivalue['KR-27'] = '#3182BD';
+			ivalue['KR-27'] = count.Daegu;
 			
 			data.addRows([[{v:'KR-30',f:'대전광역시'},count.Daejeon,'shy : '+count.Daejeon+' 개']]);
-			ivalue['KR-30'] = '#3182BD';
+			ivalue['KR-30'] = count.Daejeon;
 			
 			data.addRows([[{v:'KR-29',f:'광주광역시'},count.Gwangju,'shy : '+count.Gwangju+' 개']]);
-			ivalue['KR-29'] = '#3182BD';
+			ivalue['KR-29'] = count.Gwangju;
 			
 			data.addRows([[{v:'KR-28',f:'인천광역시'},count.Incheon,'shy : '+count.Incheon+' 개']]);
-			ivalue['KR-28'] = '#3182BD';
+			ivalue['KR-28'] = count.Incheon;
 			
 			data.addRows([[{v:'KR-31',f:'울산광역시'},count.Ulsan,'shy : '+count.Ulsan+' 개']]);
-			ivalue['KR-31'] = '#3182BD';
+			ivalue['KR-31'] = count.Ulsan;
 			
 			data.addRows([[{v:'KR-43',f:'충청북도'},count.Chungcheongbugdo,'shy : '+count.Chungcheongbugdo+' 개']]);
-			ivalue['KR-43'] = '#3182BD';
+			ivalue['KR-43'] = count.Chungcheongbugdo;
 			
 			data.addRows([[{v:'KR-44',f:'충청남도'},count.Chungcheongnamdo,'shy : '+count.Chungcheongnamdo+' 개']]);
-			ivalue['KR-44'] = '#3182BD';
+			ivalue['KR-44'] = count.Chungcheongnamdo;
 			
 			data.addRows([[{v:'KR-42',f:'강원도'},count.Gangweondo,'shy : '+count.Gangweondo+' 개']]);
-			ivalue['KR-42'] = '#9ECAE1';
+			ivalue['KR-42'] = count.Gangweondo;
 			
 			data.addRows([[{v:'KR-41',f:'경기도'},count.Gyeonggido,'shy : '+count.Gyeonggido+' 개']]);
-			ivalue['KR-41'] = '#9ECAE1';
+			ivalue['KR-41'] = count.Gyeonggido;
 			
 			data.addRows([[{v:'KR-47',f:'경상북도'},count.Gyeongsangbugdo,'shy : '+count.Gyeongsangbugdo+' 개']]);
-			ivalue['KR-47'] = '#9ECAE1';
+			ivalue['KR-47'] = count.Gyeongsangbugdo;
 			
 			data.addRows([[{v:'KR-48',f:'경상남도'},count.Gyeongsangnamdo,'shy : '+count.Gyeongsangnamdo+' 개']]);
-			ivalue['KR-48'] = '#9ECAE1';
+			ivalue['KR-48'] = count.Gyeongsangnamdo;
 			
 			data.addRows([[{v:'KR-49',f:'제주도'},count.Jejudo,'shy : '+count.Jejudo+' 개']]);
-			ivalue['KR-49'] = '#9ECAE1';
+			ivalue['KR-49'] = count.Jejudo;
 			
 			data.addRows([[{v:'KR-45',f:'전라북도'},count.Jeonrabugdo,'shy : '+count.Jeonrabugdo+' 개']]);
-			ivalue['KR-45'] = '#9ECAE1';
+			ivalue['KR-45'] = count.Jeonrabugdo;
 			
 			data.addRows([[{v:'KR-46',f:'전라남도'},count.Jeonranamdo,'shy : '+count.Jeonranamdo+' 개']]);
-			ivalue['KR-46'] = '#9ECAE1';	
-			
-			
-			
+			ivalue['KR-46'] = count.Jeonranamdo;	
 			
 			var options = {
 	            region: 'KR', // 030 - Eastern Asia	CN, HK, JP, KP, KR, MN, MO, TW
@@ -133,7 +135,6 @@ function drawRegionsMap() {
 	            markerOpacity: 0.3,
 	            datalessRegionColor: '#fff', // 한국아닌지역색
 	            defaultColor: '#aofff0',
-	            
 	            displayMode: 'regions', 
 				enableRegionInteractivity: 'true', 
 				resolution: 'provinces',
@@ -141,17 +142,17 @@ function drawRegionsMap() {
 	
 	        var chart = new google.visualization.GeoChart(document.getElementById('geochart-colors'));
 	        
-	        
 //	        var chart = new google.visualization.GeoChart(document.getElementById('visualization')); 
 			google.visualization.events.addListener(chart, 'select', function() {
 			 	var selection = chart.getSelection();
 			 	if (selection.length == 1) {
 			 		var selectedRow = selection[0].row;
 			 		var selectedRegion = data.getValue(selectedRow, 0);
-			 		if(ivalue[selectedRegion] != '') {
-			 			alert(" selectedRegion : "+selectedRegion + "     count.Seoul :"+count.Seoul);
-			 		//	document.getElementsByTagName('body')[0].style.background=ivalue[selectedRegion]; 
-			 		}
+			 		
+		 			alert("selection : "+selection+" selectedRegion : "+selectedRegion + "     ivalue[selectedRegion] : "+ivalue[selectedRegion]);
+		 			alert(typeof(selection));
+		 			
+			 		detailMap();
 			 	}
 			});
 			
@@ -162,6 +163,41 @@ function drawRegionsMap() {
 		} 
 	});
 }
+
+function detailMap(){
+	alert("detailMap() start!");
+	var specs = "left=30,top=30,width=700,height=500"
+	window.open("geo.shy","상세보기",specs);
+	/* 
+		여기에 오버레이 상세 지도 및 기타지역(count.ect) 표시 하는 거 만들면 될듯
+		참고사이트 : https://developers.google.com/chart/interactive/docs/overlays#css2
+	*/
+	/* 
+		대한민국의 시도별 행정 구역 분류
+		참고사이트 : https://ko.wikipedia.org/wiki/%EB%B6%84%EB%A5%98:%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%8B%9C%EB%8F%84%EB%B3%84_%ED%96%89%EC%A0%95_%EA%B5%AC%EC%97%AD
+	*/
+	
+	/* swal({
+		  title: '상세지도',
+		  html: '<!DOCTYPE html><html>안나오냐'
+			  + '<head><meta name="viewport" content="initial-scale=1.0">'		  	
+			  + '<meta charset="utf-8"><style>#map {height: 100%;}html, body {height: 100%; margin: 0; padding: 0;}</style>'
+			  + '</head><body><div id="map"></div>'
+			  + '<script>var map; function initMap() {map = new google.maps.Map(document.getElementById("map"), {center: {lat: -34.397, lng: 150.644},zoom: 8});}</'+'script>'
+			  + '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkK_EWB_e3yusAluX5FYlETpHypg3d8uA&callback=initMap"async defer></'+'script>'
+			  + '</body></html>',
+		  showCancelButton: false,
+		  showConfirmButton: false,
+		  width: 700
+	}).then(function () {
+		
+	}, function (dismiss) {
+		
+	}) */
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function drawVisualization(){
@@ -482,7 +518,7 @@ function drawVisualization(){
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content" style="margin-bottom: 50px;">
-                    <div><a href="javascript:drawRegionsMap();">갈비탕</a><a href="javascript:drawVisualization();"> 지겨워</a></div>
+                    <div><a href="javascript:drawRegionsMap();" style="color: red;">갈비탕</a><a href="javascript:drawVisualization();"> 지겨워</a></div>
                     <div id="geochart-colors"></div>
                     <div id="visualization"></div>
                   </div>
@@ -491,7 +527,7 @@ function drawVisualization(){
                 </div>
               </div>
 <!-- 
-              <div class="col-md-8 col-sm-8 col-xs-12">
+              <div class="col-md-8 col-sm-8 col-xs-12">	
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Bar Graph</h2>
