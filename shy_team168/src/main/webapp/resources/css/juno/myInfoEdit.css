@@ -36,7 +36,7 @@
 	transition: all 0.3s;
 	font-size: 16px;
 	background-color: white;
-	width:50px;
+	/* width:50px; */
 }
 
 .table td img{

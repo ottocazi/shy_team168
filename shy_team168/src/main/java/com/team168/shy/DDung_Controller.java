@@ -405,17 +405,12 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/banking.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/banking.shy", method={RequestMethod.GET})
 	public String banking(HttpServletRequest req, HttpSession session) throws IOException {
 		
-		String snsno = req.getParameter("snsno");
 		
-		System.out.println("댓글을 출력할 샤이 번호는 : "+snsno);
 		
-		List <HashMap <String, String>> comments = service.getComments(snsno);
-		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
-		
-		return "banking.tiles";
+		return "ddung/banking_dashboard.tiles";
 		
 		
 	}
