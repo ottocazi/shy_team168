@@ -43,7 +43,7 @@ public class DDung_Controller {
 	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
-    public String mainline(HttpServletRequest req, HttpSession session) {
+	public String mainline(HttpServletRequest req, HttpSession session) {
 
 		Object loginuser = session.getAttribute("loginuser");
 		ShyMemberVO smvo = (ShyMemberVO)loginuser;

@@ -723,5 +723,35 @@ public class Pa_Controller {
 		return myalarmList;
 
 	}
+	
+	// ===== 알림카운트 가져오기 ===== //
+	@RequestMapping(value = "/myAlarmcnt.shy", method = { RequestMethod.POST })
+	@ResponseBody
+	public HashMap<String, Object> goAlarmupdate(HttpServletRequest req) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		HttpSession session = req.getSession();
+		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기	
+		
+		int result = service.getAlarmCnt(myIdx); // 카운트가져오기
+		resultMap.put("result", result);
+		
+		String[] alarmnoArr = req.getParameterValues("alarmnoArr");
+		System.out.println("alarmnoArr="+alarmnoArr);
+		
+		resultMap.put("alarmnoArr", alarmnoArr);
+		resultMap.put("myIdx", myIdx);
+		
+		if(req.getParameterValues("alarmnoArr")!=null){
+			int n = service.updateAlarm(resultMap); // 알람클릭시 update 
+			if(n>0){
+				result = service.getAlarmCnt(myIdx); // 다시 카운트 가져오기
+				resultMap.put("result", result);
+			}
+		}
+		
+		return resultMap;
+	}
     
 }
