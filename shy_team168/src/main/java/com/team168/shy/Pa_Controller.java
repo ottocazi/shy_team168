@@ -35,22 +35,19 @@ public class Pa_Controller {
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req,HttpSession session) {
+		String myIdx = "";
 		
-		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
-		
-		System.out.println("loginuser="+loginuser);
-		//ShyMemberVO shymemvo = (ShyMemberVO)loginuser;
-		
-		
-		if(loginuser == null) {
-			String msg = "♥ 먼저 로그인 하세요 ♥";
-			String loc = "open.shy";
-			
-			req.setAttribute("msg", msg);
-			req.setAttribute("loc", loc);
-			
-			return "ddung_alert.notiles";
-		} else{
+			if(req.getParameter("idx") == null){
+				
+				ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+				myIdx = Integer.toString(loginuser.getIdx());
+				req.setAttribute("loginuser", loginuser);
+				 
+			}else{
+				
+		        myIdx = req.getParameter("idx");
+				
+			}
 			
 			// 기본 페이지번호를 1으로 설정하고
 	        int pageNo = 1;
@@ -58,16 +55,13 @@ public class Pa_Controller {
 	        // 넘어온 파라미터가 있다면
 	        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
 	        if(req.getParameter("pageNo") != null){
-	        pageNo = Integer.parseInt(req.getParameter("pageNo"));
+	        	pageNo = Integer.parseInt(req.getParameter("pageNo"));
 	        }
 	        
 	        int sizePerPage = 6;
 	        
 	        int start = (pageNo - 1) * sizePerPage + 1;
 	        int end = pageNo * sizePerPage;
-			
-			String myIdx = Integer.toString(loginuser.getIdx());
-			req.setAttribute("loginuser", loginuser);
 			
 			// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
 			int myshyCount = service.getMyshyCount(myIdx);
@@ -82,11 +76,12 @@ public class Pa_Controller {
 			mymap.put("start", String.valueOf(start));
 			mymap.put("end", String.valueOf(end));
 			
-			//mymap.put("myshyCount", String.valueOf());
-			
 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
 			List <HashMap<String, String>> myshyList = service.getMyshy(mymap);
 			
+			// 개인정보 가져오기
+			mymap = service.getMyInfo(myIdx);
+			req.setAttribute("mymap", mymap);
 			
 			if(myshyList!=null){
 				for(int i =0 ; i<myshyList.size(); i++){
@@ -97,11 +92,9 @@ public class Pa_Controller {
 					if("1".equals(myshyList.get(i).get("simage"))){
 						
 						String snsno = myshyList.get(i).get("snsno");
-						System.out.println("snsno = "+snsno);
 						// 이미지 가져오기
 						String imgfile = service.getImgaddr(snsno);
 						
-						System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
 						myshyList.get(i).put("imageaddr", imgfile);
 						
 					}
@@ -109,42 +102,47 @@ public class Pa_Controller {
 					else if("0".equals(myshyList.get(i).get("simage"))){
 						myshyList.get(i).put("imageaddr", null);
 					}
-					
-					System.out.println("shies.simage : "+myshyList.get(i).get("simage"));
-					System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
 				}
-			
 			}
-			req.setAttribute("myshyList", myshyList);
 			
+			req.setAttribute("myshyList", myshyList);
 			return "pa/mypage.tiles";
 		
-		}
 	}
 
 	// ===== mypage 페이지 요청하기 (Ajax) ===== //
-	@RequestMapping(value = "/mypageList.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/mypageList.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goMypageAjax(HttpServletRequest req,HttpSession session) { 
-
+		String myIdx = "";
+		
 		// 기본 페이지번호를 1으로 설정하고
         int pageNo = 1;
  
         // 넘어온 파라미터가 있다면
-        //if (req.getParameter("page") != null) {
+        if (req.getParameter("pageNo") != null) {
  
-            // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
-        pageNo = Integer.parseInt(req.getParameter("pageNo"));
-        //}
+        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+        	pageNo = Integer.parseInt(req.getParameter("pageNo"));
+        }
         
         int sizePerPage = 6;
         
         int start = (pageNo - 1) * sizePerPage + 1;
         int end = pageNo * sizePerPage;
 		
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-		String myIdx = Integer.toString(loginuser.getIdx());
-		req.setAttribute("loginuser", loginuser);
+		
+		if(req.getParameter("idx") == null){
+			
+			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+			myIdx = Integer.toString(loginuser.getIdx());
+			req.setAttribute("loginuser", loginuser);
+			
+		}else{
+			myIdx = req.getParameter("idx");
+		}
+		
+
 
 		HashMap<String, Object> mymap = new HashMap<String, Object>();
 		mymap.put("myIdx", myIdx);
@@ -665,23 +663,26 @@ public class Pa_Controller {
   	// ===== 좋아요 가져오기 ===== //
    	@RequestMapping(value="/likeList.shy", method={RequestMethod.GET})
    	@ResponseBody
-       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req) {
+       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req,HttpSession session) {
    		//List<HashMap<String, String>> likeList = null; // 초기화
    		
    		String[] snsnoArr = req.getParameterValues("snsnoArr");
    		System.out.println("snsnoArr="+snsnoArr);
    		
-   		HttpSession session = req.getSession();
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-		
-		int fk_likeidx = loginuser.getIdx();
+   		int fk_likeidx = 0;
+   		
+   		if(req.getParameter("idx")!=null){
+   			fk_likeidx = Integer.parseInt(req.getParameter("idx"));
+   		}else{
+   			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+   			fk_likeidx = loginuser.getIdx();
+   		}
    		
 		HashMap<String, Object> mylike = new HashMap<String, Object>();
 		mylike.put("snsnoArr", snsnoArr);
 		mylike.put("fk_likeidx", fk_likeidx);
    	
    		List<HashMap<String, String>> likeList = service.getmyLikeList(mylike);
-   		
    		
    		for(int i = 0; i < likeList.size(); ++i) {
    			System.out.println("snsno : " + likeList.get(i).get("snsno"));
@@ -696,11 +697,15 @@ public class Pa_Controller {
 	@RequestMapping(value = "/myfollowList.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
-
-		HttpSession session = req.getSession();
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-
-		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
+		String myIdx ="";
+		
+		if(req.getParameter("idx")!=null){
+			myIdx = req.getParameter("idx");
+   		}else{
+   			HttpSession session = req.getSession();
+   			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+   			myIdx = Integer.toString(loginuser.getIdx());
+   		}
 
 		List<HashMap<String, String>> myflwList = service.getMyfollows(myIdx);
 

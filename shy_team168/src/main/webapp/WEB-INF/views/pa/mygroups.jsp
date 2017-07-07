@@ -344,10 +344,10 @@ text-decoration: none;
 			<c:forEach var="gvo" items="${myGrpList }">
 			 <div class="grp_box">
 		      <c:if test="${gvo.gimg != null}">
-		      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		      	<img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }">img가져오기
 		      </c:if>
 		      <c:if test="${gvo.gimg == null}">
-		      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		      	<img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg">기본이미지
 		      </c:if>
 		      	<img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg }">
 		      	<div class="grp_inner">
@@ -389,10 +389,10 @@ text-decoration: none;
 	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
-		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }">img가져오기
 		    </c:if>
 		    <c:if test="${gvo.gimg == null}">
-		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg">기본이미지
 		    </c:if>
 		    <c:if test="${gvo.myimg != null}">
 		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
@@ -453,10 +453,10 @@ text-decoration: none;
 	 		<li>
 		  <div class="grp_box">
 		    <c:if test="${gvo.gimg != null}">
-		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
+		    <img class="grp_boxImage" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }">img가져오기
 		    </c:if>
 		    <c:if test="${gvo.gimg == null}">
-		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
+		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg">기본이미지
 		    </c:if>
 		    <c:if test="${gvo.myimg != null}">
 		    <img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.myimg  }">
@@ -494,4 +494,10 @@ text-decoration: none;
 	<div align="center"><button id="newGrp" style=" font-size: 20px; margin: 50px; ">더보기</button></div>
 	</div>
 </div>
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
 
