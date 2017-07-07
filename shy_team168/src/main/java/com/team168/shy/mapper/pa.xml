@@ -442,19 +442,16 @@
 		<result property="snsno" column="SNSNO" javaType="String" />
 		<result property="alarm_target" column="ALARM_TARGET" javaType="String" />
 		<result property="name" column="NAME" javaType="String" />
-		<result property="cnt" column="CNT" javaType="int" />
 	</resultMap>
 	<select id="alarmList" parameterType="java.util.HashMap" resultMap="alarmListMap"> 
-      	SELECT V.*,X.NAME,( SELECT COUNT(*)
-      						FROM TBL_ALARM
-      						WHERE ALARM_TARGET = #{MYIDX} AND ASTATUS=1) AS CNT
+      	SELECT V.*,X.NAME
 		FROM 
 		(
 		SELECT A.ALARMNO,A.FK_IDX,A.ALARMDATE,A.ASTATUS,A.LIKENO,A.ALARM_TARGET,B.SNSNO
 		FROM
 		(
 		SELECT ALARMNO,FK_IDX,ALARMDATE,ASTATUS,LIKENO,ALARM_TARGET
-		FROM TBL_ALARM WHERE ASTATUS=1) A 
+		FROM TBL_ALARM) A 
 		JOIN
 		(SELECT LIKENO,SNSNO FROM TBL_LIKE)B
 		ON A.LIKENO = B.LIKENO)V
@@ -462,14 +459,31 @@
 		(SELECT IDX,NAME FROM TBL_SHYMEMBER)X
 		ON V.FK_IDX = X.IDX
 		WHERE V.ALARM_TARGET = #{myIdx}
+		ORDER BY V.ALARMDATE DESC
 	</select>
 	
-    <!-- ===== 알람 타겟 가져오기 =====   -->
+    <!-- ===== 알림 타겟 가져오기 =====   -->
     <select id="alarmTarget" parameterType="String" resultType="String">
        SELECT FK_IDX
        FROM TBL_SHYMEMO
        WHERE SNSNO = #{likeseq}
     </select>
     
+    <!-- ===== 알림 카운트 가져오기 =====   -->
+    <select id="alarmCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+      	FROM TBL_ALARM
+      	WHERE ALARM_TARGET = #{myIdx} AND ASTATUS = 1
+    </select>
+    
+    <!-- ===== 알림카운트 업데이트 =====   -->
+   <update id="updateAlarm" parameterType="java.util.HashMap">
+      UPDATE TBL_ALARM SET ASTATUS = 0
+      WHERE ALARM_TARGET = #{myIdx} AND ALARMNO IN 
+       <foreach collection="alarmnoArr" item="alarmno" index="i" open="(" close=")" separator=",">
+		${alarmno}
+	  </foreach>
+   </update>
+   
     
 </mapper>	

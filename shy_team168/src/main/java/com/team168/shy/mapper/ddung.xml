@@ -82,6 +82,23 @@
 	
 	<select id="shies" parameterType="java.util.List" resultMap="shies">
 	
+    SELECT *
+		FROM (
+              select a.* ,   B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq, c.fk_snsno as geofk_snsno , row_number() over(order by a.sdatedtime desc) as rnum
+              from
+              TBL_SHYMEMO A inner JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join tbl_geo c on a.snsno = c.fk_snsno 
+              WHERE	 1=1 AND A.STATUS = 1 AND
+              FK_IDX IN 
+              <foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+              ${item}
+              </foreach>
+            ORDER BY A.SDATEDTIME DESC) 
+			where rnum between 1 and 10
+	</select>
+	
+	
+	<!-- <select id="shies_BEFORE" parameterType="java.util.List" resultMap="shies">
+	
     SELECT A.* , B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq, c.fk_snsno as geofk_snsno
 		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join tbl_geo c on a.snsno = c.fk_snsno
 		WHERE	 1=1 AND A.STATUS = 1 AND
@@ -90,7 +107,7 @@
 					${item}
 				</foreach>
 		ORDER BY A.SDATEDTIME DESC
-	</select>
+	</select> -->
 	
 	<select id="imgaddr" parameterType="String" resultType="String">
 	
