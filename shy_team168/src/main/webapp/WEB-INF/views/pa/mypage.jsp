@@ -185,9 +185,7 @@
 <script>
 var pageNo = 1;
 	
-function moreList(){
-	
-	
+function moreList(){ // 더 읽기
 	
 	pageNo += 1;
 	
@@ -207,23 +205,37 @@ function moreList(){
             $.each(data,function(entryIndex,entry){
               
       		  var  html = "<article class='card-60 social'>";
-      	     			  if(entry.status!=0){
-      	     				html += "<img src='/shy/resources/images/shydb/"+entry.imageaddr+"' alt='shy' id='nike'>"; 
+      	     			  if(entry.simage!=0){
+      	     				html += "<div class='flex-content'><img src='/shy/resources/images/shydb/"+entry.imageaddr+"' alt='shy' id='nike'></p><footer><p>"; 
+	      	     			 if(entry.slikecnt==0){
+		            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
+		            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
+			            			  if(entry.snsnocnt==0){ 
+			            				  html +="Love </a>";
+			            			  }else{
+			            				  html += entry.snsnocnt+"</a>";
+			            			  }
+		            			  }else{
+		            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
+		            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
+		            			  }
+      	     			  }else{
+      	     				html += "<div class='flex-content'>"
+      		 			 		+ "<p style='text-align: left'>"+ entry.scontent+"</p><footer><p>"; 
+      	     				if(entry.slikecnt==0){
+   	            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
+   	            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
+   		            			  if(entry.snsnocnt==0){ 
+   		            				  html +="Love </a>";
+   		            			  }else{
+   		            				  html += entry.snsnocnt+"</a>";
+   		            			  }
+   	            			  }else{
+   	            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
+   	            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
+   	            			  }
       	     			  }
-      	     			  html += "<div class='flex-content'><p style='text-align: left'>"+entry.scontent+"</p><footer><p>"
-      		 			 		+ "<p style='text-align: left'>"+ entry.scontent+"</p><footer><p>";
-            			  if(entry.slikecnt==0){
-            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
-            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
-	            			  if(entry.snsnocnt==0){ 
-	            				  html +="Love </a>";
-	            			  }else{
-	            				  html += entry.snsnocnt+"</a>";
-	            			  }
-            			  }else{
-            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
-            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
-            			  }
+	      	     			  
             			  html += "<a class='bt-share' title='Share' href='#'> 공유하기 </a>"+
 				      	  "<a href='javascript:openComment('"+
             			  entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+
@@ -289,6 +301,10 @@ function moreList(){
     background: #88d;
 }
 
+.flex-content img{
+	width: 300px;
+	height: 420px;
+}
 
 </style>
 </head>
@@ -361,16 +377,18 @@ function moreList(){
   <c:forEach items="${myshyList }" var="shies" varStatus="status">
   <div class="mycard myIncard">
   	<article class="card-60 social">
-    
+  	<div class="flex-content">
+    <c:if test="${shies.simage!=0 }">
       
       <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
-  
-    <div class="flex-content">
-      <p style="text-align: left">
+  	</c:if> 
+  	<c:if test="${shies.simage==0 }">
+     
+      <p style="text-align: left" >
        	${shies.scontent }
       </p>
-    
-       
+     
+     </c:if>  
       <footer>
         <p>
          <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
