@@ -37,11 +37,22 @@ public class Min_Controller {
 	
 		String geoidx = req.getParameter("geoidx");
 		
+		
+ 		
+		
+		
 		System.out.println("컨트롤에서 받은 geoidx : " + geoidx);
 		
 		HashMap<String, String> geomap = service.getgeoinfo(geoidx);
 		
 		List <HashMap<String, String>> geolist = service.getgeoList(geomap);
+
+		/*
+		double distance = 1.2;
+		
+		List <HashMap<String, String>>  selectNearMap = service.nearMap(distance,geomap);
+		
+		req.setAttribute("selectNearMap", selectNearMap);*/
 		req.setAttribute("geomap", geomap);
 		req.setAttribute("geolist", geolist);
 		

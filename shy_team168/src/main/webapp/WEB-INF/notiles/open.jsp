@@ -144,7 +144,7 @@
 <div id="main">
   
   <div id="login">
-     <div id="signin" style="min-height:385px;">
+     <div id="signin" style="min-height:385px; text-align: center;">
    <div class="form-title">
    
    <span class="letter" id="shy" data-letter="s">s</span>
@@ -165,6 +165,15 @@
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
    <button class="login" id="loginend" type="submit">Login</button>
    </form> 
+   <div id="fb-root"></div>
+	<script>(function(d, s, id) {
+  	var js, fjs = d.getElementsByTagName(s)[0];
+  	if (d.getElementById(id)) return;
+  	js = d.createElement(s); js.id = id;
+  	js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.9&appId=1869367503325566";
+  	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
    </div>
    
    <div id="joinus" style="min-height: 385px;">

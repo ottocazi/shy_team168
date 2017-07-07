@@ -64,30 +64,30 @@ html, body {
   will-change: transform, opacity;
 }
 .page:nth-child(1) .left {
-  background-image: url("resources/images/wsgdb/bank2.jpg");
-    
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/zz.jpg");
 }
 .page:nth-child(1) .right {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-2.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/playing.jpg");
 }
 .page:nth-child(2) .left {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-3.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/payment-2.jpg");
 }
 .page:nth-child(2) .right {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-4.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/account.jpg");
 }
-.page:nth-child(3) .left {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-5.jpg");
+.page:nth-child(3)  .left  {
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/playing.jpg");
 }
 .page:nth-child(3) .right {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-6.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/search.png");
 }
 .page:nth-child(4) .left {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-7.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/partner-1.jpg");
 }
 .page:nth-child(4) .right {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/onepgscr-8.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/ipp.jpg");
 }
+
 .page.active {
   z-index: 5;
   -webkit-transition: opacity .7s, z-index 0s .7s, -webkit-transform .7s;
@@ -120,6 +120,14 @@ html, body {
   -webkit-transform: translateX(0) !important;
           transform: translateX(0) !important;
 }
+.page:nth-child(1) .left {
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+}
+.page:nth-child(1) .right {
+  -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+}
 .page:nth-child(2) .left {
   -webkit-transform: translateX(-100%);
           transform: translateX(-100%);
@@ -141,14 +149,6 @@ html, body {
           transform: translateX(-100%);
 }
 .page:nth-child(4) .right {
-  -webkit-transform: translateX(100%);
-          transform: translateX(100%);
-}
-.page:nth-child(5) .left {
-  -webkit-transform: translateX(-100%);
-          transform: translateX(-100%);
-}
-.page:nth-child(5) .right {
   -webkit-transform: translateX(100%);
           transform: translateX(100%);
 }
@@ -230,27 +230,22 @@ html, body {
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  width: 100%;
-  height: 100%;
   font-size: 3.5rem;
   color: #fff;
-  font-family: 나눔고딕;
+  font-family: 배달의민족 연성;
 }
-
-.heading1 {
+.heading-1 {
   position: absolute;
   z-index: 500;
-  top: 50%;
+  top: 60%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  width: 100%;
-  height: 100%;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #fff;
-  font-family: 나눔고딕;
+  font-family: 배달의민족 연성;`
 }
-
+	
 .nav-panel {
   position: fixed;
   top: 50%;
@@ -360,7 +355,19 @@ html, body {
   border-bottom: 0.2rem solid;
 }
 
+.main .btn_grp button,
+.main .btn_grp button:focus,
+.main .btn_grp button:active{
+  padding: 0;
+}
+.main .btn_grp button span{
+  position: relative;
+}
 
+.button{
+width:100px;
+height:100px;
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -453,7 +460,9 @@ $(document).ready(function() {
 
 	});
 
+
 </script>
+
 </head>
 
 
@@ -461,40 +470,61 @@ $(document).ready(function() {
 <body>
   <div class="scene">
   <div class="page page-1 active">
-    <div class="half left with text">
-      <h2 class="heading"># 계좌등록하기<BR></h2>
-      <h2 class="heading1">
-      					쉽고 간단한 계좌 등록하세요.<br>
-	 
-계좌 구매내역을 통한 핀테크 관리와 
-
-소셜네트워크 시스템을 동시에 누릴 수
- 
-있습니다. </h2>
-      				
+    <div class="half left withText">
+     	<a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading"> # shy?</h2> </a>
+		<a href="http://localhost:9090/shy/shynow.shy" target="blank">네이버로이동
+<h2 class="heading-1">귀찮아서, 복잡해서 보낼 때를 놓쳤던 송금.<br>
+이젠 간단하게 shy로 쉽게 송금하세요!</h2></a>
+	
     </div>
+    
     <div class="half right withText">
-      <h2 class="heading">Page 1</h2>
+   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading"># Why shy?	</h2></a>
+    <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading-1">친구와 함께하는 시간을 기억하세요.<br> 저녁 식사, 생일파티,아니면 안부</h2></a>
     </div>
   </div>
-  <div class="page page-2">
+  <div class="page page-2 ">
     <div class="half left withText">
-      <h2 class="heading">Page 2</h2>
+    <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Payment	</h2></a>
+   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">귀찮아서, 복잡해서 보낼 때를 놓쳤던 송금.<br>
+이젠 간단하게 shy로 쉽게 송금하세요!<br>
+</h2></a>
     </div>
-    <div class="half right"></div>
+    <div class="half right withText">
+     <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># 계좌 등록	</h2></a>
+    <h2 class="heading-1"><br>
+
+</h2>
+    </div>
   </div>
   <div class="page page-3">
     <div class="half left"></div>
-    <div class="half right withText">
-      <h2 class="heading">Page 3</h2>
+    <div class="half left withText">
+      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading">Connect with people</h2></a>
+       <h2 class="heading-1">친구와 함께하는 시간을 기억하세요.<br> 저녁 식사, 생일파티,아니면 안부<br>
+    </div>
+     <div class="half right withText">
+      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Search for friends</h2></a>
+          <h2 class="heading-1">shy 검색을 사용하면 shy에서 공유된 정보 전체를 검색할 수
+있습니다. 검색 창에 ＂회원명, 이메일, 그룹명”을 입력하기만 
+하면 사람, 장소, 사진 및 기타 정보를 검색할 수 있습니다. <br>
+          </h2>
     </div>
   </div>
   <div class="page page-4">
     <div class="half left withText">
-      <h2 class="heading">Page 4</h2>
-      <p class="check-out">Check out my other <a href="https://codepen.io/suez/public/" target="_blank">pens</a></p>
+     <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># business	</h2></a>
+   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">shy 검색을 사용하면 shy에서 공유된 정보 전체를 검색할 수
+
+있습니다. 검색 창에 ＂회원명, 이메일, 그룹명”을 입력하기만 
+하면 사람, 장소, 사진 및 기타 정보를 검색할 수 있습니다. </h2></a>
     </div>
-    <div class="half right"></div>
+    <div class="half right withText">
+     <h2 class="heading"># shy Mobile	</h2>
+    <h2 class="heading-1">이제 shy를 Mobile로 만나세요</h2>
+    
+    </div>
+
   </div>
 </div>
 <div class="nav-panel">
@@ -509,11 +539,12 @@ $(document).ready(function() {
     </ul>
   </nav>
 </div>
-  <!-- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-   
+    <script src="js/index.js"></script>
 
 </body>
+
 
 
 </html>
