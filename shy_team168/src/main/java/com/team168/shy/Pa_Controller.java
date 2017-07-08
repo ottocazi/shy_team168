@@ -30,18 +30,7 @@ public class Pa_Controller {
 
 	@Autowired
 	private PaService service;
-	
-<<<<<<< HEAD
 
-	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
-	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
-    public String goMypage(HttpServletRequest req) {
-    	
-		return "pa/mypage.tiles";
-    	
-    }
-	
-=======
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req,HttpSession session) {
@@ -102,7 +91,6 @@ public class Pa_Controller {
 		}
 	}
 
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 	// ===== mygroups 페이지 요청하기 ===== //
 	@RequestMapping(value="/mygroups.shy", method={RequestMethod.GET})
 	public String goMygroups(HttpServletRequest req,HttpServletResponse res) {
