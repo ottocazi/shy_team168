@@ -50,7 +50,7 @@ include summernote-ko-KR
 <!-- Material sidebar -->
 <aside id="grpdeatil_sidebar" class="grpdeatil_sidebar grpdeatil_sidebar-colored open" role="navigation">
     <!-- Sidebar header -->
-    <div class="grpdeatil_sidebar-header header-cover" style="background-image: url(https://2.bp.blogspot.com/-2RewSLZUzRg/U-9o6SD4M6I/AAAAAAAADIE/voax99AbRx0/s1600/14%2B-%2B1%2B%281%29.jpg);">
+    <div class="grpdeatil_sidebar-header header-cover" style="background-image: url(<%=request.getContextPath() %>/resources/images/shydb/${grpvomap.GIMG });">
         <!-- Top bar -->
         <div class="grpdeatil_top-bar"></div>
         <!-- Sidebar toggle button -->
@@ -59,7 +59,7 @@ include summernote-ko-KR
         </button>
         <!-- Sidebar brand image -->
         <div class="grpdeatil_sidebar-image">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53474/atom_profile_01.jpg">
+            <img src="<%=request.getContextPath() %>/resources/images/shydb/${grpvomap.MYIMG }">
         </div>
         <!-- Sidebar brand name -->
         <a data-toggle="dropdown" class="grpdeatil_sidebar-brand" href="#settings-dropdown">

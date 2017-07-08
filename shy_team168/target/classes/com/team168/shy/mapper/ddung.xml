@@ -31,9 +31,12 @@
 	
 	<select id="getshynow" parameterType="Object" resultMap="getshynow">
 	
-		select *
-		from tbl_shymemo 
-		where rownum = 1 and fk_idx = #{p_idx} order by snsno desc
+		select  *
+  from (
+    select *
+    from tbl_shymemo 
+    where fk_idx = #{fk_idx} order by sdatedtime DESC)
+    where rownum = 1
 	
 	</select>
 	
@@ -70,19 +73,41 @@
 		<result property="name" 		column="NAME" 			javaType="String"/>
 		<result property="email" 		column="EMAIL" 			javaType="String"/>
 		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="shyplace" 	column="shyplace" 		javaType="String"/>
+		<result property="geoseq" 	column="geoseq" 		javaType="String"/>
+		<result property="geofk_snsno" 	column="geofk_snsno" 		javaType="String"/>
+		
 		
 	</resultMap>
 	
 	<select id="shies" parameterType="java.util.List" resultMap="shies">
-		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
-		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+	
+    SELECT *
+		FROM (
+              select a.* ,   B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq, c.fk_snsno as geofk_snsno , row_number() over(order by a.sdatedtime desc) as rnum
+              from
+              TBL_SHYMEMO A inner JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join tbl_geo c on a.snsno = c.fk_snsno 
+              WHERE	 1=1 AND A.STATUS = 1 AND
+              FK_IDX IN 
+              <foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+              ${item}
+              </foreach>
+            ORDER BY A.SDATEDTIME DESC) 
+			where rnum between 1 and 10
+	</select>
+	
+	
+	<!-- <select id="shies_BEFORE" parameterType="java.util.List" resultMap="shies">
+	
+    SELECT A.* , B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq, c.fk_snsno as geofk_snsno
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join tbl_geo c on a.snsno = c.fk_snsno
 		WHERE	 1=1 AND A.STATUS = 1 AND
-				 FK_IDX IN
-				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+				 FK_IDX IN 
+				 <foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
 					${item}
 				</foreach>
-		ORDER BY A.SNSNO DESC
-	</select>
+		ORDER BY A.SDATEDTIME DESC
+	</select> -->
 	
 	<select id="imgaddr" parameterType="String" resultType="String">
 	
@@ -121,6 +146,13 @@
 	ORDER BY a.CMTNO ASC
 	
 	</select>
+	
+	<insert id="insertGeo" parameterType="java.util.HashMap">
+	INSERT INTO TBL_GEO (SEQ, FK_SNSNO, SHYPLACE, LONGDITUDE, LATITUDE, COUNTRY, POSTAL_CODE, AREA1, LOCALITY, ROUTE, STREET_NUMBER)
+	VALUES (SEQ_GEO.NEXTVAL, #{fk_snsno}, #{shyplace}, #{longditude}, 
+	#{latitude}, #{country}, #{postal_code} , #{area1}, #{locality} , #{route}, #{street_number}
+	)
+	</insert>
 </mapper>
 
  

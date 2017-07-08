@@ -253,7 +253,7 @@
 		from dual
 	</select>
 	
-	<!-- =====  나의 샤이 가져오기 , 내 정보 가져오기(join) =====  -->
+	<!-- =====  나의 샤이 가져오기 , 내 정보 가져오기(join) ===== 
 	<resultMap type="java.util.HashMap" id="myshies">
 		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
 		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
@@ -270,13 +270,18 @@
 		<result property="email" 		column="EMAIL" 			javaType="String"/>
 		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
 	</resultMap>
-	<select id="myshyList" parameterType="String" resultMap="myshies">
-		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+	<select id="myshyList" parameterType="java.util.HashMap" resultMap="myshies">
+		SELECT V.*
+		FROM
+		(
+		SELECT rownum as RNO,A.* , B.EMAIL, B.NAME , B.MYIMG
 		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
 		WHERE	 1=1 AND A.STATUS = 1 AND
-				 FK_IDX = #{fk_idx}
-		ORDER BY A.SNSNO DESC
-	</select>
+				 FK_IDX = #{myIdx}
+		ORDER BY A.SNSNO DESC)V
+        WHERE V.RNO > 0 and V.RNO <![CDATA[<=]]> #{end}
+        ORDER by V.RNO
+	</select> -->
 	
 	<!-- =====  이미지 가져오기 =====  -->
 	<select id="myshyImg" parameterType="String" resultType="String">
@@ -288,18 +293,31 @@
 	<!-- ===== 좋아요 insert ===== -->	
 	<insert id="insertlike" parameterType="java.util.HashMap">
 		<if test='seqcolum.equals("snsno")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,snsno)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,snsno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 		<if test='seqcolum.equals("storeboardno")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,storeboardno)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,storeboardno)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 		<if test='seqcolum.equals("grpboardseq")'>
-		insert into tbl_like(likeno,fk_likeidx,liketype,likedate,grpboardseq)
-		values(seq_tbl_like.nextval,#{fk_likeidx},#{liketype},default,#{likeseq})
+		insert into tbl_like(likeno,fk_likeidx,likedate,grpboardseq)
+		values(seq_tbl_like.nextval,#{fk_likeidx},default,#{likeseq})
 		</if>
 	</insert>
+	
+	<!-- ===== 좋아요 delete ===== -->	
+	<delete id="deleteLike" parameterType="java.util.HashMap">
+		<if test='seqcolum.equals("snsno")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and snsno = #{likeseq}
+		</if>
+		<if test='seqcolum.equals("storeboardno")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and storeboardno = #{likeseq}
+		</if>
+		<if test='seqcolum.equals("grpboardseq")'>
+		delete from tbl_like where fk_likeidx =#{fk_likeidx} and grpboardseq = #{likeseq}
+		</if>
+	</delete>
 	
 	<!-- ===== 좋아요 가져오기 =====   -->
 	<resultMap type="java.util.HashMap" id="getlikeListMap">
@@ -308,18 +326,178 @@
 		<result property="mylikestat" column="MYLIKESTAT" javaType="String" />
 	</resultMap>
 	<select id="getmyLikeList" parameterType="java.util.HashMap" resultMap="getlikeListMap"> 
-	  SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
+      SELECT A.SNSNO , NVL(B.CNT , 0) AS TOTALCOUNT , case when NVL(C.snsno , 0) > 0 then 1 else 0 end AS MYLIKESTAT
 	  FROM (SELECT * FROM TBL_SHYMEMO WHERE SNSNO IN 
 	  <foreach collection="snsnoArr" item="snsno" index="i" open="(" close=")" separator=",">
 		${snsno}
-		</foreach>
+	  </foreach>
 	  ) A 
 
       LEFT OUTER JOIN  
-      (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
+      (SELECT SNSNO , COUNT(*) AS CNT FROM TBL_LIKE GROUP BY SNSNO) B
       
       ON A.SNSNO = B.SNSNO LEFT OUTER join 
-      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} and liketype=1 GROUP BY SNSNO) c on b.snsno=c.snsno
+      (SELECT SNSNO FROM tbl_like WHERE FK_LIKEIDX=#{fk_likeidx} GROUP BY SNSNO) c on b.snsno=c.snsno
 	</select>
 	
+	<!-- =====  (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기 =====  -->
+	<resultMap type="java.util.HashMap" id="getmyshies">
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="snsnocnt" 	column="SNSNOCNT" 			javaType="int"/>
+	</resultMap>
+	<select id="getmyshyList" parameterType="java.util.HashMap" resultMap="getmyshies">
+         SELECT X.*,NVL(Y.SNSNOCNT,0) AS SNSNOCNT
+        FROM          
+                (SELECT ROWNUM AS RNO,V.*
+		FROM
+		(
+				SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+				FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+				WHERE	 A.STATUS = 1 AND
+				FK_IDX = #{myIdx}
+                ORDER by A.SNSNO DESC)V)X
+        LEFT JOIN
+                (SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
+                ON X.SNSNO = Y.SNSNO
+                WHERE RNO >= #{start} AND RNO <![CDATA[<=]]> #{end}
+	</select>
+	
+	<!--  -->
+	<!-- =====  나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 =====  -->
+	<select id="getmyshyCount" parameterType="String" resultType="int">
+		SELECT count(*)
+		FROM
+		(
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX = #{myIdx}
+		ORDER BY A.SNSNO DESC) V
+	</select>
+	<!--  -->
+	
+	<!-- ===== 내 팔로우 가져오기 =====   -->
+   <resultMap type="java.util.HashMap" id="getflwListMap">
+      <result property="fk_idxflwed" column="FK_IDXFLWED" javaType="String" />
+      <result property="email" column="EMAIL" javaType="String" />
+      <result property="myimg" column="MYIMG" javaType="String" />
+   </resultMap>
+   <select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
+        SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+      FROM
+      (
+      SELECT *
+      FROM
+      (SELECT FK_IDXFLWED,FK_IDXFLW
+      FROM TBL_FOLLOW) A
+      INNER JOIN
+      (SELECT IDX, EMAIL,MYIMG
+      FROM TBL_SHYMEMBER
+      WHERE STATUS=1) B
+      ON A.FK_IDXFLWED = B.IDX
+      )V
+      WHERE V.FK_IDXFLW=#{myIdx}
+   </select>
+   
+   <!-- ===== 내 팔로우 수 가져오기 =====   -->
+   <select id="getflwCnt" parameterType="String" resultType="int">
+      SELECT COUNT(FK_IDXFLWED) AS FK_IDXFLWEDCNT
+      FROM TBL_FOLLOW
+      WHERE FK_IDXFLW = #{myIdx}
+   </select>
+   
+   <!-- ===== 좋아요 likeno 가져오기 =====   -->
+   <select id="getLikeno" parameterType="java.util.HashMap" resultType="String">
+      SELECT LIKENO
+      FROM TBL_LIKE
+      WHERE FK_LIKEIDX = #{fk_likeidx} AND SNSNO = #{likeseq}
+   </select>
+   
+   <!-- ===== 좋아요 알림 insert ===== -->	
+	<insert id="insertLikeAlarm" parameterType="java.util.HashMap">
+		insert into tbl_alarm(alarmno,fk_idx,alarmdate,astatus,likeno,alarm_target)
+		values(seq_tbl_alarm.nextval,#{fk_likeidx},default,default,#{likeno},#{alarm_target})
+	</insert>
+	
+	<!-- ===== 알림 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="alarmListMap">
+		<result property="alarmno" column="ALARMNO" javaType="int" />
+		<result property="fk_idx" column="FK_IDX" javaType="String" />
+		<result property="alarmdate" column="ALARMDATE" javaType="String" />
+		<result property="astatus" column="ASTATUS" javaType="int" />
+		<result property="likeno" column="LIKENO" javaType="int" />
+		<result property="snsno" column="SNSNO" javaType="String" />
+		<result property="alarm_target" column="ALARM_TARGET" javaType="String" />
+		<result property="name" column="NAME" javaType="String" />
+	</resultMap>
+	<select id="alarmList" parameterType="java.util.HashMap" resultMap="alarmListMap"> 
+      	SELECT V.*,X.NAME
+		FROM 
+		(
+		SELECT A.ALARMNO,A.FK_IDX,A.ALARMDATE,A.ASTATUS,A.LIKENO,A.ALARM_TARGET,B.SNSNO
+		FROM
+		(
+		SELECT ALARMNO,FK_IDX,ALARMDATE,ASTATUS,LIKENO,ALARM_TARGET
+		FROM TBL_ALARM) A 
+		JOIN
+		(SELECT LIKENO,SNSNO FROM TBL_LIKE)B
+		ON A.LIKENO = B.LIKENO)V
+		LEFT JOIN
+		(SELECT IDX,NAME FROM TBL_SHYMEMBER)X
+		ON V.FK_IDX = X.IDX
+		WHERE V.ALARM_TARGET = #{myIdx}
+		ORDER BY V.ALARMDATE DESC
+	</select>
+	
+    <!-- ===== 알림 타겟 가져오기 =====   -->
+    <select id="alarmTarget" parameterType="String" resultType="String">
+       SELECT FK_IDX
+       FROM TBL_SHYMEMO
+       WHERE SNSNO = #{likeseq}
+    </select>
+    
+    <!-- ===== 알림 카운트 가져오기 =====   -->
+    <select id="alarmCnt" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+      	FROM TBL_ALARM
+      	WHERE ALARM_TARGET = #{myIdx} AND ASTATUS = 1
+    </select>
+    
+    <!-- ===== 알림카운트 업데이트 =====   -->
+   <update id="updateAlarm" parameterType="java.util.HashMap">
+      UPDATE TBL_ALARM SET ASTATUS = 0
+      WHERE ALARM_TARGET = #{myIdx} AND ALARMNO IN 
+       <foreach collection="alarmnoArr" item="alarmno" index="i" open="(" close=")" separator=",">
+		${alarmno}
+	  </foreach>
+   </update>
+   
+   <!-- ===== 개인정보 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="myMap">
+		<result property="idx" 			column="IDX" javaType="String" />
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="myintro" 		column="MYINTRO" 			javaType="String"/>
+	</resultMap>
+	<select id="selectMyinfo" parameterType="java.util.HashMap" resultMap="myMap"> 
+      	SELECT *
+      	FROM TBL_SHYMEMBER
+		WHERE IDX = #{myIdx}
+	</select>
+   
+    
 </mapper>	

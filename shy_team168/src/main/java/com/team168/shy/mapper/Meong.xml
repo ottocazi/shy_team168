@@ -9,14 +9,20 @@
 	<!-- 회원가입 -->
 	<insert id="addregistorEnd" parameterType="java.util.HashMap">
 		insert into tbl_shymember(idx, name, email, pwd, registerdate, status) 
-		values(seq_tbl_shymember.nextval, #{name}, #{email}, #{pwd}, default, default)  
+		values(seq_tbl_shymember.nextval, #{joinname}, #{joinemail}, #{joinpwd}, default, default)  
 	</insert>
+	
+	<!-- 이메일중복체크(ajax) -->
+	<select id="CheckEmail" parameterType="String" resultType="int"> 
+		select nvl(count(*),0) as checker
+		from tbl_shymember where email=#{joinemail}
+	</select>
 	
 	<!-- 로그인 여부 알아오기 -->
 	<select id="loginEnd" parameterType="java.util.HashMap" resultType="int"> 
 		select case( select count(*)
 	                 from tbl_shymember
-	                 where email = #{email} and
+	                 where status = 1 and email = #{email} and
 	                       pwd = #{pwd} )
 	           when 1 then 1
 	           else( case(select count(*) 
@@ -69,11 +75,23 @@
 		where gender = '여자'
 	</select>		
 		
-	<select id="gettodaytotal" resultType="String">
-		select distinct count(fk_idx) 
+	<select id="gettodaytotal" resultType="String" parameterType="java.util.HashMap">
+		select distinct count(*)
 		from tbl_log 
-		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx)
+		where status = 1 and rowid in (select max(rowid) from tbl_log group by fk_idx) and to_date(logtime) = #{today}
+	</select>
+	
+	<select id="gettodaytotalshymemo" resultType="String" parameterType="java.util.HashMap">
+		select count(*)
+		from tbl_shymemo 
+		where to_date(sdatedtime) = #{today}
 	</select>		
+	
+	<select id="gettodaytotalgrpboard" resultType="String" parameterType="java.util.HashMap">
+		select count(*)
+		from tbl_grpboard 
+		where to_date(writedate) = #{today}
+	</select>
 	
 	<!-- 공지사항(미정)부분에서 회원목록 보여주는 select 문 -->
 	<resultMap type="java.util.HashMap" id="getshyListMap">
@@ -269,6 +287,144 @@
 		on A.time = B.time
 		order by time asc
 	</select>
+	
+	<!-- 기현이형 메인라인 -->
+	<select id="followlist" parameterType="int" resultType="String">
+		select fk_idxflwed
+		from tbl_follow
+		where 1=1 and fk_idxflw = #{idx} and status = 1
+	</select>	
+	
+	<resultMap type="java.util.HashMap" id="shies">
+	
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		
+	</resultMap>
+	
+	<select id="shies" parameterType="java.util.List" resultMap="shies">
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX IN
+				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<select id="imgaddr" parameterType="String" resultType="String">
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
+	</select>
+	
+	<!-- 공유하기 -->
+	<insert id="AddShare" parameterType="java.util.HashMap">
+		insert into tbl_share 
+		values(seq_tbl_share.nextval, #{fk_idx}, #{snsno}, default, default)
+	</insert>
+	
+	<!-- 하루(시간대별) 게시물통계(BAR)를 위한 쿼리문(회원) -->
+	<resultMap type="java.util.HashMap" id="getbarListmap">
+		<result property="MONTH" 	        column="month" 	    javaType="String" />
+ 		<result property="DAY" 		    column="day" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="getBarTKList" resultMap="getbarListmap" parameterType="java.util.HashMap">
+		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
+		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
+		
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(sdatedtime, 'YYYY-MM-DD') as day from tbl_shymemo) group by day) B
+		
+		on A.time = B.day
+		order by time asc
+	</select>
+	
+	<!-- 하루(시간대별) 게시물통계(BAR)를 위한 쿼리문(그룹) -->
+	<resultMap type="java.util.HashMap" id="getbarList2map">
+		<result property="MONTH" 	        column="month" 	    javaType="String" />
+ 		<result property="DAY" 		    column="day" 	        javaType="String" />
+ 		<result property="CNT" 	        column="cnt" 	    javaType="String" />
+	</resultMap>
+	<select id="getBarTKList2" resultMap="getbarList2map" parameterType="java.util.HashMap">
+		select A.time as month, substr(A.time, 9, 10) AS day  , nvl(B.cnt, 0) as cnt
+		from      (SELECT TO_CHAR(sysdate-7 + ((LEVEL - 1) / 1), 'YYYY-MM-DD') as time FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7)    A
+		
+		left outer join (select day, count(day) as cnt from (SELECT TO_CHAR(writedate, 'YYYY-MM-DD') as day from tbl_grpboard) group by day) B
+		
+		on A.time = B.day
+		order by time asc
+	</select>
+	
+	<!-- 게시물조회 -->
+	<resultMap type="java.util.HashMap" id="getshymemoListmap">
+		<result property="SNSNO" 		        column="snsno" 	        javaType="String" />
+		<result property="FK_IDX" 		        column="fk_idx" 	        javaType="String" />
+ 		<result property="NAME" 	        	column="name" 	        	javaType="String" />
+ 		<result property="GENDER" 		    	column="gender" 	        javaType="String" />
+ 		<result property="SCONTENT" 	        column="scontent" 	    	javaType="String" />
+ 		<result property="SDATEDTIME"			column="sdatedtime" 		javaType="String" />
+ 		<result property="SLIKECNT" 	        column="slikecnt" 	    	javaType="int" />
+ 		<result property="SBLAMECNT" 		    column="sblamecnt" 	        javaType="int" />
+ 		<result property="STATUS" 	       	 	column="status" 	    	javaType="int" />
+	</resultMap>
+	<select id="getshymemoList" resultMap="getshymemoListmap">
+		select E.snsno, E.fk_idx, D.name, D.gender, E.scontent, E.sdatedtime, E.slikecnt, E.sblamecnt, E.status 
+		from tbl_shymemo E left join tbl_shymember D 
+		on E.fk_idx  =  D.idx
+		order by sdatedtime desc
+	</select>
+	
+	<update id="memostatusDown"  parameterType="java.util.HashMap">
+		update tbl_shymemo
+		set status = 0
+		where snsno = #{snsno}
+	</update>
+
+	<update id="memostatusUp"  parameterType="java.util.HashMap">
+		update tbl_shymemo
+		set status = 1
+		where snsno = #{snsno}
+	</update>
+	
+	<!-- 지역별 회원수 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="getpietkListmap">
+		<result property="CITY" 	        column="city" 	    javaType="String" />
+ 		<result property="CNT" 		    column="cnt" 	        javaType="int" />
+	</resultMap>
+	<select id="getpietkList" resultMap="getpietkListmap">
+		SELECT case nvl(area1, '기타지역') when 'X' then '지역미입력'
+		                                 else nvl(area1, '기타지역')
+		       end as city, COUNT(*) AS CNT 
+		FROM tbl_geo
+		GROUP BY area1
+	</select>
+	
+	<!-- 국가별 회원수 통계를 위한 쿼리문 -->
+	<resultMap type="java.util.HashMap" id="getdoughnutListmap">
+		<result property="COUNTRY" 	        column="country" 	    javaType="String" />
+ 		<result property="CNT" 		    column="cnt" 	        javaType="int" />
+	</resultMap>
+	<select id="getdoughnutList" resultMap="getdoughnutListmap">
+		SELECT nvl(country, '기타지역') as country, COUNT(*) AS CNT 
+		FROM tbl_geo
+		WHERE NOT COUNTRY = 'X'
+		GROUP BY country
+	</select>
+	
 	
 	
 </mapper>

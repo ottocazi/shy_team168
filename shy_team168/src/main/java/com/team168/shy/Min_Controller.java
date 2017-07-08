@@ -1,6 +1,7 @@
 package com.team168.shy;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team168.shy.model.ShyMemberVO;
 import com.team168.shy.service.Min_Service;
@@ -27,24 +29,137 @@ public class Min_Controller {
 	private Min_Service service;
 	
 	
-	@RequestMapping(value="/min.shy", method={RequestMethod.GET})
-    public String goMypage(HttpServletRequest req) {
-    	
+	
+
+	@RequestMapping(value="/place.shy", method={RequestMethod.GET})
+    public String goStore(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	
+		String geoidx = req.getParameter("geoidx");
+		
+		
+ 		
+		
+		
+		System.out.println("컨트롤에서 받은 geoidx : " + geoidx);
+		
+		HashMap<String, String> geomap = service.getgeoinfo(geoidx);
+		
+		List <HashMap<String, String>> geolist = service.getgeoList(geomap);
+
+		/*
+		double distance = 1.2;
+		
+		List <HashMap<String, String>>  selectNearMap = service.nearMap(distance,geomap);
+		
+		req.setAttribute("selectNearMap", selectNearMap);*/
+		req.setAttribute("geomap", geomap);
+		req.setAttribute("geolist", geolist);
+		
+		 
+	
 		return "smin/busipage.tiles";
     	
     }
+	
+	
 	
 	
 
 	@RequestMapping(value="/geo.shy", method={RequestMethod.GET})
     public String geoPage(HttpServletRequest req) {
     	
-		return "geo.notiles";
+		return "testmap.notiles";
+    	
+    }
+	
+	@RequestMapping(value="/geotest.shy", method={RequestMethod.GET})
+    public String geoPage2(HttpServletRequest req) {
+    	
+		
+		return "geotest.notiles";
     	
     }
 	
 	
+	// == 마이페이지 불러오기 == 
+		@RequestMapping(value="/applybusi.shy", method={RequestMethod.GET})
+	    public String applybusi(HttpServletRequest req) {
+	    	
+			HttpSession session = req.getSession();
+		       
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			/*String str_idx = req.getParameter("idx");
+			int idx = Integer.parseInt(str_idx);
+			int idx = 33;*/
+			System.out.println("int idx : "+idx);
+			
+			// idx 로 memberVO 얻어오기 
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		        
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        return "smin/applybusi.tiles";
+
+	    }
 	
+
+		@RequestMapping(value="/applybusiEnd.shy", method={RequestMethod.POST})
+	    public String applybusiEnd(HttpServletRequest req, HttpSession session) throws IOException {
+			
+		
+			
+			ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+			System.out.println("loginuser의 이름 : " + loginuser.getName());
+			
+			int idx = loginuser.getIdx();
+			
+			String str_idx = req.getParameter("idx");
+			System.out.println("컨트롤에서 받은 idx : "+ str_idx);
+			
+			String categoryno = req.getParameter("categoryno");
+			System.out.println("컨트롤에서 받은 categoryno : " + categoryno);
+			
+			String bname = req.getParameter("bname");
+			System.out.println("컨트롤에서 받은 bname : " + bname);
+			
+
+			String busicontent = req.getParameter("busicontent");
+			System.out.println("컨트롤에서 받은 busicontent : " + busicontent);
+
+			String busicall = req.getParameter("busicall");
+			System.out.println("컨트롤에서 받은 busicall : " + busicall);
+
+			String busimail = req.getParameter("busimail");
+			System.out.println("컨트롤에서 받은 busimail : " + busimail);
+			
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+	    	map.put("idx", str_idx);
+	    	map.put("categoryno", categoryno);
+	    	map.put("bname", bname);
+	    	map.put("busicontent", busicontent);
+	    	map.put("busicall", busicall);
+	    	map.put("busimail", busimail);
+	    	
+			int n = service.applybusiEnd(map);
+			
+			// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+			// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+			req.setAttribute("n", n);
+			idx = Integer.parseInt(str_idx);
+			ShyMemberVO getMemberVO = service.getMemberVO(idx);
+		       
+	        req.setAttribute("getMemberVO", getMemberVO);
+		       
+	        
+
+			return "smin/applybusi.tiles";
+	    	
+	    }
 	
 	
 	
@@ -319,8 +434,188 @@ public class Min_Controller {
     
     
 	
+    
+    
+ // ===== mypage 페이지 요청하기 (내 shy계정) ===== //
+ 	@RequestMapping(value="/gainpage.shy", method={RequestMethod.GET})
+     public String Gainpage(HttpServletRequest req,HttpSession session) {
+ 		
+ 		
+ 		String myIdx = req.getParameter("myIdx");
+ 		req.setAttribute("myIdx", myIdx);
+		
+ 		String getgain = service.getGain(myIdx);
+ 		req.setAttribute("getgain", getgain);
+ 		
+		System.out.println("컨트롤에서 받은 myIdx : " + myIdx);
+ 			// 기본 페이지번호를 1으로 설정하고
+ 	        int pageNo = 1;
+ 	 
+ 	        // 넘어온 파라미터가 있다면
+ 	        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+ 	        if(req.getParameter("pageNo") != null){
+ 	        pageNo = Integer.parseInt(req.getParameter("pageNo"));
+ 	        }
+ 	        
+ 	        int sizePerPage = 6;
+ 	        
+ 	        int start = (pageNo - 1) * sizePerPage + 1;
+ 	        int end = pageNo * sizePerPage;
+ 	        
+ 			// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
+ 			int myshyCount = service.getMyshyCount(myIdx);
+ 			req.setAttribute("myshyCount", myshyCount);
+ 			
+ 			// 팔로우 수 가져오기
+ 	        int fk_idxflwedcnt = service.getMyflwcnt(myIdx);
+ 	        req.setAttribute("fk_idxflwedcnt", fk_idxflwedcnt);
+ 			
+ 			HashMap<String, Object> mymap = new HashMap<String, Object>();
+ 			mymap.put("myIdx", myIdx);
+ 			mymap.put("start", String.valueOf(start));
+ 			mymap.put("end", String.valueOf(end));
+ 			
+ 			//mymap.put("myshyCount", String.valueOf());
+ 			
+ 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
+ 			List <HashMap<String, String>> myshyList = service.getMyshy(mymap);
+ 			
+ 			
+ 			if(myshyList!=null){
+ 				for(int i =0 ; i<myshyList.size(); i++){
+ 					
+ 					
+ 					// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+ 					// 페이징 처리 미완성
+ 					if("1".equals(myshyList.get(i).get("simage"))){
+ 						
+ 						String snsno = myshyList.get(i).get("snsno");
+ 						System.out.println("snsno = "+snsno);
+ 						// 이미지 가져오기
+ 						String imgfile = service.getImgaddr(snsno);
+ 						
+ 						System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+ 						myshyList.get(i).put("imageaddr", imgfile);
+ 						
+ 					}
+ 					
+ 					else if("0".equals(myshyList.get(i).get("simage"))){
+ 						myshyList.get(i).put("imageaddr", null);
+ 					}
+ 					
+ 					System.out.println("shies.simage : "+myshyList.get(i).get("simage"));
+ 					System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
+ 				}
+ 			
+ 			}
+ 			req.setAttribute("myshyList", myshyList);
+ 			
+ 			return "smin/gainpage.tiles";
+ 		
+ 		}
+ 	
 	
+    
+ // ===== mypage 페이지 요청하기 (Ajax) ===== //
+ 	@RequestMapping(value = "/gainpageList.shy", method = { RequestMethod.POST })
+ 	@ResponseBody
+ 	public List<HashMap<String, String>> GainpageAjax(HttpServletRequest req,HttpSession session) { 
+
+ 		// 기본 페이지번호를 1으로 설정하고
+         int pageNo = 1;
+  
+         // 넘어온 파라미터가 있다면
+         //if (req.getParameter("page") != null) {
+  
+             // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+         pageNo = Integer.parseInt(req.getParameter("pageNo"));
+         //}
+         
+         int sizePerPage = 6;
+         
+         int start = (pageNo - 1) * sizePerPage + 1;
+         int end = pageNo * sizePerPage;
+
+
+         String myIdx = req.getParameter("myIdx");
+         System.out.println("컨트롤에서 받은 myIdx : " + myIdx);
+ 		
+ 		
+ 		req.setAttribute("myIdx", myIdx);
+
+ 		HashMap<String, Object> mymap = new HashMap<String, Object>();
+ 		mymap.put("myIdx", myIdx);
+ 		mymap.put("start", String.valueOf(start));
+ 		mymap.put("end", String.valueOf(end));
+ 		
+ 		// (페이징 처리한 것)나의 샤이 가져오기 , 내 정보 가져오기
+ 		List<HashMap<String, String>> myshyList = service.getMyshy(mymap);
+ 		
+ 		////
+ 		// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
+ 		int myshyCount = service.getMyshyCount(myIdx);
+ 		////
+ 		
+ 		if (myshyList != null) {
+ 			for (int i = 0; i < myshyList.size(); i++) {
+
+ 				// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를
+ 				// 확인하여 그 값을 추가하거나 null값을 부여한다.
+ 				// 페이징 처리 미완성
+ 				if ("1".equals(myshyList.get(i).get("simage"))) {
+
+ 					String snsno = myshyList.get(i).get("snsno");
+ 					System.out.println("snsno = " + snsno);
+ 					// 이미지 가져오기
+ 					String imgfile = service.getImgaddr(snsno);
+
+ 					System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+ 					myshyList.get(i).put("imageaddr", imgfile);
+
+ 				}
+
+ 				else if ("0".equals(myshyList.get(i).get("simage"))) {
+ 					myshyList.get(i).put("imageaddr", null);
+ 				}
+ 				
+ 				if (myshyCount != (start + i)) {
+ 					myshyList.get(i).put("end", "0");
+ 				}
+ 				
+ 				else {
+ 					myshyList.get(i).put("end", "1");
+ 				}
+
+ 				System.out.println("shies.simage : " + myshyList.get(i).get("simage"));
+ 				System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
+ 			}
+
+ 		}
+ 		
+ 		
+ 		return myshyList;
+
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+    
+    
+    
 }
+
+
+
+
+
+
+
 
 
 

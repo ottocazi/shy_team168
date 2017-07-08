@@ -23,9 +23,8 @@ public class DDung_DAO {
 		
 		
 		
-		List<HashMap<String, String>> listoneshy = sqlsession.selectList("ddung.getshynow", idx);
-		
-		HashMap<String, String> shynow = listoneshy.get(0);
+		HashMap<String, String> shynow = sqlsession.selectOne("ddung.getshynow", idx);
+		System.out.println("중요!!!: "+shynow.get("snsno"));
 		return shynow;
 		
 		
@@ -66,6 +65,12 @@ public class DDung_DAO {
 		
 		List <HashMap <String, String>> comments = sqlsession.selectList("ddung.getComments", snsno);
 		return comments;
+	}
+
+	public void insertGeo(HashMap<String, String> parameters) {
+		
+		sqlsession.insert("ddung.insertGeo", parameters);
+		
 	}
 
 	

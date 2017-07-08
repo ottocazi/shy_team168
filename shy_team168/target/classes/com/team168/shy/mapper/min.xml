@@ -16,41 +16,7 @@
 		</if>
 	</insert>
 	 -->
-	
-	
-	
-	
-	
-	<!-- ===== #151. Ajax 로 검색어 입력시 자동글 완성하기 6 ===== -->
-	<!-- 
-	 <resultMap type="java.util.HashMap" id="getSearchWordMap">
-		<result property="SEARCHDATA" column="searchdata" javaType="String" />
-	</resultMap>
-	<select id="searchWordCompleteList" parameterType="java.util.HashMap" resultMap="getSearchWordMap"> 
-		<if test='colname.equals("name")'>
-		    select name as searchdata 
-		    from tbl_shymember
-		    where lower(name) like '%' || lower(#{search}) || '%'
-		</if>
-		
-		<if test='colname.equals("email")'>
-		    select email as searchdata    
-		    from tbl_shymember
-		    where lower(email) like '%' || lower(#{search}) || '%'
-		</if>
-		
-		<if test='colname.equals("gname")'>
-			select distinct gname as searchdata 
-		    from tbl_group
-		    where lower(gname) like '%' || lower(#{search}) || '%'
-		</if> 
-		
-	</select>	
-	 -->
-	
-	
-	
-	
+	 
 	<!-- 
  ===== #140. 글목록 보여주기(검색어가 있는 경우이면서 페이징처리를 하는 것)
                     파일이 첨부된 답변형 게시판 목록
@@ -140,7 +106,102 @@
 	  
 	
 	
+	<!-- ===== 로그인 성공한 사용자 정보 가져오기 ===== -->	
+	<select id="getMemberVO" parameterType="int" resultType="com.team168.shy.model.ShyMemberVO">
+		select idx, name, email, pwd, registerdate, status, myimg, myintro, birthday, gender, phone
+	   	from tbl_shymember
+	   	where status = 1 and idx = #{idx}
+	</select>
 	
+	
+	<!-- ===== 사업자 신청하기 ===== -->
+	
+	<insert id="applybusiEnd" parameterType="java.util.HashMap">
+		insert into TBL_BUSINESS(BUSINESSNO, FK_IDX, CATEGORYNO, BNAME, STATUS, BUSICONTENT, BUSICALL, BUSIMAIL)
+		values (SEQ_TBL_BUSINESS.nextval, #{idx}, #{categoryno}, #{bname}, 0, #{busicontent}, #{busicall}, #{busimail})
+	</insert>
+	
+	
+	
+	
+	
+	
+	<resultMap type="java.util.HashMap" id="geomap">
+		<result property="seq" 		column="seq" 		javaType="String" />
+ 		<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+ 		<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+ 		<result property="longditude"  		column="LONGDITUDE" 		javaType="String" />
+ 		<result property="latitude"  		column="LATITUDE" 		javaType="String" />
+ 		<result property="country"  		column="COUNTRY" 		javaType="String" />
+ 		<result property="postal_code"  		column="POSTAL_CODE" 		javaType="String" />
+ 		<result property="area1"  		column="AREA1" 		javaType="String" />
+ 		<result property="locality"  		column="LOCALITY" 		javaType="String" />
+ 		<result property="route"  		column="ROUTE" 		javaType="String" />
+ 		<result property="street_number"  		column="STREET_NUMBER" 		javaType="String" />
+ 		
+ 		
+	</resultMap>
+	
+	
+	 <select id="getgeoinfo" parameterType="String" resultMap="geomap">
+	
+	    select *
+        from tbl_geo
+        where seq = #{geoidx}
+		
+	</select>
+	
+	
+	
+	
+	
+	
+	<resultMap type="java.util.HashMap" id="geolist">
+	<result property="seq"  			column="SEQ" 			javaType="String" />
+	<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+	<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+	<result property="scontent"  		column="SCONTENT" 		javaType="String" />
+	<result property="name"  			column="NAME" 			javaType="String" />
+	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
+	<result property="idx"  			column="IDX" 			javaType="String" />
+	</resultMap>
+	
+	
+	 <select id="getgeolist" parameterType="java.util.HashMap" resultMap="geolist">
+	 select *
+     from tbl_geo a left outer join tbl_shymemo b on a.fk_snsno = b.snsno
+     left outer join tbl_shymember c on b.fk_idx=c.idx
+     where a.latitude = #{latitude} and a.longditude= #{longditude}
+	</select>
+	
+	
+	
+	<!-- ===== 개인 사용자 정보 가져오기 ===== -->	
+	<select id="getgain" parameterType="java.util.HashMap" resultType="String"> 
+		select name
+		from TBL_SHYMEMBER
+		where idx = #{myIdx}
+	</select>  
+	
+	
+	<!-- 
+	
+	장환이형 구글맵 반경내 목표 포착하기
+	근처의 이용 가능한 숙소의 전체 수 알기
+   <select id="selectNearMap" parameterType="java.util.HashMap" resultType="int">
+      select count(*) as count
+      from (
+          select seq
+         from (select seq , DISTNACE_WGS84(#{latitude}, #{longditude}, lat, lon) as distance
+              from tbl_geo
+              where 
+                       (lat between #{latitude} - 0.019 and #{latitude} + 0.019)
+                   and (lon between #{longditude} - 0.022 and #{longditude} + 0.022)
+                 )
+         where distance <![CDATA[<=]]> #{distance}) 
+    </select>
+	
+	 -->
 	
 	
 	
