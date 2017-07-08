@@ -39,7 +39,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -51,6 +51,8 @@
               </div>
               <div class="profile_info">
                 <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -78,7 +80,7 @@
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
