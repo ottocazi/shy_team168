@@ -25,9 +25,49 @@
 	rel="stylesheet">
 
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+  
+	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+	
+	$.ajaxSetup({
+ 	    type        : 'POST',
+ 	    async       : false,
+ 	    cache       : false,
+ 	    contentType : 'application/json; charset=utf-8',
+ 	    dataType    : 'json',
+ 	    error       : function(xhr,e) { 
+ 	        $.unblockUI();
+ 	       if (xhr.status == 0) {
+ 	            alert('You are offline!!\n Please Check Your Network.');
+ 	        }
+ 	        else if (xhr.status == 404) {
+
+ 	            alert('Requested URL not found.');
+ 	        }
+ 	        else if (xhr.status == 500) {
+ 	            alert('Internel Server Error.\n');
+ 	        }
+ 	        else if (e == 'parsererror') {
+ 	            alert('Error.\nParsing JSON Request failed.');
+ 	        }
+ 	        else if (e == 'timeout') {
+ 	            alert('Request Time out.');
+ 	        }
+ 	        else {
+ 	            alert('Unknow Error.\n'+xhr.responseText);
+ 	        } 
+
+ 	    },
+ 	    beforeSend : function(xhr, setting) {
+ 	        if ( setting && setting.async == true ) {
+ 	            $.blockUI();
+ 	        }
+ 	    },
+ 	    complete   : function(xhr, e) {
+ 	        //$.unblockUI();
+ 	    }
+ 	});//$.ajaxSetup({
   
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
@@ -94,9 +134,13 @@
      		
      		$('#hashcheck' + i).html(linkedContent);
      	}
+     	
+     	
     });// end of $(document).ready() --------
     
+    	
     function goLike(idx,likeseq,seqcolum){
+    	
       var form_data = {idx : idx,
                    likeseq   : likeseq,
                    seqcolum   : seqcolum};
@@ -104,6 +148,7 @@
        // 좋아요 Ajax 불러오기
         $.ajax({
             url: "/shy/like.shy",
+            async: false,
             type: "GET",
             dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
             data: form_data ,// 파라미터     
@@ -113,11 +158,10 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+            	$.blockUI();
             }
         });
-       
-   }
+    }
     
     function getLike(){
         var snsnoArr = new Array();
@@ -163,7 +207,7 @@
                 
              },
              error: function() { // 에러가 발생했을 때의 콜백함수
-                 alert("error");
+                 alert("getlikeError");
              }
          });
         
@@ -177,6 +221,7 @@
          // 좋아요 Ajax 불러오기
           $.ajax({
               url: "/shy/unlike.shy",
+              async: false,
               type: "GET",
               dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
               data: form_data ,// 파라미터     
@@ -186,7 +231,7 @@
                  
               },
               error: function() { // 에러가 발생했을 때의 콜백함수
-                  alert("error");
+            	  $.blockUI();
               }
           });
          
