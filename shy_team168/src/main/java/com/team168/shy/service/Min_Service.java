@@ -128,8 +128,18 @@ public class Min_Service {
 			String imgfile = dao.getImgaddr(snsno);
 			return imgfile;
 		}
-		
-		
+
+		public String getGain(String myIdx) {
+			String getgain = dao.getGain(myIdx);
+			return getgain;
+		}
+
+
+		public List<HashMap<String, String>> nearMap(double distance, HashMap<String, String> geomap) {
+			List <HashMap<String, String>>  selectNearMap = dao.nearMap(distance, geomap);
+			return selectNearMap;
+		}
+
 		
 		
 		

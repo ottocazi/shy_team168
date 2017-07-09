@@ -63,6 +63,54 @@ public class Juno_Service {
 		int result = dao.unFollow(map);
 		return result;
 	}
+	
+	// 임시 메인라인
+	public List<HashMap<String, String>> getmainshy(List<String> followlist) {
+		List<HashMap<String, String>> shies = dao.getmainshy(followlist);
+		return shies;
+	}
+
+	// 임시 메인라인
+	public List<String> followlist(int idx) {
+		List<String> followlist = dao.followlist(idx);
+		return followlist;
+	}
+
+	// 임시 메인라인
+	public String imgaddr(String snsno) {
+		String imgaddr = dao.imgaddr(snsno);
+		return imgaddr;
+	}
+	
+	// 댓글 수정
+	public int goCommentEdit(HashMap<String, String> map) {
+		int n = dao.goCommentEdit(map);
+		return n;
+	}
+	
+	// 댓글 삭제
+	public int goCommentDelete(HashMap<String, String> map) {
+		int n = dao.goCommentDelete(map);
+		return n;
+	}
+	
+	// 댓글 신고 ( result 1~5 / result 6 구분  )
+	public int goBlameEnd(HashMap<String, Object> map) {
+		int n = dao.goBlameEnd(map);
+		return n;
+	}
+	
+	// 위치 태그가 있는 snsno list 뽑아오기
+	public List<HashMap<String, String>> getGeoSnsnoList() {
+		List<HashMap<String, String>> list = dao.getGeoSnsnoList();
+		return list;
+	}
+	
+	// 지역별 shy :  cnt 통계 지도
+	public HashMap<String, Object> drawRegionsMap() {
+		HashMap<String, Object> countRegions = dao.drawRegionsMap();
+		return countRegions;
+	}
 
 	
 }

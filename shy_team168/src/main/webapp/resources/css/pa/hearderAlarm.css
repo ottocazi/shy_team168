@@ -1,0 +1,84 @@
+@CHARSET "UTF-8";
+
+.alarmmain {
+  	top: 15%;
+    display: table-footer-group;
+    align-items: center;
+    height: 100%;
+    position: absolute;
+    margin-left: 60px;
+}
+.alarmmain .notification {
+  position: relative;
+  display: inline-block;
+}
+.alarmmain .notification svg {
+  width: 70px;
+  height: 50px;
+}
+.alarmmain .notification svg > path {
+  fill: #000;
+}
+.alarmmain .notification--bell {
+  animation: bell 2.2s linear infinite;
+  transform-origin: 50% 0%;
+}
+.alarmmain .notification--bellClapper {
+  animation: bellClapper 2.2s 0.1s linear infinite;
+}
+.alarmmain .notification--num {
+    position: absolute;
+    top: -10%;
+    font-size: 11pt;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #FF4C13;
+    border: 1px solid #FF4C13;
+    color: #FFFFFF;
+    text-align: center;
+    animation: notification 2.2s linear;
+}
+
+@keyframes bell {
+  0%, 25%, 75%, 100% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  45% {
+    transform: rotate(-10deg);
+  }
+  55% {
+    transform: rotate(8deg);
+  }
+  60% {
+    transform: rotate(-8deg);
+  }
+}
+@keyframes bellClapper {
+  0%, 25%, 75%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-0.15em);
+  }
+  45% {
+    transform: translateX(0.15em);
+  }
+  55% {
+    transform: translateX(-0.1em);
+  }
+  60% {
+    transform: translateX(0.1em);
+  }
+}
+@keyframes notification {
+  0%, 25%, 75%, 100% {
+    opacity: 1;
+  }
+  30%, 70% {
+    opacity: 0;
+  }
+}

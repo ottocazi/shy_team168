@@ -151,11 +151,27 @@ public class Min_DAO{
 		
 		
 		
-		
-	
-		
-		
-		
+
+		public String getGain(String myIdx) {
+			
+			String getgain = sqlsession.selectOne("min.getgain", myIdx);
+			return getgain;
+		}
+
+
+
+
+
+
+		public List<HashMap<String, String>> nearMap(double distance, HashMap<String, String> geomap) {
+			List <HashMap<String, String>>  selectNearMap = sqlsession.selectList("min.selectNearMap");
+			return selectNearMap;
+		}
+
+
+
+
+
 		
 
     

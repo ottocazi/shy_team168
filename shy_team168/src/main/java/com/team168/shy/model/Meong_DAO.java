@@ -74,10 +74,16 @@ public class Meong_DAO{
 		return todaytotal;
 	}
 	
-	// 관리자페이지 오늘 게시물 수 보여주는 메소드
+	// 관리자페이지 오늘 회원 게시물 수 보여주는 메소드
 	public String gettodaytotalshymemo(HashMap<String, Object> map) {
 		String todaytotalshymemo = sqlsession.selectOne("mangu.gettodaytotalshymemo", map);
 		return todaytotalshymemo;
+	}
+	
+	// 관리자페이지 오늘 그룹 게시물 수 보여주는 메소드
+	public String gettodaytotalgrpboard(HashMap<String, Object> map) {
+		String todaytotalgrpboard = sqlsession.selectOne("mangu.gettodaytotalgrpboard", map);
+		return todaytotalgrpboard;
 	}
 	
 	// 관리자페이지 회원목록 보여주는 메소드
@@ -192,6 +198,32 @@ public class Meong_DAO{
 		List<HashMap<String, Object>> bartkList2 = sqlsession.selectList("mangu.getBarTKList2" , map);
 		return bartkList2;
 	}
+
+	public List<HashMap<String, Object>> getshymemoList() {
+		List<HashMap<String, Object>> memoList = sqlsession.selectList("mangu.getshymemoList");
+		return memoList;
+	}
+
+	public int memostatusDown(HashMap<String, String> map) {
+		int n = sqlsession.update("mangu.memostatusDown", map);
+		return n;
+	}
+
+	public int memostatusUp(HashMap<String, String> map) {
+		int n = sqlsession.update("mangu.memostatusUp", map);
+		return n;
+	}
+
+	public List<HashMap<String, Object>> getpietkList() {
+		List<HashMap<String, Object>> pietkList = sqlsession.selectList("mangu.getpietkList");
+		return pietkList;
+	}
+
+	public List<HashMap<String, Object>> getdoughnutList() {
+		List<HashMap<String, Object>> doughnutList = sqlsession.selectList("mangu.getdoughnutList");
+		return doughnutList;
+	}
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.team168.shy;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,15 @@ public class CommonController {
     	
     	return "open.notiles";
     	// /Board/src/main/webapp/WEB-INF/views/main/test.jsp 파일을 생성한다.
+    }
+	
+	@RequestMapping(value="/error404", method={RequestMethod.GET})
+    public String error404(HttpServletResponse res) {
+    	
+		res.setStatus(HttpServletResponse.SC_OK);
+		
+    	return "404.notiles";
+    	
     }
 	
 	

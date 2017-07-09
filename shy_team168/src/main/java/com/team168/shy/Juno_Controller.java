@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
@@ -106,7 +107,8 @@ public class Juno_Controller {
     	
     }
 	
-
+	
+	// 댓글 갯수 세기
 	@RequestMapping(value="/getCommentCount.shy", method={RequestMethod.GET})
 	@ResponseBody
 	public List<HashMap<String, Object>> getCommentCount(HttpServletRequest req) {
@@ -196,6 +198,274 @@ public class Juno_Controller {
 		return returnresult;
 	}
 	
-	
+	// 임시 메인라인
+	@RequestMapping(value="/mainlinej.shy", method={RequestMethod.GET})
+    public String mainline(HttpServletRequest req, HttpSession session) {
 
+		Object loginuser = session.getAttribute("loginuser");
+		ShyMemberVO smvo = (ShyMemberVO)loginuser;
+		session.setAttribute("loginuser", smvo);
+		
+		if(smvo==null){
+			
+			System.out.println("null이오");
+			req.setAttribute("type", "question");
+			req.setAttribute("msg", "활동이 감지되지 않아 로그아웃되었습니다.  :)");
+			req.setAttribute("loc", req.getContextPath()+"/");
+			return "ddung_alert.notiles";
+			
+		}
+		
+		// 로그인 유저의 팔로우 명단 가져오기 
+		List <String> followlist = service.followlist(smvo.getIdx());
+		
+		
+		// 팔로워 명단에 내 계정도 추가해서 내 계정의 글들도 같이 볼수 있도록 하기
+		String myIdx = Integer.toString(smvo.getIdx());
+		System.out.println("myIdx = "+ myIdx);
+		followlist.add(myIdx);
+		
+		System.out.println("followlist의 사이즈 = "+followlist.size());
+		
+		// 팔로워들 + 나의 샤이 가져오기 , 유저정보 가져오기(join?), 
+		List <HashMap<String, String>> shies = service.getmainshy(followlist);
+		
+		if(shies!=null){
+			for(int i =0 ; i<shies.size(); i++){
+				
+				
+				// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+				// 페이징 처리 미완성
+				if("1".equals(shies.get(i).get("simage"))){
+					
+					String snsno = shies.get(i).get("snsno");
+					System.out.println("snsno = "+snsno);
+					String imagefile = service.imgaddr(snsno);
+					
+					System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
+					shies.get(i).put("imageaddr", imagefile);
+					
+				}
+				
+				else if("0".equals(shies.get(i).get("simage"))){
+					shies.get(i).put("imageaddr", null);
+				}
+				
+				System.out.println("shies.simage : "+shies.get(i).get("simage"));
+				System.out.println("shies에 들어간 imageaddr = " + shies.get(i).get("imageaddr"));
+			}
+		
+		}
+		
+		req.setAttribute("shies", shies);
+		return "juno/mainLine.tiles";
+    	
+    }
+	
+	// 댓글 수정
+	@ResponseBody
+	@RequestMapping(value="/goCommentEdit.shy", method={RequestMethod.POST})
+    public int goCommentEdit(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	
+		
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		System.out.println("loginuser의 이름 : " + loginuser.getName());
+		
+		int idx = loginuser.getIdx();
+		
+		String snsno = req.getParameter("snsno");
+		System.out.println("컨트롤에서 받은 snsno : "+ snsno);
+		
+		String cmtno = req.getParameter("cmtno");
+		System.out.println("컨트롤에서 받은 cmtno : " + cmtno);
+		
+		String cmtcontent = req.getParameter("cmtcontent");
+		System.out.println("컨트롤에서 받은 cmtcontent : " + cmtcontent);
+		
+		String str_fk_idx = req.getParameter("fk_idx");
+		System.out.println("컨트롤에서 받은 fk_idx : "+ str_fk_idx);
+		int fk_idx = Integer.parseInt(str_fk_idx);
+		
+		if(fk_idx != idx){
+			System.out.println("다른 사람 글은 삭제못함.");
+		}
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("snsno", snsno);
+    	map.put("cmtno", cmtno);
+    	map.put("cmtcontent", cmtcontent);
+    	map.put("fk_idx", str_fk_idx);
+    	int n = 0;
+    	System.out.println("컨트롤 리턴 전 n 값 : "+n);
+		n = service.goCommentEdit(map);
+		
+		// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+		// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+		/*req.setAttribute("n", n);*/
+		System.out.println("컨트롤 리턴 후 n 값 : "+n);
+		return n;
+    	
+    }
+	
+	// 댓글 수정
+	@ResponseBody
+	@RequestMapping(value="/goCommentDelete.shy", method={RequestMethod.POST})
+    public int goCommentDelete(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	
+		
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+		System.out.println("loginuser의 이름 : " + loginuser.getName());
+		
+		int idx = loginuser.getIdx();
+		
+		String snsno = req.getParameter("snsno");
+		System.out.println("컨트롤에서 받은 snsno : "+ snsno);
+		
+		String cmtno = req.getParameter("cmtno");
+		System.out.println("컨트롤에서 받은 cmtno : " + cmtno);
+		
+		String str_fk_idx = req.getParameter("fk_idx");
+		System.out.println("컨트롤에서 받은 fk_idx : "+ str_fk_idx);
+		int fk_idx = Integer.parseInt(str_fk_idx);
+		
+		if(fk_idx != idx){
+			System.out.println("다른 사람 글은 삭제못함.");
+		}
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+    	map.put("snsno", snsno);
+    	map.put("cmtno", cmtno);
+    	map.put("fk_idx", str_fk_idx);
+    	int n = 0;
+    	System.out.println("컨트롤 리턴 전 n 값 : "+n);
+		n = service.goCommentDelete(map);
+		
+		// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
+		// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
+		/*req.setAttribute("n", n);*/
+		System.out.println("컨트롤 리턴 후 n 값 : "+n);
+		return n;
+    	
+    }
+	
+	// 댓글 신고
+	@RequestMapping(value="/goBlameEnd.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> goBlameEnd(HttpServletRequest req, HttpSession session) {
+		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
+    	int idx =  loginuser.getIdx();
+    	System.out.println("idx : " + idx);
+		
+    	String str_fk_idx= req.getParameter("fk_idx");
+    	int fk_idx = Integer.parseInt(str_fk_idx);
+    	System.out.println("fk_idx : "+fk_idx);
+    	
+    	String snsno = req.getParameter("snsno");
+    	String cmtno = req.getParameter("cmtno");
+    	String str_result = req.getParameter("result");
+    	String value = req.getParameter("value");
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	map.put("idx", idx);
+    	map.put("fk_idx", fk_idx);
+    	map.put("snsno", snsno);
+    	map.put("cmtno", cmtno);
+    	map.put("result", str_result);
+    	map.put("value", value);
+    	
+		int n = service.goBlameEnd(map);
+		
+		if(n==0){
+			
+		}
+		
+		HashMap<String, Object> returnN = new HashMap<String, Object>();
+    	map.put("n", n);
+		return returnN;
+	}
+	
+	// 임시 관리자 페이지요청
+    @RequestMapping(value="/adminj.shy", method={RequestMethod.GET})
+    public String admin(HttpServletRequest req, HttpSession session){
+    	
+//    	String totaluser = service.gettotaluser();   // 총 사용자수
+//    	String mentotal = service.getmentotal();     // 총 남자 사용자수
+//    	String womantotal = service.getwomantotal(); // 총 여자 사용자수
+//    	String todaytotal = service.gettodaytotal(); // 오늘방문자 수
+//    			
+//    	req.setAttribute("totaluser", totaluser);
+//    	req.setAttribute("mentotal", mentotal);
+//    	req.setAttribute("womantotal", womantotal);
+//    	req.setAttribute("todaytotal", todaytotal);
+
+    	return "adminj.notiles";
+    }
+    
+    // 임시 관리자 페이지 GeoShy
+    @RequestMapping(value="/GeoShy.shy", method={RequestMethod.GET})
+    public String tongke(HttpServletRequest req, HttpSession session){
+    	
+    	String today2 = req.getParameter("today");
+    	String yesterday2 = req.getParameter("yesterday");
+    	System.out.println("today2 는 ==> " + today2);
+    	System.out.println("yesterday2 는 ==> " + yesterday2);
+    	
+    	Calendar calendar = Calendar.getInstance( );  // 현재 날짜/시간 등의 각종 정보 얻기
+    	int year = calendar.get(Calendar.YEAR);
+    	int month = (calendar.get(Calendar.MONTH) + 1);
+    	int day = calendar.get(Calendar.DAY_OF_MONTH);
+    	String today = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    	String yesterday = String.format("%04d-%02d-%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH) - 1);
+    	//System.out.println(yesterday);
+    	
+    	HashMap<String, String> map = new HashMap<String, String>();
+    	
+    	map.put("today", today);
+    	map.put("yesterday", yesterday);
+    	map.put("today2", today2);
+    	map.put("yesterday2", yesterday2);
+    	
+//    	if(today2 == null && yesterday2 == null){
+//    		
+//        	List<HashMap<String, Object>> tkList = service.gettongkeList(map);
+//        	List<HashMap<String, Object>> tkList2 = service.gettongkeList2(map);
+//        	
+//        	req.setAttribute("tkList", tkList);
+//        	req.setAttribute("tkList2", tkList2);
+//    				
+//    	}
+//    	else{ // 달력으로 날짜조정했을때
+//    		
+//        	List<HashMap<String, Object>> tkList = service.gettongkeList3(map);
+//        	List<HashMap<String, Object>> tkList2 = service.gettongkeList4(map);
+//        	
+//        	req.setAttribute("tkList", tkList);
+//        	req.setAttribute("tkList2", tkList2);
+//    	}
+    	
+    	//System.out.println(map);
+    	
+    	req.setAttribute("year", year);
+    	req.setAttribute("month", month);
+    	req.setAttribute("day", day);
+    	
+    	req.setAttribute("today2", today2);
+    	req.setAttribute("yesterday2", yesterday2);
+    	
+    	return "GeoShy.notiles";
+    }
+    
+    @RequestMapping(value="/drawRegionsMap.shy", method={RequestMethod.GET})
+	@ResponseBody
+	public HashMap<String, Object> drawRegionsMap(HttpServletRequest req, HttpServletResponse res) {
+		System.out.println(" drawRegionsMap 컨트롤 시작 !");
+		
+		// city, cnt
+		HashMap<String, Object> countRegions = service.drawRegionsMap(); // 
+		
+		System.out.println("리턴값 countRegions : "+countRegions);
+		return countRegions;
+	}
 }

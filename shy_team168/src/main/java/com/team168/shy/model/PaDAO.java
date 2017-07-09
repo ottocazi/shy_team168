@@ -174,6 +174,24 @@ public class PaDAO {
 		String alarm_target = sqlsession.selectOne("pa.alarmTarget",likeseq);
 		return alarm_target;
 	}
+
+	// ===== 알림카운트 가져오기 ===== //
+	public int getAlarmCnt(String myIdx) {
+		int result = sqlsession.selectOne("pa.alarmCnt", myIdx);
+		return result;
+	}
+
+	// ===== 알림카운트 업데이트 ===== //
+	public int updateAlarm(HashMap<String, Object> resultMap) {
+		int n = sqlsession.update("pa.updateAlarm",resultMap);
+		return n;
+	}
+
+	// ===== 개인정보 가져오기 ===== //
+	public HashMap<String, Object> getMyInfo(String myIdx) {
+		HashMap<String, Object> mymap = sqlsession.selectOne("pa.selectMyinfo",myIdx);
+		return mymap;
+	}
 	
 
 }
