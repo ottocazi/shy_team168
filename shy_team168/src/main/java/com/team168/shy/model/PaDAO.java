@@ -186,6 +186,12 @@ public class PaDAO {
 		int n = sqlsession.update("pa.updateAlarm",resultMap);
 		return n;
 	}
+
+	// ===== 개인정보 가져오기 ===== //
+	public HashMap<String, Object> getMyInfo(String myIdx) {
+		HashMap<String, Object> mymap = sqlsession.selectOne("pa.selectMyinfo",myIdx);
+		return mymap;
+	}
 	
 
 }

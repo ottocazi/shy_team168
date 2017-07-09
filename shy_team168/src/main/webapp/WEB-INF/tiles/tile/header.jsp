@@ -726,7 +726,6 @@
 
 </header>
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"> -->
-
 <div class='thetop'></div>
 <div style="width: 0; height: 0;" id="noexists"></div>
 
@@ -789,7 +788,7 @@ function Alarmchk() {
              		+ "<button type='button' class='close' data-dismiss='modal'>×</button>"
              		+ "<h4 class='modal-title'>알림목록</h4></div>";
          
-         var alarmno ="" ;	
+         var alarmno ="";	
          
          if(data.length==0){
         	 result = result+"<div class='modal-body'>새로운 알림이 없습니다.</div></div>";
@@ -844,10 +843,10 @@ function Alarmupdate(alarmno) {
 	    	  var cnt = data.result;
 	    	  //alert(cnt);
 	    	  if(cnt>0){
-	    		$(".notification--num").show(); 
+	    		$(".notificationno").show(); 
 	    	  	$("#alarmcnt").html(cnt);
 	    	  }else{
-	    		$(".notification--num").hide(); 
+	    		$(".notificationno").hide(); 
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수

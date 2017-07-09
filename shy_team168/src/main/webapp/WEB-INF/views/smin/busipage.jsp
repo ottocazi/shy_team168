@@ -236,7 +236,11 @@
 		$("#starcounter").val(count);
 	}
 	
-	var myCenter=new google.maps.LatLng(${geomap.latitude} , ${geomap.longditude});
+	var latitude = ${geomap.latitude}
+	var longditude = ${geomap.longditude}
+	
+	
+	var myCenter=new google.maps.LatLng( latitude , longditude);
 
 	
 	
@@ -244,23 +248,73 @@
 	function initialize() {
 		  var mapProp = {
 		    center:myCenter ,
-		    zoom:15,
+		    zoom:14,
 		    mapTypeId:google.maps.MapTypeId.ROADMAP
 		  };
 		  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 		  
 		  
-
+/* 
 		  var marker=new google.maps.Marker({
 		    position:myCenter,
 		    animation:google.maps.Animation.BOUNCE
 		    });
-
+		  
 		  marker.setMap(map);
+		  
+		   */
+		  
+		  
+<%-- 
+			// 장환이형 소스코드
+			// 마커 부분
+			   function setMarkers(map, lat, lon) {
+			      var contentString = [];
+			      
+			      for(var i = 0; i < seq_lodge.length; ++i) {
+			         var myLatLng = new google.maps.LatLng(lat[i], lon[i]);
+			         
+			         contentString[i] = '<div class="JH_infowindow">' +
+			            '<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
+			            '<img class="JH_infowidow_gallary" alt="infowindowGallary" src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" />' +
+			            '</a>' +
+			            '<span class="project-details">' +
+			            '<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
+			            '<strong>' +
+			            /* '<strong>' + name[i] + '</strong>' + '<br/>' + */
+			            '&nbsp;' + name[i] + '&#8361;&nbsp;' + total_price[i] + '&nbsp;' + type_lodge[i] + '&nbsp;' + type_building[i] + '<br/>' + '</a>' +
+			            '</strong>' +
+			               '</span>' +
+			            '</div>';
+			         
+			         marker[i] = new google.maps.Marker({
+			            position : myLatLng,
+			            map : map,
+			            seq_lodge : seq_lodge[i],
+			            content : contentString[i]
+			         });
+
+			         marker[i].addListener('click', function() {
+			            map.setCenter(this.position);
+			            infowindow.setContent(this.content);
+			            infowindow.open(map, this);
+			         });
+			      }
+			   }
+			   
+			   function setMapOnAll(map) {
+			      for(var i = 0; i < marker.length; ++i) {
+			         marker[i].setMap(map);
+			       }
+			    }
+			    --%>
+		  
+		  
+		  
 		  
 		  var myCity = new google.maps.Circle({
 			  center:myCenter ,
-			  radius:400,
+			  radius:1200,
 			  strokeColor:"#ff4d4d",
 			  strokeOpacity:0.8,
 			  strokeWeight:2,
@@ -290,6 +344,11 @@
 	
 		
 		
+		
+		
+		
+		   
+		   
   </script>
   
 </head>

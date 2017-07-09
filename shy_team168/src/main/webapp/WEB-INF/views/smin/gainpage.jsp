@@ -307,10 +307,10 @@ function moreList(){
          <div class="myIntro">
          
          
-            <h2 style="display: -webkit-inline-box;">${getgain.name}</h2>
-            
-            
-            
+         <!-- 안되는부분----------------------------------------------------- -->
+         <!-- 안되는부분----------------------------------getgain------------------- -->
+            <h2 style="display: -webkit-inline-box;">${loginuser.name}</h2>
+            <!-- 안되는부분-------------------------------getgain---------------------- -->
             
             <button class="bt" title="Follow" onclick="goFollow();">
                Follow

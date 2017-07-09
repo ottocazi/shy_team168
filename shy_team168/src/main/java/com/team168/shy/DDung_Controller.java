@@ -43,7 +43,7 @@ public class DDung_Controller {
 	
 	
 	@RequestMapping(value="/mainline.shy", method={RequestMethod.GET})
-    public String mainline(HttpServletRequest req, HttpSession session) {
+	public String mainline(HttpServletRequest req, HttpSession session) {
 
 		Object loginuser = session.getAttribute("loginuser");
 		ShyMemberVO smvo = (ShyMemberVO)loginuser;
@@ -349,10 +349,10 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/account.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/auth.shy", method={RequestMethod.GET})
 	public String accountenter(HttpServletRequest req, HttpSession session) throws IOException {
 		
-		return "ddung/accountenter.tiles";
+		return "ddung/shy_auth.tiles";
 		
 	}
 	
@@ -401,6 +401,21 @@ public class DDung_Controller {
 		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
 		
 		return comments;
+		
+		
+	}
+	
+	@RequestMapping(value="/banking.shy", method={RequestMethod.POST})
+	public String banking(HttpServletRequest req, HttpSession session) throws IOException {
+		
+		String snsno = req.getParameter("snsno");
+		
+		System.out.println("댓글을 출력할 샤이 번호는 : "+snsno);
+		
+		List <HashMap <String, String>> comments = service.getComments(snsno);
+		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
+		
+		return "banking.tiles";
 		
 		
 	}
