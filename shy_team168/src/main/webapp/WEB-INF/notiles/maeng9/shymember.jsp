@@ -46,10 +46,12 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -59,40 +61,48 @@
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
-                    </ul>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
               </div>
 
             </div> 
-            <!-- /sidebar menu -->
 
+            <!-- /sidebar menu -->
+            
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
@@ -123,7 +133,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -214,7 +224,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>게시물관리</h3>
+                <h3>회원관리</h3>
               </div>
 
             </div>
@@ -225,7 +235,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>SHY게시물 관리</h2>
+                    <h2>SHY유저 관리</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -246,37 +256,35 @@
                   <div class="x_content">
                     <p class="text-muted font-13 m-b-30">
                       <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
-                             회원들의 게시물과 버튼을 통해 활성화/비활성화를 할수있는 페이지
+                             회원들의 상세정보와 버튼을 통해 활성화/비활성화를 할수있는 페이지
                     </p>
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
-                          <th>게시물번호</th>
+                          <th>회원번호</th>
                           <th>이름</th>
                           <th>성별</th>
-                          <th>게시물내용</th>
-                          <th>최종수정일</th>
-                          <th>좋아요수</th>
-                          <th>신고수</th>
-                          <th>게시물상태</th>
+                          <th>이메일</th>
+                          <th>나이</th>
+                          <th>가입일자</th>
+                          <th>회원상태</th>
                         </tr>
                       </thead>
                       <tbody>
-                      <c:forEach var="map" items="${memoList}" varStatus="status">
+                      <c:forEach var="map" items="${shyList}" varStatus="status">
                         <tr align="center">
-                          <td>${map.SNSNO}</td>
+                          <td>${map.IDX}</td>
                           <td>${map.NAME}</td>
                           <td>${map.GENDER}</td>
-                          <td>${map.SCONTENT}</td>
-                          <td>${map.SDATEDTIME}</td>
-                          <td>${map.SLIKECNT}</td>
-                          <td>${map.SBLAMECNT}</td>
-                        <td>
+                          <td>${map.EMAIL}</td>
+                          <td>${map.BIRTHDAY}</td>
+                          <td>${map.REGISTERDATE}</td>
+                          <td>
                         <c:if test="${map.STATUS != 0}">  
-                  		<button onClick="javascript:location.href='shymemostatusDown.shy?snsno=${map.SNSNO}&name=${map.NAME}'">활성화</button>
+                  		<button onClick="javascript:location.href='shystatusDown.shy?idx=${map.IDX}&email=${map.EMAIL}'">활성화</button>
                   		</c:if>
                   		<c:if test="${map.STATUS == 0}">
-                  		<button onClick="javascript:location.href='shymemostatusUp.shy?snsno=${map.SNSNO}&name=${map.NAME}'">비활성화</button>
+                  		<button onClick="javascript:location.href='shystatusUp.shy?idx=${map.IDX}&email=${map.EMAIL}'">비활성화</button>
                   		</c:if>
                           </td>
                         </tr>

@@ -18,70 +18,18 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/green.css" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/scroller.bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-
-<script type="text/javascript">
-function goday(){
-	var godayForm = document.godayForm;
-	godayForm.submit();
-}
-
- function ym_init_charts() {
-	if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) {	 
-	 if($("#lineChart_ym").length) {
-        var f = document.getElementById("lineChart_ym");
-        new Chart(f, {
-            type: "line",
-            data: {
-            	labels: [
-            		<c:forEach var="map" items="${tkList}"  varStatus="status">
-					"${map.TIME}시",
-					</c:forEach>
-            	],
-                datasets: [{
-                    label: 
-                    	<c:if test="${empty today2}">"오늘",</c:if>
-                    	<c:if test="${not empty today2}">"${today2}",</c:if>
-                    	
-                    backgroundColor: "rgba(38, 185, 154, 0.31)",
-                    borderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                     	<c:forEach var="map" items="${tkList}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    ]
-                }, {
-                    label: 
-                    	<c:if test="${empty yesterday2}">"어제",</c:if>
-                    	<c:if test="${not empty yesterday2}">"${yesterday2}",</c:if>
-                    	
-                    backgroundColor: "rgba(3, 88, 106, 0.3)",
-                    borderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBorderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(151,187,205,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                    	<c:forEach var="map" items="${tkList2}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    	]
-                } ]
-            }
-        })
-       }
-	}
- }
-</script>
-    
+     
   </head>
 
   <body class="nav-md">
@@ -90,7 +38,7 @@ function goday(){
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -98,54 +46,62 @@ function goday(){
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
 
             <br />
 
-			<!-- sidebar menu -->
+            <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
-                    </ul>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
               </div>
 
             </div> 
-            <!-- /sidebar menu -->
 
-            <!-- menu footer buttons -->
+            <!-- /sidebar menu -->
+            
+            <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -160,7 +116,7 @@ function goday(){
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
-            <!-- menu footer buttons -->
+            <!-- /menu footer buttons -->
           </div>
         </div>
 
@@ -175,7 +131,7 @@ function goday(){
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -259,71 +215,25 @@ function goday(){
             </nav>
           </div>
         </div>
-        <!-- top navigation -->
-
+        <!-- /top navigation -->
+        
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3 style="color: red;">${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h3>
+                <h3>게시물관리</h3>
               </div>
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel_ym">
-                  <div class="x_title">
-                    <h2>시간대별 LINE 그래프</h2>
-                    
-<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
-                    <input type="date" required="required" name="today" value="${today2}"/> 
-                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
-                    <button type="button" onClick="goday();">확인</button>
-</form>
-
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content" >
-                    <canvas id="lineChart_ym"></canvas>
-                  </div>
-                  <div>
-     			  </div> 
-                </div>
-              </div>
-<!-- 
-              <div class="col-md-8 col-sm-8 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Bar Graph</h2>
+                    <h2>SHY게시물 관리</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -342,21 +252,64 @@ function goday(){
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
-                    <div id="mainb" style="height:350px;"></div>
-
+                    <p class="text-muted font-13 m-b-30">
+                      <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
+                             회원들의 게시물과 버튼을 통해 활성화/비활성화를 할수있는 페이지
+                    </p>
+                    <table id="datatable" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>게시물번호</th>
+                          <th>이름</th>
+                          <th>성별</th>
+                          <th>게시물내용</th>
+                          <th>최종수정일</th>
+                          <th>좋아요수</th>
+                          <th>신고수</th>
+                          <th>게시물상태</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <c:forEach var="map" items="${memoList}" varStatus="status">
+                        <tr align="center">
+                          <td>${map.SNSNO}</td>
+                          <td>${map.NAME}</td>
+                          <td>${map.GENDER}</td>
+                          <td>${map.SCONTENT}</td>
+                          <td>${map.SDATEDTIME}</td>
+                          <td>${map.SLIKECNT}</td>
+                          <td>${map.SBLAMECNT}</td>
+                        <td>
+                        <c:if test="${map.STATUS != 0}">  
+                  		<button onClick="javascript:location.href='shymemostatusDown.shy?snsno=${map.SNSNO}&name=${map.NAME}'">활성화</button>
+                  		</c:if>
+                  		<c:if test="${map.STATUS == 0}">
+                  		<button onClick="javascript:location.href='shymemostatusUp.shy?snsno=${map.SNSNO}&name=${map.NAME}'">비활성화</button>
+                  		</c:if>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>			
                   </div>
                 </div>
               </div>
-               -->
             </div>
-
           </div>
-        </div>
-        <!-- page content -->
 
-      </div>
-    </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <a href="open.shy">Shy</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
 
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
@@ -366,14 +319,27 @@ function goday(){
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
-	<!-- ECharts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
-	
+    <!-- iCheck -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/icheck.min.js"></script>
+    <!-- Datatables -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.dataTables.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.bootstrap.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.buttons.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/js/meong/buttons.flash.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.html5.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.print.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.fixedHeader.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.keyTable.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.responsive.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/responsive.bootstrap.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.scroller.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/jszip.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/pdfmake.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/vfs_fonts.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
-	
+
   </body>
 </html>

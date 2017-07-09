@@ -38,48 +38,62 @@
 
             <!-- menu profile quick info -->
             <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
+              </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
+
             <br />
 
-			<!-- sidebar menu -->
+            <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> 회원관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저조회</a></li>
-                      <li><a href="#">게시물관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
+                      <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/tongke.shy">통계상세보기</a></li>
-                      <li><a href="<%= request.getContextPath() %>/bartongke.shy">좋아요가 가장많은 유저</a></li>
-                      <li><a href="#">신고를 많이받은 유저</a></li>
-                    </ul>
-                  </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
               </div>
 
             </div> 
+
             <!-- /sidebar menu -->
             
             <!-- /menu footer buttons -->
@@ -100,7 +114,7 @@
             <!-- /menu footer buttons -->
           </div>
         </div>
- 
+
         <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu">
@@ -112,7 +126,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
