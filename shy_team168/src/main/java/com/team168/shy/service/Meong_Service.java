@@ -132,8 +132,8 @@ public class Meong_Service implements Interface_CommonService  {
 		return tkList2;
 	}
 
-	public List<HashMap<String, String>> getadminList(HashMap<String, String> map, RowBounds rowBounds) {
-		List<HashMap <String, String>> adminList = dao.groupsearch(map, rowBounds);
+	public List<HashMap<String, String>> getadminList(HashMap<String, String> map) {
+		List<HashMap <String, String>> adminList = dao.getadminList(map);
 		return adminList;
 	}
 
@@ -205,6 +205,11 @@ public class Meong_Service implements Interface_CommonService  {
 	public List<HashMap<String, Object>> getdoughnutList() {
 		List<HashMap<String, Object>> doughnutList = dao.getdoughnutList();
 		return doughnutList;
+	}
+
+	public int getTotalAdminCount(HashMap<String, String> map) {
+		int count = dao.getTotalAdminCount(map);
+		return count;
 	}
 
 

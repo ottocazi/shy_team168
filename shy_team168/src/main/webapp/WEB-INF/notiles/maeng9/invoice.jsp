@@ -14,13 +14,13 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/green.css" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/fullcalendar.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/fullcalendar.print.css" rel="stylesheet" media="print">
     
 </head>
 
@@ -90,7 +90,9 @@
                </ul>            
               </div>
 
-            </div>             <!-- /sidebar menu -->
+            </div> 
+
+            <!-- /sidebar menu -->
             
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
@@ -214,7 +216,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>회사개요</h3>
+                <h3>Invoice <small>Some examples to get you started</small></h3>
               </div>
 
               <div class="title_right">
@@ -228,13 +230,14 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="clearfix"></div>
 
             <div class="row">
               <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_title">
+                    <h2>Invoice Design <small>Sample user invoice design</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -252,151 +255,165 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-
                   <div class="x_content">
 
-                    <div class="col-md-9 col-sm-9 col-xs-12">
-
-                      <ul class="stats-overview">
-                        <li>
-                          <span class="name"> 회사 규모 </span>
-                          <span class="value text-success"> 230평 </span>
-                        </li>
-                        <li>
-                          <span class="name"> 임원수 </span>
-                          <span class="value text-success"> 13명 </span>
-                        </li>
-                        <li class="hidden-phone">
-                          <span class="name"> 직원수 </span>
-                          <span class="value text-success"> 59명 </span>
-                        </li>
-                      </ul>
-                      <br />
-
-                      <div id="mainb" style="height:350px;"></div>
-
-                      <div>
-
-                        <h4>이달의 우수사원</h4>
-
-                        <!-- end of user messages -->
-                        <ul class="messages">
-                          <li>
-
-                            <div class="message_date">
-                              <h3 class="date text-info">24</h3>
-                              <p class="month">5월</p>
-                            </div>
-                            <div class="message_wrapper">
-                              <h4 class="heading">김용명</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                              <br />
-<!--                               <p class="url">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                              </p> -->
-                            </div>
-                          </li>
-                          <li>
-
-                            <div class="message_date">
-                              <h3 class="date text-error">21</h3>
-                              <p class="month">5월</p>
-                            </div>
-                            <div class="message_wrapper">
-                              <h4 class="heading">임준호</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                              <br />
-<!--                               <p class="url">
-                                <span class="fs1" aria-hidden="true" data-icon=""></span>
-                                <a href="#" data-original-title="">Download</a>
-                              </p> -->
-                            </div>
-                          </li>
-                          <li>
-
-                            <div class="message_date">
-                              <h3 class="date text-info">24</h3>
-                              <p class="month">5월</p>
-                            </div>
-                            <div class="message_wrapper">
-                              <h4 class="heading">김성민</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                              <br />
-<!--                               <p class="url">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                              </p> -->
-                            </div>
-                          </li>
-                        </ul>
-                        <!-- end of user messages -->
-
-
-                      </div>
-
-
-                    </div>
-
-                    <!-- start project-detail sidebar -->
-                    <div class="col-md-3 col-sm-3 col-xs-12">
-
-                      <section class="panel">
-
-                        <div class="x_title">
-                          <h2>회사 소개</h2>
-                          <div class="clearfix"></div>
+                    <section class="content invoice">
+                      <!-- title row -->
+                      <div class="row">
+                        <div class="col-xs-12 invoice-header">
+                          <h1>
+                                          <i class="fa fa-globe"></i> Invoice.
+                                          <small class="pull-right">Date: 16/08/2016</small>
+                                      </h1>
                         </div>
-                        <div class="panel-body">
-                          <h3 class="green"><i class="fa fa-paint-brush"></i> SHY</h3>
+                        <!-- /.col -->
+                      </div>
+                      <!-- info row -->
+                      <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                          From
+                          <address>
+                                          <strong>Iron Admin, Inc.</strong>
+                                          <br>795 Freedom Ave, Suite 600
+                                          <br>New York, CA 94107
+                                          <br>Phone: 1 (804) 123-9876
+                                          <br>Email: ironadmin.com
+                                      </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                          To
+                          <address>
+                                          <strong>John Doe</strong>
+                                          <br>795 Freedom Ave, Suite 600
+                                          <br>New York, CA 94107
+                                          <br>Phone: 1 (804) 123-9876
+                                          <br>Email: jon@ironadmin.com
+                                      </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                          <b>Invoice #007612</b>
+                          <br>
+                          <br>
+                          <b>Order ID:</b> 4F3S8J
+                          <br>
+                          <b>Payment Due:</b> 2/22/2014
+                          <br>
+                          <b>Account:</b> 968-34567
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
 
-                          <p>
-									15 : 20 pm<br>
-									결제, 막힘없는 시원함을 담다.<br>
-									단 하나 남은 신상 가을 의류,<br>
-									단숨에 결제하고 shy로 기뻐한다.<br>
-									
-									12 : 10 pm<br>
-									송금, 즐거운 만남에 편리함을 담다.<br>
-									지인들과 즐거운 점심식사! 맛있게 먹고 밥값 정산 할 땐<br>
-									계좌번호 묻지 않고 이젠 shy로 사이좋게 계산완료!<br>
-						  </p>
-                          <br />
+                      <!-- Table row -->
+                      <div class="row">
+                        <div class="col-xs-12 table">
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>Qty</th>
+                                <th>Product</th>
+                                <th>Serial #</th>
+                                <th style="width: 59%">Description</th>
+                                <th>Subtotal</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>1</td>
+                                <td>Call of Duty</td>
+                                <td>455-981-221</td>
+                                <td>El snort testosterone trophy driving gloves handsome gerry Richardson helvetica tousled street art master testosterone trophy driving gloves handsome gerry Richardson
+                                </td>
+                                <td>$64.50</td>
+                              </tr>
+                              <tr>
+                                <td>1</td>
+                                <td>Need for Speed IV</td>
+                                <td>247-925-726</td>
+                                <td>Wes Anderson umami biodiesel</td>
+                                <td>$50.00</td>
+                              </tr>
+                              <tr>
+                                <td>1</td>
+                                <td>Monsters DVD</td>
+                                <td>735-845-642</td>
+                                <td>Terry Richardson helvetica tousled street art master, El snort testosterone trophy driving gloves handsome letterpress erry Richardson helvetica tousled</td>
+                                <td>$10.70</td>
+                              </tr>
+                              <tr>
+                                <td>1</td>
+                                <td>Grown Ups Blue Ray</td>
+                                <td>422-568-642</td>
+                                <td>Tousled lomo letterpress erry Richardson helvetica tousled street art master helvetica tousled street art master, El snort testosterone</td>
+                                <td>$25.99</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
 
-                          <br />
-                          <h5>SHY 의 구성요소</h5>
-                          <ul class="list-unstyled project_files">
-                            <li><a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
-                            </li>
-                            <li><a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
-                            </li>
-                            <li><a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
-                            </li>
-                            <li><a href=""><i class="fa fa-picture-o"></i> Logo.png</a>
-                            </li>
-                            <li><a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
-                            </li>
-                          </ul>
-                          <br />
-
-                          <div class="text-center mtop20">
-                            <a href="#" class="btn btn-sm btn-primary">요소 추가</a>
-                            <a href="#" class="btn btn-sm btn-warning">보고서 연락처</a>
+                      <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-xs-6">
+                          <p class="lead">Payment Methods:</p>
+                          <img src="images/visa.png" alt="Visa">
+                          <img src="images/mastercard.png" alt="Mastercard">
+                          <img src="images/american-express.png" alt="American Express">
+                          <img src="images/paypal.png" alt="Paypal">
+                          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                          </p>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-6">
+                          <p class="lead">Amount Due 2/22/2014</p>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <tbody>
+                                <tr>
+                                  <th style="width:50%">Subtotal:</th>
+                                  <td>$250.30</td>
+                                </tr>
+                                <tr>
+                                  <th>Tax (9.3%)</th>
+                                  <td>$10.34</td>
+                                </tr>
+                                <tr>
+                                  <th>Shipping:</th>
+                                  <td>$5.80</td>
+                                </tr>
+                                <tr>
+                                  <th>Total:</th>
+                                  <td>$265.24</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
 
-                      </section>
-
-                    </div>
-                    <!-- end project-detail sidebar -->
-
+                      <!-- this row will not appear when printing -->
+                      <div class="row no-print">
+                        <div class="col-xs-12">
+                          <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                          <button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>
+                          <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-                    
+
               </div>
             </div>
         <!-- /page content -->
@@ -410,19 +427,18 @@
         </footer>
         <!-- /footer content -->
 
-	<!-- jQuery -->
+    <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/bootstrap.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/bootstrap-progressbar.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
     <!-- FastClick -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- ECharts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
-	
   </body>
 </html>

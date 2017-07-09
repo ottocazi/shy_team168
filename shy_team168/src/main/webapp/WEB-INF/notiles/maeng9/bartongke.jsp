@@ -62,7 +62,7 @@
             <br />
 
             <!-- sidebar menu -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
@@ -72,9 +72,9 @@
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
                       <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
@@ -88,7 +88,6 @@
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
-                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
