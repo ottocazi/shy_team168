@@ -77,7 +77,7 @@
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>

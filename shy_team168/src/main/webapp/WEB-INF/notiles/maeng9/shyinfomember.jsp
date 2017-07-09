@@ -42,6 +42,8 @@
               </div>
               <div class="profile_info">
                 <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -69,7 +71,7 @@
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
@@ -438,7 +440,7 @@
                           <div class="col-sm-12">
                             <h4 class="brief"><i>김성민</i></h4>
                             <div class="left col-xs-7">
-                              <h2>과장</h2>
+                              <h2>대리</h2>
                               <p><strong>About: </strong> Web Designer / UI. </p>
                               <ul class="list-unstyled">
                                 <li><i class="fa fa-building"></i> Address: </li>

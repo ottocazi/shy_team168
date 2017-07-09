@@ -801,16 +801,25 @@ public class Meong_Controller {
     
     @RequestMapping(value="/shyinfo.shy", method={RequestMethod.GET})
     public String shyinfo(HttpServletRequest req, HttpSession session){
+    	// 회사개요
     	return "maeng9/shyinfo.notiles";
     }	
     
     @RequestMapping(value="/shyinfomember.shy", method={RequestMethod.GET})
     public String shyinfomember(HttpServletRequest req, HttpSession session){
+    	// 회사식구
     	return "maeng9/shyinfomember.notiles";
+    }
+    
+    @RequestMapping(value="/general_elements.shy", method={RequestMethod.GET})
+    public String general_elements(HttpServletRequest req, HttpSession session){
+    	
+    	return "maeng9/general_elements.notiles";
     }
     
     @RequestMapping(value="/icons.shy", method={RequestMethod.GET})
     public String icons(HttpServletRequest req, HttpSession session){
+    	
     	return "maeng9/icons.notiles";
     }	
     

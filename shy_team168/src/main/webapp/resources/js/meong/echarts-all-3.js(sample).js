@@ -475,16 +475,8 @@
                             var n = +t.get("progressive"),
                                 o = i > t.get("progressiveThreshold") && n && !S.node;
                             o && e.group.traverse(function(t) {
-                                    t.isGroup || (t.progressive = o ? Math.floor(i++/n):-1,o&&t.stopAnimation(!0))});var a=t.get("blendMode")||null;e.group.traverse(function(t){t.isGroup||t.setStyle("blend",a)})}function _(t,e){var i=t.get("z"),n=t.get("zlevel");e.group.traverse(function(t){"group"!==t.type&&(null!=i&&(t.z=i),null!=n&&(t.zlevel=n))})}function b(t){var e=t._coordSysMgr;return R.extend(new I(t),{getCoordinateSystems:R.bind(e.getCoordinateSystems,e),getComponentByElement:function(e){for(;e;){var i=e.__ecComponentInfo;if(null!=i)return t._model.getComponent(i.mainType,i.index);e=e.parent}}})}function w(t){function e(t,e){for(var i=0;i<t.length;i++){var n=t[i];n[a]=e}}var i=0,n=1,o=2,a="__connectUpdateStatus";R.each(nt,function(r,s){t._messageCenter.on(s,function(r){if(ht[t.group]&&t[a]!==i){if(r&&r.escapeConnect)return;var s=t.makeActionFromEvent(r),l=[];R.each(ct,function(e){e!==t&&e.group===t.group&&l.push(e)}),e(l,i),G(l,function(t){t[a]!==n&&t.dispatchAction(s)}),e(l,o)}})})}/ * !
-                                        *
-                                        ECharts, a javascript interactive chart library.*
-                                        *
-                                        Copyright(c) 2015, Baidu Inc.*All rights reserved.*
-                                        *
-                                        LICENSE *
-                                        https: //github.com/ecomfe/echarts/blob/master/LICENSE.txt
-                                        *
-                                        /
+                                    t.isGroup || (t.progressive = o ? Math.floor(i++/n):-1,o&&t.stopAnimation(!0))});var a=t.get("blendMode")||null;e.group.traverse(function(t){t.isGroup||t.setStyle("blend",a)})}function _(t,e){var i=t.get("z"),n=t.get("zlevel");e.group.traverse(function(t){"group"!==t.type&&(null!=i&&(t.z=i),null!=n&&(t.zlevel=n))})}function b(t){var e=t._coordSysMgr;return R.extend(new I(t),{getCoordinateSystems:R.bind(e.getCoordinateSystems,e),getComponentByElement:function(e){for(;e;){var i=e.__ecComponentInfo;if(null!=i)return t._model.getComponent(i.mainType,i.index);e=e.parent}}})}function w(t){function e(t,e){for(var i=0;i<t.length;i++){var n=t[i];n[a]=e}}var i=0,n=1,o=2,a="__connectUpdateStatus";R.each(nt,function(r,s){t._messageCenter.on(s,function(r){if(ht[t.group]&&t[a]!==i){if(r&&r.escapeConnect)return;var s=t.makeActionFromEvent(r),l=[];R.each(ct,function(e){e!==t&&e.group===t.group&&l.push(e)}),e(l,i),G(l,function(t){t[a]!==n&&t.dispatchAction(s)}),e(l,o)}})})}
+                              
                                         var S = i(9), M = i(137), I = i(101), T = i(26), A = i(138), C = i(13), L = i(17), D = i(65), P = i(30), k = i(3), O = i(5), z = i(37), E = i(88), R = i(1), N = i(22), V = i(23), B = i(51), G = R.each, H = C.parseClassType, F = 1e3, W = 5e3, Z = 1e3, q = 2e3, j = 3e3, U = 4e3, X = 5e3, Y = "__flagInMainProcess", $ = "__hasGradientOrPatternBg", K = "__optionUpdated", J = /^[a-zA-Z0-9_]+$/; o.prototype.on = n("on"), o.prototype.off = n("off"), o.prototype.one = n("one"), R.mixin(o, V);
                                         var Q = a.prototype; Q._onframe = function() {
                                             if (this[K]) {
