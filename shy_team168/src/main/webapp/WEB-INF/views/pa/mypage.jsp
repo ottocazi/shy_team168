@@ -8,6 +8,46 @@
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/mypage.css">
 
 <script>
+$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+$.ajaxSetup({
+	    type        : 'POST',
+	    async       : false,
+	    cache       : false,
+	    contentType : 'application/json; charset=utf-8',
+	    dataType    : 'json',
+	    error       : function(xhr,e) { 
+	        $.unblockUI();
+	        if (xhr.status == 0) {
+	            alert('You are offline!!\n Please Check Your Network.');
+	        }
+	        else if (xhr.status == 404) {
+
+	            alert('Requested URL not found.');
+	        }
+	        else if (xhr.status == 500) {
+	            alert('Internel Server Error.\n');
+	        }
+	        else if (e == 'parsererror') {
+	            alert('Error.\nParsing JSON Request failed.');
+	        }
+	        else if (e == 'timeout') {
+	            alert('Request Time out.');
+	        }
+	        else {
+	            alert('Unknow Error.\n'+xhr.responseText);
+	        }
+
+	    },
+	    beforeSend : function(xhr, setting) {
+	        if ( setting && setting.async == true ) {
+	            $.blockUI();
+	        }
+	    },
+	    complete   : function(xhr, e) {
+	        //$.unblockUI();
+	    }
+	});//$.ajaxSetup({
 
     function openComment() {
 	
@@ -77,21 +117,38 @@
             
         });
         
-        var content = document.getElementById('showMypage').innerHTML;
-        
-        var splitedArray = content.split(' '); // 공백을 기준으로 문자열을 자른다.
-    	var linkedContent = ' ';
-    	for(var word in splitedArray)
-    	{
-    	  word = splitedArray[word];
+
+    	var arr = $(".hashcheck").map(function(){ // hashcheck 클래스에 있는 text 를 map으로 가져옴 
+    		return $(this).text();
+    	}).get();
+    	 
+    	 
+    	/* var arr = $(".hashcheck").text();
+    	alert(arr); */
     	
-    	   if(word.indexOf('#') == 0) // # 문자를 찾는다.
-    	   {
-    	      word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
-    	   }
-    	   linkedContent += word+' ';
-    	}
-    	document.getElementById('showMypage').innerHTML = linkedContent; 
+     	for(var i = 0; i < arr.length; ++i) {
+     		var splitedArray = arr[i].split(' '); // 공백으로 자른다
+     		var linkedContent = '';
+
+     		for(var word in splitedArray)
+        	{
+        	  	word = splitedArray[word];
+        		//alert(word); // ex)해시태그 #안녕 테스트! #테스트  <--이글을
+        					   // 	 해시태그
+        					   //    #안녕
+        					   //    테스트!
+        					   // 	 #테스트 <--이렇게 가져온다
+        					   
+	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
+	        	{
+	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        	}
+	        	
+	        	linkedContent += word+' ';
+        	}
+     		
+     		$('#hashcheck' + i).html(linkedContent);
+     	}
 
        
     });// end of $(document).ready() --------
@@ -113,7 +170,7 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+            	$.blockUI();
             }
         });
        
@@ -136,7 +193,7 @@
                  
               },
               error: function() { // 에러가 발생했을 때의 콜백함수
-                  alert("error");
+            	  $.blockUI();
               }
           });
          
@@ -235,7 +292,7 @@
                 
              },
              error: function() { // 에러가 발생했을 때의 콜백함수
-                 alert("getLikeAjaxError");
+            	 //$.blockUI();
              }
          });
         
@@ -308,6 +365,7 @@ function moreList(){ // 더 읽기
       	     					 + "<a class='bt-share' title='Share' href='#'>공유하기</a>" 
       	     					 + "<a href='javascript:openComment('"+entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+entry.snsno+"'></a>"
       	     					 + "</h3></figcaption></figure>";
+      	     				snsno = entry.snsno;
       	     			  }else{ // 이미지가 없으면
       	     				html += "<div style='min-height: 125px; margin-top: 100px; position: relative;'>"+entry.scontent+"<h3>"
   	     		    		 	 + "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')' id='bt-love"+entry.snsno+"'> Love </a>" 
@@ -315,6 +373,7 @@ function moreList(){ // 더 읽기
   	     					 	 + "<a class='bt-share' title='Share' href='#'>공유하기</a>" 
   	     					 	 + "<a href='javascript:openComment('"+entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+entry.snsno+"'></a>"
   	     					 	 + "</h3></div>";
+      	     				snsno = entry.snsno; 	 
    	            		   }
       	     			  
       	     			    html += "<div class='footer'><span style='height: 50px; padding:10px; text-align:center; color: gray; font-size: 9pt;'>"
@@ -324,9 +383,9 @@ function moreList(){ // 더 읽기
       				$('#readmore').remove();
       			
       				end = entry.end;
-      				snsno += entry.snsno;
+      				snsno += snsno;
       	 	});
-            	 getLikeAjax(snsno);
+            	 
             	 
 	             //goLike(idx,likeseq,seqcolum);
 	             //goUnlike(idx,likeseq,seqcolum);
@@ -334,19 +393,18 @@ function moreList(){ // 더 읽기
           	////
   			if(end == 1) {
   				$(result).appendTo('#ajax_load_indicator');
+  				getLikeAjax(snsno);
   			}
   			////
   			else {
   				result += "<div id='readmore' align='center' style='margin: 5%'><a class='readmore' href='javascript:moreList();' style='color:white;'>더 읽기</a></div>";
   	            $(result).appendTo('#ajax_load_indicator');
+  	            getLikeAjax(snsno);
   			}
           }
         , error: function(data) {
-        	alert("moreListError");
+        	//$.blockUI();
           }
-        , complete: function(data) { 
-        	
-         }
     });
 }
 </script>
@@ -458,7 +516,7 @@ function moreList(){ // 더 읽기
     <c:if test="${shies.simage!=0 }">
       <figure class="snip1584"><img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" >
   		<figcaption>
-    	<h5>${shies.scontent }</h5>
+    	<h5><p id="hashcheck${status.index}" class="hashcheck">${shies.scontent }</p></h5>
     	<h3>
     	<a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
 		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
@@ -473,7 +531,7 @@ function moreList(){ // 더 읽기
   	<c:if test="${shies.simage==0 }">
    
       <div style="min-height: 125px; margin-top: 100px; position: relative;">
-       	${shies.scontent }
+       	<p id="hashcheck${status.index}" class="hashcheck" >${shies.scontent }</p>
     	<h3>
     	<a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
 		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 

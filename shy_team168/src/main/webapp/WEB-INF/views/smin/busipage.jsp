@@ -236,78 +236,24 @@
 		$("#starcounter").val(count);
 	}
 	
-	var latitude = ${geomap.latitude}
-	var longditude = ${geomap.longditude}
+	// 검색어의 위도, 경도
+	var centerLat = '${geomap.latitude}';
+	var centerLng = '${geomap.longditude}';
 	
-	
-	var myCenter=new google.maps.LatLng( latitude , longditude);
-
-	
-	
+	var myCenter=new google.maps.LatLng( centerLat , centerLng);
+	var marker = [];
 	
 	function initialize() {
 		  var mapProp = {
 		    center:myCenter ,
+		    
 		    zoom:14,
 		    mapTypeId:google.maps.MapTypeId.ROADMAP
 		  };
+		  
 		  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 		  
 		  
-/* 
-		  var marker=new google.maps.Marker({
-		    position:myCenter,
-		    animation:google.maps.Animation.BOUNCE
-		    });
-		  
-		  marker.setMap(map);
-		  
-		   */
-		  
-		  
-<%-- 
-			// 장환이형 소스코드
-			// 마커 부분
-			   function setMarkers(map, lat, lon) {
-			      var contentString = [];
-			      
-			      for(var i = 0; i < seq_lodge.length; ++i) {
-			         var myLatLng = new google.maps.LatLng(lat[i], lon[i]);
-			         
-			         contentString[i] = '<div class="JH_infowindow">' +
-			            '<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
-			            '<img class="JH_infowidow_gallary" alt="infowindowGallary" src="<%=request.getContextPath() %>/resources/images/JHHY/Sample01_00.jpg" />' +
-			            '</a>' +
-			            '<span class="project-details">' +
-			            '<a href="/hajota/rooms/detailInfo.go?seq_lodge=' + seq_lodge[i] + '">' +
-			            '<strong>' +
-			            /* '<strong>' + name[i] + '</strong>' + '<br/>' + */
-			            '&nbsp;' + name[i] + '&#8361;&nbsp;' + total_price[i] + '&nbsp;' + type_lodge[i] + '&nbsp;' + type_building[i] + '<br/>' + '</a>' +
-			            '</strong>' +
-			               '</span>' +
-			            '</div>';
-			         
-			         marker[i] = new google.maps.Marker({
-			            position : myLatLng,
-			            map : map,
-			            seq_lodge : seq_lodge[i],
-			            content : contentString[i]
-			         });
-
-			         marker[i].addListener('click', function() {
-			            map.setCenter(this.position);
-			            infowindow.setContent(this.content);
-			            infowindow.open(map, this);
-			         });
-			      }
-			   }
-			   
-			   function setMapOnAll(map) {
-			      for(var i = 0; i < marker.length; ++i) {
-			         marker[i].setMap(map);
-			       }
-			    }
-			    --%>
 		  
 		  
 		  
@@ -325,19 +271,47 @@
 
 		  myCity.setMap(map);
 		  
-		  
-
-		  var infowindow = new google.maps.InfoWindow({
-		    content:"Hello World!"
-		    });
-
-		  google.maps.event.addListener(marker, 'click', function() {
-		    infowindow.open(map,marker);
-		    });
+		  setMarkers(map);
 		  
 		  
+		} // end of 구글멥
+		
+		
+		/* 
+		function setMarkers(map) {
+			var myLatLng = new google.maps.LatLng('${geomap.latitude}', '${geomap.longditude}');
+	         
+	         
+	         marker[0] = new google.maps.Marker({
+	            position : myLatLng,
+	            map : map
+	         });
 		}
+		  */
+		function setMarkers(map) {
+			
+			<c:if test="${selectNearMap != null}">
+        		<c:forEach var="location" items="${selectNearMap}" varStatus="status">
+	        		var myLatLng = new google.maps.LatLng('${location.latitude}', '${location.longditude}');
+			         
+			         
+			         marker[status.index] = new google.maps.Marker({
+			            position : myLatLng,
+			            
+			            map : map,
+			            seq : '${location.seq}'
+			         });
 	
+			         marker[status.index].addListener('click', function() {
+			        	 javascript:location.href='<%= request.getContextPath() %>/place.shy?geoidx=' + this.seq;
+			         });
+        		</c:forEach>
+        	</c:if>
+        	
+        	
+        	
+        	
+		}
 	
 	
 		google.maps.event.addDomListener(window, 'load', initialize);
@@ -380,7 +354,6 @@
       </div>
       <div class="modal-body">
         
-		
 
         <div class="form-group">
           <textarea class="form-control" rows="7"  required></textarea>

@@ -6,6 +6,7 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- google map 스크립트 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_sZM1PsNMiAuzi6F-aZRkDqqeOKTCA_Y&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
@@ -78,12 +79,6 @@
    }
 </script>
          
-
-         
-
-
-
-
 
 
 <link
@@ -755,8 +750,8 @@ function Alarmcnt() {
 	
 	$.ajax ({
 	      url : "/shy/myAlarmcnt.shy",
-	      cache : false,
-	      type: "POST",
+	      async: false,
+	      type: "GET",
 	      dataType: "JSON",
 	      success : function (data) { 
 	    	  var cnt = data.result;
@@ -780,8 +775,8 @@ function Alarmchk() {
 	
    $.ajax ({
       url : "/shy/myAlarm.shy",
-      cache : false,
-      type: "POST",
+      async: false,
+      type: "GET",
       dataType: "JSON",
       success : function (data) { 
          var result = "<div class='modal-content'><div class='modal-header'>"
@@ -800,22 +795,23 @@ function Alarmchk() {
 	        	 			html = "<div class='modal-body'><li  type='none'><a href='#'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li>"
 			              		 + "<input type='hidden' name='alarmno' id='alarmno' value='"+entry.alarmno+"'>"
-			              		 + "</div>";    	 
+			              		 + "</div>";    
+	        	 			alarmno += entry.alarmno;	 
 	        	 			}else{
 	        	 			html += "<div class='modal-footer'><li  type='none'><a href='#' style='color:#ddd; font-size:10pt;'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li></div>";	
 	        	 			}
 	                result += html;   
-	                alarmno += entry.alarmno;
+	                
 	            });
 	         
+	         //alert(alarmno);
+	         Alarmupdate(alarmno); // 업데이트 function
+	         
         	 result = result+"</div>";
-        	 
-        	 Alarmupdate(alarmno); // 업데이트 function
          }
          
          $("#ajaxresult").html(result).show();
-        
         
       },
         error: function() { // 에러가 발생했을 때의 콜백함수
@@ -826,7 +822,7 @@ function Alarmchk() {
 }
 
 function Alarmupdate(alarmno) {
-	//alert("alarmno"+alarmno);
+	alert("alarmno"+alarmno);
 	
 	var alarmnoArr = new Array();
 	
@@ -835,18 +831,18 @@ function Alarmupdate(alarmno) {
 	
 	$.ajax ({
 	      url : "/shy/myAlarmcnt.shy",
-	      cache : false,
-	      type: "POST",
+	      async: false,
+	      type: "GET",
 	      dataType: "JSON",
 	      data: {alarmnoArr : alarmnoArr},
 	      success : function (data) { 
 	    	  var cnt = data.result;
-	    	  //alert(cnt);
+	    	  alert(cnt);
 	    	  if(cnt>0){
-	    		$(".notificationno").show(); 
+	    		$(".notification--num").show(); 
 	    	  	$("#alarmcnt").html(cnt);
 	    	  }else{
-	    		$(".notificationno").hide(); 
+	    		$(".notification--num").hide(); 
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수
