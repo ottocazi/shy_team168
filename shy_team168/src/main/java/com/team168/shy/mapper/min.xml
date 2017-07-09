@@ -184,24 +184,38 @@
 	</select>  
 	
 	
-	<!-- 
 	
+	<!-- 
 	장환이형 구글맵 반경내 목표 포착하기
-	근처의 이용 가능한 숙소의 전체 수 알기
-   <select id="selectNearMap" parameterType="java.util.HashMap" resultType="int">
-      select count(*) as count
-      from (
-          select seq
-         from (select seq , DISTNACE_WGS84(#{latitude}, #{longditude}, lat, lon) as distance
-              from tbl_geo
-              where 
-                       (lat between #{latitude} - 0.019 and #{latitude} + 0.019)
-                   and (lon between #{longditude} - 0.022 and #{longditude} + 0.022)
-                 )
-         where distance <![CDATA[<=]]> #{distance}) 
+	근처의 이용 가능한 숙소의 전체 수 알기 -->
+	
+	<resultMap type="java.util.HashMap" id="geomap2">
+		<result property="seq" 		column="seq" 		javaType="String" />
+ 		<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+ 		<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+ 		<result property="longditude"  		column="LONGDITUDE" 		javaType="String" />
+ 		<result property="latitude"  		column="LATITUDE" 		javaType="String" />
+ 		<result property="country"  		column="COUNTRY" 		javaType="String" />
+ 		<result property="postal_code"  		column="POSTAL_CODE" 		javaType="String" />
+ 		<result property="area1"  		column="AREA1" 		javaType="String" />
+ 		<result property="locality"  		column="LOCALITY" 		javaType="String" />
+ 		<result property="route"  		column="ROUTE" 		javaType="String" />
+ 		<result property="street_number"  		column="STREET_NUMBER" 		javaType="String" />
+ 		
+ 		
+	</resultMap>
+	
+   <select id="selectNearMap" parameterType="java.util.HashMap" resultMap="geomap2">
+      select *
+      from (  select A.* , DISTNACE_SHY(#{latitude}, #{longditude}, latitude, longditude) as distance
+		      from tbl_geo A
+		      where (latitude between to_char(to_number(#{latitude}) - 0.019) and to_char(to_number(#{latitude}) + 0.019))
+		        and (longditude between to_char(to_number(#{longditude}) - 0.022) and to_char(to_number(#{longditude}) + 0.022))
+		   )
+	  where distance <![CDATA[<=]]> to_number(#{distance})
     </select>
 	
-	 -->
+	 
 	
 	
 	
