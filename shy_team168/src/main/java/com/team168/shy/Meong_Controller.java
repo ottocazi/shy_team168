@@ -323,8 +323,8 @@ public class Meong_Controller {
     	
     //----------------------------------------------------------------------------------------------
     	
-    	String pageNo2 = req.getParameter("pageNo2"); // 운영자 페이징처리
-
+    	String pageNo2 = req.getParameter("pageNo2"); // 회원페이징처리
+    	
     	int totalCount2 = 0;
     	int sizePerPage2 = 5; 
     	int currentShowPageNo2 = 1;
@@ -347,12 +347,14 @@ public class Meong_Controller {
     	start2 = ((currentShowPageNo2 - 1) * sizePerPage2) + 1;
     	end2 = start2 + sizePerPage2 - 1;
     	
-    	RowBounds rowBounds = new RowBounds(start2, end2);
+    	HashMap<String, String> map2 = new HashMap<String, String>();
     	
-    	List<HashMap<String, String>> adminList = service.getadminList(map,rowBounds); 
-//    	System.out.println(adminList);
-   	
-    	totalCount2 = service.getTotalCount(map);
+    	map2.put("start2", String.valueOf(start2) );
+    	map2.put("end2", String.valueOf(end2) );
+    	
+    	List<HashMap<String, String>> adminList = service.getadminList(map); 
+   	  	
+    	totalCount2 = service.getTotalAdminCount(map);
     	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
     	
     	String pagebar2 = "";

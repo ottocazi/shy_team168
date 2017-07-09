@@ -62,9 +62,9 @@
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">추후 구현</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
                       <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
                     </ul>
                   </li>
@@ -78,7 +78,6 @@
                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
-                      <li><a href="#">동적 테이블</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
@@ -93,7 +92,6 @@
               </div>
 
             </div> 
-
             <!-- /sidebar menu -->
             
             <!-- /menu footer buttons -->
@@ -455,7 +453,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Table design <small>Custom design</small></h2>
+                    <h2>공지사항 게시판 <small>운영진만 관리할수있습니다.</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -475,8 +473,8 @@
                   </div>
 
                   <div class="x_content">
-
-                    <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>
+<%-- 
+                    <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p> --%>
 
                     <div class="table-responsive">
                       <table class="table table-striped jambo_table bulk_action">
