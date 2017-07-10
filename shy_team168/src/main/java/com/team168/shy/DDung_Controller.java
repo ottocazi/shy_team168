@@ -392,7 +392,7 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public List <HashMap <String, String>> getComments(HttpServletRequest req, HttpSession session) throws IOException {
 		

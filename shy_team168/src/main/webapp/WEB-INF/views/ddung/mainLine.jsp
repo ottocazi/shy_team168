@@ -239,16 +239,18 @@
     
     function openComment(snsno) {
 	   
+       
 	   var commentbox = document.getElementById('commentbox'+snsno);
 
 	   if(commentbox.style.display=='none'){
 		   
+		   var form_data = {snsno : snsno };
 		   
 		   $.ajax({
 	            url: "/shy/getComments.shy",
-	            type: "POST",
+	            type: "GET",
 	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-	            data: {snsno:snsno},
+	            data: form_data,
 	            success: function(data) { // 성공했을 때의 처리 콜백함수
 	            	
 	            	commentbox.style.display = 'block';
@@ -313,7 +315,7 @@
     	
     	 $.ajax({
 	            url: "/shy/getComments.shy",
-	            type: "POST",
+	            type: "GET",
 	            dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
 	            data: {snsno:snsno},
 	            success: function(data) { // 성공했을 때의 처리 콜백함수
@@ -349,9 +351,9 @@
 	    					 + comments.updatetime+'</span>'
 	    					 + '</div>'
 	    					 + '<div class="shy_comment-actions">'
-							 + ' <a href="#"><i class="fa fa-exclamation-triangle fa-2x" '
-							 + ' aria-hidden="true"></i></a> '
-	    					 + '</div>'
+	    					 + ' <a href="javascript:modiCheck('
+	                         + snsno+','+comments.cmtno+','+comments.fk_idx+');"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i></a> '
+	                         + '</div>'
 	    					 + '</div>'
 	    					 + '</div></div>';   
 	    			
@@ -429,7 +431,7 @@
     		success: function(data) {
     			
     			$('#replycontent'+shyidx).val("");
-    			countComment();
+    			
     			reopenComment(shyidx);
     		},
     		error: function(){
@@ -496,7 +498,7 @@
                   alert(result);
                   $.ajax({
                         url: "/shy/goCommentEdit.shy",
-                      type: "POST",
+                      type: "GET",
                       data: {snsno:snsno
                            ,cmtno:cmtno
                            ,cmtcontent:result
@@ -504,7 +506,7 @@
                            },
                       dataType: "JSON",  
                       success: function(data){
-                         alert("댓글 수정 ajax success function!");
+                         //alert("댓글 수정 ajax success function!");
                          
                           swal.resetDefaults()
                              swal({
@@ -515,7 +517,8 @@
                                  '</pre>',
                                confirmButtonText: '수정완료!',
                                showCancelButton: false
-                             })  
+                             })
+                             reopenComment(snsno);
                        },
                       error: function(){
                            alert("댓글 수정 ajax error function!"); 
@@ -526,18 +529,18 @@
                  swal.resetDefaults()
                })
         }, function (dismiss) {
-           alert("dismiss : "+ dismiss);
+           //alert("dismiss : "+ dismiss);
            
            $.ajax({
                  url: "/shy/goCommentDelete.shy",
-               type: "POST",
+               type: "GET",
                data: {snsno:snsno
                     ,cmtno:cmtno
                     ,fk_idx:fk_idx
                     },
                dataType: "JSON",  
                success: function(data){
-                  alert("댓글 삭제 ajax success function!");
+                  //alert("댓글 삭제 ajax success function!");
 
                   // dismiss can be 'cancel', 'overlay',
                   // 'close', and 'timer'
@@ -548,9 +551,11 @@
                         '댓글이 삭제되었습니다.',
                         'error'
                       )
+                      
+                      reopenComment(snsno);
                     }
                    
-                  countComment();
+                  
                },
                error: function(){
                     alert("댓글 수정 ajax error function!"); 
@@ -614,8 +619,8 @@
              ]
 
              swal.queue(steps).then(function (result) {
-                alert("result : "+result);
-                alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+                //alert("result : "+result);
+                //alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
                 // 1~5 선택시
                 if(result < 6) {
                    var value = "";
@@ -637,7 +642,7 @@
                         showCancelButton: true,
                        inputValidator: function (value) {
                            return new Promise(function (resolve, reject) {
-                                alert(value);
+                                //alert(value);
                               
                               if (value) {
                                resolve()
@@ -828,7 +833,7 @@
 				         <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
 						 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
 						 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
-						 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
+						 <a href="javascript:openComment(${shies.snsno});" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
 				        </p>
 				      </footer>
 				</div>
@@ -889,7 +894,7 @@
 						<!-- Comment Avatar -->
 						<div class="shy_comment-avatar">
 							<img
-								src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+								src="<%=request.getContextPath() %>/resources/images/shydb/${loginuser.myimg }"
 								style="display: block; height: 100%; width: 100%;">
 						</div>
 
