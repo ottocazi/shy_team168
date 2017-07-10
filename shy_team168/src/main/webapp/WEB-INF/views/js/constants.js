@@ -8,7 +8,7 @@ var svrOpts = {
 		bs_style: 'primary',
 		base_web_uri: 'https://twww.open-platform.or.kr',
 		base_api_uri: 'https://testapi.open-platform.or.kr',
-		redirect_uri: 'http://localhost:8880/shy_FinTech_server/html/callback.html',
+		redirect_uri: 'http://192.168.10.35:8880/shy_FinTech_server/html/callback.html',
 		client_id: 'l7xx44e66d20db084a0d85446ca30beaff9b',
 		client_secret: '0f1cbba16a2840849ac0b381288dba29',
 		client_info: 'shy : 핀테크 테스트용 서버 / DB '
