@@ -53,9 +53,21 @@ function delaccount() {
 
 function gobankshy(number){
 	
-	var target = "payprice"+number;
-	var ttext = $("."+target).text();
-	alert(ttext);
+	var place = "payplace"+number;
+	var price = "payprice"+number;
+	var ttext = $("."+place).text();
+	var ttext2 = $("#"+price).text();
+	ttext = "'" + ttext + "' 에서의 shy-pay!";
+	
+	$("#shypay").val(ttext);
+	$("#shyprice").val(ttext2);
+	
+	 $("#shyprice").show();
+	 $("#shypay").show();
+	 $("#pricecheck").show();
+	 $("#pricecheck2").show();
+	
+	pay_shynow();
 	
 }
 
@@ -144,7 +156,7 @@ function gobankshy(number){
 								
 				                <table class="table nofill table-striped" style="width:90%; font-size: 11pt;">
 				                <tr>
-				                <td>2017년 7월 7일 오후 8시 25분 </td><td style="border-left: 1px solid #ddd;" class="payprice1">gs25 선유도점</td><td style="border-left: 1px solid #ddd;">5,000원</td>
+				                <td>2017년 7월 7일 오후 8시 25분 </td><td style="border-left: 1px solid #ddd;" class="payplace1">gs25 선유도점</td><td style="border-left: 1px solid #ddd;" id="payprice1">5,000원</td>
 				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(1);"></i></td>
 				                </tr>
 				                <tr>

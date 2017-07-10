@@ -6,6 +6,7 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!-- google map 스크립트 -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_sZM1PsNMiAuzi6F-aZRkDqqeOKTCA_Y&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
@@ -78,12 +79,6 @@
    }
 </script>
          
-
-         
-
-
-
-
 
 
 <link
@@ -252,8 +247,21 @@
    }; // shynow END
 
    function new_shynow() {
+	   
+	     $("#shyprice").val("");
+	     $("#shypay").val("");
+		 $("#shyprice").hide();
+		 $("#shypay").hide();
+		 $("#pricecheck").hide();
+		 $("#pricecheck2").hide(); 
       location.href = "#new_shynow";
    }
+   
+   function pay_shynow() {
+	   
+	      
+    location.href = "#new_shynow";
+ }
 
    function finishpic() {
       location.href = "#";
@@ -648,7 +656,15 @@
                      </select>
                      </div>
                      </div>
+                  <br>
+                  <div>
+                  <input type="text" name="shypay" id="shypay" style="width:480px; border:none; color:#f4bf42; font-size:13pt; font-style: italic;"readonly></input>
+                  </div>
                   
+                  <div style="width:480px; float: center;">
+                  <input type="text" name="shyprice" id="shyprice" style=" float:left;border:none; color:#ffd87c; font-size:13pt; font-style: italic;"readonly></input>
+                  <input type="checkbox" id="pricecheck" name="pricecheck" style="float:right;"><span style="float:right;"id="pricecheck2">&nbsp;공개&nbsp;</span>
+                  </div>
                   <input type="hidden" name="userseq" value="${loginuser.idx}" />
                   <br>
                      <textarea id="content" name="content" class="swal2-textarea"
@@ -747,6 +763,10 @@
 	 
    $("#ajaxresult").hide();
    $("#ajaxresult").css("z-index", "1500");
+   $("#shyprice").hide();
+   $("#shypay").hide();
+   $("#pricecheck").hide();
+   $("#pricecheck2").hide();
    
  
 });
@@ -755,8 +775,8 @@ function Alarmcnt() {
 	
 	$.ajax ({
 	      url : "/shy/myAlarmcnt.shy",
-	      cache : false,
-	      type: "POST",
+	      async: false,
+	      type: "GET",
 	      dataType: "JSON",
 	      success : function (data) { 
 	    	  var cnt = data.result;
@@ -780,8 +800,8 @@ function Alarmchk() {
 	
    $.ajax ({
       url : "/shy/myAlarm.shy",
-      cache : false,
-      type: "POST",
+      async: false,
+      type: "GET",
       dataType: "JSON",
       success : function (data) { 
          var result = "<div class='modal-content'><div class='modal-header'>"
@@ -800,22 +820,23 @@ function Alarmchk() {
 	        	 			html = "<div class='modal-body'><li  type='none'><a href='#'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li>"
 			              		 + "<input type='hidden' name='alarmno' id='alarmno' value='"+entry.alarmno+"'>"
-			              		 + "</div>";    	 
+			              		 + "</div>";    
+	        	 			alarmno += entry.alarmno;	 
 	        	 			}else{
 	        	 			html += "<div class='modal-footer'><li  type='none'><a href='#' style='color:#ddd; font-size:10pt;'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li></div>";	
 	        	 			}
 	                result += html;   
-	                alarmno += entry.alarmno;
+	                
 	            });
 	         
+	         //alert(alarmno);
+	         Alarmupdate(alarmno); // 업데이트 function
+	         
         	 result = result+"</div>";
-        	 
-        	 Alarmupdate(alarmno); // 업데이트 function
          }
          
          $("#ajaxresult").html(result).show();
-        
         
       },
         error: function() { // 에러가 발생했을 때의 콜백함수
@@ -826,7 +847,7 @@ function Alarmchk() {
 }
 
 function Alarmupdate(alarmno) {
-	//alert("alarmno"+alarmno);
+	alert("alarmno"+alarmno);
 	
 	var alarmnoArr = new Array();
 	
@@ -835,18 +856,18 @@ function Alarmupdate(alarmno) {
 	
 	$.ajax ({
 	      url : "/shy/myAlarmcnt.shy",
-	      cache : false,
-	      type: "POST",
+	      async: false,
+	      type: "GET",
 	      dataType: "JSON",
 	      data: {alarmnoArr : alarmnoArr},
 	      success : function (data) { 
 	    	  var cnt = data.result;
-	    	  //alert(cnt);
+	    	  alert(cnt);
 	    	  if(cnt>0){
-	    		$(".notificationno").show(); 
+	    		$(".notification--num").show(); 
 	    	  	$("#alarmcnt").html(cnt);
 	    	  }else{
-	    		$(".notificationno").hide(); 
+	    		$(".notification--num").hide(); 
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수

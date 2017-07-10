@@ -87,6 +87,12 @@
 		where to_date(sdatedtime) = #{today}
 	</select>		
 	
+	<select id="gettodaytotalgrpboard" resultType="String" parameterType="java.util.HashMap">
+		select count(*)
+		from tbl_grpboard 
+		where to_date(writedate) = #{today}
+	</select>
+	
 	<!-- 공지사항(미정)부분에서 회원목록 보여주는 select 문 -->
 	<resultMap type="java.util.HashMap" id="getshyListMap">
 		<result property="IDX" 		        column="idx" 	        javaType="String" />
@@ -125,7 +131,13 @@
 		select count(*)
 		from tbl_shymember
 		where status = 1
-	</select>     
+	</select>
+	
+	<select id="getTotalAdminCount" parameterType="java.util.HashMap" resultType="int"> 
+		select count(*)
+		from tbl_shymember
+		where status = 1
+	</select>         
 	
 	<!-- 공지사항(미정)부분 회원에 대한 게시물조회 -->
 	<select id="getmemocount" parameterType="String" resultType="String">
@@ -249,9 +261,22 @@
  		<result property="PHONE" 		    column="phone" 	        javaType="String" />
 	</resultMap>
 	<select id="getadminList" parameterType="String" resultMap="getadminListMap">
-		select *
-		from tbl_shymember
-		order by idx desc
+		select idx, name, email, pwd, registerdate, status, myimg, myintro, birthday, gender, phone
+		from
+		(
+		select rownum as RNO
+		, idx, name, email, pwd, registerdate, status, myimg, myintro, birthday, gender, phone
+		from
+		(
+		select idx, name, email, pwd
+		     , to_char(registerdate, 'yyyy-mm-dd hh24:mi:ss') as registerdate
+		     , status, myimg, myintro, birthday, gender, phone
+		     from tbl_shymember
+		     where status = 1
+		     order by idx desc
+		)V
+		)T
+		where T.RNO >= #{start} and T.RNO <![CDATA[<=]]> #{end}
 	</select>
 	
 	<!-- 하루(시간대별) 통계를 위한 쿼리문 -->
@@ -415,7 +440,7 @@
 	<select id="getdoughnutList" resultMap="getdoughnutListmap">
 		SELECT nvl(country, '기타지역') as country, COUNT(*) AS CNT 
 		FROM tbl_geo
-		where not shyplace is null
+		WHERE NOT COUNTRY = 'X'
 		GROUP BY country
 	</select>
 	

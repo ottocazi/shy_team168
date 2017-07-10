@@ -31,7 +31,7 @@ public class Pa_Controller {
 
 	@Autowired
 	private PaService service;
-	
+
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req,HttpSession session) {
@@ -714,7 +714,7 @@ public class Pa_Controller {
 	}
 	
 	// ===== 알림리스트 가져오기 ===== //
-	@RequestMapping(value = "/myAlarm.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/myAlarm.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goAlarmlist(HttpServletRequest req) {
 
@@ -730,7 +730,7 @@ public class Pa_Controller {
 	}
 	
 	// ===== 알림카운트 가져오기 ===== //
-	@RequestMapping(value = "/myAlarmcnt.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/myAlarmcnt.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public HashMap<String, Object> goAlarmupdate(HttpServletRequest req) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
