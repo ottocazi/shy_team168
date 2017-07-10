@@ -64,7 +64,7 @@
                   <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
-                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
                    <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
@@ -74,11 +74,11 @@
                       <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
                     </ul>
-                  </li>
+                  </li> --%>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>

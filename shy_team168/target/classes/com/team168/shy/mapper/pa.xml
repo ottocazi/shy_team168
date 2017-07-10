@@ -368,7 +368,7 @@
 				FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
 				WHERE	 A.STATUS = 1 AND
 				FK_IDX = #{myIdx}
-                ORDER by A.SNSNO DESC)V)X
+                ORDER by A.SDATEDTIME DESC)V)X
         LEFT JOIN
                 (SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
                 ON X.SNSNO = Y.SNSNO
@@ -395,8 +395,8 @@
       <result property="email" column="EMAIL" javaType="String" />
       <result property="myimg" column="MYIMG" javaType="String" />
    </resultMap>
-   <select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
-        SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+   <select id="getflwList" parameterType="String" resultMap="getflwListMap"> 
+      SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
       FROM
       (
       SELECT *

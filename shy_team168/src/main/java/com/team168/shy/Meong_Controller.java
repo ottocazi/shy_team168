@@ -161,13 +161,13 @@ public class Meong_Controller {
     	map.put("today", today);
     	
     	service.loginsert(map);
-    	
+/*    	
     	System.out.println("email ==> " + email);
     	if(email.equalsIgnoreCase("admin")){
         	req.setAttribute("loc", "admin.shy");
         	return "msg.notiles";
     	}
-    	
+    	*/
     	req.setAttribute("loc", "mainline.shy");
     	return "msg.notiles";
     	
