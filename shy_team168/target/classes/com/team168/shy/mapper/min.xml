@@ -165,6 +165,7 @@
 	<result property="name"  			column="NAME" 			javaType="String" />
 	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
 	<result property="idx"  			column="IDX" 			javaType="String" />
+	<result property="myimg"  			column="MYIMG" 			javaType="String" />
 	</resultMap>
 	
 	

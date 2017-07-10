@@ -461,19 +461,19 @@
 
 <c:if test="${geomap.latitude != 'X'}">
 <div id="googleMap" style="width:100%; height:300px;"></div>
-</c:if>
-
-
-<br><br>
-
-
-
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
         <p><strong>내 주변 Shy보기</strong></p>
         위 지도의 마커를 클릭해 보세요!
       </div>
+      
+      </c:if>
+      <c:if test="${geomap.latitude == 'X'}">
+		    <img style="width:100%; height:300px;" src="http://wallpaperpulse.com/thumb/604167.jpg">
+		    
+		    </c:if>
+      <br><br>
       <p><a href="#">친구 추가하기</a></p>
       <p><a href="#">공유하기</a></p>
       <p><a href="#">자세히 보기</a></p>
@@ -486,7 +486,7 @@
       
       <div class="wrapper">
       
-      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; margin-left: 130px;">${geomap.shyplace }</div>
+      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; " align="center">${geomap.shyplace }</div>
       <br><br><br>
       
       
@@ -522,19 +522,15 @@
       <div style="border: double 5px #ccdcff;">
       
       <h4>
-      <small>${geolist.shyplace}에서 OO님과 함께</small>
+      <small>${geomap.shyplace}에서 OO님과 함께</small>
       
       </h4>
       
       
-      <c:if test="${gvo.gimg != null}">
-      	<img class="grp_boxImage" style="width: 100%;"
-      	 src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
-      </c:if>
-      <c:if test="${gvo.gimg == null}">
-      	<img class="grp_boxImage" style="width: 100%;"
-      	src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
-      </c:if>
+      <c:if test="${geolist.myimg != null}">
+      	<img  style="width: 100%;"
+      	 src="<%=request.getContextPath() %>/resources/images/shydb/${geolist.myimg }"><%-- img가져오기 --%>
+      </c:if> 
       <h2 style="font-style: inherit; font-size: 23px;">
       
       <a style="color:  #2952a3; " href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${geolist.idx}">
@@ -559,13 +555,6 @@
      
      
      
-     <li>Item 7</li>
-     
-     <li>Item 8</li>
-     
-     <li>Item 9</li>
-     
-     <li>Item 10</li>
      
      
   </ul>
