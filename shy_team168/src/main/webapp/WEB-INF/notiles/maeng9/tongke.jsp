@@ -278,7 +278,7 @@ function goday(){
                 <h3 style="color: red;">${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h3>
               </div>
 
-              <div class="title_right">
+<!--               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -287,7 +287,7 @@ function goday(){
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <div class="clearfix"></div>
