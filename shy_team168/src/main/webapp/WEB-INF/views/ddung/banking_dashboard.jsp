@@ -12,6 +12,31 @@
 <script type="text/javascript" src="<%= request.getContextPath() %>/resources/js/juno/myInfoEdit.js"></script> 
 
 <script>
+
+$( document ).ready(function() {
+   
+	$(".payhidden").hide();
+	$("#lesspay").hide();
+	
+});
+
+function morepayrecord(){
+	
+	$(".payhidden").show();
+	$("#morepay").hide();
+	$("#lesspay").show();
+	
+}
+
+function lesspay(){
+	
+	$(".payhidden").hide();
+	$("#morepay").show();
+	$("#lesspay").hide();
+	
+}
+
+
 function delaccount() {
 	
 	msg = "대표 계좌를 삭제하시겠습니까?"
@@ -23,6 +48,14 @@ function delaccount() {
 	}else{
 		
 	}
+	
+}
+
+function gobankshy(number){
+	
+	var target = "payprice"+number;
+	var ttext = $("."+target).text();
+	alert(ttext);
 	
 }
 
@@ -111,26 +144,51 @@ function delaccount() {
 								
 				                <table class="table nofill table-striped" style="width:90%; font-size: 11pt;">
 				                <tr>
-				                <td>2017년 7월 7일 오후 8시 25분 </td><td style="border-left: 1px solid #ddd;">gs25 선유도점</td><td style="border-left: 1px solid #ddd;">5,000원</td>
+				                <td>2017년 7월 7일 오후 8시 25분 </td><td style="border-left: 1px solid #ddd;" class="payprice1">gs25 선유도점</td><td style="border-left: 1px solid #ddd;">5,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(1);"></i></td>
+				                </tr>
+				                <tr>
+				                <td>2017년 7월 7일 오후 3시 18분 </td><td style="border-left: 1px solid #ddd;" class="payprice">카카오택시</td><td style="border-left: 1px solid #ddd;">8,000원</td>
 				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 7일 오후 3시 18분 </td><td style="border-left: 1px solid #ddd;">카카오택시</td><td style="border-left: 1px solid #ddd;">8,000원</td>
+				                <td>2017년 7월 5일 오후  6시 55분 </td><td style="border-left: 1px solid #ddd;" class="payprice">오레노라멘</td><td style="border-left: 1px solid #ddd;">7,000원</td>
 				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 6일 오후 12시 45분 </td><td style="border-left: 1px solid #ddd;">오레노라멘</td><td style="border-left: 1px solid #ddd;">7,000원</td>
+				                <td>2017년 7월 3일 오후 12시 33분 </td><td style="border-left: 1px solid #ddd;" class="payprice">버거킹 당산역점</td><td style="border-left: 1px solid #ddd;">5,100원</td>
 				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
 				                </tr>
-				                </table>
-				                <br/><button type="button" class="info_edit_btn show_more_btn">더보기</button>
+				                <tr>
+				                <td>2017년 7월 3일 오전 1시 15분 </td><td style="border-left: 1px solid #ddd;" class="payprice">세븐일레븐 능안공원점</td><td style="border-left: 1px solid #ddd;">1,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></td>
+				                </tr>
+				                <tr class="payhidden">
+				                <td>2017년 7월 2일 오후 2시 56분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">132,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                </tr>
+				                <tr class="payhidden">
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">9,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                </tr>
+				                <tr  class="payhidden">
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">6,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                </tr>
+				                <tr  class="payhidden">
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">999,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                </tr>
+				                <tr  class="payhidden">
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">갑부테스트</td><td style="border-left: 1px solid #ddd;">200,999,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                </tr>
 				                
-				                <div class="hiddenpart">
-				              
-				                <button type="button" class="info_edit_btn show_more_cancle_btn">닫기</button>
-				               <!--  <input type="hidden" name="column_name"  /> -->
-				               <!--  <input type="hidden" name="edited_content" /> -->
-				                </div>
+				                </table>
+				                <br/><button type="button" id ="morepay" class="info_edit_btn show_more_btn" onclick ="morepayrecord();">더보기</button>
+				               <button type="button" id ="lesspay" class="info_edit_btn " onclick="lesspay();">닫기</button>
+				             
+				                
 			                </td>
 						</tr>
 						
@@ -139,49 +197,27 @@ function delaccount() {
 						<tr>
 							<td class="text-left colname">잔액확인</td>
 							<td class="text-left"><span></span>
-				                <button type="button" class="info_edit_btn show_more_btn" style="margin-top: 0px;">수정</button>
+				                <button type="button" class="info_edit_btn show_more_btn" style="margin-top: 0px;">잔액조회하기</button>
 				                <div class="hiddenpart" style="display: block;">
-				                	비밀번호 변경
-				                	<br/><span><a>안전한 비밀번호로 내정보를 보호</a>하세요</span>
-				                	<br/><span><span style="color: red;">다른 아이디/사이트에서 사용한적 없는 비밀번호<br/> 이전에 사용한 적 없는 비밀번호</span>가 안전합니다.</span><br/>
 				                	
-				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                	<input type="hidden" name="column_name" id="column_name"  value="pwd" />
-				                	<input type="hidden" name="edited_content" />
-				                	
-				                	<input placeholder="현재 비밀번호" type="password" value="${getMemberVO.pwd}"  tabindex="1"  autofocus style="margin-top: 30px;"> <br/>
-				                	<input placeholder="새 비밀번호" type="password" class="inputcol" id="id_pwd" name="pwd"  tabindex="2"  style="margin-top: 30px;"> <br/>
-				                	<input placeholder="새 비밀번호 확인" type="password" tabindex="2" > <br/>
-				                	<button type="button" class="info_edit_btn editend">확인</button>
 								    <button type="button" class="info_edit_btn show_more_cancle_btn">취소</button>
 								</div>
 			                </td>
 						</tr>
-						</form>
 						
-						<form name="phoneFrm" id="phoneFrm">
+						
+						
 						<tr>
 							<td class="text-left colname">송금하기</td>
-							<td class="text-left">${getMemberVO.phone}
+							<td class="text-left">
 				                <span style="font-size: 12pt;">서비스 준비중입니다 :)</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 				                <div class="hiddenpart" style="max-width: 80%;">
-				                변경할 연락처
-				                <br/><span>변경할 연락처를 입력하세요. (예: 01087644212)</span><br/>
-				                
-				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
-				                <input type="hidden" name="column_name" id="column_name"  value="phone" />
-				                <input type="hidden" name="edited_content" />
-				                
-				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
-				                <button type="button" class="info_edit_btn editend">수정완료</button>
-				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
+				                        <button type="button" class="info_edit_btn show_more_cancle_btn">송금취소</button>
 				                </div>
 			                </td>
 						</tr>
-						</form>
 						
-						<form name="genderFrm" id="genderFrm">
 						<tr>
 							<td class="text-left colname">송금요청하기</td>
 							<td class="text-left">
@@ -190,23 +226,12 @@ function delaccount() {
 				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 				                <div class="hiddenpart">
 				                
-				                <br/><span>변경할 성별을 고르세요</span><br/>
-				                <div class="gender_select_form">
-				                
-				                
-				               
-				                
-				               <!--  <input type="radio" id="id_gender_male" value="남" class="inputcol" name="gender" style="margin-top: 30px;"/>남&nbsp;&nbsp;
-				                <input type="radio" id="id_gender_female" value="여" class="inputcol" name="gender" />여&nbsp;&nbsp;
-				                <input type="radio" id="id_gender_other" value="Other" class="inputcol" name="gender">Other -->
-				                </div>
-				                <br/>
-				                <button type="button" class="info_edit_btn editend">수정완료</button>
+				         
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
 				                </div>
 			                </td>
 						</tr>
-						</form>
+						
 						
 				
 					</tbody>
