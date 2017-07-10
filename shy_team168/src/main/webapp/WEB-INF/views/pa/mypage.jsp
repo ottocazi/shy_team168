@@ -75,7 +75,7 @@ $.ajaxSetup({
     	//countComment();
    		
         getLike();
-        //follow();
+        follow();
         
         $('#showFlwList').hide();
         
@@ -334,7 +334,10 @@ $.ajaxSetup({
 var pageNo = 1;
 
 function moreList(){ // 더 읽기	
-	var idx = "${mymap.idx}";
+	var idx = "";
+	
+	<c:if></c:if>
+	
 	pageNo += 1;
 	
     $.ajax({
@@ -386,7 +389,7 @@ function moreList(){ // 더 읽기
       	 	});
             	 
             	 
-	             //goLike(idx,likeseq,seqcolum);
+	             goLike(idx,likeseq,seqcolum);
 	             //goUnlike(idx,likeseq,seqcolum);
 	            
           	////
@@ -479,8 +482,9 @@ function moreList(){ // 더 읽기
                </c:if> 명</span>&nbsp;&nbsp;
 
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
+            <c:if test="${mymap.idx eq sessionScope.loginuser.idx}">
             <button class="proedit" onclick="goEdit();">프로필편집</button>
-            
+            </c:if>
             <div id="showFlwList"></div>
             
             <c:if test="${mymap.myintro != null}">
