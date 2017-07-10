@@ -64,7 +64,7 @@
                   <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
-                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
                    <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
@@ -74,11 +74,11 @@
                       <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
                     </ul>
-                  </li>
+                  </li> --%>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
@@ -277,7 +277,7 @@
 
                       <div>
 
-                        <h4>이달의 우수사원</h4>
+                        <h4>사장님께 한마디</h4>
 
                         <!-- end of user messages -->
                         <ul class="messages">
@@ -289,7 +289,7 @@
                             </div>
                             <div class="message_wrapper">
                               <h4 class="heading">김용명</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                              <blockquote class="message">19층에 까페 하나 만들어 주세요~!~</blockquote>
                               <br />
 <!--                               <p class="url">
                                 <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
@@ -305,7 +305,7 @@
                             </div>
                             <div class="message_wrapper">
                               <h4 class="heading">임준호</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                              <blockquote class="message">19층에 포차 하나 만들어 주세요~!~</blockquote>
                               <br />
 <!--                               <p class="url">
                                 <span class="fs1" aria-hidden="true" data-icon=""></span>
@@ -321,7 +321,7 @@
                             </div>
                             <div class="message_wrapper">
                               <h4 class="heading">김성민</h4>
-                              <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                              <blockquote class="message">19층에 수면실 하나 만들어 주세요~!~</blockquote>
                               <br />
 <!--                               <p class="url">
                                 <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
@@ -364,17 +364,17 @@
                           <br />
 
                           <br />
-                          <h5>SHY 의 구성요소</h5>
+                          <h5>SHY의 개발 관점</h5>
                           <ul class="list-unstyled project_files">
-                            <li><a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
+                            <li><a href=""><i class="fa fa-file-word-o"></i>1. 관리하기 쉬운 코드를 작성해라</a>
                             </li>
-                            <li><a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
+                            <li><a href=""><i class="fa fa-file-pdf-o"></i>2. 구조를 생각해라</a>
                             </li>
-                            <li><a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
+                            <li><a href=""><i class="fa fa-mail-forward"></i>3. 코딩에 앞서 계획을 세워라</a>
                             </li>
-                            <li><a href=""><i class="fa fa-picture-o"></i> Logo.png</a>
+                            <li><a href=""><i class="fa fa-picture-o"></i>4. 항상 새로운 것을 배워라</a>
                             </li>
-                            <li><a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
+                            <li><a href=""><i class="fa fa-file-word-o"></i>5. 더 멋진 디버깅 방법 배워라</a>
                             </li>
                           </ul>
                           <br />

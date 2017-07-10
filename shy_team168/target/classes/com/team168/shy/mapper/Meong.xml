@@ -22,7 +22,7 @@
 	<select id="loginEnd" parameterType="java.util.HashMap" resultType="int"> 
 		select case( select count(*)
 	                 from tbl_shymember
-	                 where status = 1 and email = #{email} and
+	                 where status in (1,168) and email = #{email} and
 	                       pwd = #{pwd} )
 	           when 1 then 1
 	           else( case(select count(*) 
@@ -42,7 +42,7 @@
        , to_char(registerdate, 'yyyy-mm-dd') as registerdate
        , myimg, myintro, birthday, gender, phone
 	   from tbl_shymember
-	   where status = 1 and email = #{email} 
+	   where status in (1,168) and email = #{email} 
 	</select>
 	
 	<!-- 로그인한 유저 로그기록 저장하기 -->
@@ -163,6 +163,7 @@
 	<select id="shyList" parameterType="java.util.HashMap" resultMap="getshyListmap">
 		select * 
 		from tbl_shymember
+		where status in (0,1)
 		order by idx desc
 	</select>
 
@@ -272,7 +273,7 @@
 		     , to_char(registerdate, 'yyyy-mm-dd hh24:mi:ss') as registerdate
 		     , status, myimg, myintro, birthday, gender, phone
 		     from tbl_shymember
-		     where status = 1
+		     where status = 168
 		     order by idx desc
 		)V
 		)T
