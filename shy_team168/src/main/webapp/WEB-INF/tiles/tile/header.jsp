@@ -111,13 +111,6 @@
    width: 480px;
 } */
 
-#ajaxresult{
-   display: table;
-    position: relative;
-    margin-left: 100px;
-    background: none;
-    cursor: pointer;
-}
 
 </style>
 
@@ -247,8 +240,21 @@
    }; // shynow END
 
    function new_shynow() {
+	   
+	     $("#shyprice").val("");
+	     $("#shypay").val("");
+		 $("#shyprice").hide();
+		 $("#shypay").hide();
+		 $("#pricecheck").hide();
+		 $("#pricecheck2").hide(); 
       location.href = "#new_shynow";
    }
+   
+   function pay_shynow() {
+	   
+	      
+    location.href = "#new_shynow";
+ }
 
    function finishpic() {
       location.href = "#";
@@ -441,6 +447,38 @@
 .header-menu-number{
 	cursor: pointer;
 }
+
+#ajaxresult{
+    display: table;
+    cursor: pointer;
+}
+
+.Alarmdiv{
+ 	position: absolute;
+    top: 45px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity:0;
+    transition: opacity 400ms ease-in;
+}
+
+.Alarmdiv:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.Alarmdiv > #ajaxresult{
+	position: absolute;
+    left: 6.5%;
+    width: 450px;
+    height: auto;
+    padding: 16px;
+    background-color: #fff;
+    overflow: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    border-radius: 5px;
+}
 </style>
 
 <script type="text/javascript">
@@ -498,8 +536,8 @@
                <c:if test="${loginuser.name!=null }">
                   <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.name }</kbd>님
                      안녕하세요
-                 </span>
-	                  <a class="btn btn-default" data-target="#layerpop" data-toggle="modal" onclick="Alarmchk();">
+                 
+                 <a href="#openAlarm"  onclick="Alarmchk();">
 			                <main rel="main" class="alarmmain">
 							  <div class="notification" >
 							    <svg viewbox="-10 0 35 35">
@@ -508,24 +546,42 @@
 							    </svg>
 							    <span class="notification--num"><span id="alarmcnt"></span></span>
 							  </div>
-							  
+							 
 							</main>
-						</a>
-						
-						<div class="modal fade" id="layerpop" >
-						  <div class="modal-dialog" id="ajaxresult">
+					</a>
+					 </span>
+					 
+						<div class="Alarmdiv" id="openAlarm">
+						  <div id="ajaxresult">
 						  </div>
-						</div>
-                
+						  </div>
+               
                </c:if>
 
                <c:if test="${loginuser.name==null }">
                   <span class="shy_topnavbar-brand">&nbsp;&nbsp;&nbsp;&nbsp;<kbd>${loginuser.email }</kbd>님
                      안녕하세요
                   </span>
-                  <a class="header-menu-number" onclick="Alarmchk();"><span id="alarmcnt"></span></a>
+                  <a href="#openAlarm"  onclick="Alarmchk();">
+			                <main rel="main" class="alarmmain">
+							  <div class="notification" >
+							    <svg viewbox="-10 0 35 35">
+							      <path class="notification--bell" d="M14 12v1H0v-1l0.73-0.58c0.77-0.77 0.81-3.55 1.19-4.42 0.77-3.77 4.08-5 4.08-5 0-0.55 0.45-1 1-1s1 0.45 1 1c0 0 3.39 1.23 4.16 5 0.38 1.88 0.42 3.66 1.19 4.42l0.66 0.58z"></path> 
+							      <path class="notification--bellClapper" d="M7 15.7c1.11 0 2-0.89 2-2H5c0 1.11 0.89 2 2 2z"></path>
+							    </svg>
+							    <span class="notification--num"><span id="alarmcnt"></span></span>
+							  </div>
+							 
+							</main>
+					</a>
+					 </span>
+					 
+						<div class="Alarmdiv" id="openAlarm">
+						  <div id="ajaxresult">
+						  </div>
+						  </div>
                </c:if>
-			  <div id="ajaxresult"> </div>
+			  
             
            </c:if> 
             
@@ -643,7 +699,15 @@
                      </select>
                      </div>
                      </div>
+                  <br>
+                  <div>
+                  <input type="text" name="shypay" id="shypay" style="width:480px; border:none; color:#f4bf42; font-size:13pt; font-style: italic;"readonly></input>
+                  </div>
                   
+                  <div style="width:480px; float: center;">
+                  <input type="text" name="shyprice" id="shyprice" style=" float:left;border:none; color:#ffd87c; font-size:13pt; font-style: italic;"readonly></input>
+                  <input type="checkbox" id="pricecheck" name="pricecheck" style="float:right;"><span style="float:right;"id="pricecheck2">&nbsp;공개&nbsp;</span>
+                  </div>
                   <input type="hidden" name="userseq" value="${loginuser.idx}" />
                   <br>
                      <textarea id="content" name="content" class="swal2-textarea"
@@ -741,9 +805,20 @@
    Alarmcnt();
 	 
    $("#ajaxresult").hide();
-   $("#ajaxresult").css("z-index", "1500");
+  /*  $("#ajaxresult").css("z-index", "1500"); */
+   $("#shyprice").hide();
+   $("#shypay").hide();
+   $("#pricecheck").hide();
+   $("#pricecheck2").hide();
    
+   $("#ajaxresult").click(function (e) {
+	   $("#ajaxresult").hide(); 
+	});
  
+	$(".alarmmain").click(function (e) {
+	   $("#ajaxresult").show(); 
+	});
+	
 });
  
 function Alarmcnt() {
@@ -764,9 +839,12 @@ function Alarmcnt() {
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수
-	            alert("error");
+	            //alert("error");
 	        }
 	   });
+	
+	setTimeout("Alarmcnt()", 3000);
+
 } 
  
 function Alarmchk() {
@@ -779,26 +857,26 @@ function Alarmchk() {
       type: "GET",
       dataType: "JSON",
       success : function (data) { 
-         var result = "<div class='modal-content'><div class='modal-header'>"
-             		+ "<button type='button' class='close' data-dismiss='modal'>×</button>"
-             		+ "<h4 class='modal-title'>알림목록</h4></div>";
+         var result = "<div class='alarm_content'>"
+             		+ "<span class='alarm_close'>×</span>"
+             		+ "<h4 class='alarm_title'>알림목록</h4></div>";
          
          var alarmno ="";	
          
          if(data.length==0){
-        	 result = result+"<div class='modal-body'>새로운 알림이 없습니다.</div></div>";
+        	 result = result+"<div class='alarm_body'>새로운 알림이 없습니다.</div></div>";
          }
          else{    		
 	         $.each(data,function(entryIndex,entry){
 	        	 var html = "";
 	        	 			if(entry.astatus==1){
-	        	 			html = "<div class='modal-body'><li  type='none'><a href='#'><span>"+entry.name+"님이 "
+	        	 			html = "<div class='alarm_body'><li  type='none'><a href='#'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li>"
 			              		 + "<input type='hidden' name='alarmno' id='alarmno' value='"+entry.alarmno+"'>"
 			              		 + "</div>";    
 	        	 			alarmno += entry.alarmno;	 
 	        	 			}else{
-	        	 			html += "<div class='modal-footer'><li  type='none'><a href='#' style='color:#ddd; font-size:10pt;'><span>"+entry.name+"님이 "
+	        	 			html += "<div class='alarm_footer'><li  type='none'><a href='#' style='color:#ddd; font-size:10pt;'><span>"+entry.name+"님이 "
 			              		 + "${loginuser.name}님의 글을 좋아요♡했습니다.<br/>("+entry.alarmdate+")</span></a></li></div>";	
 	        	 			}
 	                result += html;   
@@ -815,14 +893,14 @@ function Alarmchk() {
         
       },
         error: function() { // 에러가 발생했을 때의 콜백함수
-            alert("error");
+            //alert("error");
         }
    });
    
 }
 
 function Alarmupdate(alarmno) {
-	alert("alarmno"+alarmno);
+	//alert("alarmno"+alarmno);
 	
 	var alarmnoArr = new Array();
 	
@@ -837,7 +915,7 @@ function Alarmupdate(alarmno) {
 	      data: {alarmnoArr : alarmnoArr},
 	      success : function (data) { 
 	    	  var cnt = data.result;
-	    	  alert(cnt);
+	    	  //alert(cnt);
 	    	  if(cnt>0){
 	    		$(".notification--num").show(); 
 	    	  	$("#alarmcnt").html(cnt);
@@ -846,7 +924,7 @@ function Alarmupdate(alarmno) {
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수
-	            alert("error");
+	            //alert("error");
 	        }
 	   });
 	

@@ -721,6 +721,19 @@
      
   }
   
+  function showprice(id, price){
+	 
+	  var text = $("#sp"+id).html();
+	  
+	  if (text=="paid!"){
+	  $("#sp"+id).html(price);
+	  }
+	  
+	  else {
+		  $("#sp"+id).html("paid!");
+	  }
+	
+  }
 </script>
 </head>
 <body>
@@ -737,9 +750,13 @@
   </c:if> <c:if test="${shies!=null}">
 		<c:forEach items="${shies}" var="shies" varStatus="status">
 
-			<article class="card-60 social">
+			<article class="card-60 social" >
 				<figure>
-
+				<c:if test="${shies.shypay!=null }">
+<span class="ribbon-buy">
+        <img src="<%=request.getContextPath() %>/resources/images/ddung/pig.svg" style="margin-top:10px;"/>
+      </span>
+      </c:if>
 					<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}" alt="shy" id="nike">
 
 				</figure>
@@ -748,7 +765,23 @@
 
 					<header>
 						<p class="user">
-							<a class="button follow" href="#" title="Follow"> Follow </a>
+						<c:if test="${shies.shypay!=null }">
+						<c:if test="${shies.shyprice!=null }">
+									
+						<a class="button follow" id="sp${shies.snsno }" onclick="showprice('${shies.snsno}','${shies.shyprice}');">paid!</a><!--title="Follow"  -->
+			
+						</c:if>
+						
+						<c:if test="${shies.shyprice==null }">
+									
+						<a class="button follow" id="sp${shies.snsno }" onclick="showprice('${shies.snsno}','미공개');">paid!</a><!--title="Follow"  -->
+			
+						</c:if>
+						
+					
+						
+						</c:if>
+							
 							<c:if test="${shies.myimg != null}">
 								<img class="avatar-32"
 									src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
@@ -768,9 +801,12 @@
 
 								</span>
 							</a>
-							</strong> <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과
-								함께
-							</span>
+							</strong> <span>${shies.sdatedtime} </span>
+							<c:if test="${shies.stagfollow!=null }">
+							<br>${shies.stagfollow} 님과 함께
+							</c:if>
+							<br> 
+							
 						</p>
 					</header>
 
