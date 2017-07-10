@@ -761,5 +761,71 @@ public class Pa_Controller {
 		
 		return resultMap;
 	}
-    
+
+	// ===== 그룹 개요 페이지 요청하기 ===== //
+	@RequestMapping(value = "/mygroups_summary.shy", method = { RequestMethod.GET })
+	public String goGrpSummary(HttpServletRequest req) {
+
+		String str_groupno = req.getParameter("groupno"); // 해당 그룹번호 가져오기
+		// System.out.println("str_groupno="+str_groupno); // 확인용
+
+		if (str_groupno != null) {
+			int groupno = Integer.parseInt(str_groupno);
+			HashMap<String, String> grpvomap = service.getGroupDetail(groupno);
+			req.setAttribute("grpvomap", grpvomap);
+
+			// ===== 그룹 가입멤버 가져오기 =====
+			List<HashMap<String, String>> gmemberList = service.getGroupMember(groupno);
+			req.setAttribute("gmemberList", gmemberList);
+
+			// ===== 그룹글 목록 가져오기 =====
+			List<HashMap<String, String>> gboardList = service.getGroupBoard(groupno);
+			req.setAttribute("gboardList", gboardList);
+
+			return "pa/mygroups_summary.tiles";
+
+		} else {
+			req.setAttribute("title", "그룹보기");
+			req.setAttribute("type", "error");
+			req.setAttribute("msg", "잘못된 접근입니다!");
+			req.setAttribute("loc", "mygroups.shy");
+
+			return "ddung_alert.notiles";
+		}
+
+	}
+
+	// ===== 그룹 채팅 페이지 요청하기 ===== //
+	@RequestMapping(value = "/mygroups_chat.shy", method = { RequestMethod.GET })
+	public String goGrpChat(HttpServletRequest req) {
+
+		String str_groupno = req.getParameter("groupno"); // 해당 그룹번호 가져오기
+		// System.out.println("str_groupno="+str_groupno); // 확인용
+
+		if (str_groupno != null) {
+			int groupno = Integer.parseInt(str_groupno);
+			HashMap<String, String> grpvomap = service.getGroupDetail(groupno);
+			req.setAttribute("grpvomap", grpvomap);
+
+			// ===== 그룹 가입멤버 가져오기 =====
+			List<HashMap<String, String>> gmemberList = service.getGroupMember(groupno);
+			req.setAttribute("gmemberList", gmemberList);
+
+			// ===== 그룹글 목록 가져오기 =====
+			List<HashMap<String, String>> gboardList = service.getGroupBoard(groupno);
+			req.setAttribute("gboardList", gboardList);
+
+			return "pa/mygroups_chat.tiles";
+
+		} else {
+			req.setAttribute("title", "그룹보기");
+			req.setAttribute("type", "error");
+			req.setAttribute("msg", "잘못된 접근입니다!");
+			req.setAttribute("loc", "mygroups.shy");
+
+			return "ddung_alert.notiles";
+		}
+
+	}
+	
 }

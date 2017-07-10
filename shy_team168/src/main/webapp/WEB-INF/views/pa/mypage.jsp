@@ -98,9 +98,8 @@ $.ajaxSetup({
                        $.each(data,function(entryIndex,entry){
                     		
                     	   if(data.length >0){
-                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px; border-radius: 50%;'/>"
                                	 	 + "<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
-                  	
                   			Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
                     	   }else{
                     		   Result = "<span style='cursor: pointer;'>팔로우가 없습니다.</span><br/>";
@@ -357,7 +356,7 @@ function moreList(){ // 더 읽기
             	
       		  var  html = "<div class='mycard myIncard'><div class='flex-content'>";
       		  
-      	     			  if(entry.simage!=0){ // 이미지가 있으면
+      	     			  if(entry.imageaddr!=null){ // 이미지가 있으면
       	     				html += "<figure class='snip1584'><img src='/shy/resources/images/shydb/"+entry.imageaddr+"'>"
       	     				     +  "<figcaption><h5>"+entry.scontent+"</h5><h3>"
       	     		    		 + "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')' id='bt-love"+entry.snsno+"'> Love </a>" 
@@ -513,7 +512,7 @@ function moreList(){ // 더 읽기
   <div class="mycard myIncard">
   	<div class="flex-content">
      
-    <c:if test="${shies.simage!=0 }">
+    <c:if test="${shies.imageaddr!=null }">
       <figure class="snip1584"><img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" >
   		<figcaption>
     	<h5><p id="hashcheck${status.index}" class="hashcheck">${shies.scontent }</p></h5>
@@ -528,7 +527,7 @@ function moreList(){ // 더 읽기
 	  </figure>
       
     </c:if> 
-  	<c:if test="${shies.simage==0 }">
+  	<c:if test="${shies.imageaddr==null }">
    
       <div style="min-height: 125px; margin-top: 100px; position: relative;">
        	<p id="hashcheck${status.index}" class="hashcheck" >${shies.scontent }</p>
