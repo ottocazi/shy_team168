@@ -40,7 +40,7 @@
 	<select id="getLoginMember" parameterType="String" resultType="com.team168.shy.model.ShyMemberVO"> 
        select idx, name, email, pwd
        , to_char(registerdate, 'yyyy-mm-dd') as registerdate
-       , myimg, myintro, birthday, gender, phone
+       , myimg, myintro, birthday, gender, phone , status
 	   from tbl_shymember
 	   where status in (1,168) and email = #{email} 
 	</select>
