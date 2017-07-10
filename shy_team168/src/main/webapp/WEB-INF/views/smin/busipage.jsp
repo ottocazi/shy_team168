@@ -236,6 +236,12 @@
 		$("#starcounter").val(count);
 	}
 	
+	
+	
+	
+	
+	
+	// 구글맵 함수
 	// 검색어의 위도, 경도
 	var centerLat = '${geomap.latitude}';
 	var centerLng = '${geomap.longditude}';
@@ -274,7 +280,7 @@
 		  setMarkers(map);
 		  
 		  
-		} // end of 구글멥
+		}
 		
 		
 		/* 
@@ -317,7 +323,7 @@
 		google.maps.event.addDomListener(window, 'load', initialize);
 	
 		
-		
+		 // end of 구글멥
 		
 		
 		
@@ -453,8 +459,11 @@
     	
     	<!-- 구글맵 해버리기~  Google map-->
 
-
+<c:if test="${geomap.latitude != 'X'}">
 <div id="googleMap" style="width:100%; height:300px;"></div>
+</c:if>
+
+
 <br><br>
 
 
