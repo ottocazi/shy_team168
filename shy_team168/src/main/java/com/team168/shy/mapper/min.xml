@@ -40,7 +40,7 @@
 	 <select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
 	    select *
         from tbl_shymember
-        where status = 1
+        where 1 = 1 and status in (1, 168)
           <if test="search != null">
          and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
 		</if>
@@ -147,7 +147,8 @@
 	
 	    select *
         from tbl_geo
-        where seq = #{geoidx}
+        where seq = #{geoidx} 
+        
 		
 	</select>
 	
@@ -213,6 +214,7 @@
 		        and (longditude between substr(to_char(to_number(#{longditude}) - 0.022), 0, 9) and substr(to_char(to_number(#{longditude}) + 0.022), 0, 9))
 		   )
 	  where distance <![CDATA[<=]]> to_number(#{distance})
+	  
     </select>
 	
 	 
