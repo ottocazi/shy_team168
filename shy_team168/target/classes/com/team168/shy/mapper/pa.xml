@@ -498,6 +498,17 @@
       	FROM TBL_SHYMEMBER
 		WHERE IDX = #{myIdx}
 	</select>
-   
+	
+	<!-- ===== 팔로우상태 가져오기 =====   -->
+	<!-- <select id="followCheck" parameterType="java.util.HashMap" resultType="int"> 
+      	select case( select count(*) from tbl_follow where status=1 and fk_idxflw=#{myIdx} and fk_idxflwed = #{folwidx}) when 1 then 1 
+        else ( case (
+          select count(*) from tbl_follow where status=1 and fk_idxflw=#{myIdx} and fk_idxflwed = #{folwidx}
+         ) when 0 then 0 
+        else -1 end ) end as followcheck
+		from dual
+	</select> -->
+	
+
     
 </mapper>	

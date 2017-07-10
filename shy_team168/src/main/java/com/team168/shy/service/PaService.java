@@ -202,4 +202,10 @@ public class PaService {
 		return mymap;
 	}
 
+	// ===== 팔로우상태 가져오기 ===== //
+	/*public int getFollowing(HashMap<String, Object> pafollow) {
+		int n = dao.getFollowing(pafollow);
+		return n;
+	}*/
+
 }

@@ -36,18 +36,31 @@ public class Pa_Controller {
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req,HttpSession session) {
 		String myIdx = "";
+		/*int followcheck = 0;*/
+		ShyMemberVO loginuser= null;
 		
-			if(req.getParameter("idx") == null){
+		
+		
+			if(req.getParameter("idx") != null){
+				myIdx = req.getParameter("idx");
 				
-				ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
-				myIdx = Integer.toString(loginuser.getIdx());
-				req.setAttribute("loginuser", loginuser);
 				 
 			}else{
+				loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+				myIdx = Integer.toString(loginuser.getIdx());
+				req.setAttribute("loginuser", loginuser);
+		        
+				/*mymap.put("myIdx", myIdx);
 				
-		        myIdx = req.getParameter("idx");
-				
+				if(req.getParameter("idx") != null){
+	   				String folwidx = req.getParameter("idx");
+	   				mymap.put("folwidx", folwidx);
+	   				
+	   				followcheck = service.getFollowing(mymap);
+				}*/
 			}
+			
+			/*req.setAttribute("followcheck",followcheck);*/
 			
 			// 기본 페이지번호를 1으로 설정하고
 	        int pageNo = 1;
@@ -70,11 +83,12 @@ public class Pa_Controller {
 			// 팔로우 수 가져오기
 	        int fk_idxflwedcnt = service.getMyflwcnt(myIdx);
 	        req.setAttribute("fk_idxflwedcnt", fk_idxflwedcnt);
-			
-			HashMap<String, Object> mymap = new HashMap<String, Object>();
+	        
+	        HashMap<String, Object> mymap = new HashMap<String, Object>();
 			mymap.put("myIdx", myIdx);
 			mymap.put("start", String.valueOf(start));
 			mymap.put("end", String.valueOf(end));
+			
 			
 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
 			List <HashMap<String, String>> myshyList = service.getMyshy(mymap);
@@ -697,7 +711,7 @@ public class Pa_Controller {
 	@RequestMapping(value = "/myfollowList.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
-		String myIdx ="";
+		String myIdx =""; 
 		
 		if(req.getParameter("idx")!=null){
 			myIdx = req.getParameter("idx");
@@ -706,10 +720,10 @@ public class Pa_Controller {
    			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
    			myIdx = Integer.toString(loginuser.getIdx());
    		}
-
-		System.out.println("flwmyIdx="+myIdx);
+		
 		List<HashMap<String, String>> myflwList = service.getMyfollows(myIdx);
-
+		
+		
 		return myflwList;
 
 	}

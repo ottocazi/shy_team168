@@ -72,10 +72,9 @@ $.ajaxSetup({
     
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
-    	//countComment();
+    	 //countComment();
    		
         getLike();
-        follow();
         
         $('#showFlwList').hide();
         
@@ -297,46 +296,12 @@ $.ajaxSetup({
         
     }
   
-	function follow() {
-   		
-   		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
-   		
-   		$.ajax({
-   			url: "/shy/pafollow.shy",
-    		type: "GET",
-    		dataType: "JSON", 
-    		success: function(data){
-    			//alert("follow");
-    			var html;
-    			$.each(data, function(entryIndex, entry){
-	    			
-	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
-					if(FOLLOWCHECK == 1){
-						html = " <button class='bt' onClick='unFollow("+ entry.IDX + ");'>UnFollow</button>";
-					}
-					else {
-						html = "<button class='bt' onClick='goFollow("+ entry.IDX + ");'>Follow</button>";
-					}
-					
-					$("#follow").html(html);
-    				
-    			});
-    		//	getCommentList();
-    		},
-    		error: function(){
- 				  alert("follow() error!"); 
- 		    }
-   		});
-    }; 
-    
 </script>
 <script>
 var pageNo = 1;
 
 function moreList(){ // 더 읽기	
-	var idx = "";
-	
-	<c:if></c:if>
+	var idx = "${mymap.idx}";
 	
 	pageNo += 1;
 	
@@ -389,7 +354,7 @@ function moreList(){ // 더 읽기
       	 	});
             	 
             	 
-	             goLike(idx,likeseq,seqcolum);
+	             //goLike(idx,likeseq,seqcolum);
 	             //goUnlike(idx,likeseq,seqcolum);
 	            
           	////
@@ -463,7 +428,12 @@ function moreList(){ // 더 읽기
          </div>
          <div class="myIntro">
             <h2 style="display: -webkit-inline-box;">${mymap.email}</h2>
-            <div id="follow"></div>
+            <c:if test="${sessionScope.loginuser.idx eq  mymap.idx}">
+            </c:if>
+            <c:if test="${sessionScope.loginuser.idx ne  mymap.idx}">
+            <button class='bt' onClick='goFollow("");'>Follow</button>
+            </c:if>
+             <!--  <button class='bt' onClick='unFollow("");'>UnFollow</button> -->
             <hr>
              <span>게시물&nbsp; 
                <c:if test="${myshyCount==0}" >
