@@ -591,9 +591,9 @@
 
 
 
-            <input type="text" name="search" id="search" size="20px"
+            <input type="text" name="search" id="search" size="20px" 
                style="border-radius: 10px; height: 30px;" class="" />
-            &nbsp;<button type="button"  onClick="goSearch();" style="border: none; background-color: white; font-size: 12pt;" 
+            &nbsp;<button type="submit"  onClick="goSearch();" style="border: none; background-color: white; font-size: 12pt;" 
                ><i class="fa fa-search" aria-hidden="true"></i></button>
          </form>
          
@@ -609,8 +609,11 @@
                   </button>
                   <div class="dropdown-content">
                      <a href="<%=request.getContextPath()%>/mypage.shy">my shy</a> <a
-                        href="<%=request.getContextPath()%>/myInfoEdit.shy">정보수정</a> <a
-                        href="#">Link3</a>
+                        href="<%=request.getContextPath()%>/myInfoEdit.shy">내 정보 조회/수정</a> 
+                        <a
+                        href="<%=request.getContextPath()%>/mygroups.shy">group shy</a>
+                        <a
+                        href="<%=request.getContextPath()%>/logout.shy">로그아웃</a>
                   </div>
                </div>
             </li>
@@ -624,8 +627,7 @@
                         style="color: #F7786B;"></i>
                   </button>
                   <div class="dropdown-content">
-                     <a href="#">팔로워</a> <a
-                        href="<%=request.getContextPath()%>/mygroups.shy">그룹</a> <a
+                     <a href="#">팔로워</a>  <a
                         href="#">Link3</a>
                   </div>
                </div>
@@ -648,23 +650,29 @@
                data-toggle="dropdown"> <i class="fa fa-credit-card fa-2x"
                   aria-hidden="true" style="color: #F2552C;"></i> <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="<%=request.getContextPath()%>/banking.shy">shy banking</a></li>
+                  <li><a href="<%=request.getContextPath()%>/auth.shy">계좌 등록/확인</a></li>
+                  
                   <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">api관리메뉴</a></li>
                </ul></li>
+               
+               <c:if test="${loginuser.status==168 }">
 
             <li class="dropdown"><a href="#" class="dropdown-toggle"
                data-toggle="dropdown"><i class="fa fa-map-marker fa-2x"
                   aria-hidden="true" style="color: #B76BA3;"></i> <b class="caret"></b></a>
                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="<%=request.getContextPath()%>/admin.shy">운영자 메인</a></li>
+                  <li><a href="<%=request.getContextPath()%>/tongke.shy">통계1</a></li>
+                  <li><a href="<%=request.getContextPath()%>/bartongke.shy">통계2</a></li>
+                  <li><a href="<%=request.getContextPath()%>/pietongke.shy">통계2</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <li><a href="<%=request.getContextPath()%>/admin.shy">회원관리</a></li>
+                  <li><a href="<%=request.getContextPath()%>/adminshymemo.shy">글관리</a></li>
                </ul></li>
+               
+               </c:if>
          </ul>
 
       
