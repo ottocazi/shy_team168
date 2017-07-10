@@ -52,10 +52,10 @@
 	</insert>	
 
 	<!-- 로그아웃한 유저 로그기록 저장하기(미완성) -->
-	<insert id="logoutinsert" parameterType="java.util.HashMap">
+<!-- 	<insert id="logoutinsert" parameterType="java.util.HashMap">
 		insert into tbl_log(logno, fk_idx, status, logtime, logip) 
 		values(seq_tbl_log.nextval, #{user_seq}, 0, to_date(#{today}, 'yyyy-mm-dd hh24:mi:ss'), #{user_ip})
-	</insert>	
+	</insert>	 -->
 	
 	<!-- 통계를 위한 셀렉트문 -->	
 	<select id="gettotaluser" resultType="String">

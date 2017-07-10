@@ -44,11 +44,11 @@ public class Meong_DAO{
 		
 	}
 	
-	// 로그아웃한 회원 로그기록 인서트해주는 메소드
+/*	// 로그아웃한 회원 로그기록 인서트해주는 메소드
 	public void logoutinsert(HashMap<String, Object> map) {
 		sqlsession.insert("mangu.logoutinsert", map);
 		
-	}
+	}*/
 	
 	// 관리자페이지 총사용자수 보여주는 메소드
 	public String gettotaluser() {
