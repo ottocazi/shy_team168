@@ -802,7 +802,7 @@
  $(document).ready(function(){
    $(".notification--num").hide(); 
 	
-   //Alarmcnt();
+   Alarmcnt();
 	 
    $("#ajaxresult").hide();
   /*  $("#ajaxresult").css("z-index", "1500"); */
@@ -839,9 +839,12 @@ function Alarmcnt() {
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수
-	            alert("error");
+	            //alert("error");
 	        }
 	   });
+	
+	setTimeout("Alarmcnt()", 3000);
+
 } 
  
 function Alarmchk() {
@@ -890,7 +893,7 @@ function Alarmchk() {
         
       },
         error: function() { // 에러가 발생했을 때의 콜백함수
-            alert("error");
+            //alert("error");
         }
    });
    
@@ -921,7 +924,7 @@ function Alarmupdate(alarmno) {
 	    	  }
 	      },
 	        error: function() { // 에러가 발생했을 때의 콜백함수
-	            alert("error");
+	            //alert("error");
 	        }
 	   });
 	

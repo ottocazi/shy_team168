@@ -80,11 +80,11 @@ $.ajaxSetup({
         $('#showFlwList').hide();
         
         
-        $('#showFlwList').click(function(e){
+        $('#showFlwList').click(function(){
            $('#showFlwList').hide(); 
         });
        
-        $('.flwList').click(function(e){
+        $('.flwList').click(function(){
         	 var idx = "${mymap.idx}";
         	 
             // 팔로우목록 Ajax 불러오기
@@ -95,19 +95,19 @@ $.ajaxSetup({
                  data: {idx:idx},
                  success: function(data) { // 성공했을 때의 처리 콜백함수
                        var Result="";
-                    
-                       if(data.lenght == null){  
-                   		Result = "<span style='color: #000;cursor: pointer;'>&nbsp;&nbsp;팔로우가 없습니다&nbsp;&nbsp;</span>";
-                       }else{
-                    	   
                        $.each(data,function(entryIndex,entry){
-                    	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
-                        	 	 + "<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
-           	
-           					Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
                     		
-                       });
-                       }
+                    	   if(data.length >0){
+                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+                               	 	 + "<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
+                  	
+                  			Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
+                    	   }else{
+                    		   Result = "<span style='cursor: pointer;'>팔로우가 없습니다.</span><br/>";
+                    	   }
+                  			
+                 		});
+                      
                        $("#showFlwList").html(Result).show(); 
                  },
                  error: function() { // 에러가 발생했을 때의 콜백함수

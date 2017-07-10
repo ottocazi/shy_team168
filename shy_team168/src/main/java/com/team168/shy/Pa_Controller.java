@@ -707,6 +707,7 @@ public class Pa_Controller {
    			myIdx = Integer.toString(loginuser.getIdx());
    		}
 
+		System.out.println("flwmyIdx="+myIdx);
 		List<HashMap<String, String>> myflwList = service.getMyfollows(myIdx);
 
 		return myflwList;
@@ -743,7 +744,7 @@ public class Pa_Controller {
 		resultMap.put("result", result);
 		
 		String[] alarmnoArr = req.getParameterValues("alarmnoArr");
-		System.out.println("alarmnoArr="+alarmnoArr);
+		//System.out.println("alarmnoArr="+alarmnoArr);
 		
 		resultMap.put("alarmnoArr", alarmnoArr);
 		resultMap.put("myIdx", myIdx);
