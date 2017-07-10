@@ -74,10 +74,16 @@ public class Meong_DAO{
 		return todaytotal;
 	}
 	
-	// 관리자페이지 오늘 게시물 수 보여주는 메소드
+	// 관리자페이지 오늘 회원 게시물 수 보여주는 메소드
 	public String gettodaytotalshymemo(HashMap<String, Object> map) {
 		String todaytotalshymemo = sqlsession.selectOne("mangu.gettodaytotalshymemo", map);
 		return todaytotalshymemo;
+	}
+	
+	// 관리자페이지 오늘 그룹 게시물 수 보여주는 메소드
+	public String gettodaytotalgrpboard(HashMap<String, Object> map) {
+		String todaytotalgrpboard = sqlsession.selectOne("mangu.gettodaytotalgrpboard", map);
+		return todaytotalgrpboard;
 	}
 	
 	// 관리자페이지 회원목록 보여주는 메소드
@@ -143,8 +149,8 @@ public class Meong_DAO{
 		return tkList2;
 	}
 
-	public List<HashMap<String, String>> groupsearch(HashMap<String, String> map, RowBounds rowBounds) {
-		List<HashMap<String, String>> adminList = sqlsession.selectList("mangu.getadminList", map, rowBounds);
+	public List<HashMap<String, String>> getadminList(HashMap<String, String> map) {
+		List<HashMap<String, String>> adminList = sqlsession.selectList("mangu.getadminList", map);
 		return adminList;
 	}
 
@@ -217,6 +223,12 @@ public class Meong_DAO{
 		List<HashMap<String, Object>> doughnutList = sqlsession.selectList("mangu.getdoughnutList");
 		return doughnutList;
 	}
+
+	public int getTotalAdminCount(HashMap<String, String> map) {
+		int count = sqlsession.selectOne("mangu.getTotalAdminCount", map);
+		return count;
+	}
+
 
 
 }
