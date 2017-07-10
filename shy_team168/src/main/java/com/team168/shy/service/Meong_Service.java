@@ -37,10 +37,10 @@ public class Meong_Service implements Interface_CommonService  {
 		
 	}
 	
-	public void logoutinsert(HashMap<String, Object> map) {
+/*	public void logoutinsert(HashMap<String, Object> map) {
 		dao.logoutinsert(map);
 		
-	}
+	}*/
 
 	public String gettotaluser() {
 		String totaluser = dao.gettotaluser();

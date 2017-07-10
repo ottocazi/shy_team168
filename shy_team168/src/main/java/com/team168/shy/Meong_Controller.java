@@ -176,11 +176,18 @@ public class Meong_Controller {
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
     public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
-    	/*    	
-    	String email = req.getParameter("email");
+    	    	
+    	/*String email = req.getParameter("email");
 		loginuser = service.getLoginMember(email);
-		session.setAttribute("loginuser", loginuser);
-    	*/
+		session.setAttribute("loginuser", loginuser);*/
+		
+		/*HttpSession user = req.getSession(false);
+    	
+		loginuser = (ShyMemberVO)user;
+		System.out.println(user.getClass());*/
+    	
+    	
+/*    	
     	HashMap<String, Object> map = new HashMap<String, Object>();
     	
     	InetAddress inetAddress = InetAddress.getLocalHost();
@@ -198,7 +205,7 @@ public class Meong_Controller {
    	 	map.put("today", today);
    	 	System.out.println("today 는 "+today);
    	 	
-   	 	service.logoutinsert(map);
+   	 	service.logoutinsert(map);*/
 
     	session.invalidate();
     	
