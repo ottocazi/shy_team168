@@ -1,5 +1,21 @@
 @CHARSET "UTF-8";
 
+#hotGrp , #newGrp{
+	color: #999;
+	background: #fff;
+	border: 1px solid #999;
+	font-size: 20px;
+    margin: 50px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#hotGrp:hover , #newGrp:hover{
+	color: #000;
+	background: #eee;
+	font-weight: 600;
+}
+
 #mygroups a{
 	text-decoration: none;
 	cursor:pointer; 
@@ -96,7 +112,7 @@
 .grp_box { 
 	overflow: hidden;
 	width:220px;
-	height:auto;
+	min-height: 280px;
 	text-align:left;
 	position:relative;
 	border: 1px solid #ddd;

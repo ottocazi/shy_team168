@@ -60,8 +60,13 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	
-	<!-- ===== #20.  jackson을 사용하기 위해 빈을 등록한다. ===== -->
+	<!-- ===== #20.  jackson을 사용하기 위해 빈을 등록한다. =====  -->
 	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/> 
 	
+	<!-- #스프링버전 4.x 마이그레이션13
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>  
+	 Spring 프레임워크 4.1 이상부터는 Jackson 1.8/1.9의 지원을 중단해 버렸다.  
+		  그러므로 스프링 프레임워크 버전을 4.3.4.RELEASE 으로 변경하였을 경우 위와 같이 변경된 클래스명을 사용해야함.
+	-->
 		
 </beans>
