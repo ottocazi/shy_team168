@@ -247,8 +247,21 @@
    }; // shynow END
 
    function new_shynow() {
+	   
+	     $("#shyprice").val("");
+	     $("#shypay").val("");
+		 $("#shyprice").hide();
+		 $("#shypay").hide();
+		 $("#pricecheck").hide();
+		 $("#pricecheck2").hide(); 
       location.href = "#new_shynow";
    }
+   
+   function pay_shynow() {
+	   
+	      
+    location.href = "#new_shynow";
+ }
 
    function finishpic() {
       location.href = "#";
@@ -643,7 +656,15 @@
                      </select>
                      </div>
                      </div>
+                  <br>
+                  <div>
+                  <input type="text" name="shypay" id="shypay" style="width:480px; border:none; color:#f4bf42; font-size:13pt; font-style: italic;"readonly></input>
+                  </div>
                   
+                  <div style="width:480px; float: center;">
+                  <input type="text" name="shyprice" id="shyprice" style=" float:left;border:none; color:#ffd87c; font-size:13pt; font-style: italic;"readonly></input>
+                  <input type="checkbox" id="pricecheck" name="pricecheck" style="float:right;"><span style="float:right;"id="pricecheck2">&nbsp;공개&nbsp;</span>
+                  </div>
                   <input type="hidden" name="userseq" value="${loginuser.idx}" />
                   <br>
                      <textarea id="content" name="content" class="swal2-textarea"
@@ -742,6 +763,10 @@
 	 
    $("#ajaxresult").hide();
    $("#ajaxresult").css("z-index", "1500");
+   $("#shyprice").hide();
+   $("#shypay").hide();
+   $("#pricecheck").hide();
+   $("#pricecheck2").hide();
    
  
 });
