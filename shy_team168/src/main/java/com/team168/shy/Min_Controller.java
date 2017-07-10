@@ -51,23 +51,36 @@ public class Min_Controller {
 		double distance = 1.2;
 		geomap.put("distance", Double.toString(distance));
 		
-		List <HashMap<String, String>>  selectNearMap = service.nearMap(geomap);
+		if(geomap.get("latitude").equalsIgnoreCase("X")){
+			
+		}
 		
-		System.out.println("selectNearMap.size() : " + selectNearMap.size());
+		else{
+			List <HashMap<String, String>>  selectNearMap = service.nearMap(geomap);
+			selectNearMap.add(0, geomap);
+			req.setAttribute("selectNearMap", selectNearMap);
+		}
 		
-		selectNearMap.add(0, geomap);
 		
-		System.out.println("selectNearMap.size() : " + selectNearMap.size());
+		/*System.out.println("selectNearMap.size() : " + selectNearMap.size());
 		
-		req.setAttribute("selectNearMap", selectNearMap);
 		
-		System.out.println("selectNearMap[0] : " + selectNearMap.get(0).get("latitude"));
+		
+		System.out.println("selectNearMap.size() : " + selectNearMap.size());*/
+		
+		
+		
+		
+		
+		
+		
 		
 		req.setAttribute("geomap", geomap);
 		req.setAttribute("geolist", geolist);
 		
 		 
-	
+		/*System.out.println("selectNearMap[0] : " + selectNearMap.get(0).get("latitude"));*/
+		
 		return "smin/busipage.tiles";
     	
     }

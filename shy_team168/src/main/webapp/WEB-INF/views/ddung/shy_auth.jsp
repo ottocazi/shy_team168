@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>API 로컬테스트 페이지</title>
-<link rel="stylesheet" type="text/css"
+<%-- <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/css/bootstrap.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/css/bootstrap-theme.css">
@@ -14,7 +14,8 @@
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/jquery/jquery-2.2.2.min.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
-<script type="text/javascript"
+ --%>
+ <script type="text/javascript"
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/js/modal.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/css/common.css">

@@ -64,7 +64,7 @@
                   <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
-                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
                    <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
@@ -74,11 +74,11 @@
                       <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
                     </ul>
-                  </li>
+                  </li> --%>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
@@ -250,10 +250,10 @@
                             <h4 class="brief"><i>백기현</i></h4>
                             <div class="left col-xs-7">
                               <h2>대표이사</h2>
-                              <p><strong>About: </strong> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                              <p><strong>부서: </strong> 총괄 / Coffee Lover </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-7864-1234</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -263,12 +263,12 @@
                           <div class="col-xs-12 bottom text-center">
                             <div class="col-xs-12 col-sm-6 emphasis">
                               <p class="ratings">
-                                <a>4.0</a>
+                                <a>5.0</a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                <a href="#"><span class="fa fa-star"></span></a>
                               </p>
                             </div>
                             <div class="col-xs-12 col-sm-6 emphasis">
@@ -288,10 +288,10 @@
                             <h4 class="brief"><i>서은총</i></h4>
                             <div class="left col-xs-7">
                               <h2>부장</h2>
-                              <p><strong>About: </strong> Web Designer / UI. </p>
+                              <p><strong>부서: </strong> Web Developer </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-4687-1348</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -326,10 +326,10 @@
                             <h4 class="brief"><i>임준호</i></h4>
                             <div class="left col-xs-7">
                               <h2>부장</h2>
-                              <p><strong>About: </strong> Web Designer / UI. </p>
+                              <p><strong>부서: </strong> Web Developer </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-7653-4576</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -364,10 +364,10 @@
                             <h4 class="brief"><i>김용명</i></h4>
                             <div class="left col-xs-7">
                               <h2>대리</h2>
-                              <p><strong>About: </strong> Web Designer / UI. </p>
+                              <p><strong>부서: </strong> Web Developer </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-1637-8654</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -377,11 +377,11 @@
                           <div class="col-xs-12 bottom text-center">
                             <div class="col-xs-12 col-sm-6 emphasis">
                               <p class="ratings">
-                                <a>4.0</a>
+                                <a>2.0</a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
+                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                <a href="#"><span class="fa fa-star-o"></span></a>
                                 <a href="#"><span class="fa fa-star-o"></span></a>
                               </p>
                             </div>
@@ -402,10 +402,10 @@
                             <h4 class="brief"><i>박윤진</i></h4>
                             <div class="left col-xs-7">
                               <h2>차장</h2>
-                              <p><strong>About: </strong> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                              <p><strong>부서: </strong> Web Developer </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-2498-6447</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -415,11 +415,11 @@
                           <div class="col-xs-12 bottom text-center">
                             <div class="col-xs-12 col-sm-6 emphasis">
                               <p class="ratings">
-                                <a>4.0</a>
+                                <a>3.0</a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
+                                <a href="#"><span class="fa fa-star-o"></span></a>
                                 <a href="#"><span class="fa fa-star-o"></span></a>
                               </p>
                             </div>
@@ -440,10 +440,10 @@
                             <h4 class="brief"><i>김성민</i></h4>
                             <div class="left col-xs-7">
                               <h2>대리</h2>
-                              <p><strong>About: </strong> Web Designer / UI. </p>
+                              <p><strong>부서: </strong> Web Developer </p>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: </li>
-                                <li><i class="fa fa-phone"></i> Phone #: </li>
+                                <li><i class="fa fa-building"></i> Address: 당산 이레빌딩 19층</li>
+                                <li><i class="fa fa-phone"></i> Phone #: 010-2498-6447</li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -453,11 +453,11 @@
                           <div class="col-xs-12 bottom text-center">
                             <div class="col-xs-12 col-sm-6 emphasis">
                               <p class="ratings">
-                                <a>4.0</a>
+                                <a>3.0</a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
                                 <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
+                                <a href="#"><span class="fa fa-star-o"></span></a>
                                 <a href="#"><span class="fa fa-star-o"></span></a>
                               </p>
                             </div>

@@ -124,7 +124,7 @@ function goday(){
                   <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
-                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
                    <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
@@ -134,11 +134,11 @@ function goday(){
                       <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
                      </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
                     </ul>
-                  </li>
+                  </li> --%>
                   <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
@@ -278,7 +278,7 @@ function goday(){
                 <h3 style="color: red;">${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h3>
               </div>
 
-              <div class="title_right">
+<!--               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
@@ -287,7 +287,7 @@ function goday(){
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <div class="clearfix"></div>
@@ -297,14 +297,6 @@ function goday(){
                 <div class="x_panel_ym">
                   <div class="x_title">
                     <h2>시간대별 LINE 그래프</h2>
-                    
-<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
-
-                    <input type="date" required="required" name="today" value="${today2}"/>
-                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
-                    <button type="button" onClick="goday();">확인</button>
-</form>
-
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -322,6 +314,13 @@ function goday(){
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+                  <form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
+					<h2 style="text-align: right;">날짜별 보기
+                    <input type="date" required="required" name="today" value="${today2}"/>
+                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
+                    <button type="button" onClick="goday();">확인</button>
+                    </h2>
+				  </form>
                   <div class="x_content" >
                     <canvas id="lineChart_ym"></canvas>
                   </div>
