@@ -160,40 +160,40 @@ function gobankshy(number){
 				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(1);"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 7일 오후 3시 18분 </td><td style="border-left: 1px solid #ddd;" class="payprice">카카오택시</td><td style="border-left: 1px solid #ddd;">8,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 7일 오후 3시 18분 </td><td style="border-left: 1px solid #ddd;" class="payplace2">카카오택시</td><td style="border-left: 1px solid #ddd;" id="payprice2">8,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(2);"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 5일 오후  6시 55분 </td><td style="border-left: 1px solid #ddd;" class="payprice">오레노라멘</td><td style="border-left: 1px solid #ddd;">7,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 5일 오후  6시 55분 </td><td style="border-left: 1px solid #ddd;" class="payplace3">오레노라멘</td><td style="border-left: 1px solid #ddd;" id="payprice3">7,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(3);"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 3일 오후 12시 33분 </td><td style="border-left: 1px solid #ddd;" class="payprice">버거킹 당산역점</td><td style="border-left: 1px solid #ddd;">5,100원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 3일 오후 12시 33분 </td><td style="border-left: 1px solid #ddd;" class="payplace4">버거킹 당산역점</td><td style="border-left: 1px solid #ddd;" id="payprice4">5,100원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(4);"></i></td>
 				                </tr>
 				                <tr>
-				                <td>2017년 7월 3일 오전 1시 15분 </td><td style="border-left: 1px solid #ddd;" class="payprice">세븐일레븐 능안공원점</td><td style="border-left: 1px solid #ddd;">1,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></td>
+				                <td>2017년 7월 3일 오전 1시 15분 </td><td style="border-left: 1px solid #ddd;" class="payplace5">세븐일레븐 능안공원점</td><td style="border-left: 1px solid #ddd;" id="payprice5">1,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(5);" ></i></td>
 				                </tr>
 				                <tr class="payhidden">
-				                <td>2017년 7월 2일 오후 2시 56분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">132,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 2일 오후 2시 56분 </td><td style="border-left: 1px solid #ddd;" class="payplace6">테스트</td><td style="border-left: 1px solid #ddd;" id="payprice6">132,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(6);"></i></td>
 				                </tr>
 				                <tr class="payhidden">
-				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">9,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payplace7">테스트</td><td style="border-left: 1px solid #ddd;" id="payprice7">9,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(7);"></i></td>
 				                </tr>
 				                <tr  class="payhidden">
-				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">6,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payplace8">테스트</td><td style="border-left: 1px solid #ddd;" id="payprice8">6,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(8);"></i></td>
 				                </tr>
 				                <tr  class="payhidden">
-				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">테스트</td><td style="border-left: 1px solid #ddd;">999,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payplace9">테스트</td><td style="border-left: 1px solid #ddd;" id="payprice9">999,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(9);"></i></td>
 				                </tr>
 				                <tr  class="payhidden">
-				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payprice">갑부테스트</td><td style="border-left: 1px solid #ddd;">200,999,000원</td>
-				                <td><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+				                <td>2017년 7월 1일 오전 9시 5분 </td><td style="border-left: 1px solid #ddd;" class="payplace10">갑부테스트</td><td style="border-left: 1px solid #ddd;" id="payprice10">200,999,000원</td>
+				                <td><i class="fa fa-pencil-square-o" aria-hidden="true" onclick="gobankshy(10);"></i></td>
 				                </tr>
 				                
 				                </table>

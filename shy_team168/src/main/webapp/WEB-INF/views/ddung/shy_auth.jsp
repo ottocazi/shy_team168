@@ -133,11 +133,13 @@
 			return null;
 			break;
 		case '1': // 몇몇 항목을 제외한 header 값을 넘긴다.
-			return $hips.not('#Kftc-Bfop-AccessToken');
+			return null;
+		//return $hips.not('#Kftc-Bfop-AccessToken');
 			break;
 		case '2': // 몇몇 항목을 제외한 header 값을 넘긴다.
-			return $hips
-					.not('#Kftc-Bfop-UserName, #Kftc-Bfop-UserInfo, #Kftc-Bfop-UserCellNo, #Kftc-Bfop-UserEmail');
+			return null;	
+		//return $hips
+		//	.not('#Kftc-Bfop-UserName, #Kftc-Bfop-UserInfo, #Kftc-Bfop-UserCellNo, #Kftc-Bfop-UserEmail');
 			break;
 		}
 	}

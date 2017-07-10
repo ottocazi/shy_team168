@@ -215,12 +215,12 @@ line-height: 3.2rem;
 
 .ribbon-buy {
   position: absolute;
-  z-index: 9999;
+  /* z-index: 9999; */
   top: -1px;
   right: 3.2rem;
   display: block;
   width: 48px;
-  height: 48px;
+  /* height: 48px; */
   text-align: center;
   /* text-indent: -4000px; */
   font-size: 1.6rem;
@@ -411,7 +411,7 @@ main [class*="card-"] {
   color: inherit;
 }
 [class*="card-"] .ribbon-buy {
-  color: #fff;
+  color: #4a8cf7;
 }
 
 /*== Card - Footer === */
@@ -424,19 +424,19 @@ main [class*="card-"] {
 /* --- Featured / Popular --- */
 
 .ribbon-buy,.ribbon-buy:hover {
-  background: #a00;
-  color: #fff;
+  background: #fff296;
+  color: #0b2d63;
 }
 
 .ribbon-buy:after {
   border: 24px solid transparent;
   border-top: none;
   border-bottom-width: 8px;
-  border-left-color: #a00;
-  border-right-color: #a00;
+  border-left-color: #fff296;
+  border-right-color: #fff296;
 }
 .ribbon-buy {
-  background: #a00;
+  background: #fff296;
 }
 .ribbon-buy.popular{
   background-image: url('http://jlantunez.com/imgs/spritecard.png');
