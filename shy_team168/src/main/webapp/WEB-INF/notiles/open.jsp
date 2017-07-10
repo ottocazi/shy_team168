@@ -185,7 +185,7 @@
    <p style="color: #BBBBBB; font-size: 10pt">가족, 친구와 함께하는 <br>즐거운 경제활동에 참여하세요 </p>
    <div class="form-input" >
    	  <form name="addFrm" action="<%= request.getContextPath() %>/addregistorEnd.shy" method="post">
-	      <input type="text" placeholder="name" name="name" id="joinname" required/>
+	      <input type="text" placeholder="name" name="name" id="joinname" required/>    
 	      <input type="text" placeholder="email" name="email" id="joinemail" required/>
 	      <br><span id="idok" style="font-size: 10pt;">사용하실수 있는 이메일입니다</span>
 	      <span id="notokay" style="font-size: 10pt; color: red;">이미 사용 중인 이메일입니다.</span>
