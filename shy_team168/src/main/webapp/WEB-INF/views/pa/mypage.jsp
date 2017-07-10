@@ -7,13 +7,47 @@
 
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/pa/mypage.css">
 
- <!-- 타임라인소스 -->
- <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/timelinestyle.css">
-
- <!-- 코멘트박스 소스 -->
- <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ddung/commentboxstyle.css">
-
 <script>
+$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+$.ajaxSetup({
+	    type        : 'POST',
+	    async       : false,
+	    cache       : false,
+	    contentType : 'application/json; charset=utf-8',
+	    dataType    : 'json',
+	    error       : function(xhr,e) { 
+	        $.unblockUI();
+	        if (xhr.status == 0) {
+	            alert('You are offline!!\n Please Check Your Network.');
+	        }
+	        else if (xhr.status == 404) {
+
+	            alert('Requested URL not found.');
+	        }
+	        else if (xhr.status == 500) {
+	            alert('Internel Server Error.\n');
+	        }
+	        else if (e == 'parsererror') {
+	            alert('Error.\nParsing JSON Request failed.');
+	        }
+	        else if (e == 'timeout') {
+	            alert('Request Time out.');
+	        }
+	        else {
+	            alert('Unknow Error.\n'+xhr.responseText);
+	        }
+
+	    },
+	    beforeSend : function(xhr, setting) {
+	        if ( setting && setting.async == true ) {
+	            $.blockUI();
+	        }
+	    },
+	    complete   : function(xhr, e) {
+	        //$.unblockUI();
+	    }
+	});//$.ajaxSetup({
 
     function openComment() {
 	
@@ -41,44 +75,80 @@
     	//countComment();
    		
         getLike();
+        //follow();
         
         $('#showFlwList').hide();
         
         
-        $('#showFlwList').click(function(e){
+        $('#showFlwList').click(function(){
            $('#showFlwList').hide(); 
         });
        
-        $('.flwList').click(function(e){
-           
+        $('.flwList').click(function(){
+        	 var idx = "${mymap.idx}";
+        	 
             // 팔로우목록 Ajax 불러오기
              $.ajax({
                  url: "/shy/myfollowList.shy",
                  type: "GET",
                  dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-                 /* data: , */
+                 data: {idx:idx},
                  success: function(data) { // 성공했을 때의 처리 콜백함수
-                    if(data.length > 0) {
                        var Result="";
-                    
                        $.each(data,function(entryIndex,entry){
-                        var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
-                                 +"<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
-                           Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
-                           
-                       });
+                    		
+                    	   if(data.length >0){
+                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+                               	 	 + "<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
+                  	
+                  			Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
+                    	   }else{
+                    		   Result = "<span style='cursor: pointer;'>팔로우가 없습니다.</span><br/>";
+                    	   }
+                  			
+                 		});
+                      
                        $("#showFlwList").html(Result).show(); 
-                       
-                   }else{
-                      $('#showFlwList').hide();   
-                   }
                  },
                  error: function() { // 에러가 발생했을 때의 콜백함수
-                     alert("error");
+                     alert("flwListError");
                  }
              });
             
         });
+        
+
+    	var arr = $(".hashcheck").map(function(){ // hashcheck 클래스에 있는 text 를 map으로 가져옴 
+    		return $(this).text();
+    	}).get();
+    	 
+    	 
+    	/* var arr = $(".hashcheck").text();
+    	alert(arr); */
+    	
+     	for(var i = 0; i < arr.length; ++i) {
+     		var splitedArray = arr[i].split(' '); // 공백으로 자른다
+     		var linkedContent = '';
+
+     		for(var word in splitedArray)
+        	{
+        	  	word = splitedArray[word];
+        		//alert(word); // ex)해시태그 #안녕 테스트! #테스트  <--이글을
+        					   // 	 해시태그
+        					   //    #안녕
+        					   //    테스트!
+        					   // 	 #테스트 <--이렇게 가져온다
+        					   
+	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
+	        	{
+	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        	}
+	        	
+	        	linkedContent += word+' ';
+        	}
+     		
+     		$('#hashcheck' + i).html(linkedContent);
+     	}
 
        
     });// end of $(document).ready() --------
@@ -100,7 +170,7 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+            	$.blockUI();
             }
         });
        
@@ -123,15 +193,15 @@
                  
               },
               error: function() { // 에러가 발생했을 때의 콜백함수
-                  alert("error");
+            	  $.blockUI();
               }
           });
          
      }
     
-    
     function getLike(){
        var snsnoArr = new Array();
+       var idx = "${mymap.idx}";
        
         <c:if test="${myshyList!=null}">
         <c:forEach items="${myshyList}" var="shies">
@@ -148,7 +218,8 @@
             url: "/shy/likeList.shy",
             type: "GET",
             dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
-            data: {snsnoArr:snsnoArr},
+            data: {snsnoArr:snsnoArr,
+            		idx:idx},
             success: function(data) { // 성공했을 때의 처리 콜백함수
                var snsnoObjArr = [];
                
@@ -158,11 +229,11 @@
                         $('#bt-love'+entry.snsno).hide();
                         $('#love'+entry.snsno).empty();
                         
-                        var html = "<span>"+entry.totalcount+"</span>";
+                        var html = entry.totalcount;
                         $('#love'+entry.snsno).html(html).show();
                         
                   }else if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 0){
-                	  	var html = "<span>"+entry.totalcount+"</span>";
+                	  	var html = entry.totalcount;
                 	  	$('#bt-love'+entry.snsno).html(html).show();
                 	  	$('#love'+entry.snsno).hide();
                 	  	
@@ -174,26 +245,105 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+                alert("getLikeError");
             }
         });
        
    }
+    
+    function getLikeAjax(snsno){
+    	//alert("snsno"+snsno);
+        var snsnoArr = new Array();
+        snsnoArr.push("snsno");
+         
+        var idx = "${mymap.idx}";
+        
+        jQuery.ajaxSettings.traditional = true;
+       
+        // 좋아요목록 Ajax 불러오기
+         $.ajax({
+             url: "/shy/likeList.shy",
+             type: "GET",
+             dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
+             data: {snsnoArr:snsnoArr,
+            	    idx:idx},
+             success: function(data) { // 성공했을 때의 처리 콜백함수
+                var snsnoObjArr = [];
+                
+                $.each(data,function(entryIndex,entry){
+                   snsnoObjArr.push([entry.snsno,Number(entry.totalcount),Number(entry.mylikestat),Number(entry.likeno) ]);
+                   if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 1){
+                         $('#bt-love'+entry.snsno).hide();
+                         $('#love'+entry.snsno).empty();
+                         
+                         var html = entry.totalcount;
+                         $('#love'+entry.snsno).html(html).show();
+                         
+                   }else if(Number(entry.totalcount) >0 && Number(entry.mylikestat) == 0){
+                 	  	var html = entry.totalcount;
+                 	  	$('#bt-love'+entry.snsno).html(html).show();
+                 	  	$('#love'+entry.snsno).hide();
+                 	  	
+                   }else{
+                        $('#bt-love'+entry.snsno).show();
+                        $('#love'+entry.snsno).hide();
+                    } 
+                });
+                
+             },
+             error: function() { // 에러가 발생했을 때의 콜백함수
+            	 //$.blockUI();
+             }
+         });
+        
+    }
   
+	function follow() {
+   		
+   		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
+   		
+   		$.ajax({
+   			url: "/shy/pafollow.shy",
+    		type: "GET",
+    		dataType: "JSON", 
+    		success: function(data){
+    			//alert("follow");
+    			var html;
+    			$.each(data, function(entryIndex, entry){
+	    			
+	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
+					if(FOLLOWCHECK == 1){
+						html = " <button class='bt' onClick='unFollow("+ entry.IDX + ");'>UnFollow</button>";
+					}
+					else {
+						html = "<button class='bt' onClick='goFollow("+ entry.IDX + ");'>Follow</button>";
+					}
+					
+					$("#follow").html(html);
+    				
+    			});
+    		//	getCommentList();
+    		},
+    		error: function(){
+ 				  alert("follow() error!"); 
+ 		    }
+   		});
+    }; 
+    
 </script>
-
 <script>
 var pageNo = 1;
-	
-function moreList(){ // 더 읽기
-	
+
+function moreList(){ // 더 읽기	
+	var idx = "${mymap.idx}";
 	pageNo += 1;
 	
     $.ajax({
-        type: 'POST'
+        type: 'GET'
         , async: false
         , url: "/shy/mypageList.shy"
-        , data: {pageNo: pageNo}
+        , data: {pageNo: pageNo,
+        	     idx: idx}
         , beforeSend: function() {
              $('#ajax_load_indicator').show().fadeIn('slow');  // div가 나타는 속도
           }
@@ -201,71 +351,59 @@ function moreList(){ // 더 읽기
         	 
             var result = "";
             var end;
-            	
-            $.each(data,function(entryIndex,entry){
-              
-      		  var  html = "<article class='card-60 social'>";
-      	     			  if(entry.simage!=0){
-      	     				html += "<div class='flex-content'><img src='/shy/resources/images/shydb/"+entry.imageaddr+"' alt='shy' id='nike'></p><footer><p>"; 
-	      	     			 if(entry.slikecnt==0){
-		            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
-		            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
-			            			  if(entry.snsnocnt==0){ 
-			            				  html +="Love </a>";
-			            			  }else{
-			            				  html += entry.snsnocnt+"</a>";
-			            			  }
-		            			  }else{
-		            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
-		            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
-		            			  }
-      	     			  }else{
-      	     				html += "<div class='flex-content'>"
-      		 			 		+ "<p style='text-align: left'>"+ entry.scontent+"</p><footer><p>"; 
-      	     				if(entry.slikecnt==0){
-   	            			 html += "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+
-   	            			  entry.snsno+"','1','snsno')' id='bt-love"+entry.snsno+"'>"; 
-   		            			  if(entry.snsnocnt==0){ 
-   		            				  html +="Love </a>";
-   		            			  }else{
-   		            				  html += entry.snsnocnt+"</a>";
-   		            			  }
-   	            			  }else{
-   	            		     html += "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+
-   	            			  entry.snsno+"','snsno')'>"+entry.snsnocnt+"</a>" ;
-   	            			  }
-      	     			  }
-	      	     			  
-            			  html += "<a class='bt-share' title='Share' href='#'> 공유하기 </a>"+
-				      	  "<a href='javascript:openComment('"+
-            			  entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+
-            			  entry.snsno+"'> </a>"+
-				          "</p></footer></div></article>";
-				          
-      			result += "<div class='mycard myIncard'>"+html+"</div>";
-      			$('#readmore').remove();
-      			
-      			end = entry.end;
-      	 	});
+            var snsno = "";
             
+            $.each(data,function(entryIndex,entry){
+            	
+      		  var  html = "<div class='mycard myIncard'><div class='flex-content'>";
+      		  
+      	     			  if(entry.simage!=0){ // 이미지가 있으면
+      	     				html += "<figure class='snip1584'><img src='/shy/resources/images/shydb/"+entry.imageaddr+"'>"
+      	     				     +  "<figcaption><h5>"+entry.scontent+"</h5><h3>"
+      	     		    		 + "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')' id='bt-love"+entry.snsno+"'> Love </a>" 
+      	     					 + "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')'></a>" 
+      	     					 + "<a class='bt-share' title='Share' href='#'>공유하기</a>" 
+      	     					 + "<a href='javascript:openComment('"+entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+entry.snsno+"'></a>"
+      	     					 + "</h3></figcaption></figure>";
+      	     				snsno = entry.snsno;
+      	     			  }else{ // 이미지가 없으면
+      	     				html += "<div style='min-height: 125px; margin-top: 100px; position: relative;'>"+entry.scontent+"<h3>"
+  	     		    		 	 + "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')' id='bt-love"+entry.snsno+"'> Love </a>" 
+  	     					 	 + "<a class='bt-love_chg' title='Love' id='love"+entry.snsno+"' onclick='goUnlike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')'></a>" 
+  	     					 	 + "<a class='bt-share' title='Share' href='#'>공유하기</a>" 
+  	     					 	 + "<a href='javascript:openComment('"+entry.snsno+"');' class='bt-comment' title='Comment' id='comment"+entry.snsno+"'></a>"
+  	     					 	 + "</h3></div>";
+      	     				snsno = entry.snsno; 	 
+   	            		   }
+      	     			  
+      	     			    html += "<div class='footer'><span style='height: 50px; padding:10px; text-align:center; color: gray; font-size: 9pt;'>"
+      	     			  	       +entry.sdatedtime+"</span></div></div></div>";
+				    
+      				result += html;
+      				$('#readmore').remove();
+      			
+      				end = entry.end;
+      				snsno += snsno;
+      	 	});
+            	 
+            	 
+	             //goLike(idx,likeseq,seqcolum);
+	             //goUnlike(idx,likeseq,seqcolum);
+	            
           	////
   			if(end == 1) {
   				$(result).appendTo('#ajax_load_indicator');
+  				getLikeAjax(snsno);
   			}
   			////
   			else {
-  				result += "<div id='readmore' align='center'><a class='readmore' href='javascript:moreList();' style='color:white;'>더 읽기</a></div>";
+  				result += "<div id='readmore' align='center' style='margin: 5%'><a class='readmore' href='javascript:moreList();' style='color:white;'>더 읽기</a></div>";
   	            $(result).appendTo('#ajax_load_indicator');
+  	            getLikeAjax(snsno);
   			}
           }
         , error: function(data) {
-        	alert("error");
-          }
-        , complete: function(data) { 
-        	//$('.readmore').hide();
-            //$('#ajax_load_indicator').fadeOut('slow');
-        	//getLike();
-        	
+        	//$.blockUI();
           }
     });
 }
@@ -314,18 +452,16 @@ function moreList(){ // 더 읽기
       <form name="mypageFrm">
       <div class="myProfile" style="text-align: left">
          <div class="pimg">
-         <c:if test="${loginuser.myimg != null}">
-            <img src="<%=request.getContextPath() %>/resources/images/shydb/${loginuser.myimg }">
+         <c:if test="${mymap.myimg != null}">
+            <img src="<%=request.getContextPath() %>/resources/images/shydb/${mymap.myimg }">
          </c:if>
-         <c:if test="${loginuser.myimg == null}"> 
+         <c:if test="${mymap.myimg == null}"> 
             <img src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
          </c:if>
          </div>
          <div class="myIntro">
-            <h2 style="display: -webkit-inline-box;">${loginuser.email}</h2>
-            <button class="bt" title="Follow" onclick="goFollow();">
-               Follow
-            </button>
+            <h2 style="display: -webkit-inline-box;">${mymap.email}</h2>
+            <div id="follow"></div>
             <hr>
              <span>게시물&nbsp; 
                <c:if test="${myshyCount==0}" >
@@ -341,19 +477,19 @@ function moreList(){ // 더 읽기
                </c:if>
                <c:if test="${fk_idxflwedcnt>0 }" >
                ${fk_idxflwedcnt } 
-               </c:if>
-                      명</span>&nbsp;&nbsp;
-            <div id="showFlwList">
-            </div>
+               </c:if> 명</span>&nbsp;&nbsp;
 
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
             <button class="proedit" onclick="goEdit();">프로필편집</button>
-            <c:if test="${loginuser.myintro != null}">
+            
+            <div id="showFlwList"></div>
+            
+            <c:if test="${mymap.myintro != null}">
             <p style="padding-top:30px;">
-                ${loginuser.myintro}
+                ${mymap.myintro}
             </p>
             </c:if>
-            <c:if test="${loginuser.myintro == null}">
+            <c:if test="${mymap.myintro == null}">
             <p style="padding-top:30px;">
                	 자기소개가 없습니다.
             </p>
@@ -362,9 +498,8 @@ function moreList(){ // 더 읽기
       </div>
       </form>
       
-      <div class="showMypage">
+ <div class="showMypage" id="showMypage">
 
-          <div id="myTabContent" class="tab-content">
                
   
   <c:if test="${myshyList==null}">
@@ -373,43 +508,59 @@ function moreList(){ // 더 읽기
   </c:if>
   
   <c:if test="${myshyList!=null}">
-  
+  <div id="allbox">
   <c:forEach items="${myshyList }" var="shies" varStatus="status">
   <div class="mycard myIncard">
-  	<article class="card-60 social">
   	<div class="flex-content">
+     
     <c:if test="${shies.simage!=0 }">
-      
-      <img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" alt="shy" id="nike">
-  	</c:if> 
-  	<c:if test="${shies.simage==0 }">
-     
-      <p style="text-align: left" >
-       	${shies.scontent }
-      </p>
-     
-     </c:if>  
-      <footer>
-        <p>
-         <a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
+      <figure class="snip1584"><img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" >
+  		<figcaption>
+    	<h5><p id="hashcheck${status.index}" class="hashcheck">${shies.scontent }</p></h5>
+    	<h3>
+    	<a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
 		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
 		 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
 		 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
-        </p>
-      </footer>
+		 </h3>
+		 
+  	  </figcaption>
+	  </figure>
+      
+    </c:if> 
+  	<c:if test="${shies.simage==0 }">
+   
+      <div style="min-height: 125px; margin-top: 100px; position: relative;">
+       	<p id="hashcheck${status.index}" class="hashcheck" >${shies.scontent }</p>
+    	<h3>
+    	<a class="bt-love" title="Love" onclick="goLike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')" id="bt-love${shies.snsno }"> Love </a> 
+		 <a class="bt-love_chg" title="Love" id="love${shies.snsno }" onclick="goUnlike('${sessionScope.loginuser.idx }','${shies.snsno }','snsno')"> </a> 
+		 <a class="bt-share" title="Share" href="#"> 공유하기 </a> 
+		 <a href="javascript:openComment('${shies.snsno}');" class="bt-comment" title="Comment" id="comment${shies.snsno}"> </a>
+		 </h3>
+      </div>
+     
+     </c:if>
+      <div class="footer">
+      <span style="height: 50px; padding:10px; text-align:center; color: gray; font-size: 9pt;">${shies.sdatedtime }</span>
+      </div>
+      
+     </div>
     </div>
-
-  </article>
   
-  
-  	
-  </div> 
   </c:forEach>
-  <div id="ajax_load_indicator" style="display:none">
+  
+  <div id="ajax_load_indicator" style="display:none;">
   </div>
   
+  
+  </div> 
+  
+ 
+  
   <c:if test="${myshyCount > 6}">
-  <div id="readmore" align="center"><a class="readmore" href="javascript:moreList();" style="color:white;">더 읽기</a>
+  <div id="readmore" align="center" style="margin: 5%">
+  <a class="readmore" href="javascript:moreList();" style="color:white;">더 읽기</a>
 	</div>
   </c:if>	
   <c:if test="${myshyCount < 6}">
@@ -418,13 +569,6 @@ function moreList(){ // 더 읽기
   		
    
 <!--	</main>  한 개의 shy 끝  -->
-	
-
-
-               
-               
-          </div>
-          
-      </div>
+</div> <!-- end div id=showMypage -->
 
 </div>

@@ -25,9 +25,49 @@
 	rel="stylesheet">
 
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+  
+	$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+	
+	$.ajaxSetup({
+ 	    type        : 'POST',
+ 	    async       : false,
+ 	    cache       : false,
+ 	    contentType : 'application/json; charset=utf-8',
+ 	    dataType    : 'json',
+ 	    error       : function(xhr,e) { 
+ 	        $.unblockUI();
+ 	       if (xhr.status == 0) {
+ 	            alert('You are offline!!\n Please Check Your Network.');
+ 	        }
+ 	        else if (xhr.status == 404) {
+
+ 	            alert('Requested URL not found.');
+ 	        }
+ 	        else if (xhr.status == 500) {
+ 	            alert('Internel Server Error.\n');
+ 	        }
+ 	        else if (e == 'parsererror') {
+ 	            alert('Error.\nParsing JSON Request failed.');
+ 	        }
+ 	        else if (e == 'timeout') {
+ 	            alert('Request Time out.');
+ 	        }
+ 	        else {
+ 	            alert('Unknow Error.\n'+xhr.responseText);
+ 	        } 
+
+ 	    },
+ 	    beforeSend : function(xhr, setting) {
+ 	        if ( setting && setting.async == true ) {
+ 	            $.blockUI();
+ 	        }
+ 	    },
+ 	    complete   : function(xhr, e) {
+ 	        //$.unblockUI();
+ 	    }
+ 	});//$.ajaxSetup({
   
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
@@ -36,9 +76,13 @@
     	
     	//var content = $(".hashcheck").text();
     	//alert(content);
-    	var content = document.getElementById('mycontent').innerHTML;
+    	// var content = document.getElementById('scontent').innerHTML;
     	// html 안에 'scontent'라는 아이디를 content 라는 변수로 정의한다.
     	//content = content.replace(/^\s+/,"");
+    	
+    	var arr = $(".hashcheck").map(function(){
+    		return $(this).text();
+    	}).get();
     	
     	//alert(content.indexOf('#'));
     	/* if(content.indexOf('"#')==0){
@@ -54,6 +98,8 @@
     		content = front.concat(behind);
     		alert(content);
     	} */
+    	
+    	/* 
     	var splitedArray = content.split(' '); // 공백을 기준으로 문자열을 자른다.
     	var linkedContent = ' ';
     	for(var word in splitedArray)
@@ -66,13 +112,35 @@
     	   }
     	   linkedContent += word+' ';
     	}
-    	document.getElementById('mycontent').innerHTML = linkedContent; 
     	
-       
-       
+    	document.getElementById('scontent').innerHTML = linkedContent; 
+     	*/
+     	
+     	for(var i = 0; i < arr.length; ++i) {
+     		var splitedArray = arr[i].split(' ');
+     		var linkedContent = '';
+
+     		for(var word in splitedArray)
+        	{
+        	  	word = splitedArray[word];
+        	
+	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
+	        	{
+	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        	}
+	        	
+	        	linkedContent += word+' ';
+        	}
+     		
+     		$('#hashcheck' + i).html(linkedContent);
+     	}
+     	
+     	
     });// end of $(document).ready() --------
     
+    	
     function goLike(idx,likeseq,seqcolum){
+    	
       var form_data = {idx : idx,
                    likeseq   : likeseq,
                    seqcolum   : seqcolum};
@@ -80,6 +148,7 @@
        // 좋아요 Ajax 불러오기
         $.ajax({
             url: "/shy/like.shy",
+            async: false,
             type: "GET",
             dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
             data: form_data ,// 파라미터     
@@ -89,11 +158,10 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+            	$.blockUI();
             }
         });
-       
-   }
+    }
     
     function getLike(){
         var snsnoArr = new Array();
@@ -139,7 +207,7 @@
                 
              },
              error: function() { // 에러가 발생했을 때의 콜백함수
-                 alert("error");
+                 alert("getlikeError");
              }
          });
         
@@ -153,6 +221,7 @@
          // 좋아요 Ajax 불러오기
           $.ajax({
               url: "/shy/unlike.shy",
+              async: false,
               type: "GET",
               dataType: "JSON", // 리턴받을 데이터의 타입 - text, xml 등...
               data: form_data ,// 파라미터     
@@ -162,7 +231,7 @@
                  
               },
               error: function() { // 에러가 발생했을 때의 콜백함수
-                  alert("error");
+            	  $.blockUI();
               }
           });
          
@@ -652,6 +721,19 @@
      
   }
   
+  function showprice(id, price){
+	 
+	  var text = $("#sp"+id).html();
+	  
+	  if (text=="paid!"){
+	  $("#sp"+id).html(price);
+	  }
+	  
+	  else {
+		  $("#sp"+id).html("paid!");
+	  }
+	
+  }
 </script>
 </head>
 <body>
@@ -668,9 +750,13 @@
   </c:if> <c:if test="${shies!=null}">
 		<c:forEach items="${shies}" var="shies" varStatus="status">
 
-			<article class="card-60 social">
+			<article class="card-60 social" >
 				<figure>
-
+				<c:if test="${shies.shypay!=null }">
+<span class="ribbon-buy">
+        <img src="<%=request.getContextPath() %>/resources/images/ddung/pig.svg" style="margin-top:10px;"/>
+      </span>
+      </c:if>
 					<img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr}" alt="shy" id="nike">
 
 				</figure>
@@ -679,7 +765,23 @@
 
 					<header>
 						<p class="user">
-							<a class="button follow" href="#" title="Follow"> Follow </a>
+						<c:if test="${shies.shypay!=null }">
+						<c:if test="${shies.shyprice!=null }">
+									
+						<a class="button follow" id="sp${shies.snsno }" onclick="showprice('${shies.snsno}','${shies.shyprice}');">paid!</a><!--title="Follow"  -->
+			
+						</c:if>
+						
+						<c:if test="${shies.shyprice==null }">
+									
+						<a class="button follow" id="sp${shies.snsno }" onclick="showprice('${shies.snsno}','미공개');">paid!</a><!--title="Follow"  -->
+			
+						</c:if>
+						
+					
+						
+						</c:if>
+							
 							<c:if test="${shies.myimg != null}">
 								<img class="avatar-32"
 									src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
@@ -690,9 +792,8 @@
 									src="http://magazine.nicktv.it/wp-content/uploads/sites/11/2016/09/Spongebob-Finalmente-Si-Mangia.gif"
 									alt="Avatar">
 							</c:if>
-							<strong> <a title="Full Name" href="#"> <span
-									style="font-size: 12pt; margin: 0; color: black;"> <c:if
-											test="${shies.name!=null }">
+							<strong> <a title="Full Name" href="<%=request.getContextPath() %>/mypage.shy?idx=${shies.fk_idx }"> 
+							<span style="font-size: 12pt; margin: 0; color: black;"> <c:if test="${shies.name!=null }">
 	                ${shies.name }
 	                </c:if> <c:if test="${shies.name==null }">
                   	${shies.email }
@@ -700,9 +801,12 @@
 
 								</span>
 							</a>
-							</strong> <span>${shies.sdatedtime} &middot; <a href="">@파파파</a> 님과
-								함께
-							</span>
+							</strong> <span>${shies.sdatedtime} </span>
+							<c:if test="${shies.stagfollow!=null }">
+							<br>${shies.stagfollow} 님과 함께
+							</c:if>
+							<br> 
+							
 						</p>
 					</header>
 
@@ -716,7 +820,7 @@
 					</p>
 
 					<div id="scontent">
-					<p class="hashcheck">${shies.scontent}</p>
+						<p id="hashcheck${status.index}" class="hashcheck">${shies.scontent}</p>
 					</div>
 					
 					<footer>

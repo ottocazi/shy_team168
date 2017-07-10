@@ -135,8 +135,8 @@ public class Min_Service {
 		}
 
 
-		public List<HashMap<String, String>> nearMap(double distance, HashMap<String, String> geomap) {
-			List <HashMap<String, String>>  selectNearMap = dao.nearMap(distance, geomap);
+		public List<HashMap<String, String>> nearMap(HashMap<String, String> geomap) {
+			List <HashMap<String, String>>  selectNearMap = dao.nearMap(geomap);
 			return selectNearMap;
 		}
 

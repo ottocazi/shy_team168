@@ -368,11 +368,11 @@
 				FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
 				WHERE	 A.STATUS = 1 AND
 				FK_IDX = #{myIdx}
-                ORDER by A.SNSNO desc)V)X
+                ORDER by A.SDATEDTIME DESC)V)X
         LEFT JOIN
                 (SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
                 ON X.SNSNO = Y.SNSNO
-                WHERE RNO >= #{start} and RNO <![CDATA[<=]]> #{end}
+                WHERE RNO >= #{start} AND RNO <![CDATA[<=]]> #{end}
 	</select>
 	
 	<!--  -->
@@ -395,8 +395,8 @@
       <result property="email" column="EMAIL" javaType="String" />
       <result property="myimg" column="MYIMG" javaType="String" />
    </resultMap>
-   <select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
-        SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+   <select id="getflwList" parameterType="String" resultMap="getflwListMap"> 
+      SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
       FROM
       (
       SELECT *
@@ -484,6 +484,20 @@
 		${alarmno}
 	  </foreach>
    </update>
+   
+   <!-- ===== 개인정보 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="myMap">
+		<result property="idx" 			column="IDX" javaType="String" />
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="myintro" 		column="MYINTRO" 			javaType="String"/>
+	</resultMap>
+	<select id="selectMyinfo" parameterType="java.util.HashMap" resultMap="myMap"> 
+      	SELECT *
+      	FROM TBL_SHYMEMBER
+		WHERE IDX = #{myIdx}
+	</select>
    
     
 </mapper>	

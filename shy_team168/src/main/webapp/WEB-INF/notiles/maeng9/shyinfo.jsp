@@ -1,16 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>SHY 관리자 페이지</title>
+<title>SHY 관리자 페이지</title>
 
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/bootstrap.min.css" rel="stylesheet">
@@ -18,71 +16,13 @@
     <link href="<%=request.getContextPath() %>/resources/css/meong/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/green.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-
-<script type="text/javascript">
-function goday(){
-	var godayForm = document.godayForm;
-	godayForm.submit();
-}
-
- function ym_init_charts() {
-	if (console.log("run_charts  typeof [" + typeof Chart + "]"), "undefined" != typeof Chart) {	 
-	 if($("#lineChart_ym").length) {
-        var f = document.getElementById("lineChart_ym");
-        new Chart(f, {
-            type: "line",
-            data: {
-            	labels: [
-            		<c:forEach var="map" items="${tkList}"  varStatus="status">
-					"${map.TIME}시",
-					</c:forEach>
-            	],
-                datasets: [{
-                    label: 
-                    	<c:if test="${empty today2}">"오늘",</c:if>
-                    	<c:if test="${not empty today2}">"${today2}",</c:if>
-                    	
-                    backgroundColor: "rgba(38, 185, 154, 0.31)",
-                    borderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBorderColor: "rgba(38, 185, 154, 0.7)",
-                    pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                     	<c:forEach var="map" items="${tkList}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    ]
-                }, {
-                    label: 
-                    	<c:if test="${empty yesterday2}">"어제",</c:if>
-                    	<c:if test="${not empty yesterday2}">"${yesterday2}",</c:if>
-                    	
-                    backgroundColor: "rgba(3, 88, 106, 0.3)",
-                    borderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBorderColor: "rgba(3, 88, 106, 0.70)",
-                    pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(151,187,205,1)",
-                    pointBorderWidth: 1,
-                    data: [
-                    	<c:forEach var="map" items="${tkList2}"  varStatus="status">
-						"${map.CNT}",
-						</c:forEach>
-                    	]
-                } ]
-            }
-        })
-       }
-	}
- }
-</script>
     
-  </head>
+</head>
 
   <body class="nav-md">
     <div class="container body">
@@ -90,7 +30,7 @@ function goday(){
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="open.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
+              <a href="admin.shy" class="site_title"><i class="fa fa-paw"></i> <span>SHY</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -98,54 +38,61 @@ function goday(){
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
 
             <br />
 
-			<!-- sidebar menu -->
+            <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
-                    </ul>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
-                    </ul>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                    </ul>
+                  </li> --%>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
               </div>
 
-            </div> 
-            <!-- /sidebar menu -->
-
-            <!-- menu footer buttons -->
+            </div>             <!-- /sidebar menu -->
+            
+            <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -160,7 +107,7 @@ function goday(){
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
-            <!-- menu footer buttons -->
+            <!-- /menu footer buttons -->
           </div>
         </div>
 
@@ -175,7 +122,7 @@ function goday(){
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -259,14 +206,15 @@ function goday(){
             </nav>
           </div>
         </div>
-        <!-- top navigation -->
+        <!-- /top navigation -->
 
         <!-- page content -->
+
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3 style="color: red;">${year}년 ${month}월 ${day}일 시간대별 로그인 통계</h3>
+                <h3>회사개요</h3>
               </div>
 
               <div class="title_right">
@@ -280,50 +228,13 @@ function goday(){
                 </div>
               </div>
             </div>
-
+            
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel_ym">
-                  <div class="x_title">
-                    <h2>시간대별 LINE 그래프</h2>
-                    
-<form name="godayForm" action="<%= request.getContextPath() %>/tongke.shy" method="get">
-                    <input type="date" required="required" name="today" value="${today2}"/> 
-                    <input type="date" required="required" name="yesterday" value="${yesterday2}"/>
-                    <button type="button" onClick="goday();">확인</button>
-</form>
-
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content" >
-                    <canvas id="lineChart_ym"></canvas>
-                  </div>
-                  <div>
-     			  </div> 
-                </div>
-              </div>
-<!-- 
-              <div class="col-md-8 col-sm-8 col-xs-12">
+              <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Bar Graph</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -341,24 +252,165 @@ function goday(){
                     </ul>
                     <div class="clearfix"></div>
                   </div>
+
                   <div class="x_content">
 
-                    <div id="mainb" style="height:350px;"></div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+                      <ul class="stats-overview">
+                        <li>
+                          <span class="name"> 회사 규모 </span>
+                          <span class="value text-success"> 230평 </span>
+                        </li>
+                        <li>
+                          <span class="name"> 임원수 </span>
+                          <span class="value text-success"> 13명 </span>
+                        </li>
+                        <li class="hidden-phone">
+                          <span class="name"> 직원수 </span>
+                          <span class="value text-success"> 59명 </span>
+                        </li>
+                      </ul>
+                      <br />
+
+                      <div id="mainb" style="height:350px;"></div>
+
+                      <div>
+
+                        <h4>사장님께 한마디</h4>
+
+                        <!-- end of user messages -->
+                        <ul class="messages">
+                          <li>
+
+                            <div class="message_date">
+                              <h3 class="date text-info">24</h3>
+                              <p class="month">5월</p>
+                            </div>
+                            <div class="message_wrapper">
+                              <h4 class="heading">김용명</h4>
+                              <blockquote class="message">19층에 까페 하나 만들어 주세요~!~</blockquote>
+                              <br />
+<!--                               <p class="url">
+                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                              </p> -->
+                            </div>
+                          </li>
+                          <li>
+
+                            <div class="message_date">
+                              <h3 class="date text-error">21</h3>
+                              <p class="month">5월</p>
+                            </div>
+                            <div class="message_wrapper">
+                              <h4 class="heading">임준호</h4>
+                              <blockquote class="message">19층에 포차 하나 만들어 주세요~!~</blockquote>
+                              <br />
+<!--                               <p class="url">
+                                <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                <a href="#" data-original-title="">Download</a>
+                              </p> -->
+                            </div>
+                          </li>
+                          <li>
+
+                            <div class="message_date">
+                              <h3 class="date text-info">24</h3>
+                              <p class="month">5월</p>
+                            </div>
+                            <div class="message_wrapper">
+                              <h4 class="heading">김성민</h4>
+                              <blockquote class="message">19층에 수면실 하나 만들어 주세요~!~</blockquote>
+                              <br />
+<!--                               <p class="url">
+                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                              </p> -->
+                            </div>
+                          </li>
+                        </ul>
+                        <!-- end of user messages -->
+
+
+                      </div>
+
+
+                    </div>
+
+                    <!-- start project-detail sidebar -->
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+
+                      <section class="panel">
+
+                        <div class="x_title">
+                          <h2>회사 소개</h2>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                          <h3 class="green"><i class="fa fa-paint-brush"></i> SHY</h3>
+
+                          <p>
+									15 : 20 pm<br>
+									결제, 막힘없는 시원함을 담다.<br>
+									단 하나 남은 신상 가을 의류,<br>
+									단숨에 결제하고 shy로 기뻐한다.<br>
+									
+									12 : 10 pm<br>
+									송금, 즐거운 만남에 편리함을 담다.<br>
+									지인들과 즐거운 점심식사! 맛있게 먹고 밥값 정산 할 땐<br>
+									계좌번호 묻지 않고 이젠 shy로 사이좋게 계산완료!<br>
+						  </p>
+                          <br />
+
+                          <br />
+                          <h5>SHY의 개발 관점</h5>
+                          <ul class="list-unstyled project_files">
+                            <li><a href=""><i class="fa fa-file-word-o"></i>1. 관리하기 쉬운 코드를 작성해라</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-file-pdf-o"></i>2. 구조를 생각해라</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-mail-forward"></i>3. 코딩에 앞서 계획을 세워라</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-picture-o"></i>4. 항상 새로운 것을 배워라</a>
+                            </li>
+                            <li><a href=""><i class="fa fa-file-word-o"></i>5. 더 멋진 디버깅 방법 배워라</a>
+                            </li>
+                          </ul>
+                          <br />
+
+                          <div class="text-center mtop20">
+                            <a href="#" class="btn btn-sm btn-primary">요소 추가</a>
+                            <a href="#" class="btn btn-sm btn-warning">보고서 연락처</a>
+                          </div>
+                        </div>
+
+                      </section>
+
+                    </div>
+                    <!-- end project-detail sidebar -->
 
                   </div>
                 </div>
               </div>
-               -->
             </div>
-
           </div>
         </div>
-        <!-- page content -->
+                    
+              </div>
+            </div>
+        <!-- /page content -->
 
-      </div>
-    </div>
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <a href="open.shy">Shy</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
 
-    <!-- jQuery -->
+	<!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/bootstrap.min.js"></script>
@@ -366,12 +418,9 @@ function goday(){
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/Chart.min.js"></script>
-	<!-- ECharts -->
+    <!-- ECharts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/echarts.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/world.js"></script>
-	
+
     <!-- Custom Theme Scripts -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
 	

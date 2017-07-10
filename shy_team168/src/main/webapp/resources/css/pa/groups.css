@@ -1,0 +1,218 @@
+@CHARSET "UTF-8";
+
+#mygroups a{
+	text-decoration: none;
+	cursor:pointer; 
+}
+
+#mygroups a:hover{
+	text-decoration: none;
+	cursor:pointer; 
+}
+
+#mygroups{
+	margin: 0 auto;
+	width: 70%;
+	display: block;
+}
+
+/* 검색바 부분  */
+.topInputSearch {
+    position: sticky;
+    margin-top:1.2%;
+    width: 50%;
+    height: 28px;
+    padding: 0 36px 0 12px;
+}
+
+.topInputSearch input{
+	position: relative;
+    width: 232px;
+    padding: 4px;
+    border: 1px solid rgba(0,0,0,.15);
+    background: rgba(255,255,255,.11);
+    border-radius: 28px;
+}
+
+.topInputSearch button{
+    border: none;
+    left: 93%;
+    padding: 5px;
+    background: rgba(255,255,255,.11);
+}
+
+.topInputSearch .populargrp{
+    text-align: center;
+    display: block;
+    padding: 5px;
+    background: rgba(255,255,255,.11);
+}
+
+.topInputSearchList{
+	position: sticky;
+    display: inline-flex;
+    width: 220px;
+    height: auto;
+    margin-left: 5px;
+    margin-top: -5px;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top: hidden;
+    background: #fff;
+}
+
+/* 그룹 리스트  */
+.mygrp{
+	margin: 2%;
+    position: relative;
+    display: block;
+    border: 1px solid #fff;
+}
+
+.mygrp .mygrp_list, .mygrp .mygrp_hotgrp, .mygrp .mygrp_newgrp{
+	position: relative;
+	display: inline-block;
+}
+
+.mygrp_types{
+	text-align: center;
+	font-weight: bold;
+	color: #92A8D1;
+	padding: 20px;
+}
+
+.mygrp_register{
+	font-weight: bold;
+	margin: 10px;
+	background-color: #fff;
+	border: 1px solid gray;
+}
+
+.mygrp_registerover{
+	color:#92A8D1;
+	font-weight: bold;
+}
+
+.grp_box { 
+	overflow: hidden;
+	width:220px;
+	height:auto;
+	text-align:left;
+	position:relative;
+	border: 1px solid #ddd;
+	border-bottom: 1px solid #bbb;
+	background: #fff;
+	border-radius: 3px;
+	margin: 2px;
+	box-shadow: 5px 5px 10px #ddd;
+}
+
+.grp_box:hover{
+  background: #A9A8A8;
+  border-color: #919191;
+  box-shadow: 0 1px 40px rgba(0, 0, 0, 0.15);
+}
+
+.grp_fa { 
+	color:#999; 
+	font-family:"FontAwesome", "Open Sans", sans-serif; 
+	font-weight:100; 
+	font-size:12px; 
+	word-spacing:2px;
+    padding: 2px;
+}
+.grp_fa:hover, .grp_desc:hover, .grp_h:hover { color: #666;  font-weight: bold;}
+.grp_h { margin-top: 25%; color:#999; font-weight: bold; display: inline-block;}
+.grp_desc {text-align: center; color:#999; display: block;}
+.grp_inner { text-align: center; padding: 15px; }
+.grp_boxImage { border-top-left-radius:3px; border-top-right-radius:3px; width:100%; height: 145px; }
+.grp_boxImage:hover{background-color: #A9A8A8; opacity: inherit;}
+
+.grp_buddy {
+  position:absolute; z-index:2;
+  width:96px; height:96px;
+  left:50%;
+  margin: -48px 0 0 -48px;
+  border-radius:50%;
+}
+.grp_content{
+	padding:10px;
+}
+
+/* 내 그룹 layout */
+.mygrp_name h2{
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  font-size: 3.0em;
+  line-height: 1.2em;
+  margin-bottom: 4px;
+  color: #515151;
+  font-weight: bold;
+}
+
+.mygrp_clearfix{
+  display: block;
+  margin: 0 auto;
+  width: 900px;
+  padding: 10px 25px;
+  background: #fff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  text-align: left;
+}
+
+/** 내 그룹 list **/
+.mygrp {
+  display: block;
+}
+
+.mygrp li {
+  display: block;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.mygrp li:hover {
+  cursor: pointer;
+}
+
+.mygrp li.last { margin-right: 0; }
+
+.mygrp .gcontent {
+  display: none;
+}
+
+/** hidden mygrp content **/
+.mygrp_img {
+  display: block;
+  float: left;
+}
+
+.mygrp_details {
+  display: block;
+  float: left;
+  width: 600px;
+  padding-left: 15px;
+}
+
+/** 내 그룹 mygrp_clearfix **/
+.mygrp_clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+.mygrp_clearfix { display: inline-block; }
+.mygrp_clearfix html[xmlns]{ display: block; }
+.mygrp_clearfix * html { height: 1%; }
+
+@import "compass/css3";
+
+.newlist, .hotlist {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.newlist li, .hotlist li {
+	position: relative;
+	margin-bottom: 10px;
+}
