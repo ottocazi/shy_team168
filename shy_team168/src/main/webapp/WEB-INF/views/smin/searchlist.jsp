@@ -346,16 +346,7 @@ text-decoration: none;
                 <h3>검색결과</h3>
               </div>
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
+             
             </div>
 
             <div class="clearfix"></div>
@@ -399,7 +390,7 @@ text-decoration: none;
                         <tr>
                         
                           <td>${map.IDX}</td>
-                          <td>${map.NAME}</td>
+                          <td><a href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${map.IDX}">${map.NAME}</a></td>
                           <td>${map.EMAIL}</td>
                           <td id="follow${map.IDX}"></td>
                         </tr>
@@ -448,7 +439,7 @@ text-decoration: none;
                       <c:forEach var="map" items="${glist}" varStatus="status">
                         <tr>
                           <td>${map.GROUPNO}</td>
-                          <td>${map.GNAME}</td>
+                          <td><a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${map.GROUPNO}">${map.GNAME}</a></td>
                           <td>${map.GCOUNT}명</td>
                           <td>
                           <c:if test="${map.STATUS==1}">전체 공개</c:if>
