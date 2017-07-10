@@ -101,8 +101,8 @@ public class Juno_Service {
 	}
 	
 	// 위치 태그가 있는 snsno list 뽑아오기
-	public List<HashMap<String, String>> getGeoSnsnoList() {
-		List<HashMap<String, String>> list = dao.getGeoSnsnoList();
+	public List<HashMap<String, String>> getGeoSnsnoList(String city) {
+		List<HashMap<String, String>> list = dao.getGeoSnsnoList(city);
 		return list;
 	}
 	

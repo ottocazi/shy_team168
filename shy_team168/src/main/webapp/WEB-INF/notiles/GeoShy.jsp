@@ -34,6 +34,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 	
 <script type="text/javascript">
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Create the chart
 google.charts.load('current', {
@@ -148,11 +149,11 @@ function drawRegionsMap() {
 			 	if (selection.length == 1) {
 			 		var selectedRow = selection[0].row;
 			 		var selectedRegion = data.getValue(selectedRow, 0);
-			 		
-		 			alert("selection : "+selection+" selectedRegion : "+selectedRegion + "     ivalue[selectedRegion] : "+ivalue[selectedRegion]);
-		 			alert(typeof(selection));
+			 		var sivalue = ivalue[selectedRegion];
+		 			alert("selection : "+selection+" selectedRegion : "+selectedRegion + "     sivalue : "+sivalue);
+		 		//	alert(typeof(selection));
 		 			
-			 		detailMap();
+			 		detailMap(selectedRegion,sivalue);
 			 	}
 			});
 			
@@ -164,10 +165,20 @@ function drawRegionsMap() {
 	});
 }
 
-function detailMap(){
-	alert("detailMap() start!");
-	var specs = "left=30,top=30,width=700,height=500"
-	window.open("geo.shy","상세보기",specs);
+function detailMap(selectedRegion,sivalue){
+	alert("detailMap() start! selectedRegion : "+selectedRegion+"  sivalue : "+sivalue);
+	var specs = "left=600,top=200,width=900,height=700"
+	var param_RS= document.param_RS;
+	var gsWin = window.open('about:blank','popupView',specs);
+    var frm =document.param_RS;
+    
+    frm.selectedRegion.value = selectedRegion;
+    frm.sivalue.value = sivalue;
+    frm.action = 'geodetail.shy';
+    frm.target ="popupView";
+    frm.method ="post";
+    frm.submit();
+  
 	/* 
 		여기에 오버레이 상세 지도 및 기타지역(count.ect) 표시 하는 거 만들면 될듯
 		참고사이트 : https://developers.google.com/chart/interactive/docs/overlays#css2
@@ -177,23 +188,6 @@ function detailMap(){
 		참고사이트 : https://ko.wikipedia.org/wiki/%EB%B6%84%EB%A5%98:%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%8B%9C%EB%8F%84%EB%B3%84_%ED%96%89%EC%A0%95_%EA%B5%AC%EC%97%AD
 	*/
 	
-	/* swal({
-		  title: '상세지도',
-		  html: '<!DOCTYPE html><html>안나오냐'
-			  + '<head><meta name="viewport" content="initial-scale=1.0">'		  	
-			  + '<meta charset="utf-8"><style>#map {height: 100%;}html, body {height: 100%; margin: 0; padding: 0;}</style>'
-			  + '</head><body><div id="map"></div>'
-			  + '<script>var map; function initMap() {map = new google.maps.Map(document.getElementById("map"), {center: {lat: -34.397, lng: 150.644},zoom: 8});}</'+'script>'
-			  + '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkK_EWB_e3yusAluX5FYlETpHypg3d8uA&callback=initMap"async defer></'+'script>'
-			  + '</body></html>',
-		  showCancelButton: false,
-		  showConfirmButton: false,
-		  width: 700
-	}).then(function () {
-		
-	}, function (dismiss) {
-		
-	}) */
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -519,6 +513,10 @@ function drawVisualization(){
                   </div>
                   <div class="x_content" style="margin-bottom: 50px;">
                     <div><a href="javascript:drawRegionsMap();" style="color: red;">갈비탕</a><a href="javascript:drawVisualization();"> 지겨워</a></div>
+                    <form name="param_RS">
+                    	<input type="hidden" name="selectedRegion"/>
+                    	<input type="hidden" name="sivalue" />
+                    </form>
                     <div id="geochart-colors"></div>
                     <div id="visualization"></div>
                   </div>

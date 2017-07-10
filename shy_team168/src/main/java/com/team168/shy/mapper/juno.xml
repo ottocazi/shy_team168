@@ -174,8 +174,9 @@
  		<result property="LATITUDE" 	column="latitde" 	javaType="String" />
  	</resultMap>
 	<select id="getGeoSnsnoList" resultMap="getGeoSnsnoListMap" parameterType="String">
-		select fk_snsno, longditude, latitude 
+		select to_char(fk_snsno) as fk_snsno, substr(longditude,0,9) as longditude, substr(latitude,0,9) as latitude 
 		from tbl_geo
+		where area1 like '%'||#{city}||'%'
 	</select>
 	
 	<!-- ===== 지역별 shy :  cnt 통계 지도 ===== -->
