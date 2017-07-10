@@ -808,6 +808,7 @@
 <script>
  // 알림 Ajax 
  $(document).ready(function(){
+	 
    $(".notification--num").hide(); 
 	
    Alarmcnt();
