@@ -746,15 +746,17 @@ public class Pa_Controller {
 		String[] alarmnoArr = req.getParameterValues("alarmnoArr");
 		//System.out.println("alarmnoArr="+alarmnoArr);
 		
-		resultMap.put("alarmnoArr", alarmnoArr);
 		resultMap.put("myIdx", myIdx);
 		
 		if(req.getParameterValues("alarmnoArr")!=null){
+			resultMap.put("alarmnoArr", alarmnoArr);
 			int n = service.updateAlarm(resultMap); // 알람클릭시 update 
 			if(n>0){
 				result = service.getAlarmCnt(myIdx); // 다시 카운트 가져오기
 				resultMap.put("result", result);
 			}
+		}else{
+			System.out.println("alarmnoArr null!");
 		}
 		
 		return resultMap;
