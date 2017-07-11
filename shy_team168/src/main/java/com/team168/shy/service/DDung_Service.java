@@ -73,7 +73,7 @@ public class DDung_Service {
 		}
 
 		// ===== 댓글 Cmtno 가져오기 ===== //
-		public String getCmtno(HashMap<String, String> parameters) {
+	/*	public String getCmtno(HashMap<String, String> parameters) {
 			String cmtno = dao.getCmtno(parameters);
 			return cmtno;
 		}
@@ -86,7 +86,7 @@ public class DDung_Service {
 		public void insertAlarm(HashMap<String, String> parameters) {
 			dao.insertAlarm(parameters);
 			
-		}
+		}*/
 		
 	
 	

@@ -74,7 +74,7 @@ public class DDung_DAO {
 	}
 
 	// ===== 댓글 Cmtno 가져오기 ===== //
-	public String getCmtno(HashMap<String, String> parameters) {
+/*	public String getCmtno(HashMap<String, String> parameters) {
 		String cmtno = sqlsession.selectOne("ddung.getCmtno",parameters);
 		return cmtno;
 	}
@@ -87,7 +87,7 @@ public class DDung_DAO {
 	public void insertAlarm(HashMap<String, String> parameters) {
 		sqlsession.insert("pa.insertCmtAlarm",parameters);
 		
-	}
+	}*/
 
 	
 }

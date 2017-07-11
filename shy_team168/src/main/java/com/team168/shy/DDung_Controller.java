@@ -380,12 +380,12 @@ public class DDung_Controller {
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("fk_idx", myidx);
-		parameters.put("shyidx", shyidx);
+		parameters.put("snsno", shyidx);
 		parameters.put("cmtcontent", replycontent);
 		
 		service.insertReply(parameters);
 		
-  		String cmtno = service.getCmtno(parameters); 
+  	/*	String cmtno = service.getCmtno(parameters); 
   			
   			if(cmtno!=null){ 
   				parameters.put("cmtno", cmtno);
@@ -394,7 +394,7 @@ public class DDung_Controller {
   				
   				parameters.put("alarm_target", alarm_target);
   				service.insertAlarm(parameters);
-  			}
+  			}*/
 		
 		String result = "댓글 입력 끝";
 		

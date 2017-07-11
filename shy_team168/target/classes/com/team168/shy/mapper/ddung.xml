@@ -157,29 +157,29 @@
 	</insert>
 	
 	<!-- ===== 댓글 cmtno 가져오기 =====   -->
-   <select id="getCmtno" parameterType="java.util.HashMap" resultType="String">
+   <!-- <select id="getCmtno" parameterType="java.util.HashMap" resultType="String">
       SELECT V.CMTNO
 	  FROM
        ( 
       SELECT ROWNUM,CMTNO,SNSNO,GRPBOARDSEQ,STOREBOARDNO,CMTCONTENT,UPDATETIME,LIKECNT,BLAMECNT,STATUS,FK_IDX
       FROM TBL_COMMENT
-      WHERE 1=1 AND SNSNO= #{shyidx} AND FK_IDX=#{myidx}
+      WHERE 1=1 AND SNSNO= #{snsno} AND FK_IDX=#{fk_idx}
       ORDER BY UPDATETIME DESC)V
       WHERE  V.STATUS=1
-   </select>
+   </select> -->
    
    <!-- ===== 알림 타겟 가져오기 =====   -->
-    <select id="alarmTarget" parameterType="String" resultType="String">
+   <!--  <select id="alarmTarget" parameterType="String" resultType="String">
        SELECT FK_IDX
        FROM TBL_SHYMEMO
-       WHERE SNSNO = #{shyidx}
+       WHERE SNSNO = #{snsno}
     </select>
-    
+     -->
     <!-- ===== 댓글 알림 insert ===== -->	
-	<insert id="insertCmtAlarm" parameterType="java.util.HashMap">
+	<!-- <insert id="insertCmtAlarm" parameterType="java.util.HashMap">
 		insert into tbl_alarm(alarmno,fk_idx,alarmdate,astatus,cmtno,alarm_target)
-		values(seq_tbl_alarm.nextval,#{myidx},default,default,#{cmtno},#{alarm_target})
-	</insert>
+		values(seq_tbl_alarm.nextval,#{fk_idx},default,default,#{cmtno},#{alarm_target})
+	</insert> -->
 	
 </mapper>
 
