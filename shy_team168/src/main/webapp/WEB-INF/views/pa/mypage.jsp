@@ -72,10 +72,9 @@ $.ajaxSetup({
     
     $(document).ready(function(){
     	$('.bt-love_chg').hide();
-    	//countComment();
+    	 //countComment();
    		
         getLike();
-        //follow();
         
         $('#showFlwList').hide();
         
@@ -98,9 +97,8 @@ $.ajaxSetup({
                        $.each(data,function(entryIndex,entry){
                     		
                     	   if(data.length >0){
-                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px;'/>"
+                           	var html = "<img src='/shy/resources/images/shydb/"+entry.myimg+"' style='width:30px; hegiht:30px; border-radius: 50%;'/>"
                                	 	 + "<span>"+entry.email+"&nbsp;&nbsp;Following..</span>";
-                  	
                   			Result += "<span style='cursor: pointer;'>" + html + "</span><br/>";
                     	   }else{
                     		   Result = "<span style='cursor: pointer;'>팔로우가 없습니다.</span><br/>";
@@ -141,7 +139,9 @@ $.ajaxSetup({
         					   
 	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
 	        	{
-	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        		var noSharpWord = word.substring(1, word.length);
+					
+	        		word = '<a style="color:#8888DD;font-weight:bold;" href="search_hashtag.shy?word=' + noSharpWord + '">'+word+'</a>';
 	        	}
 	        	
 	        	linkedContent += word+' ';
@@ -298,44 +298,13 @@ $.ajaxSetup({
         
     }
   
-	function follow() {
-   		
-   		jQuery.ajaxSettings.traditional = true; /* data: {idxArr:idxArr}, 이렇게 쓸라면 트루로 해줘야함 */
-   		
-   		$.ajax({
-   			url: "/shy/pafollow.shy",
-    		type: "GET",
-    		dataType: "JSON", 
-    		success: function(data){
-    			//alert("follow");
-    			var html;
-    			$.each(data, function(entryIndex, entry){
-	    			
-	    			var FOLLOWCHECK = entry.FOLLOWCHECK;
-					if(FOLLOWCHECK == 1){
-						html = " <button class='bt' onClick='unFollow("+ entry.IDX + ");'>UnFollow</button>";
-					}
-					else {
-						html = "<button class='bt' onClick='goFollow("+ entry.IDX + ");'>Follow</button>";
-					}
-					
-					$("#follow").html(html);
-    				
-    			});
-    		//	getCommentList();
-    		},
-    		error: function(){
- 				  alert("follow() error!"); 
- 		    }
-   		});
-    }; 
-    
 </script>
 <script>
 var pageNo = 1;
 
 function moreList(){ // 더 읽기	
 	var idx = "${mymap.idx}";
+	
 	pageNo += 1;
 	
     $.ajax({
@@ -357,7 +326,7 @@ function moreList(){ // 더 읽기
             	
       		  var  html = "<div class='mycard myIncard'><div class='flex-content'>";
       		  
-      	     			  if(entry.simage!=0){ // 이미지가 있으면
+      	     			  if(entry.imageaddr!=null){ // 이미지가 있으면
       	     				html += "<figure class='snip1584'><img src='/shy/resources/images/shydb/"+entry.imageaddr+"'>"
       	     				     +  "<figcaption><h5>"+entry.scontent+"</h5><h3>"
       	     		    		 + "<a class='bt-love' title='Love' onclick='goLike('${sessionScope.loginuser.idx }','"+entry.snsno+"','snsno')' id='bt-love"+entry.snsno+"'> Love </a>" 
@@ -461,7 +430,12 @@ function moreList(){ // 더 읽기
          </div>
          <div class="myIntro">
             <h2 style="display: -webkit-inline-box;">${mymap.email}</h2>
-            <div id="follow"></div>
+            <c:if test="${sessionScope.loginuser.idx eq  mymap.idx}">
+            </c:if>
+            <c:if test="${sessionScope.loginuser.idx ne  mymap.idx}">
+            <button class='bt' onClick='goFollow("");'>Follow</button>
+            </c:if>
+             <!--  <button class='bt' onClick='unFollow("");'>UnFollow</button> -->
             <hr>
              <span>게시물&nbsp; 
                <c:if test="${myshyCount==0}" >
@@ -480,8 +454,9 @@ function moreList(){ // 더 읽기
                </c:if> 명</span>&nbsp;&nbsp;
 
             <span>그룹&nbsp; 1개</span>&nbsp;&nbsp;
+            <c:if test="${mymap.idx eq sessionScope.loginuser.idx}">
             <button class="proedit" onclick="goEdit();">프로필편집</button>
-            
+            </c:if>
             <div id="showFlwList"></div>
             
             <c:if test="${mymap.myintro != null}">
@@ -513,7 +488,7 @@ function moreList(){ // 더 읽기
   <div class="mycard myIncard">
   	<div class="flex-content">
      
-    <c:if test="${shies.simage!=0 }">
+    <c:if test="${shies.imageaddr!=null }">
       <figure class="snip1584"><img src="<%=request.getContextPath() %>/resources/images/shydb/${shies.imageaddr }" >
   		<figcaption>
     	<h5><p id="hashcheck${status.index}" class="hashcheck">${shies.scontent }</p></h5>
@@ -528,7 +503,7 @@ function moreList(){ // 더 읽기
 	  </figure>
       
     </c:if> 
-  	<c:if test="${shies.simage==0 }">
+  	<c:if test="${shies.imageaddr==null }">
    
       <div style="min-height: 125px; margin-top: 100px; position: relative;">
        	<p id="hashcheck${status.index}" class="hashcheck" >${shies.scontent }</p>

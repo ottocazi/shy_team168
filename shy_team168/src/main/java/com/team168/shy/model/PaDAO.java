@@ -193,5 +193,17 @@ public class PaDAO {
 		return mymap;
 	}
 	
+	// ===== 해시태그된 샤이목록 가져오기 ===== //
+	public List<HashMap<String, String>> getHashtagshy(HashMap<String, Object> map) {
+		List<HashMap<String, String>> wordmap = sqlsession.selectList("pa.HashtagshyList",map);
+		return wordmap;
+	}
+
+	// ===== 팔로우상태 가져오기 ===== //
+	/*public int getFollowing(HashMap<String, Object> pafollow) {
+		int n = sqlsession.selectOne("pa.followCheck",pafollow);
+		return n;
+	}*/
+	
 
 }

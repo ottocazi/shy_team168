@@ -60,13 +60,17 @@
  		<result property="STATUS"  		column="status" 		javaType="String" />
  		<result property="GCOUNT"  		column="gcount" 		javaType="String" />
  		<result property="GIMG" 		column="gimg" 			javaType="String" />
+ 		<result property="NAME" 	column="name" 	javaType="String" />
+ 		<result property="EMAIL" 	column="email" 	javaType="String" />
+ 		<result property="MYIMG" 	column="myimg" 	javaType="String" />
+ 		<result property="MYINTRO" 	column="myintro" 	javaType="String" />
 	</resultMap>
 	
 	
-	 <select id="groupsearch" parameterType="String" resultMap="groupsearchMap">
+	 <select id="groupsearch" parameterType="java.util.HashMap" resultMap="groupsearchMap">
 	
 	    select *
-        from TBL_GROUP
+        from view_tbl_group
         where status != 3
         <if test="search != null">
         and gname like '%' || #{search} || '%'
@@ -219,10 +223,9 @@
     </select>
 	
 	 
+	 
 	
-	
-	
-	
+	 
 	
 	
 	
