@@ -72,21 +72,6 @@ public class DDung_Service {
 			
 		}
 
-		// ===== 댓글 Cmtno 가져오기 ===== //
-	/*	public String getCmtno(HashMap<String, String> parameters) {
-			String cmtno = dao.getCmtno(parameters);
-			return cmtno;
-		}
-
-		public String alarmTarget(String shyidx) {
-			String alarm_target = dao.alarmTarget(shyidx);
-			return alarm_target;
-		}
-
-		public void insertAlarm(HashMap<String, String> parameters) {
-			dao.insertAlarm(parameters);
-			
-		}*/
 		
 	
 	

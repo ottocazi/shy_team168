@@ -385,17 +385,6 @@ public class DDung_Controller {
 		
 		service.insertReply(parameters);
 		
-  	/*	String cmtno = service.getCmtno(parameters); 
-  			
-  			if(cmtno!=null){ 
-  				parameters.put("cmtno", cmtno);
-  				
-  				String alarm_target = service.alarmTarget(shyidx); 
-  				
-  				parameters.put("alarm_target", alarm_target);
-  				service.insertAlarm(parameters);
-  			}*/
-		
 		String result = "댓글 입력 끝";
 		
 		return result;
