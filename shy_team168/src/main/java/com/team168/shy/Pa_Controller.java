@@ -769,7 +769,7 @@ public class Pa_Controller {
 				resultMap.put("result", result);
 			}
 		}else{
-			System.out.println("alarmnoArr null!");
+			//System.out.println("alarmnoArr null!");
 		}
 		
 		return resultMap;
