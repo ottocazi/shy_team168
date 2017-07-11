@@ -359,7 +359,7 @@
 		<result property="snsnocnt" 	column="SNSNOCNT" 			javaType="int"/>
 	</resultMap>
 	<select id="getmyshyList" parameterType="java.util.HashMap" resultMap="getmyshies">
-         SELECT X.*,NVL(Y.SNSNOCNT,0) AS SNSNOCNT
+        SELECT X.*,NVL(Y.SNSNOCNT,0) AS SNSNOCNT
         FROM          
                 (SELECT ROWNUM AS RNO,V.*
 		FROM
@@ -497,6 +497,47 @@
       	SELECT *
       	FROM TBL_SHYMEMBER
 		WHERE IDX = #{myIdx}
+	</select>
+	
+	<!-- ===== 해시태그된 샤이목록 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="hashtagMap">
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="snsnocnt" 	column="SNSNOCNT" 			javaType="int"/>
+		<result property="shyplace" 	column="shyplace" 		javaType="String"/>
+		<result property="geoseq" 	column="geoseq" 		javaType="String"/>
+		<result property="geofk_snsno" 	column="geofk_snsno" 		javaType="String"/>
+		<result property="shypay" 	column="shypay" 		javaType="String"/>
+		<result property="shyprice" 	column="shyprice" 		javaType="String"/>
+	</resultMap>
+	<select id="HashtagshyList" parameterType="java.util.HashMap" resultMap="hashtagMap">
+		SELECT X.*,NVL(Y.SNSNOCNT,0) AS SNSNOCNT
+		FROM
+		(
+		select a.* , B.EMAIL, B.NAME , B.MYIMG , c.shyplace, c.seq as geoseq,
+		c.fk_snsno as geofk_snsno , row_number() over(order by a.sdatedtime
+		desc) as RNO
+		from
+		TBL_SHYMEMO A inner JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX left outer join
+		tbl_geo c on a.snsno = c.fk_snsno
+		WHERE 1=1 AND A.STATUS = 1 AND A.SCONTENT LIKE '%' || #{word} || '%'
+		ORDER BY A.SDATEDTIME DESC)X
+		LEFT JOIN
+		(SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
+		ON X.SNSNO = Y.SNSNO
+		<!-- WHERE RNO >= #{start} AND RNO <![CDATA[<=]]> #{end} -->
 	</select>
 	
 	<!-- ===== 팔로우상태 가져오기 =====   -->
