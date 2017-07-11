@@ -811,7 +811,7 @@
 	 
    $(".notification--num").hide(); 
 	
-   //Alarmcnt();
+   Alarmcnt();
 	 
    $("#ajaxresult").hide();
   /*  $("#ajaxresult").css("z-index", "1500"); */

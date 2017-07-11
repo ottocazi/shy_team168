@@ -167,8 +167,8 @@
     function getLike(){
         var snsnoArr = new Array();
         
-         <c:if test="${shies!=null}">
-         <c:forEach items="${shies}" var="shies">
+         <c:if test="${wordmap!=null}">
+         <c:forEach items="${wordmap}" var="shies">
          //alert('${shies.snsno}');
          snsnoArr.push("${shies.snsno}");
          </c:forEach>
@@ -377,9 +377,9 @@
     /* ajax 로 댓글 갯수 읽어 오기 */
    	function countComment() {
    		var snsnoArr = new Array();
-   		<c:if test="${shies!=null}">
+   		<c:if test="${wordmap!=null}">
    		
-   		<c:forEach items="${shies}" var="shies">
+   		<c:forEach items="${wordmap}" var="shies">
    		// alert('${shies.snsno}');
    		snsnoArr.push('${shies.snsno}');
    		</c:forEach>
@@ -751,10 +751,10 @@
 	
 	
 	
-	<c:if test="${shies==null}">
+	<c:if test="${wordmap==null}">
   	새 글을 써 보시거나, 친구를 추가해 보세요!
-  </c:if> <c:if test="${shies!=null}">
-		<c:forEach items="${shies}" var="shies" varStatus="status">
+  </c:if> <c:if test="${wordmap!=null}">
+		<c:forEach items="${wordmap}" var="shies" varStatus="status">
 
 			<article class="card-60 social" >
 				<figure>

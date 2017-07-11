@@ -390,7 +390,7 @@ text-decoration: none;
                         <tr>
                         
                           <td>${map.IDX}</td>
-                          <td><a href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${map.IDX}">${map.NAME}</a></td>
+                          <td><a href="<%= request.getContextPath() %>/mypage.shy?idx=${map.IDX}">${map.NAME}</a></td>
                           <td>${map.EMAIL}</td>
                           <td id="follow${map.IDX}"></td>
                         </tr>
@@ -512,7 +512,14 @@ text-decoration: none;
 		    <img class="grp_boxImage" src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
 		    </c:if>
 		    
-		    <img class="grp_buddy" src="https://farm4.staticflickr.com/3932/buddyicons/43830692@N04_r.jpg?1413100041#43830692@N04">
+		    <c:if test="${map.MYIMG != null}">
+		    <a href="<%= request.getContextPath() %>/mypage.shy?idx=${map.FK_IDX}"><img class="grp_buddy" src="<%=request.getContextPath() %>/resources/images/shydb/${map.MYIMG }">
+		    </a></c:if>
+		    <c:if test="${map.MYIMG == null}">
+		    <a href="<%= request.getContextPath() %>/mypage.shy?idx=${map.FK_IDX}"><img class="grp_buddy" src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
+		    </a>
+		    </c:if>
+		    
 		    <div class="grp_inner">
 		    
 		      <c:if test="${map.STATUS==1}">
