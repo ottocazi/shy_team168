@@ -139,7 +139,9 @@ $.ajaxSetup({
         					   
 	        	if(word.indexOf('#') == 0) // # 문자를 찾는다.
 	        	{
-	        		word = '<a style=\'color:#8888DD;font-weight:bold;\' href=\'#\'>'+word+'</a>';
+	        		var noSharpWord = word.substring(1, word.length);
+					
+	        		word = '<a style="color:#8888DD;font-weight:bold;" href="search_hashtag.shy?word=' + noSharpWord + '">'+word+'</a>';
 	        	}
 	        	
 	        	linkedContent += word+' ';

@@ -40,7 +40,6 @@ public class Pa_Controller {
 		ShyMemberVO loginuser= null;
 		
 		
-		
 			if(req.getParameter("idx") != null){
 				myIdx = req.getParameter("idx");
 				
@@ -841,5 +840,68 @@ public class Pa_Controller {
 		}
 
 	}
-	
+
+	// ===== 해시태그에 해당하는 샤이 요청하기 ===== //
+	@RequestMapping(value = "/search_hashtag.shy", method = { RequestMethod.GET })
+	public String getHashtagshy(HttpServletRequest req) {
+		String word = ""; // 해당 해시태그 단어 가져오기
+
+		// 기본 페이지번호를 1으로 설정하고
+        int pageNo = 1;
+ 
+        // 넘어온 파라미터가 있다면
+        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+        if(req.getParameter("pageNo") != null){
+        	pageNo = Integer.parseInt(req.getParameter("pageNo"));
+        }
+        
+        int sizePerPage = 10; // 10 개씩 자르겠음
+        
+        int start = (pageNo - 1) * sizePerPage + 1;
+        int end = pageNo * sizePerPage;
+		
+        word = req.getParameter("word");
+		System.out.println("word="+word);
+		
+		if(req.getParameter("word") != null) {
+			word = req.getParameter("word");
+			word = "#"+word;
+			System.out.println("word="+word);
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("word", word);
+			map.put("start", start);
+			map.put("end", end);
+			
+			List<HashMap<String, String>> wordmap = service.getHashtagshy(map);
+			
+			if(wordmap!=null){
+				for(int i =0 ; i<wordmap.size(); i++){
+					
+					// 가져온 샤이의 메인 정보를 가져 오는 동안 image, 친구태그, 지역태그 유무의 status를 확인하여 그 값을 추가하거나 null값을 부여한다.
+					// 페이징 처리 미완성
+					if("1".equals(wordmap.get(i).get("simage"))){
+						
+						String snsno = wordmap.get(i).get("snsno");
+						// 이미지 가져오기
+						String imgfile = service.getImgaddr(snsno);
+						
+						wordmap.get(i).put("imageaddr", imgfile);
+						
+					}
+					
+					else if("0".equals(wordmap.get(i).get("simage"))){
+						wordmap.get(i).put("imageaddr", null);
+					}
+				}
+			}
+			req.setAttribute("wordmap", wordmap);
+		}
+		
+		
+		return "pa/search_hashtag.tiles";
+			
+
+	}
+
 }

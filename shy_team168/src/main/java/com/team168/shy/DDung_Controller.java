@@ -343,9 +343,9 @@ public class DDung_Controller {
     	map.put("edited_content", newFilename);
     	
     	jservice.myInfoEditEnd(map);
-		ShyMemberVO getMemberVO = jservice.getMemberVO(idx);
-	       
-        req.setAttribute("getMemberVO", getMemberVO);
+		
+	    loginuser.setMyimg(newFilename);
+        req.setAttribute("loginuser", loginuser);
 	       
         req.setAttribute("loc", "myInfoEdit.shy");
 		return "msg.notiles";
@@ -412,6 +412,26 @@ public class DDung_Controller {
 	public String banking(HttpServletRequest req, HttpSession session) throws IOException {
 		
 		
+		
+		return "ddung/banking_dashboard.tiles";
+		
+		
+	}
+	
+	@RequestMapping(value="/s2jo.shy", method={RequestMethod.GET})
+	public String khx(HttpServletRequest req, HttpSession session) throws IOException {
+		
+	/*	req.getParameter("");
+		req.getParameter("");
+		req.getParameter("");
+		req.getParameter("");
+		
+		HashMap <String, String> khx = new HashMap<String, String>();
+		khx.put("", );
+		khx.put("", );
+		khx.put("", );
+		
+		session.setAttribute("khx", khx);*/
 		
 		return "ddung/banking_dashboard.tiles";
 		
