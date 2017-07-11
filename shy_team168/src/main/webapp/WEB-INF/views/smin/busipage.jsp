@@ -232,7 +232,7 @@
 	
 	function starcount(count){
 		
-		alert(count);
+		//alert(count);
 		$("#starcounter").val(count);
 	}
 	

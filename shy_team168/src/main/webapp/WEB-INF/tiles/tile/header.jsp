@@ -642,8 +642,7 @@
                         style="color: #FAE03C;"></i>
                   </button>
                   <div class="dropdown-content">
-                     <a href="#">Link 1111111</a> <a href="#">Link 2</a> <a href="#">Link
-                        3</a>
+                     <a href="#">Q&A</a> 
                   </div>
                </div>
             </li>

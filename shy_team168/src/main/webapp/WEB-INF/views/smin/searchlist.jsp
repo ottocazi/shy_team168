@@ -207,11 +207,11 @@ text-decoration: none;
     		data: form_data,
     		dataType: "JSON", 
     		success: function(data){
-    			alert("idx : "+fk_idxflwed);
+    			//alert("idx : "+fk_idxflwed);
     			follow();
     		},
     		error: function(){
-				  alert("goFollow() error!"); 
+				  //alert("goFollow() error!"); 
 		    }
     	});	
     };
@@ -224,11 +224,11 @@ text-decoration: none;
     		data: form_data,
     		dataType: "JSON", 
     		success: function(data){
-    			alert("idx : "+fk_idxflwed);
+    			//alert("idx : "+fk_idxflwed);
     			follow();
     		},
     		error: function(){
-				  alert("unFollow() error!"); 
+				  //alert("unFollow() error!"); 
 		    }
     	});	
     };
@@ -274,7 +274,7 @@ text-decoration: none;
     		//	getCommentList();
     		},
     		error: function(){
- 				  alert("follow() error!"); 
+ 				  //alert("follow() error!"); 
  		    }
    		});
     }; 

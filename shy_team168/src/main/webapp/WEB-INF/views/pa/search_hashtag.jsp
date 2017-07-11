@@ -208,7 +208,7 @@
                 
              },
              error: function() { // 에러가 발생했을 때의 콜백함수
-                 alert("getlikeError");
+                 //alert("getlikeError");
              }
          });
         
@@ -301,7 +301,7 @@
 	               
 	            },
 	            error: function() { // 에러가 발생했을 때의 콜백함수
-	                alert("error");
+	                //alert("error");
 	            }
 	        });
 		   
@@ -368,7 +368,7 @@
 	               
 	            },
 	            error: function() { // 에러가 발생했을 때의 콜백함수
-	                alert("error");
+	                //alert("error");
 	            }
 	        });
     	
@@ -409,7 +409,7 @@
     		
     		},
     		error: function(){
- 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
  		    }
    		});
     } 
@@ -437,7 +437,7 @@
     		},
     		error: function(){
 				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				  alert('ajax 오류');
+				  //alert('ajax 오류');
 		    }
     			
     	}); 
@@ -496,7 +496,7 @@
                ]
 
                swal.queue(steps).then(function (result) {
-                  alert(result);
+                  //alert(result);
                   $.ajax({
                         url: "/shy/goCommentEdit.shy",
                       type: "GET",
@@ -522,7 +522,7 @@
                              reopenComment(snsno);
                        },
                       error: function(){
-                           alert("댓글 수정 ajax error function!"); 
+                           //alert("댓글 수정 ajax error function!"); 
                        }
                      });
                   
@@ -559,7 +559,7 @@
                   
                },
                error: function(){
-                    alert("댓글 수정 ajax error function!"); 
+                    //alert("댓글 수정 ajax error function!"); 
                 }
               });
         })
@@ -656,7 +656,7 @@
                    }).then(function (){
                       
                    }, function (dismiss) {
-                      alert("dismiss : "+ dismiss);
+                      //alert("dismiss : "+ dismiss);
                       
                       // dismiss can be 'cancel', 'overlay',
                       // 'close', and 'timer'
@@ -676,7 +676,7 @@
                swal.resetDefaults()
              })
       }, function (dismiss) {
-         alert("dismiss : "+ dismiss);
+         //alert("dismiss : "+ dismiss);
          // dismiss can be 'cancel', 'overlay',
         // 'close', and 'timer'
         
@@ -692,7 +692,7 @@
   }
   
   function goBlameEnd(result,snsno,cmtno,fk_idx, value){
-     alert("goBlameEnd();시작! value : "+value);
+     //alert("goBlameEnd();시작! value : "+value);
      
        $.ajax({
              url: "/shy/goBlameEnd.shy",
@@ -705,7 +705,7 @@
              },
            dataType: "JSON",  
            success: function(data){
-              alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+              //alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
               
               swal.resetDefaults()
                 swal({
@@ -721,7 +721,7 @@
            //   countComment();
            },
            error: function(){
-                alert("댓글 신고 ajax error function!"); 
+                //alert("댓글 신고 ajax error function!"); 
             }
           });
      

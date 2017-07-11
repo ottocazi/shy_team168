@@ -109,7 +109,7 @@ $.ajaxSetup({
                        $("#showFlwList").html(Result).show(); 
                  },
                  error: function() { // 에러가 발생했을 때의 콜백함수
-                     alert("flwListError");
+                     //alert("flwListError");
                  }
              });
             
@@ -245,7 +245,7 @@ $.ajaxSetup({
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("getLikeError");
+                //alert("getLikeError");
             }
         });
        

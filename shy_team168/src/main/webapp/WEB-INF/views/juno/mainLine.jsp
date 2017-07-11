@@ -53,7 +53,7 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+              //  alert("error");
             }
         });
        
@@ -107,7 +107,7 @@
                
             },
             error: function() { // 에러가 발생했을 때의 콜백함수
-                alert("error");
+              //  alert("error");
             }
         });
        
@@ -177,7 +177,7 @@
 	               
 	            },
 	            error: function() { // 에러가 발생했을 때의 콜백함수
-	                alert("error");
+	               // alert("error");
 	            }
 	        });
 		   
@@ -223,7 +223,7 @@
     		//	getCommentList();
     		},
     		error: function(){
- 				  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
+ 				//  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error); 
  		    }
    		});
     } 
@@ -291,7 +291,7 @@
     	    	    			  },
     	    	    		dataType: "JSON",  
     	    	    		success: function(data){
-    	    	    			alert("댓글 수정 ajax success function!");
+    	    	    			//alert("댓글 수정 ajax success function!");
     	    	    			
     	    	    		 	swal.resetDefaults()
     	      	    		  	swal({
@@ -305,7 +305,7 @@
     	      	    		  	})  
      	    	    		},
     	    	    		error: function(){
-    	    	 				  alert("댓글 수정 ajax error function!"); 
+    	    	 				//  alert("댓글 수정 ajax error function!"); 
     	    	 		    }
     	    	   		});
     	    			
@@ -313,7 +313,7 @@
     	    		  swal.resetDefaults()
     	    		})
     		}, function (dismiss) {
-    			alert("dismiss : "+ dismiss);
+    			//alert("dismiss : "+ dismiss);
     			
     			$.ajax({
     	   			url: "/shy/goCommentDelete.shy",
@@ -324,7 +324,7 @@
     	    			  },
     	    		dataType: "JSON",  
     	    		success: function(data){
-    	    			alert("댓글 삭제 ajax success function!");
+    	    			//alert("댓글 삭제 ajax success function!");
 
     		    		// dismiss can be 'cancel', 'overlay',
     		    		// 'close', and 'timer'
@@ -340,7 +340,7 @@
     	    			countComment();
     	    		},
     	    		error: function(){
-    	 				  alert("댓글 수정 ajax error function!"); 
+    	 				 // alert("댓글 수정 ajax error function!"); 
     	 		    }
     	   		});
     		})
@@ -401,8 +401,8 @@
   	    		]
 
   	    		swal.queue(steps).then(function (result) {
-  	    			alert("result : "+result);
-  	    			alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+  	    			//alert("result : "+result);
+  	    			//alert("snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
   	    			// 1~5 선택시
   	    			if(result < 6) {
   	    				var value = "";
@@ -437,7 +437,7 @@
 		  	    		}).then(function (){
 		  	    			
 		  	    		}, function (dismiss) {
-		  	    			alert("dismiss : "+ dismiss);
+		  	    		//	alert("dismiss : "+ dismiss);
 		  	    			
  	    		    		// dismiss can be 'cancel', 'overlay',
  	    		    		// 'close', and 'timer'
@@ -457,7 +457,7 @@
   	    		  swal.resetDefaults()
   	    		})
   		}, function (dismiss) {
-  			alert("dismiss : "+ dismiss);
+  			//alert("dismiss : "+ dismiss);
   			// dismiss can be 'cancel', 'overlay',
     		// 'close', and 'timer'
     		
@@ -486,7 +486,7 @@
     			  },
        		dataType: "JSON",  
        		success: function(data){
-       			alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
+       			//alert(result+"번 사유로 신고 result : "+result+" snsno : "+snsno+" cmtno : "+cmtno+" fk_idx : "+fk_idx);
        			
        			swal.resetDefaults()
        		  	swal({
@@ -502,7 +502,7 @@
        		//	countComment();
        		},
        		error: function(){
-    				  alert("댓글 신고 ajax error function!"); 
+    				 // alert("댓글 신고 ajax error function!"); 
     		    }
       		});
     	
@@ -524,15 +524,15 @@
     		data: form_data ,
     		dataType: "text", 
     		success: function(data) {
-    			alert('success');
-    			alert($('#replycontent'+shyidx).val());
+    			//alert('success');
+    			//alert($('#replycontent'+shyidx).val());
     			$('#replycontent'+shyidx).val("");
     			countComment();
     			//getCommentList();
     		},
     		error: function(){
 				  //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				  alert('ajax 오류');
+				  //alert('ajax 오류');
 		    }
     			
     	}); 
