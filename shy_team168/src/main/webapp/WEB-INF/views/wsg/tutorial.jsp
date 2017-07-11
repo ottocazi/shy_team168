@@ -64,7 +64,7 @@ html, body {
   will-change: transform, opacity;
 }
 .page:nth-child(1) .left {
-  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/zz.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/heartlogo.png");
 }
 .page:nth-child(1) .right {
   background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/playing.jpg");
@@ -79,7 +79,7 @@ html, body {
   background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/playing.jpg");
 }
 .page:nth-child(3) .right {
-  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/search.png");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/search-2.png");
 }
 .page:nth-child(4) .left {
   background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/partner-1.jpg");
@@ -226,11 +226,11 @@ html, body {
 .heading {
   position: absolute;
   z-index: 500;
-  top: 50%;
+  top: 40%;
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  font-size: 3.5rem;
+  font-size: 8rem;
   color: #fff;
   font-family: 배달의민족 연성;
 }
@@ -241,10 +241,21 @@ html, body {
   left: 50%;
   -webkit-transform: translateX(-50%) translateY(-50%);
           transform: translateX(-50%) translateY(-50%);
-  font-size: 1.8rem;
+  font-size: 4rem;
   color: #fff;
-  font-family: 배달의민족 연성;`
+  font-family: 배달의민족 연성;
 }
+
+.heading-2 {
+    position: absolute;
+    z-index: 500;
+    top: 70%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 1.8rem;
+    color: #fff;
+    font-family: 배달의민족 연성;
 	
 .nav-panel {
   position: fixed;
@@ -355,19 +366,8 @@ html, body {
   border-bottom: 0.2rem solid;
 }
 
-.main .btn_grp button,
-.main .btn_grp button:focus,
-.main .btn_grp button:active{
-  padding: 0;
-}
-.main .btn_grp button span{
-  position: relative;
-}
 
-.button{
-width:100px;
-height:100px;
-}
+
 </style>
 <script>
 $(document).ready(function() {
@@ -471,16 +471,21 @@ $(document).ready(function() {
   <div class="scene">
   <div class="page page-1 active">
     <div class="half left withText">
-     	<a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading"> # shy?</h2> </a>
-		<a href="http://localhost:9090/shy/shynow.shy" target="blank">네이버로이동
-<h2 class="heading-1">귀찮아서, 복잡해서 보낼 때를 놓쳤던 송금.<br>
-이젠 간단하게 shy로 쉽게 송금하세요!</h2></a>
-	
+     	<a href="http://localhost:9090/shy/mainline.shy" target="blank"> <h2 class="heading"> # shy?</h2> </a>
+		<a href="http://localhost:9090/shy/mainline.shy" target="blank">네이버로이동
+
+<h2 class="heading-1">더치페이를 손쉽게,<br> 스마트 소셜  송금 서비스 </h2></a>
+
+
+
+
+<!-- register_btn  btnRegistration -->
+
+ 
     </div>
-    
     <div class="half right withText">
-   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading"># Why shy?	</h2></a>
-    <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading-1">친구와 함께하는 시간을 기억하세요.<br> 저녁 식사, 생일파티,아니면 안부</h2></a>
+      <a href="http://localhost:9090/shy/mainline.shy" target="blank"> <h2 class="heading"># Why shy?	</h2></a>
+    <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading-1"></h2></a>
     </div>
   </div>
   <div class="page page-2 ">
@@ -491,33 +496,30 @@ $(document).ready(function() {
 </h2></a>
     </div>
     <div class="half right withText">
-     <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># 계좌 등록	</h2></a>
-    <h2 class="heading-1"><br>
+     <a href="http://localhost:9090/shy/auth.shy" target="blank"><h2 class="heading"># 계좌 등록	</h2></a>
+    <a href="http://localhost:9090/shy/auth.shy" target="blank"><h2 class="heading-1">계좌등록 쉽게 하세요.<br>
 
-</h2>
+</h2></a>
     </div>
   </div>
   <div class="page page-3">
     <div class="half left"></div>
     <div class="half left withText">
-      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading">Connect with people</h2></a>
+      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Connect with people</h2></a>
        <h2 class="heading-1">친구와 함께하는 시간을 기억하세요.<br> 저녁 식사, 생일파티,아니면 안부<br>
     </div>
      <div class="half right withText">
-      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Search for friends</h2></a>
-          <h2 class="heading-1">shy 검색을 사용하면 shy에서 공유된 정보 전체를 검색할 수
-있습니다. 검색 창에 ＂회원명, 이메일, 그룹명”을 입력하기만 
-하면 사람, 장소, 사진 및 기타 정보를 검색할 수 있습니다. <br>
-          </h2>
+      <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading"># Search for friends</h2></a>
+          <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading-1">shy 검색을 사용하여 지인들을 찾아보세요.<br>
+          </h2></a>
     </div>
   </div>
   <div class="page page-4">
     <div class="half left withText">
      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># business	</h2></a>
-   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">shy 검색을 사용하면 shy에서 공유된 정보 전체를 검색할 수
-
-있습니다. 검색 창에 ＂회원명, 이메일, 그룹명”을 입력하기만 
-하면 사람, 장소, 사진 및 기타 정보를 검색할 수 있습니다. </h2></a>
+   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">많은 업체들과 공식적으로 제휴하여 서비스를 제공하고 있습니다.
+   	shy와 함께하세요. 
+    </h2></a>
     </div>
     <div class="half right withText">
      <h2 class="heading"># shy Mobile	</h2>
@@ -542,7 +544,7 @@ $(document).ready(function() {
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
     <script src="js/index.js"></script>
-
+	
 </body>
 
 
