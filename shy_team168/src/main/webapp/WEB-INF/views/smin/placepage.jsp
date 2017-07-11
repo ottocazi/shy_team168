@@ -224,7 +224,7 @@
 		  
 		    /*formData 추가?  */
 			  document.mainputfrm.method = "post";
-			  document.mainputfrm.action = "shynow.shy";
+			  document.mainputfrm.action = "businow.shy";
 			  document.mainputfrm.submit();
 			  
 		  
@@ -236,16 +236,16 @@
 		$("#starcounter").val(count);
 	}
 	
-	 function new_Main() {
+	 function new_Busy() {
 		   
-      location.href = "#new_Main";
+      location.href = "#new_Busy";
    }
 	
-	 function new_Main_enter(){
+	 function new_Busy_enter(){
 	      
-		  document.Mainform.method = "post";
-	      document.Mainform.action = "shynow.shy";
-	      document.Mainform.submit();
+		  document.Busyform.method = "post";
+	      document.Busyform.action = "businow.shy";
+	      document.Busyform.submit();
 	   }
 	 
 	 
@@ -390,27 +390,85 @@
 </div>
 </form>
 
+<!-- 
 
-<%-- 
+<form role="form" name="mainputfrm" >
+80%size Modal at Center
+<div class="modal modal-center fade" id="MainInput" tabindex="-1" role="dialog" aria-labelledby="my80sizeCenterModalLabel">
+  <div class="modal-dialog modal-80size modal-center" role="document">
+    <div class="modal-content modal-80size" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">메인글 남기기</h4>
+        
+        
+      </div>
+      <div class="modal-body">
 
 
-		<!-- ******  인풋 (글남기기) 형식 *********  끝 -->
+<p class="star_rating" align="left">
+	
+    <a href="#" class="on" onclick="starcount('1');">★</a>
+    <a href="#" class="on" onclick="starcount('2');">★</a>
+    <a href="#" class="on" onclick="starcount('3');">★</a>
+    <a href="#" onclick="starcount('4');">★</a>
+    <a href="#" onclick="starcount('5');">★</a>
+     
+    
+	<select name="status" id="status" style="float: right; size: 30px;"> 
+	<option value="1">전체 공개</option>
+	<option value="2">친구 공개</option>
+	<option value="0">나만 보기</option>
+	</select>
+    
+</p>
+<input type="hidden" id="starcounter" value="0"/> 
+		
 
-<!-- 선택 모달창 -->
-      <div class="white_content" id="new_Main" align="center">
+        <div class="form-group">
+          <textarea class="form-control" rows="7" id="secondarea"   required></textarea>
+          
+        </div>
+ <input type="file" id="uploader" name="image" />
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+         <button type="submit" class="btn btn-success" OnClick="goInput()">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form> -->
+
+
+
+
+
+
+
+      <!-- 선택 모달창 -->
+      <div class="white_content" id="new_Busy" align="center">
          <div align="center">
             <i class="fa fa-times-circle-o fa-2x" aria-hidden="true"style="float:right; color:grey; font-weight: lighter;" onclick="finishpic();" ></i>
-         
+         <c:if test="${loginuser.myimg != null}">
+         <img src="<%=request.getContextPath() %>/resources/images/shydb/${loginuser.myimg }" style="float: center; width:96px; height:96px; border-radius: 50%; margin-top: 20px;" />
+                        <%-- <img class="avatar-32"
+                           src="<%=request.getContextPath() %>/resources/images/shydb/${shies.myimg }"
+                           alt="Avatar"> --%>
+                     </c:if>
             
          
                      
             <div style="clear: both; width: 96%;">
 
-               <form name="Mainform" enctype="multipart/form-data">
+               <form name="Busyform" enctype="multipart/form-data">
                   <div align="left" style="width: 480px;">
                      
-                     <br>  <h4 class="modal-title" id="myModalLabel">메인글 남기기</h4> 
-        
+                     <br> <span style="font-size: 16pt; color: navy;"><c:if
+                           test="${loginuser.name!=null}">${loginuser.name}</c:if> <c:if
+                           test="${loginuser.name==null}">${loginuser.email}</c:if></span> 님의 샤이
+                     기록하기&nbsp;&nbsp; 
                      <div style="float: right; display:inline-block; vertical-align: baseline; "  >
                      <select name="status" id="status">
                         <option value="1">전체 공개</option>
@@ -418,24 +476,37 @@
                         <option value="0">나만 보기</option>
                      </select>
                      </div>
-                
                      </div>
-                     
+                  <br>
                   <div>
                   <input type="text" name="shypay" id="shypay" style="width:480px; border:none; color:#f4bf42; font-size:13pt; font-style: italic;"readonly></input>
                   </div>
                   
-                  
+                  <div style="width:480px; float: center;">
+                  <input type="text" name="shyprice" id="shyprice" style=" float:left;border:none; color:#ffd87c; font-size:13pt; font-style: italic;"readonly></input>
+                  <input type="checkbox" id="pricecheck" name="pricecheck" style="float:right;"><span style="float:right;"id="pricecheck2">&nbsp;공개&nbsp;</span>
+                  </div>
                   <input type="hidden" name="userseq" value="${loginuser.idx}" />
-                  
+                  <br>
                      <textarea id="content" name="content" class="swal2-textarea"
-                         style="width: 480px; min-height: 170px;"></textarea>
+                        placeholder="일상을 공유하거나 구매 활동을 기록해 보세요." style="width: 480px; min-height: 170px;"></textarea>
                   
-                  
+                  <br>
                   <div style="margin-top: 5%; width:480px;" align="left">
-                  
-                  
-                   
+                  <div style="float: left; display: block;">
+                  <span style="font-size: 10pt;">누구와 함께 계신가요? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+                  <div style="float:right; display: inline;" >
+                  <input style="width: 250px;"
+                     id="ftag" name="ftag" placeholder="" />
+                     </div>
+                  </div><br><br>
+                  <div style="display: block;">
+                  <span style="font-size: 10pt;">장소를 선택해 보세요. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                      <input style="width: 250px;"
+                        type="text" onFocus="geolocate();" id="autocomplete"
+                        name="shyplace" ></input>
+                  </div>   
+                  <br>
                   <input type="file" id="uploader" name="image" />   
                </div>
                   
@@ -445,19 +516,43 @@
                      disabled></input> <input id="administrative_area_level_1" name="area1"
                      type="hidden" disabled></input> <input id="postal_code" name="postal_code"
                      type="hidden" disabled></input> <input id="country" name="country"
-                     type="hidden" disabled></input> <input id="위도" name="latitude" value="${geomap.latitude}"
-                     type="hidden"  /> <input id="경도" type="hidden" name="longditude" value="${geomap.longditude}"
-                      /> 
+                     type="hidden" disabled></input> <input id="위도" name="latitude"
+                     type="hidden"  /> <input id="경도" type="hidden" name="longditude"
+                      /> <br>
                   
                   
                </form>
                
             <br>   
-         <button class="dd_button dd_button5" onclick="new_Main_enter();">작성완료</button>   
+         <button class="dd_button dd_button5" onclick="new_Busy_enter();">shy up!</button>   
             
 </div>
-</div></div>
- --%>
+</div>
+
+
+
+
+      
+
+         <!-- ===== #103. 글검색 폼 추가하기 : 제목, 내용, 글쓴이로 검색하도록 한다. ===== -->
+         
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -476,9 +571,8 @@
 <c:if test="${geomap.latitude != 'X'}">
 <div id="googleMap" style="width:100%; height:300px;"></div>
 
-		<br>
       <div class="alert alert-success fade in">
-        <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a> -->
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
         <p><strong>내 주변 Shy보기</strong></p>
         위 지도의 마커를 클릭해 보세요!
       </div>
@@ -488,8 +582,10 @@
 		    <img style="width:100%; height:300px;" src="http://wallpaperpulse.com/thumb/604167.jpg">
 		    
 		    </c:if>
-      
-      
+      <br><br>
+      <p><a href="#">친구 추가하기</a></p>
+      <p><a href="#">공유하기</a></p>
+      <p><a href="#">자세히 보기</a></p>
     </div>
     
     
@@ -503,6 +599,21 @@
       <br><br><br>
       
       
+        <div>
+      
+      <form role="form" name="gogo">
+        <div class="form-group">
+          <textarea class="form-control" rows="7" id="firstarea" placeholder="작성 시작하기 버튼을 눌러주세요!" 
+           required></textarea>
+        </div>
+        
+      </form>
+      <a href="javascript:new_Busy();">
+      	<button type="submit" class="btn btn-success" 
+      	data-target="#MainInput" style="float: right;" OnClick="new_Busy()" >작성 시작하기</button>
+      </a>
+      <br><br>
+      </div>
       
       
 	 <ul class="list">
