@@ -741,6 +741,27 @@
 	
   }
 </script>
+
+<style>
+.dd_button {
+	background-color: #4CAF50; /* Green */
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+.dd_button5 {
+	background-color: white;
+	color: black;
+	border: 2px solid #555555;
+}
+</style>
 </head>
 <body>
 
@@ -751,9 +772,7 @@
 	
 	
 	
-	<c:if test="${shies==null}">
-  	새 글을 써 보시거나, 친구를 추가해 보세요!
-  </c:if> <c:if test="${shies!=null}">
+	 <c:if test="${shies!=null}">
 		<c:forEach items="${shies}" var="shies" varStatus="status">
 
 			<article class="card-60 social" >
@@ -807,7 +826,13 @@
 
 								</span>
 							</a>
-							</strong> <span>${shies.sdatedtime} </span>
+							</strong>
+							<c:if test="${shies.shypay!=null }">
+							${shies.shypay}<br>
+							</c:if>
+							
+							 <span>${shies.sdatedtime} </span>&nbsp;&nbsp;
+							
 							<c:if test="${shies.stagfollow!=null }">
 							<br>${shies.stagfollow} 님과 함께
 							</c:if>
@@ -930,12 +955,38 @@
 		</c:forEach>
 	</c:if>
 
+<c:if test="${shies==null}">
+  	<div id="dd__container" style="margin-top: 50px;">
 
 
+
+		<div id="dd__outer">
+
+			<div id="dd__inner" align="CENTER">
+				<img
+					src="<%=request.getContextPath()%>/resources/images/ddung/heartlogo.png" />
+			
+				<div >
+				안녕하세요? 새 글을 써 보시거나, 친구를 추가해 보세요!
+					<a href="tutorial.shy" class="dd_button dd_button5">사용법 보기</a>
+					
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+  	
+  	
+  </c:if>
+
+<c:if test="${shies!=null}">
 	<div align="center">
 		<a class="button" href="#" style="color: white;"> 더 읽기 </a><br> <br>
 		=======
 	</div>
+	</c:if>
 
 
 	</main>
