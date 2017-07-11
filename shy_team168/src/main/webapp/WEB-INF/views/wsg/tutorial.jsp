@@ -10,13 +10,13 @@
 @font-face {
   src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/decade.ttf");
   font-family: Decade;
- 
 }
+
 @font-face {
-  src: url("<%=request.getContextPath()%>/resources/font/BMYEONSUNG_TTF_2.TTF");
-  font-family: '배달의민족 연성체';
- 
+  src: url('<%=request.getContextPath()%>/resources/font/BMYEONSUNG_TTF_2.TTF');
+  font-family: '배달의민족 연성';
 }
+
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
