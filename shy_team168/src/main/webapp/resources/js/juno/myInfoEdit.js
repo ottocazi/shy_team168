@@ -14,13 +14,6 @@ $(document).ready(function(){
 		
 	/* 수정완료	*/
 	$(".editend").click(function(){
-		
-		/*var column_name = $(this).parent().parent().find(".hiddenpart").find(".inputcol").attr('name');
-		alert("name 값 : " + column_name);
-		
-		var column_content = $(this).parent().parent().find(".hiddenpart").find(".inputcol").attr('value');
-		alert("기존내용 : " + column_content);*/
-		
 		var column_name = $(this).parent().find("#column_name").val();
 		alert(column_name);
 		var edited_content = $("#id_"+column_name).val();
@@ -37,12 +30,9 @@ $(document).ready(function(){
 			document.myimgFrm.action ="myInfoEditEnd.shy";
 			document.myimgFrm.method="post";
 			document.myimgFrm.submit();
-		}
-		
-		else{
+		} else {
 			myInfoEditEnd(column_name,edited_content,form_name);
 		}
-		
 	});
 	
 

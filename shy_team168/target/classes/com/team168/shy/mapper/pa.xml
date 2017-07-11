@@ -366,13 +366,13 @@
 		(
 				SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
 				FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
-				WHERE	 A.STATUS = 1 AND
+				WHERE	 A.STATUS in(1,168) AND
 				FK_IDX = #{myIdx}
-                ORDER by A.SNSNO desc)V)X
+                ORDER by A.SDATEDTIME DESC)V)X
         LEFT JOIN
                 (SELECT SNSNO,COUNT(SNSNO) AS SNSNOCNT FROM TBL_LIKE GROUP BY SNSNO) Y
                 ON X.SNSNO = Y.SNSNO
-                WHERE RNO >= #{start} and RNO <![CDATA[<=]]> #{end}
+                WHERE RNO >= #{start} AND RNO <![CDATA[<=]]> #{end}
 	</select>
 	
 	<!--  -->
@@ -383,7 +383,7 @@
 		(
 		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
 		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
-		WHERE	 1=1 AND A.STATUS = 1 AND
+		WHERE	 1=1 AND A.STATUS in(1,168) AND
 				 FK_IDX = #{myIdx}
 		ORDER BY A.SNSNO DESC) V
 	</select>
@@ -395,8 +395,8 @@
       <result property="email" column="EMAIL" javaType="String" />
       <result property="myimg" column="MYIMG" javaType="String" />
    </resultMap>
-   <select id="getflwList" parameterType="java.util.HashMap" resultMap="getflwListMap"> 
-        SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
+   <select id="getflwList" parameterType="String" resultMap="getflwListMap"> 
+      SELECT V.FK_IDXFLWED,V.EMAIL,V.MYIMG
       FROM
       (
       SELECT *
@@ -406,7 +406,7 @@
       INNER JOIN
       (SELECT IDX, EMAIL,MYIMG
       FROM TBL_SHYMEMBER
-      WHERE STATUS=1) B
+      WHERE STATUS in(1,168)) B
       ON A.FK_IDXFLWED = B.IDX
       )V
       WHERE V.FK_IDXFLW=#{myIdx}
@@ -485,5 +485,30 @@
 	  </foreach>
    </update>
    
+   <!-- ===== 개인정보 가져오기 =====   -->
+	<resultMap type="java.util.HashMap" id="myMap">
+		<result property="idx" 			column="IDX" javaType="String" />
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		<result property="myintro" 		column="MYINTRO" 			javaType="String"/>
+	</resultMap>
+	<select id="selectMyinfo" parameterType="java.util.HashMap" resultMap="myMap"> 
+      	SELECT *
+      	FROM TBL_SHYMEMBER
+		WHERE IDX = #{myIdx}
+	</select>
+	
+	<!-- ===== 팔로우상태 가져오기 =====   -->
+	<!-- <select id="followCheck" parameterType="java.util.HashMap" resultType="int"> 
+      	select case( select count(*) from tbl_follow where status=1 and fk_idxflw=#{myIdx} and fk_idxflwed = #{folwidx}) when 1 then 1 
+        else ( case (
+          select count(*) from tbl_follow where status=1 and fk_idxflw=#{myIdx} and fk_idxflwed = #{folwidx}
+         ) when 0 then 0 
+        else -1 end ) end as followcheck
+		from dual
+	</select> -->
+	
+
     
 </mapper>	

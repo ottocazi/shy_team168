@@ -17,10 +17,8 @@ public class PaService {
 
 	/*// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
-=======
 	// ===== 4. Ajax 로 검색어 입력시 자동글 완성하기  =====	
 	/*public List<HashMap<String, String>> searchWordGrpList(HashMap<String, String> map) {
->>>>>>> branch 'master' of https://github.com/ottocazi/shy_team168.git
 		if(!map.get("grpsearch").trim().isEmpty()) {
 			List<HashMap<String, String>> grplist = dao.searchWordGrpList(map);
 			return grplist;
@@ -197,5 +195,17 @@ public class PaService {
 		int n = dao.updateAlarm(resultMap);
 		return n;
 	}
+
+	// ===== 개인정보 가져오기 ===== //
+	public HashMap<String, Object> getMyInfo(String myIdx) {
+		HashMap<String, Object> mymap = dao.getMyInfo(myIdx);
+		return mymap;
+	}
+
+	// ===== 팔로우상태 가져오기 ===== //
+	/*public int getFollowing(HashMap<String, Object> pafollow) {
+		int n = dao.getFollowing(pafollow);
+		return n;
+	}*/
 
 }

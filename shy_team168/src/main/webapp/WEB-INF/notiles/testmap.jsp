@@ -1,203 +1,201 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%><!doctype html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>googlemap v3 </title>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>   
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCpqeGEfswdtP2VPArIjCJ7_ycPxqvq640"></script>
-</head>
-<SCRIPT LANGUAGE="JavaScript">
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-var contentArray = [];
-var iConArray = [];
-var markers = [];
-var iterator = 0;
-var map;
-var geocoder;
- 
-// infowindow contents 배열
- contentArray[0] = "Kay";
- contentArray[1] = "uhoons blog";
- contentArray[2] = "www.uhoon.co.kr";
- contentArray[3] = "www.uhoon.co.kr ";
- contentArray[4] = "www.uhoon.co.kr";
- contentArray[5] = "www.goodkiss.co.kr";
- contentArray[6] = "GG";
- contentArray[7] = "www.goodkiss.co.kr";
- contentArray[8] = "II";
- contentArray[9] = "www.goodkiss.co.kr";
- 
-// marker icon 배열
- iConArray[0] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[1] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[2] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[3] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[4] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[5] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[6] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[7] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[8] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- iConArray[9] = "http://google-maps-icons.googlecode.com/files/walking-tour.png";
- 
-// 위경도 배열
-var markerArray = [ new google.maps.LatLng(40.3938,-3.7077)
-, new google.maps.LatLng(40.45038,-3.69803)
-, new google.maps.LatLng(40.45848,-3.69477)
-, new google.maps.LatLng(40.40672,-3.68327)
-, new google.maps.LatLng(40.43672,-3.62093)
-, new google.maps.LatLng(40.46725,-3.67443)
-, new google.maps.LatLng(40.43794,-3.67228)
-, new google.maps.LatLng(40.46212,-3.69166)
-, new google.maps.LatLng(40.41926,-3.70445)
-, new google.maps.LatLng(40.42533,-3.6844)
-];
- 
-function initialize() {
-    geocoder = new google.maps.Geocoder();
- 
-    var mapOptions = {
-        zoom: 11,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: new google.maps.LatLng(40.4167754,-3.7037901999999576)
-    };
- 
-    map = new google.maps.Map(document.getElementById('map'),mapOptions);
- 
-    var populationOptions = {
-        strokeColor: '#000000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#808080',
-        fillOpacity: 0.5,
-        map: map,
-        center: new google.maps.LatLng(40.4167754,-3.7037901999999576) ,
-        radius: $("#radius").val()*1000
-    };
-    cityCircle = new google.maps.Circle(populationOptions);
+
+
+<head>
+<!-- <meta name="viewport" content="initial-scale=1.0">
+<meta charset="utf-8"> -->
+<style>
+#map {
+	height: 100%;
 }
- 
-// 주소 검색
-function showAddress() {
-    var address = $("#address").val();
-    geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-            var lat = results[0].geometry.location.lat();
-            var lng = results[0].geometry.location.lng();
- 
-            $("#latitude").val(lat);
-            $("#longitude").val(lng);
- 
-            var populationOptions = {
-                strokeColor: '#000000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#808080',
-                fillOpacity: 0.5,
-                map: map,
-                center: new google.maps.LatLng(lat,lng) ,
-                radius: $("#radius").val()*1000
-            };
-            if (cityCircle)
-            {
-                cityCircle.setMap(null);
-            }
-            cityCircle = new google.maps.Circle(populationOptions);
- 
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
+html, body {
+	height: 100%; margin: 0; padding: 0;
+}</style>
+</head>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkK_EWB_e3yusAluX5FYlETpHypg3d8uA&callback=initMap"async defer></script>
+	
+	<!-- sweetalert2 -->
+	<script src="https://cdn.jsdelivr.net/sweetalert2/latest/sweetalert2.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.css" rel="stylesheet" />
+	
+	<!-- 장소 library -->
+	<script type="text/javascript"
+	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9rKP-qBBkbCOZHaOAtYpeMmZmyxmmuuI&libraries=places">
+	</script>
+	<!-- https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD9rKP-qBBkbCOZHaOAtYpeMmZmyxmmuuI&placeidID= -->	
+<script type="text/javascript">
+var marker = [];
+
+function initMap() {
+	
+	var selectedRegion = "${selectedRegion}";
+	var sivalue = "${sivalue}"; 
+//	alert("selectedRegion : "+selectedRegion+"  sivalue : "+sivalue);
+	
+	var lat = ${lat};
+	var lng = ${lng};
+	var zoom = ${zoom};
+//	alert("lat : "+lat+"  lng : "+lng+"  zoom : "+zoom);
+	
+	var mapCenter = {lat, lng};
+	
+	var map = new google.maps.Map(document.getElementById('map'), {center: mapCenter,zoom: zoom});
+	
+	
+	
+	<c:if test="${GeoSnsnoList != null}">
+		<c:forEach var="GeoSnsno" items="${GeoSnsnoList}" varStatus="status">
+			<c:if test='${GeoSnsno != "X"}'>
+				  
+				var myLatLng = new google.maps.LatLng('${GeoSnsno.LATITUDE}', '${GeoSnsno.LONGDITUDE}');
+				marker[status.index] = new google.maps.Marker({position: myLatLng, map: map});
+				
+				marker[status.index].addListener('click', function() {
+		        // alert("snsno : ${GeoSnsno.FK_SNSNO}    shyplace : ${GeoSnsno.SHYPLACE}");
+		           <%-- javascript:location.href='<%= request.getContextPath() %>/place.shy?geoidx=' + this.seq; --%>
+		           
+		           var service = new google.maps.places.PlacesService(map);
+		           service.nearbySearch({
+		             location: myLatLng,
+		             radius: 500,
+		             type: ['store']
+		           }, processResults);
+		           
+		           
+		           swal({
+		           		title: '${GeoSnsno.SHYPLACE}',
+		            	text: 'snsno : ${GeoSnsno.FK_SNSNO} 번 shy 의 장소입니다.',
+		            	/* imageUrl: 'https://unsplash.it/400/200',
+		            	imageWidth: 400,
+		            	imageHeight: 200, */
+		            	animation: false
+		           })
+		           /* 
+		           var SHYPLACE = new google.maps.places.Autocomplete('${GeoSnsno.SHYPLACE}');
+		           var place = SHYPLACE.getPlace();
+		           alert(place.place_id);
+		            */
+		        });	
+			</c:if>
+		</c:forEach>
+	</c:if>
+	
+	// 데이터 지도에 표시하기 : https://developers.google.com/maps/documentation/javascript/importing_data
+ 	google.maps.event.addDomListener(map, 'click', function() {
+    	window.alert('Map was clicked!');
     });
+ 	
+ 	
 }
- 
-// 드롭 마커 보기
-function viewMarker() {
-    for (var i = 0; i < markerArray.length; i++) {
-        setTimeout(function() {
-            addMarker();
-        }, i * 300);
+
+function processResults(results, status, pagination) {
+	  if (status !== google.maps.places.PlacesServiceStatus.OK) {
+	    return;
+	  } else {
+	    createMarkers(results);
+		/* 
+	    if (pagination.hasNextPage) {
+	      var moreButton = document.getElementById('more');
+
+	      moreButton.disabled = false;
+
+	      moreButton.addEventListener('click', function() {
+	        moreButton.disabled = true;
+	        pagination.nextPage();
+	      });
+	    }
+	     */
+	  }
+}
+
+function createMarkers(places) {
+	  var bounds = new google.maps.LatLngBounds();
+	  var placesList = document.getElementById('places');
+
+	  for (var i = 0, place; place = places[i]; i++) {
+	    var image = {
+	      url: place.icon,
+	      size: new google.maps.Size(71, 71),
+	      origin: new google.maps.Point(0, 0),
+	      anchor: new google.maps.Point(17, 34),
+	      scaledSize: new google.maps.Size(25, 25)
+	    };
+
+	    var marker = new google.maps.Marker({
+	      map: map,
+	      icon: image,
+	      title: place.name,
+	      position: place.geometry.location
+	    });
+
+	    placesList.innerHTML += '<li>' + place.name + '</li>';
+
+	    bounds.extend(place.geometry.location);
+	  }
+	  map.fitBounds(bounds);
+}
+
+function setMarkers(map) {
+	
+//	alert('111');
+	
+	/*  var locations = [
+      ['삼익사이버 아파트', 37.0211403, 127.0971617, 28],
+      ['국립축산과학원 축산자원개발부', 36.93309333, 127.10487485, 10]
+    ];
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 8,
+      center: new google.maps.LatLng(37, 127.1),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    var infowindow = new google.maps.InfoWindow();
+    var marker, i;
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
     }
- 
-    var marker = new google.maps.Marker ({
-            position: new google.maps.LatLng(40.4167754,-3.7037901999999576),
-            map: map,
-            draggable: true
-        }); 
- 
-    google.maps.event.addListener(marker, "dragend", function(event) {
-        var point = marker.getPosition();
-        $("#latitude").val(point.lat());
-        $("#longitude").val(point.lng());
- 
-        var populationOptions = {
-            strokeColor: '#000000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#808080',
-            fillOpacity: 0.5,
-            map: map,
-            center: new google.maps.LatLng($("#latitude").val(),$("#longitude").val()) ,
-            radius: $("#radius").val()*1000
-        };
-        if (cityCircle)
-        {
-            cityCircle.setMap(null);
+[출처] 구글 맵에 여러개의 위치 표시하기|작성자 약장사
+
+  */
+
+<%-- 	alert("setMarkers(); start!");
+	var marker = [];
+	window.eqfeed_callback = function(results) {
+        alert(results);
+		results = ${GeoSnsnoList}
+		alert(results);
+		for (var i = 0; i < results.features.length; i++) {
+	       var myLatLng = new google.maps.LatLng(results.LATITUDE, results.LOGDITUDE);
+	          //var coords = results.features[i].geometry.coordinates; 
+	        
+	        marker[status.index] = new google.maps.Marker({
+	           position : myLatLng,
+	           
+	           map : map
+	        });
+	
+	        marker[status.index].addListener('click', function() {
+	           alert("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
+	           javascript:location.href='<%= request.getContextPath() %>/place.shy?geoidx=' + this.seq;
+	        });
         }
-        cityCircle = new google.maps.Circle(populationOptions);
-    });
+	} --%>
 }
- 
-// 마커 추가
-function addMarker() {
- 
-    var marker = new google.maps.Marker({
-        position: markerArray[iterator],
-        map: map,
-        draggable: false,
-        icon: iConArray[iterator],
-        animation: google.maps.Animation.DROP
-    });
-    markers.push(marker);
- 
-    var infowindow = new google.maps.InfoWindow({
-      content: contentArray[iterator]
-    });
- 
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
-    });
-    iterator++;
-}
- 
-// 중심 이동
-function fnLocation(lat, lng) {
-    myLocation = new google.maps.LatLng(lat, lng);
-    map.setCenter(myLocation);
-}
- 
-//google.maps.event.addDomListener(window, 'load', initialize);
- 
-$( window ).load(function() {
-    initialize();
-    viewMarker();
-});
- 
-</SCRIPT>
+</script>
+
 <body>
-radius : <select id="radius" >
-    <option value="10" selected="selected">10Km</option>
-    <option value="5">5Km</option>
-</select>
-latitude : <input type="text" id="latitude" value="40.4167754"/>
-longitude: <input type="text" id="longitude" value="-3.7037901999999576"/>
-<div id="map" style="width:760px;height:400px;margin-top:20px;"></div>
-<label style="margin:3px 0 0 0;" for="address">address</label>
-<input type="text" id="address" name="address" style="margin:3px 0 0 5px;" value=""/>
-<input type="button" value="search" onclick="Javascript:showAddress();" />
+<div id="map"></div>
 </body>
-</html>
+<!-- </html> -->

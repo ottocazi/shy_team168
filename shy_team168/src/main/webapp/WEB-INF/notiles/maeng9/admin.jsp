@@ -1,36 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>SHY 관리자 페이지</title>
+<title>SHY 관리자 페이지</title>
 
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/green.css" rel="stylesheet">
-    <!-- Datatables -->
-    <link href="<%=request.getContextPath() %>/resources/css/meong/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/buttons.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath() %>/resources/css/meong/scroller.bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="<%=request.getContextPath() %>/resources/css/meong/custom.min.css" rel="stylesheet">
-     
-  </head>
+    <!-- NProgress -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/nprogress.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="<%=request.getContextPath() %>/resources/css/meong/fullcalendar.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath() %>/resources/css/meong/fullcalendar.print.css" rel="stylesheet" media="print">
+    
+</head>
 
   <body class="nav-md">
     <div class="container body">
@@ -46,10 +38,12 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <h2>환영합니다. OOO님</h2>
+                <h2>${sessionScope.loginuser.name}님 환영합니다.</h2>
+                <br>
+                <a href="mainline.shy"><span style="color: red;">일반페이지로 가기</span></a>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -59,32 +53,38 @@
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>메뉴</h3>
+                <!-- <h3>메뉴</h3> -->
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-home"></i> SHY관리 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="<%= request.getContextPath() %>/shymember.shy">유저관리</a></li>
                       <li><a href="<%= request.getContextPath() %>/adminshymemo.shy">게시물관리</a></li>
-                    </ul>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="label label-success pull-right">출시 예정</span></a>
+                  <li><a><i class="fa fa-edit"></i> 회사관리 <span class="fa fa-chevron-down"></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">회사개요</a></li>
-                      <li><a href="#">채용공고</a></li>
-                      <li><a href="#">사업제안</a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfo.shy">회사개요 <span class="label label-success pull-right">추후 구현</span></a></li>
+                      <li><a href="<%= request.getContextPath() %>/shyinfomember.shy">회사식구<span class="label label-success pull-right">추후 구현</span></a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
+                   <li><a><i class="fa fa-desktop"></i> 통계상세 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
 					  <li><a href="<%= request.getContextPath() %>/tongke.shy">시간대별 로그인 통계</a></li>
                       <li><a href="<%= request.getContextPath() %>/bartongke.shy">일주일별 회원,그룹게시물 통계</a></li>
-                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 회원수 통계</a></li>
-                    </ul>
+                      <li><a href="<%= request.getContextPath() %>/pietongke.shy">지역,국가별 게시물 통계</a></li>
+                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">출시 예정</span></a>
+<%--                   <li><a><i class="fa fa-table"></i> 공지사항 <span class="label label-success pull-right">추후 구현</span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">미정</a></li>
-                      <li><a href="#">###</a></li>
+                      <li><a href="<%= request.getContextPath() %>/gesipan.shy">테이블</a></li>
+                    </ul>
+                  </li> --%>
+                  <li><a><i class="fa fa-table"></i> UI 요소 <span class="label label-success pull-right">추후 구현</span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
+                      <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
+                      <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
                     </ul>
                   </li>
                </ul>            
@@ -92,7 +92,7 @@
 
             </div> 
             <!-- /sidebar menu -->
-
+            
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
@@ -123,7 +123,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" alt="">${sessionScope.loginuser.name}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -211,21 +211,51 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>게시물관리</h3>
-              </div>
-
+          <!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> 총사용자 수</span>
+              <div class="count">${totaluser}명</div>
+              <!-- <span class="count_bottom"><i class="green">4% </i> 지난주 대비 증가</span> -->
             </div>
-
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i>오늘 방문자수</span>
+              <div class="count">${todaytotal}명</div>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> 지난주 대비 증가</span> -->
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> 남자 사용자수</span>
+              <div class="count">${mentotal}명</div>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span> -->
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-female"></i> 여자 사용자수</span>
+              <div class="count">${womantotal}명</div>
+              <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> 지난주 대비 증가</span> -->
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i>오늘 회원 게시글수</span>
+              <div class="count">${todaytotalshymemo}개</div>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span> -->
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-group"></i>오늘 그룹 게시글수</span>
+              <div class="count">${todaytotalgrpboard}개</div>
+              <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> 지난주 대비 증가</span> -->
+            </div>
+          </div>
+          <!-- /top tiles -->
+          
+		<!-- page content -->
+        
+          <div class="">
             <div class="clearfix"></div>
 
             <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>SHY게시물 관리</h2>
+                    <h2 style="color: red; margin-left: 46.5%;">일정표</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -244,54 +274,18 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                      <%-- DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code> --%>
-                             회원들의 게시물과 버튼을 통해 활성화/비활성화를 할수있는 페이지
-                    </p>
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>게시물번호</th>
-                          <th>이름</th>
-                          <th>성별</th>
-                          <th>게시물내용</th>
-                          <th>최종수정일</th>
-                          <th>좋아요수</th>
-                          <th>신고수</th>
-                          <th>게시물상태</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <c:forEach var="map" items="${memoList}" varStatus="status">
-                        <tr align="center">
-                          <td>${map.SNSNO}</td>
-                          <td>${map.NAME}</td>
-                          <td>${map.GENDER}</td>
-                          <td>${map.SCONTENT}</td>
-                          <td>${map.SDATEDTIME}</td>
-                          <td>${map.SLIKECNT}</td>
-                          <td>${map.SBLAMECNT}</td>
-                        <td>
-                        <c:if test="${map.STATUS != 0}">  
-                  		<button onClick="javascript:location.href='shymemostatusDown.shy?snsno=${map.SNSNO}&name=${map.NAME}'">활성화</button>
-                  		</c:if>
-                  		<c:if test="${map.STATUS == 0}">
-                  		<button onClick="javascript:location.href='shymemostatusUp.shy?snsno=${map.SNSNO}&name=${map.NAME}'">비활성화</button>
-                  		</c:if>
-                          </td>
-                        </tr>
-                      </c:forEach>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>			
+
+                    <div id='calendar'></div>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+        </div>
+                    
+              </div>
+            </div>
         <!-- /page content -->
 
         <!-- footer content -->
@@ -303,35 +297,96 @@
         </footer>
         <!-- /footer content -->
 
+    <!-- calendar modal -->
+    <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="myModalLabel">계획 입력 창</h4>
+          </div>
+          <div class="modal-body">
+            <div id="testmodal" style="padding: 5px 20px;">
+              <form id="antoform" class="form-horizontal calender" role="form">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">제목</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="title" name="title">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">내용</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary antosubmit">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="myModalLabel2">계획 수정 창</h4>
+          </div>
+          <div class="modal-body">
+
+            <div id="testmodal2" style="padding: 5px 20px;">
+              <form id="antoform2" class="form-horizontal calender" role="form">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">제목</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="title2" name="title2">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">내용</label>
+                  <div class="col-sm-9">
+                    <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary antosubmit2">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+    <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+    <!-- /calendar modal -->
+
     <!-- jQuery -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/bootstrap.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/bootstrap-progressbar.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
     <!-- FastClick -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<%=request.getContextPath() %>/resources/js/meong/nprogress.js"></script>
-    <!-- iCheck -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/icheck.min.js"></script>
-    <!-- Datatables -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/jquery.dataTables.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.bootstrap.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.buttons.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/meong/buttons.flash.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.html5.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/buttons.print.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.fixedHeader.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.keyTable.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.responsive.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/responsive.bootstrap.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/dataTables.scroller.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/jszip.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/pdfmake.min.js"></script>
-    <script src="<%=request.getContextPath() %>/resources/js/meong/vfs_fonts.js"></script>
+    <!-- FullCalendar -->
+    <script src="<%=request.getContextPath() %>/resources/js/meong/moment.min.js"></script>
+    <script src="<%=request.getContextPath() %>/resources/js/meong/fullcalendar.min.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="<%=request.getContextPath() %>/resources/js/meong/custom.min.js"></script>
-
+	
   </body>
 </html>

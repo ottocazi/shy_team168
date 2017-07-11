@@ -144,7 +144,7 @@
 <div id="main">
   
   <div id="login">
-     <div id="signin" style="min-height:385px;">
+     <div id="signin" style="min-height:385px; text-align: center;">
    <div class="form-title">
    
    <span class="letter" id="shy" data-letter="s">s</span>
@@ -165,6 +165,15 @@
    <a href="" class="forgot-pw">비밀번호를 잊으셨나요?</a>
    <button class="login" id="loginend" type="submit">Login</button>
    </form> 
+   <div id="fb-root"></div>
+	<script>(function(d, s, id) {
+  	var js, fjs = d.getElementsByTagName(s)[0];
+  	if (d.getElementById(id)) return;
+  	js = d.createElement(s); js.id = id;
+  	js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.9&appId=1869367503325566";
+  	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
    </div>
    
    <div id="joinus" style="min-height: 385px;">
@@ -176,7 +185,7 @@
    <p style="color: #BBBBBB; font-size: 10pt">가족, 친구와 함께하는 <br>즐거운 경제활동에 참여하세요 </p>
    <div class="form-input" >
    	  <form name="addFrm" action="<%= request.getContextPath() %>/addregistorEnd.shy" method="post">
-	      <input type="text" placeholder="name" name="name" id="joinname" required/>
+	      <input type="text" placeholder="name" name="name" id="joinname" required/>    
 	      <input type="text" placeholder="email" name="email" id="joinemail" required/>
 	      <br><span id="idok" style="font-size: 10pt;">사용하실수 있는 이메일입니다</span>
 	      <span id="notokay" style="font-size: 10pt; color: red;">이미 사용 중인 이메일입니다.</span>

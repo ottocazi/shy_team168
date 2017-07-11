@@ -236,31 +236,37 @@
 		$("#starcounter").val(count);
 	}
 	
-	var myCenter=new google.maps.LatLng(${geomap.latitude} , ${geomap.longditude});
-
 	
 	
+	
+	
+	
+	// 구글맵 함수
+	// 검색어의 위도, 경도
+	var centerLat = '${geomap.latitude}';
+	var centerLng = '${geomap.longditude}';
+	
+	var myCenter=new google.maps.LatLng( centerLat , centerLng);
+	var marker = [];
 	
 	function initialize() {
 		  var mapProp = {
 		    center:myCenter ,
-		    zoom:15,
+		    
+		    zoom:14,
 		    mapTypeId:google.maps.MapTypeId.ROADMAP
 		  };
+		  
 		  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 		  
 		  
-
-		  var marker=new google.maps.Marker({
-		    position:myCenter,
-		    animation:google.maps.Animation.BOUNCE
-		    });
-
-		  marker.setMap(map);
+		  
+		  
+		  
 		  
 		  var myCity = new google.maps.Circle({
 			  center:myCenter ,
-			  radius:400,
+			  radius:1200,
 			  strokeColor:"#ff4d4d",
 			  strokeOpacity:0.8,
 			  strokeWeight:2,
@@ -271,25 +277,58 @@
 
 		  myCity.setMap(map);
 		  
-		  
-
-		  var infowindow = new google.maps.InfoWindow({
-		    content:"Hello World!"
-		    });
-
-		  google.maps.event.addListener(marker, 'click', function() {
-		    infowindow.open(map,marker);
-		    });
+		  setMarkers(map);
 		  
 		  
 		}
+		
+		
+		/* 
+		function setMarkers(map) {
+			var myLatLng = new google.maps.LatLng('${geomap.latitude}', '${geomap.longditude}');
+	         
+	         
+	         marker[0] = new google.maps.Marker({
+	            position : myLatLng,
+	            map : map
+	         });
+		}
+		  */
+		function setMarkers(map) {
+			
+			<c:if test="${selectNearMap != null}">
+        		<c:forEach var="location" items="${selectNearMap}" varStatus="status">
+	        		var myLatLng = new google.maps.LatLng('${location.latitude}', '${location.longditude}');
+			         
+			         
+			         marker[status.index] = new google.maps.Marker({
+			            position : myLatLng,
+			            
+			            map : map,
+			            seq : '${location.seq}'
+			         });
 	
+			         marker[status.index].addListener('click', function() {
+			        	 javascript:location.href='<%= request.getContextPath() %>/place.shy?geoidx=' + this.seq;
+			         });
+        		</c:forEach>
+        	</c:if>
+        	
+        	
+        	
+        	
+		}
 	
 	
 		google.maps.event.addDomListener(window, 'load', initialize);
 	
 		
+		 // end of 구글멥
 		
+		
+		
+		   
+		   
   </script>
   
 </head>
@@ -321,7 +360,6 @@
       </div>
       <div class="modal-body">
         
-		
 
         <div class="form-group">
           <textarea class="form-control" rows="7"  required></textarea>
@@ -421,18 +459,21 @@
     	
     	<!-- 구글맵 해버리기~  Google map-->
 
-
+<c:if test="${geomap.latitude != 'X'}">
 <div id="googleMap" style="width:100%; height:300px;"></div>
-<br><br>
-
-
-
 
       <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
         <p><strong>내 주변 Shy보기</strong></p>
         위 지도의 마커를 클릭해 보세요!
       </div>
+      
+      </c:if>
+      <c:if test="${geomap.latitude == 'X'}">
+		    <img style="width:100%; height:300px;" src="http://wallpaperpulse.com/thumb/604167.jpg">
+		    
+		    </c:if>
+      <br><br>
       <p><a href="#">친구 추가하기</a></p>
       <p><a href="#">공유하기</a></p>
       <p><a href="#">자세히 보기</a></p>
@@ -445,7 +486,7 @@
       
       <div class="wrapper">
       
-      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; margin-left: 130px;">${geomap.shyplace }</div>
+      <div style="font-size: 25px; font-weight: bold; color:  #2952a3; " align="center">${geomap.shyplace }</div>
       <br><br><br>
       
       
@@ -481,19 +522,15 @@
       <div style="border: double 5px #ccdcff;">
       
       <h4>
-      <small>${geolist.shyplace}에서 OO님과 함께</small>
+      <small>${geomap.shyplace}에서 OO님과 함께</small>
       
       </h4>
       
       
-      <c:if test="${gvo.gimg != null}">
-      	<img class="grp_boxImage" style="width: 100%;"
-      	 src="<%=request.getContextPath() %>/resources/images/shydb/${gvo.gimg }"><%-- img가져오기 --%>
-      </c:if>
-      <c:if test="${gvo.gimg == null}">
-      	<img class="grp_boxImage" style="width: 100%;"
-      	src="http://wallpaperpulse.com/thumb/604167.jpg"><%-- 기본이미지 --%>
-      </c:if>
+      <c:if test="${geolist.myimg != null}">
+      	<img  style="width: 100%;"
+      	 src="<%=request.getContextPath() %>/resources/images/shydb/${geolist.myimg }"><%-- img가져오기 --%>
+      </c:if> 
       <h2 style="font-style: inherit; font-size: 23px;">
       
       <a style="color:  #2952a3; " href="<%= request.getContextPath() %>/gainpage.shy?myIdx=${geolist.idx}">
@@ -518,13 +555,6 @@
      
      
      
-     <li>Item 7</li>
-     
-     <li>Item 8</li>
-     
-     <li>Item 9</li>
-     
-     <li>Item 10</li>
      
      
   </ul>

@@ -6,10 +6,10 @@
 <!-- ===== #27. 루트엘리먼트 & 네임스페이스 설정(프로젝트 전체 내에서 고유해야 한다.) ===== -->
 <mapper namespace="ddung">
 
-	<!-- 회원가입 -->
+	
 	<insert id="shyup" parameterType="java.util.HashMap">
-		insert into tbl_shymemo(SNSNO, FK_IDX, SCONTENT, STAGFOLLOW, SDATEDTIME, PUBLICYN, SIMAGE, STAGGEO, STATUS) 
-		values(seq_tbl_shymemo.nextval, #{fk_idx},#{scontent}, #{stagfollow}, sysdate, #{publicyn}, #{simage}, #{staggeo}, 1)  
+		insert into tbl_shymemo(SNSNO, FK_IDX, SCONTENT, STAGFOLLOW, SDATEDTIME, PUBLICYN, SIMAGE, STAGGEO, STATUS , SHYPAY, SHYPRICE) 
+		values(seq_tbl_shymemo.nextval, #{fk_idx},#{scontent}, #{stagfollow}, sysdate, #{publicyn}, #{simage}, #{staggeo}, 1 , #{shypay}, #{shyprice})  
 	</insert>
 	
 	<resultMap type="java.util.HashMap" id="getshynow">
@@ -76,6 +76,8 @@
 		<result property="shyplace" 	column="shyplace" 		javaType="String"/>
 		<result property="geoseq" 	column="geoseq" 		javaType="String"/>
 		<result property="geofk_snsno" 	column="geofk_snsno" 		javaType="String"/>
+		<result property="shypay" 	column="shypay" 		javaType="String"/>
+		<result property="shyprice" 	column="shyprice" 		javaType="String"/>
 		
 		
 	</resultMap>

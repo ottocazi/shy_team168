@@ -162,6 +162,16 @@ public class Min_DAO{
 
 
 
+
+		public List<HashMap<String, String>> nearMap(HashMap<String, String> geomap) {
+			List <HashMap<String, String>>  selectNearMap = sqlsession.selectList("min.selectNearMap", geomap);
+			return selectNearMap;
+		}
+
+
+
+
+
 		
 
     

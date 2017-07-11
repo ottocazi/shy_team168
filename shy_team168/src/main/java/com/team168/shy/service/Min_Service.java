@@ -133,8 +133,13 @@ public class Min_Service {
 			String getgain = dao.getGain(myIdx);
 			return getgain;
 		}
-		
-		
+
+
+		public List<HashMap<String, String>> nearMap(HashMap<String, String> geomap) {
+			List <HashMap<String, String>>  selectNearMap = dao.nearMap(geomap);
+			return selectNearMap;
+		}
+
 		
 		
 		

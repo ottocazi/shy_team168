@@ -67,7 +67,7 @@ html, body {
   background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/heartlogo.png");
 }
 .page:nth-child(1) .right {
-  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/playing.jpg");
+  background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/eat.jpg");
 }
 .page:nth-child(2) .left {
   background-image: url("<%=request.getContextPath() %>/resources/images/wsgdb/payment-2.jpg");
@@ -485,13 +485,14 @@ $(document).ready(function() {
     </div>
     <div class="half right withText">
       <a href="http://localhost:9090/shy/mainline.shy" target="blank"> <h2 class="heading"># Why shy?	</h2></a>
-    <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading-1"></h2></a>
+    <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading-1">먹고, 사랑하고, 샤이
+    <br> EAT, LOVE, 	SHY</h2></a>
     </div>
   </div>
   <div class="page page-2 ">
     <div class="half left withText">
-    <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Payment	</h2></a>
-   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">귀찮아서, 복잡해서 보낼 때를 놓쳤던 송금.<br>
+    <a href="http://localhost:9090/shy/banking.shy" target="blank"><h2 class="heading"># Payment	</h2></a>
+   <a href="http://localhost:9090/shy/banking.shy" target="blank"> <h2 class="heading-1">귀찮아서, 복잡해서 보낼 때를 놓쳤던 송금.<br>
 이젠 간단하게 shy로 쉽게 송금하세요!<br>
 </h2></a>
     </div>
@@ -505,7 +506,7 @@ $(document).ready(function() {
   <div class="page page-3">
     <div class="half left"></div>
     <div class="half left withText">
-      <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># Connect with people</h2></a>
+      <a href="http://localhost:9090/shy/mygroups.shy" target="blank"><h2 class="heading"># Connect with people</h2></a>
        <h2 class="heading-1">친구와 함께하는 시간을 기억하세요.<br> 저녁 식사, 생일파티,아니면 안부<br>
     </div>
      <div class="half right withText">
@@ -516,14 +517,14 @@ $(document).ready(function() {
   </div>
   <div class="page page-4">
     <div class="half left withText">
-     <a href="http://localhost:9090/shy/shynow.shy" target="blank"><h2 class="heading"># business	</h2></a>
-   <a href="http://localhost:9090/shy/shynow.shy" target="blank"> <h2 class="heading-1">많은 업체들과 공식적으로 제휴하여 서비스를 제공하고 있습니다.
-   	shy와 함께하세요. 
+     <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading"># business	</h2></a>
+   <a href="http://localhost:9090/shy/mainline.shy" target="blank"> <h2 class="heading-1">많은 업체들과 공식적으로 제휴하여 서비스를 제공하고 있습니다.
+   	<br>shy와 함께하세요. 
     </h2></a>
     </div>
     <div class="half right withText">
-     <h2 class="heading"># shy Mobile	</h2>
-    <h2 class="heading-1">이제 shy를 Mobile로 만나세요</h2>
+    <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading"># shy Mobile	</h2></a>
+    <a href="http://localhost:9090/shy/mainline.shy" target="blank"><h2 class="heading-1">이제 shy를 Mobile로 만나세요</h2></a>
     
     </div>
 

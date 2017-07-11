@@ -119,8 +119,11 @@ public class DDung_Controller {
 		String ftag = req.getParameter("ftag");
 		String publicyn = req.getParameter("status");
 		String shyplace = req.getParameter("shyplace");
+		String shypay = req.getParameter("shypay");
+		String shyprice = req.getParameter("shyprice");
+		String pricecheck = req.getParameter("pricecheck"); // null || on
 		
-		
+		System.out.println(pricecheck);
 		/*String image = req.getMultipartContentType("image");
 		System.out.println("image = " + image);*/
 		
@@ -171,12 +174,7 @@ public class DDung_Controller {
 		fos.close();
 		}
 		
-		String ftagstatus = "0";
-		if(ftag!=null){
-			ftagstatus = "1";
-			
-			//tag 테이블에 친구 값 insert
-		}
+		
 		
 		
 		
@@ -190,7 +188,6 @@ public class DDung_Controller {
 		System.out.println("ftag = "+ftag);
 		System.out.println("content = "+content);
 		System.out.println("idx= "+idx);
-		System.out.println("ftagstatus = "+ftagstatus);
 		System.out.println("publicyn = "+publicyn);
 		
 		HashMap<String, String> shyform = new HashMap<String, String>();
@@ -214,10 +211,19 @@ public class DDung_Controller {
 		
 		shyform.put("fk_idx", idx);
 		shyform.put("scontent", content);
-		shyform.put("stagfollow", ftagstatus);
+		shyform.put("stagfollow", ftag);
 		shyform.put("simage" , simage);
 		shyform.put("staggeo", staggeo);
 		shyform.put("publicyn", publicyn);
+		shyform.put("shypay", shypay);
+		
+		if (pricecheck==null){
+			
+			shyprice="미공개";
+		}
+		
+		shyform.put("shyprice", shyprice);
+		
 		
 		service.shyup(shyform);
 		
@@ -236,10 +242,7 @@ public class DDung_Controller {
 			
 		}
 		
-		if(ftagstatus.equals("1")){
-
-			// 입력한 이름이 email 또는 이름과 같다면 fk_idx 로 없다면 그냥 일반 입력값으로 insert into
-		}
+		
 		
 		if(staggeo.equals("1")){
 			String latitude = req.getParameter("latitude");
@@ -389,7 +392,7 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/getComments.shy", method={RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public List <HashMap <String, String>> getComments(HttpServletRequest req, HttpSession session) throws IOException {
 		
@@ -405,17 +408,12 @@ public class DDung_Controller {
 		
 	}
 	
-	@RequestMapping(value="/banking.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/banking.shy", method={RequestMethod.GET})
 	public String banking(HttpServletRequest req, HttpSession session) throws IOException {
 		
-		String snsno = req.getParameter("snsno");
 		
-		System.out.println("댓글을 출력할 샤이 번호는 : "+snsno);
 		
-		List <HashMap <String, String>> comments = service.getComments(snsno);
-		System.out.println(snsno+"번의 댓글 list : comments에 "+comments.size()+" 크기의 리스트가 생성됨");
-		
-		return "banking.tiles";
+		return "ddung/banking_dashboard.tiles";
 		
 		
 	}

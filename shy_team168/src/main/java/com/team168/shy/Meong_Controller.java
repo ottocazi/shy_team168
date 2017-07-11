@@ -30,7 +30,7 @@ public class Meong_Controller {
 
 	// 회원가입
 	@RequestMapping(value="/addregistorEnd.shy", method={RequestMethod.POST})
-    public String test(HttpServletRequest req, HttpSession session, ShyMemberVO svo) {
+    public String test(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) {
     	
 		String joinname = req.getParameter("name");
 		String joinemail = req.getParameter("email");
@@ -48,14 +48,17 @@ public class Meong_Controller {
     	
     	n = service.addregistorEnd(map);
     	
+		loginuser = service.getLoginMember(joinemail);
+		session.setAttribute("loginuser", loginuser);
+    	
 		   String msg = "";
 		   String loc = "";
 		   String type = "";	
 		   String title = "";   
 		   
 		   if(n==1) {
-			   msg = "다시한번 로그인해주십쇼~";
-			   loc = "javascript:history.back();";
+			   msg = "메인페이지로 이동합니다.";
+			   loc = "mainline.shy";
 			   type = "success";
 			   title = "Shy가입을 축하드립니다~~";
 			   // or 추가정보입력하시겠습니까?
@@ -119,7 +122,7 @@ public class Meong_Controller {
     	
     	if(n == 1) {
     		loginuser = service.getLoginMember(email);
-    		session.setAttribute("loginuser", loginuser);
+    		session.setAttribute("loginuser", loginuser);	
     	}
     	else if(n == 0) {
     		title = "암호가 틀립니다 !!";
@@ -161,7 +164,13 @@ public class Meong_Controller {
     	map.put("today", today);
     	
     	service.loginsert(map);
-    	
+/*    	
+    	System.out.println("email ==> " + email);
+    	if(email.equalsIgnoreCase("admin")){
+        	req.setAttribute("loc", "admin.shy");
+        	return "msg.notiles";
+    	}
+    	*/
     	req.setAttribute("loc", "mainline.shy");
     	return "msg.notiles";
     	
@@ -170,11 +179,18 @@ public class Meong_Controller {
 	// 로그아웃
     @RequestMapping(value="/logout.shy", method={RequestMethod.GET})
     public String logout(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) throws UnknownHostException {
-    	/*    	
-    	String email = req.getParameter("email");
+    	    	
+    	/*String email = req.getParameter("email");
 		loginuser = service.getLoginMember(email);
-		session.setAttribute("loginuser", loginuser);
-    	*/
+		session.setAttribute("loginuser", loginuser);*/
+		
+		/*HttpSession user = req.getSession(false);
+    	
+		loginuser = (ShyMemberVO)user;
+		System.out.println(user.getClass());*/
+    	
+    	
+/*    	
     	HashMap<String, Object> map = new HashMap<String, Object>();
     	
     	InetAddress inetAddress = InetAddress.getLocalHost();
@@ -192,11 +208,11 @@ public class Meong_Controller {
    	 	map.put("today", today);
    	 	System.out.println("today 는 "+today);
    	 	
-   	 	service.logoutinsert(map);
+   	 	service.logoutinsert(map);*/
 
     	session.invalidate();
     	
-    	return "logout.notiles";
+    	return "maeng9/logout.notiles";
     }
 	 
 	// 관리자 페이지요청
@@ -213,15 +229,17 @@ public class Meong_Controller {
     	String mentotal = service.getmentotal();     // 총 남자 사용자수
     	String womantotal = service.getwomantotal(); // 총 여자 사용자수
     	String todaytotal = service.gettodaytotal(map); // 오늘방문자 수
-    	String todaytotalshymemo = service.gettodaytotalshymemo(map); // 오늘게시물 수
+    	String todaytotalshymemo = service.gettodaytotalshymemo(map); // 오늘 회원 게시물 수
+    	String todaytotalgrpboard = service.gettodaytotalgrpboard(map); // 오늘 그룹 게시물 수
     			
     	req.setAttribute("totaluser", totaluser);
     	req.setAttribute("mentotal", mentotal);
     	req.setAttribute("womantotal", womantotal);
     	req.setAttribute("todaytotal", todaytotal);
     	req.setAttribute("todaytotalshymemo", todaytotalshymemo);
+    	req.setAttribute("todaytotalgrpboard", todaytotalgrpboard);
 
-    	return "admin.notiles";
+    	return "maeng9/admin.notiles";
     }
     
     // 관리자 공지사항(미정) 페이지요청
@@ -315,8 +333,8 @@ public class Meong_Controller {
     	
     //----------------------------------------------------------------------------------------------
     	
-    	String pageNo2 = req.getParameter("pageNo2"); // 운영자 페이징처리
-
+    	String pageNo2 = req.getParameter("pageNo2"); // 회원페이징처리
+    	
     	int totalCount2 = 0;
     	int sizePerPage2 = 5; 
     	int currentShowPageNo2 = 1;
@@ -339,12 +357,14 @@ public class Meong_Controller {
     	start2 = ((currentShowPageNo2 - 1) * sizePerPage2) + 1;
     	end2 = start2 + sizePerPage2 - 1;
     	
-    	RowBounds rowBounds = new RowBounds(start2, end2);
+    	HashMap<String, String> map2 = new HashMap<String, String>();
     	
-    	List<HashMap<String, String>> adminList = service.getadminList(map,rowBounds); 
-//    	System.out.println(adminList);
-   	
-    	totalCount2 = service.getTotalCount(map);
+    	map2.put("start2", String.valueOf(start2) );
+    	map2.put("end2", String.valueOf(end2) );
+    	
+    	List<HashMap<String, String>> adminList = service.getadminList(map); 
+   	  	
+    	totalCount2 = service.getTotalAdminCount(map);
     	totalPage2 = (int)Math.ceil((double)totalCount2/sizePerPage2);
     	
     	String pagebar2 = "";
@@ -389,7 +409,7 @@ public class Meong_Controller {
         req.setAttribute("pagebar2", pagebar2);
     	req.setAttribute("adminList", adminList);
     	
-    	return "gesipan.notiles";
+    	return "maeng9/gesipan.notiles";
     }    
 		
 	// 관리자 페이지 회원관리 페이지 요청
@@ -400,7 +420,7 @@ public class Meong_Controller {
 			 
 		req.setAttribute("shyList", shyList);
 		
-    	return "shymember.notiles";
+    	return "maeng9/shymember.notiles";
     }
 	
     // 관리자 페이지 유저관리 페이지 비활성화버튼요청
@@ -515,7 +535,7 @@ public class Meong_Controller {
     	req.setAttribute("today2", today2);
     	req.setAttribute("yesterday2", yesterday2);
     	
-    	return "tongke.notiles";
+    	return "maeng9/tongke.notiles";
     }	
 
     @RequestMapping(value="/follow.shy", method={RequestMethod.GET})
@@ -543,7 +563,7 @@ public class Meong_Controller {
     public String gesimulTK(HttpServletRequest req, HttpSession session){
 
     	
-    	return "gesimulTK.notiles";
+    	return "maeng9/gesimulTK.notiles";
     	
     }
     
@@ -551,7 +571,7 @@ public class Meong_Controller {
     public String kongyou(HttpServletRequest req, HttpSession session){
 
     	
-    	return "kongyou.notiles";
+    	return "maeng9/kongyou.notiles";
     	
     }
     
@@ -701,7 +721,7 @@ public class Meong_Controller {
     	req.setAttribute("today2", today2);
     	req.setAttribute("yesterday2", yesterday2);
 
-    	return "bartongke.notiles";
+    	return "maeng9/bartongke.notiles";
     }	
     
     // 게시물관리 페이지 요청
@@ -712,7 +732,7 @@ public class Meong_Controller {
 		 
 		req.setAttribute("memoList", memoList);
     	
-    	return "adminshymemo.notiles";	
+    	return "maeng9/adminshymemo.notiles";	
     }
 	
     // 관리자 페이지 게시물관리 페이지 비활성화버튼요청
@@ -786,9 +806,43 @@ public class Meong_Controller {
     	List<HashMap<String, Object>> doughnutList = service.getdoughnutList();
     	req.setAttribute("doughnutList", doughnutList);
     
+	
     	
-    	
-    	return "pietongke.notiles";
+    	return "maeng9/pietongke.notiles";
+    }
+    
+    @RequestMapping(value="/shyinfo.shy", method={RequestMethod.GET})
+    public String shyinfo(HttpServletRequest req, HttpSession session){
+    	// 회사개요
+    	return "maeng9/shyinfo.notiles";
     }	
     
+    @RequestMapping(value="/shyinfomember.shy", method={RequestMethod.GET})
+    public String shyinfomember(HttpServletRequest req, HttpSession session){
+    	// 회사식구
+    	return "maeng9/shyinfomember.notiles";
+    }
+    
+    @RequestMapping(value="/general_elements.shy", method={RequestMethod.GET})
+    public String general_elements(HttpServletRequest req, HttpSession session){
+    	
+    	return "maeng9/general_elements.notiles";
+    }
+    
+    @RequestMapping(value="/icons.shy", method={RequestMethod.GET})
+    public String icons(HttpServletRequest req, HttpSession session){
+    	
+    	return "maeng9/icons.notiles";
+    }	
+    
+    @RequestMapping(value="/widgets.shy", method={RequestMethod.GET})
+    public String widgets(HttpServletRequest req, HttpSession session){
+    	return "maeng9/widgets.notiles";
+    }	
+    
+    @RequestMapping(value="/invoice.shy", method={RequestMethod.GET})
+    public String invoice(HttpServletRequest req, HttpSession session){
+    	return "maeng9/invoice.notiles";
+    }	
+
 }

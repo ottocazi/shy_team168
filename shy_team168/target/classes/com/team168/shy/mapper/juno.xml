@@ -20,7 +20,7 @@
 	</update>
 	
 	
-	<!-- ===== 댓글 카운트 ===== -->
+	<!-- ===== 댓글 카운트 (status 0 포함)===== -->
 	<resultMap type="java.util.HashMap" id="getCommentCountMap">
 		<result property="snsno" column="snsno" javaType="String"/>
 		<result property="cnt" column="cnt" javaType="int"/>
@@ -47,7 +47,7 @@
 														</foreach>
 													    ) A 
 			  LEFT OUTER JOIN  
-      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT GROUP BY SNSNO) B
+      		 (SELECT SNSNO , COUNT(SNSNO) AS CNT FROM TBL_COMMENT WHERE STATUS=1 GROUP BY SNSNO) B
       		  ON A.SNSNO = B.SNSNO
 	</select>
 	
@@ -105,4 +105,119 @@
 		delete from tbl_follow
 		where fk_idxflw = #{idx} and fk_idxflwed = #{fk_idxflwed}
 	</delete>
+	
+	<!-- 임시메인라인 -->
+	<select id="followlistj" parameterType="int" resultType="String">
+		select fk_idxflwed
+		from tbl_follow
+		where 1=1 and fk_idxflw = #{idx} and status = 1
+	</select>
+	
+	<resultMap type="java.util.HashMap" id="shiesj">
+	
+		<result property="snsno" 		column="SNSNO" 			javaType="String"/>
+		<result property="fk_idx" 		column="FK_IDX" 		javaType="String"/>
+		<result property="scontent" 	column="SCONTENT" 		javaType="String"/>
+		<result property="sdatedtime" 	column="SDATEDTIME" 	javaType="String"/>
+		<result property="slikecnt" 	column="SLIKECNT" 		javaType="String"/>
+		<result property="sblamecnt" 	column="SBLAMECNT" 		javaType="String"/>
+		<result property="publicyn" 	column="PUBLICYN" 		javaType="String"/>
+		<result property="simage" 		column="SIMAGE" 		javaType="String"/>
+		<result property="stagfollow" 	column="STAGFOLLOW" 	javaType="String"/>
+		<result property="staggeo" 		column="STAGGEO" 		javaType="String"/>
+		<result property="status" 		column="STATUS" 		javaType="String"/>
+		<result property="name" 		column="NAME" 			javaType="String"/>
+		<result property="email" 		column="EMAIL" 			javaType="String"/>
+		<result property="myimg" 		column="MYIMG" 			javaType="String"/>
+		
+	</resultMap>
+	
+	<select id="shiesj" parameterType="java.util.List" resultMap="shiesj">
+		SELECT A.* , B.EMAIL, B.NAME , B.MYIMG
+		FROM TBL_SHYMEMO A INNER JOIN TBL_SHYMEMBER B ON A.FK_IDX = B.IDX
+		WHERE	 1=1 AND A.STATUS = 1 AND
+				 FK_IDX IN
+				<foreach collection="list" item="item" index="i" open="(" close=")" separator=",">
+					${item}
+				</foreach>
+		ORDER BY A.SNSNO DESC
+	</select>
+	
+	<select id="imgaddrj" parameterType="String" resultType="String">
+		SELECT 	FILENAME 
+		FROM	TBL_IMAGE
+		WHERE 	SNSNO = #{snsno} and rownum = 1	
+	</select>
+	
+	<!-- ===== 댓글 수정하기 ===== -->
+	<update id="goCommentEdit" parameterType="java.util.HashMap">
+		update tbl_comment set cmtcontent = #{cmtcontent}
+		where snsno = #{snsno} and cmtno = #{cmtno}
+	</update>
+	
+	<!-- ===== 댓글 삭제하기 ===== -->
+	<update id="goCommentDelete" parameterType="java.util.HashMap">
+		update tbl_comment set status = 0
+		where snsno = #{snsno} and cmtno = #{cmtno}
+	</update>
+	
+	<!-- ===== 댓글 신고 ===== -->
+	<insert id="goBlameEnd" parameterType="java.util.HashMap">
+		insert into tbl_blame(blameno, snsno,    fk_blameidx, fk_blamedidx, bladate, fk_cmtno, reason, 	  resondetail)
+		values (seq_tbl_blame.nextval, #{snsno}, #{idx},      #{fk_idx},    sysdate, #{cmtno}, #{result}, #{value})
+	</insert>
+	
+	<!-- ===== 위치 태그가 있는 snsno list 뽑아오기 ===== -->
+	<resultMap type="java.util.HashMap" id="getGeoSnsnoListMap">
+		<result property="FK_SNSNO" 	column="fk_snsno" 		javaType="int" />
+ 		<result property="LOGDITUDE" 	column="logditude" 		javaType="String" />
+ 		<result property="LATITUDE" 	column="latitde" 		javaType="String" />
+ 		<result property="SHYPLACE" 	column="shyplace" 		javaType="String" />
+ 	</resultMap>
+	<select id="getGeoSnsnoList" resultMap="getGeoSnsnoListMap" parameterType="String">
+		select to_char(fk_snsno) as fk_snsno, substr(longditude,0,9) as longditude, substr(latitude,0,9) as latitude, shyplace
+		from tbl_geo
+		where area1 like '%'||#{city}||'%'
+	</select>
+	
+	<!-- ===== 지역별 shy :  cnt 통계 지도 ===== -->
+	<resultMap type="java.util.HashMap" id="getdrawRegionsMap">
+		<result property="Seoul" 			column="Seoul" 				javaType="int" />
+ 		<result property="Busan" 			column="Busan" 				javaType="int" />
+ 		<result property="Daegu" 			column="Daegu" 				javaType="int" />
+ 		<result property="Daejeon" 			column="Daejeon" 			javaType="int" />
+ 		<result property="Gwangju" 			column="Gwangju" 			javaType="int" />
+ 		<result property="Incheon" 			column="Incheon" 			javaType="int" />
+ 		<result property="Ulsan" 			column="Ulsan" 				javaType="int" />
+ 		<result property="Chungcheongbugdo"	column="Chungcheongbugdo" 	javaType="int" />
+ 		<result property="Chungcheongnamdo" column="Chungcheongnamdo" 	javaType="int" />
+ 		<result property="Gangweondo" 		column="Gangweondo" 		javaType="int" />
+ 		<result property="Gyeonggido" 		column="Gyeonggido" 		javaType="int" />
+ 		<result property="Gyeongsangbugdo" 	column="Gyeongsangbugdo" 	javaType="int" />
+ 		<result property="Gyeongsangnamdo" 	column="Gyeongsangnamdo" 	javaType="int" />
+ 		<result property="Jejudo" 			column="Jejudo" 			javaType="int" />
+ 		<result property="Jeonrabugdo" 		column="Jeonrabugdo" 		javaType="int" />
+ 		<result property="Jeonranamdo" 		column="Jeonranamdo" 		javaType="int" />
+ 		<result property="ect" 				column="ect" 				javaType="int" />
+ 	</resultMap>
+	<select id="drawRegionsMap"  resultMap="getdrawRegionsMap">
+	select DISTINCT(select count(*) from tbl_geo where area1='서울특별시' ) as Seoul,
+	      (select count(*) from tbl_geo where area1='부산광역시' ) as Busan,
+	      (select count(*) from tbl_geo where area1='대구광역시' ) as Daegu,
+	      (select count(*) from tbl_geo where area1='대전광역시' ) as Daejeon,
+	      (select count(*) from tbl_geo where area1='광주광역시' ) as Gwangju,
+	      (select count(*) from tbl_geo where area1='인천광역시' ) as Incheon,
+	      (select count(*) from tbl_geo where area1='울산광역시' ) as Ulsan,
+	      (select count(*) from tbl_geo where area1='충청북도' )   as Chungcheongbugdo,
+	      (select count(*) from tbl_geo where area1='충청남도' )   as Chungcheongnamdo,
+	      (select count(*) from tbl_geo where area1='강원도' ) 	   as Gangweondo,
+	      (select count(*) from tbl_geo where area1='경기도' )     as Gyeonggido,
+	      (select count(*) from tbl_geo where area1='경상북도' )   as Gyeongsangbugdo,
+	      (select count(*) from tbl_geo where area1='경상남도' )   as Gyeongsangnamdo,
+	      (select count(*) from tbl_geo where area1='제주도' )     as Jejudo,
+	      (select count(*) from tbl_geo where area1='전라북도' )   as Jeonrabugdo,
+	      (select count(*) from tbl_geo where area1='전라남도' )   as Jeonranamdo,
+	      (select count(*) from(select nvl(area1, 'x')as n from tbl_geo) where n='x') as ect
+	from tbl_geo
+	</select>
 </mapper>	

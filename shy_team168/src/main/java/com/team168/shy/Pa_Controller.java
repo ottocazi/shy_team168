@@ -31,26 +31,36 @@ public class Pa_Controller {
 
 	@Autowired
 	private PaService service;
-	
+
 	// ===== mypage 페이지 요청하기 (내 shy계정) ===== //
 	@RequestMapping(value="/mypage.shy", method={RequestMethod.GET})
     public String goMypage(HttpServletRequest req,HttpSession session) {
-		
-		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
-		
-		System.out.println("loginuser="+loginuser);
-		//ShyMemberVO shymemvo = (ShyMemberVO)loginuser;
+		String myIdx = "";
+		/*int followcheck = 0;*/
+		ShyMemberVO loginuser= null;
 		
 		
-		if(loginuser == null) {
-			String msg = "♥ 먼저 로그인 하세요 ♥";
-			String loc = "open.shy";
+		
+			if(req.getParameter("idx") != null){
+				myIdx = req.getParameter("idx");
+				
+				 
+			}else{
+				loginuser = (ShyMemberVO)session.getAttribute("loginuser");
+				myIdx = Integer.toString(loginuser.getIdx());
+				req.setAttribute("loginuser", loginuser);
+		        
+				/*mymap.put("myIdx", myIdx);
+				
+				if(req.getParameter("idx") != null){
+	   				String folwidx = req.getParameter("idx");
+	   				mymap.put("folwidx", folwidx);
+	   				
+	   				followcheck = service.getFollowing(mymap);
+				}*/
+			}
 			
-			req.setAttribute("msg", msg);
-			req.setAttribute("loc", loc);
-			
-			return "ddung_alert.notiles";
-		} else{
+			/*req.setAttribute("followcheck",followcheck);*/
 			
 			// 기본 페이지번호를 1으로 설정하고
 	        int pageNo = 1;
@@ -58,16 +68,13 @@ public class Pa_Controller {
 	        // 넘어온 파라미터가 있다면
 	        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
 	        if(req.getParameter("pageNo") != null){
-	        pageNo = Integer.parseInt(req.getParameter("pageNo"));
+	        	pageNo = Integer.parseInt(req.getParameter("pageNo"));
 	        }
 	        
 	        int sizePerPage = 6;
 	        
 	        int start = (pageNo - 1) * sizePerPage + 1;
 	        int end = pageNo * sizePerPage;
-			
-			String myIdx = Integer.toString(loginuser.getIdx());
-			req.setAttribute("loginuser", loginuser);
 			
 			// 나의 샤이 개수 가져오기 , 내 정보 개수 가져오기 
 			int myshyCount = service.getMyshyCount(myIdx);
@@ -76,17 +83,19 @@ public class Pa_Controller {
 			// 팔로우 수 가져오기
 	        int fk_idxflwedcnt = service.getMyflwcnt(myIdx);
 	        req.setAttribute("fk_idxflwedcnt", fk_idxflwedcnt);
-			
-			HashMap<String, Object> mymap = new HashMap<String, Object>();
+	        
+	        HashMap<String, Object> mymap = new HashMap<String, Object>();
 			mymap.put("myIdx", myIdx);
 			mymap.put("start", String.valueOf(start));
 			mymap.put("end", String.valueOf(end));
 			
-			//mymap.put("myshyCount", String.valueOf());
 			
 			// 나의 샤이 가져오기 , 내 정보 가져오기(join)
 			List <HashMap<String, String>> myshyList = service.getMyshy(mymap);
 			
+			// 개인정보 가져오기
+			mymap = service.getMyInfo(myIdx);
+			req.setAttribute("mymap", mymap);
 			
 			if(myshyList!=null){
 				for(int i =0 ; i<myshyList.size(); i++){
@@ -97,11 +106,9 @@ public class Pa_Controller {
 					if("1".equals(myshyList.get(i).get("simage"))){
 						
 						String snsno = myshyList.get(i).get("snsno");
-						System.out.println("snsno = "+snsno);
 						// 이미지 가져오기
 						String imgfile = service.getImgaddr(snsno);
 						
-						System.out.println("해시맵에 담기 직전의 파일명(중요) : ");
 						myshyList.get(i).put("imageaddr", imgfile);
 						
 					}
@@ -109,42 +116,47 @@ public class Pa_Controller {
 					else if("0".equals(myshyList.get(i).get("simage"))){
 						myshyList.get(i).put("imageaddr", null);
 					}
-					
-					System.out.println("shies.simage : "+myshyList.get(i).get("simage"));
-					System.out.println("shies에 들어간 imageaddr = " + myshyList.get(i).get("imageaddr"));
 				}
-			
 			}
-			req.setAttribute("myshyList", myshyList);
 			
+			req.setAttribute("myshyList", myshyList);
 			return "pa/mypage.tiles";
 		
-		}
 	}
 
 	// ===== mypage 페이지 요청하기 (Ajax) ===== //
-	@RequestMapping(value = "/mypageList.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/mypageList.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goMypageAjax(HttpServletRequest req,HttpSession session) { 
-
+		String myIdx = "";
+		
 		// 기본 페이지번호를 1으로 설정하고
         int pageNo = 1;
  
         // 넘어온 파라미터가 있다면
-        //if (req.getParameter("page") != null) {
+        if (req.getParameter("pageNo") != null) {
  
-            // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
-        pageNo = Integer.parseInt(req.getParameter("pageNo"));
-        //}
+        // 해당 파라미터를 int형으로 캐스팅후 변수에 대입
+        	pageNo = Integer.parseInt(req.getParameter("pageNo"));
+        }
         
         int sizePerPage = 6;
         
         int start = (pageNo - 1) * sizePerPage + 1;
         int end = pageNo * sizePerPage;
 		
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-		String myIdx = Integer.toString(loginuser.getIdx());
-		req.setAttribute("loginuser", loginuser);
+		
+		if(req.getParameter("idx") == null){
+			
+			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+			myIdx = Integer.toString(loginuser.getIdx());
+			req.setAttribute("loginuser", loginuser);
+			
+		}else{
+			myIdx = req.getParameter("idx");
+		}
+		
+
 
 		HashMap<String, Object> mymap = new HashMap<String, Object>();
 		mymap.put("myIdx", myIdx);
@@ -665,23 +677,26 @@ public class Pa_Controller {
   	// ===== 좋아요 가져오기 ===== //
    	@RequestMapping(value="/likeList.shy", method={RequestMethod.GET})
    	@ResponseBody
-       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req) {
+       public List<HashMap<String, String>> goLikeCnt(HttpServletRequest req,HttpSession session) {
    		//List<HashMap<String, String>> likeList = null; // 초기화
    		
    		String[] snsnoArr = req.getParameterValues("snsnoArr");
    		System.out.println("snsnoArr="+snsnoArr);
    		
-   		HttpSession session = req.getSession();
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-		
-		int fk_likeidx = loginuser.getIdx();
+   		int fk_likeidx = 0;
+   		
+   		if(req.getParameter("idx")!=null){
+   			fk_likeidx = Integer.parseInt(req.getParameter("idx"));
+   		}else{
+   			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+   			fk_likeidx = loginuser.getIdx();
+   		}
    		
 		HashMap<String, Object> mylike = new HashMap<String, Object>();
 		mylike.put("snsnoArr", snsnoArr);
 		mylike.put("fk_likeidx", fk_likeidx);
    	
    		List<HashMap<String, String>> likeList = service.getmyLikeList(mylike);
-   		
    		
    		for(int i = 0; i < likeList.size(); ++i) {
    			System.out.println("snsno : " + likeList.get(i).get("snsno"));
@@ -696,20 +711,25 @@ public class Pa_Controller {
 	@RequestMapping(value = "/myfollowList.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goFlwlist(HttpServletRequest req) {
-
-		HttpSession session = req.getSession();
-		ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
-
-		String myIdx = Integer.toString(loginuser.getIdx()); // loginuser idx 가져오기
-
+		String myIdx =""; 
+		
+		if(req.getParameter("idx")!=null){
+			myIdx = req.getParameter("idx");
+   		}else{
+   			HttpSession session = req.getSession();
+   			ShyMemberVO loginuser = (ShyMemberVO) session.getAttribute("loginuser");
+   			myIdx = Integer.toString(loginuser.getIdx());
+   		}
+		
 		List<HashMap<String, String>> myflwList = service.getMyfollows(myIdx);
-
+		
+		
 		return myflwList;
 
 	}
 	
 	// ===== 알림리스트 가져오기 ===== //
-	@RequestMapping(value = "/myAlarm.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/myAlarm.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public List<HashMap<String, String>> goAlarmlist(HttpServletRequest req) {
 
@@ -725,7 +745,7 @@ public class Pa_Controller {
 	}
 	
 	// ===== 알림카운트 가져오기 ===== //
-	@RequestMapping(value = "/myAlarmcnt.shy", method = { RequestMethod.POST })
+	@RequestMapping(value = "/myAlarmcnt.shy", method = { RequestMethod.GET })
 	@ResponseBody
 	public HashMap<String, Object> goAlarmupdate(HttpServletRequest req) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -738,20 +758,88 @@ public class Pa_Controller {
 		resultMap.put("result", result);
 		
 		String[] alarmnoArr = req.getParameterValues("alarmnoArr");
-		System.out.println("alarmnoArr="+alarmnoArr);
+		//System.out.println("alarmnoArr="+alarmnoArr);
 		
-		resultMap.put("alarmnoArr", alarmnoArr);
 		resultMap.put("myIdx", myIdx);
 		
 		if(req.getParameterValues("alarmnoArr")!=null){
+			resultMap.put("alarmnoArr", alarmnoArr);
 			int n = service.updateAlarm(resultMap); // 알람클릭시 update 
 			if(n>0){
 				result = service.getAlarmCnt(myIdx); // 다시 카운트 가져오기
 				resultMap.put("result", result);
 			}
+		}else{
+			System.out.println("alarmnoArr null!");
 		}
 		
 		return resultMap;
 	}
-    
+
+	// ===== 그룹 개요 페이지 요청하기 ===== //
+	@RequestMapping(value = "/mygroups_summary.shy", method = { RequestMethod.GET })
+	public String goGrpSummary(HttpServletRequest req) {
+
+		String str_groupno = req.getParameter("groupno"); // 해당 그룹번호 가져오기
+		// System.out.println("str_groupno="+str_groupno); // 확인용
+
+		if (str_groupno != null) {
+			int groupno = Integer.parseInt(str_groupno);
+			HashMap<String, String> grpvomap = service.getGroupDetail(groupno);
+			req.setAttribute("grpvomap", grpvomap);
+
+			// ===== 그룹 가입멤버 가져오기 =====
+			List<HashMap<String, String>> gmemberList = service.getGroupMember(groupno);
+			req.setAttribute("gmemberList", gmemberList);
+
+			// ===== 그룹글 목록 가져오기 =====
+			List<HashMap<String, String>> gboardList = service.getGroupBoard(groupno);
+			req.setAttribute("gboardList", gboardList);
+
+			return "pa/mygroups_summary.tiles";
+
+		} else {
+			req.setAttribute("title", "그룹보기");
+			req.setAttribute("type", "error");
+			req.setAttribute("msg", "잘못된 접근입니다!");
+			req.setAttribute("loc", "mygroups.shy");
+
+			return "ddung_alert.notiles";
+		}
+
+	}
+
+	// ===== 그룹 채팅 페이지 요청하기 ===== //
+	@RequestMapping(value = "/mygroups_chat.shy", method = { RequestMethod.GET })
+	public String goGrpChat(HttpServletRequest req) {
+
+		String str_groupno = req.getParameter("groupno"); // 해당 그룹번호 가져오기
+		// System.out.println("str_groupno="+str_groupno); // 확인용
+
+		if (str_groupno != null) {
+			int groupno = Integer.parseInt(str_groupno);
+			HashMap<String, String> grpvomap = service.getGroupDetail(groupno);
+			req.setAttribute("grpvomap", grpvomap);
+
+			// ===== 그룹 가입멤버 가져오기 =====
+			List<HashMap<String, String>> gmemberList = service.getGroupMember(groupno);
+			req.setAttribute("gmemberList", gmemberList);
+
+			// ===== 그룹글 목록 가져오기 =====
+			List<HashMap<String, String>> gboardList = service.getGroupBoard(groupno);
+			req.setAttribute("gboardList", gboardList);
+
+			return "pa/mygroups_chat.tiles";
+
+		} else {
+			req.setAttribute("title", "그룹보기");
+			req.setAttribute("type", "error");
+			req.setAttribute("msg", "잘못된 접근입니다!");
+			req.setAttribute("loc", "mygroups.shy");
+
+			return "ddung_alert.notiles";
+		}
+
+	}
+	
 }

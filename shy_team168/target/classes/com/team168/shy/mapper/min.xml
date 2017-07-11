@@ -40,7 +40,7 @@
 	 <select id="peoplesearch" parameterType="String" resultMap="searchpeopleMap">
 	    select *
         from tbl_shymember
-        where status = 1
+        where 1 = 1 and status in (1, 168)
           <if test="search != null">
          and email like '%' || #{search} || '%' or name like '%' || #{search} || '%'
 		</if>
@@ -147,7 +147,8 @@
 	
 	    select *
         from tbl_geo
-        where seq = #{geoidx}
+        where seq = #{geoidx} 
+        
 		
 	</select>
 	
@@ -164,6 +165,7 @@
 	<result property="name"  			column="NAME" 			javaType="String" />
 	<result property="sdatedtime"  		column="SDATEDTIME" 	javaType="String" />
 	<result property="idx"  			column="IDX" 			javaType="String" />
+	<result property="myimg"  			column="MYIMG" 			javaType="String" />
 	</resultMap>
 	
 	
@@ -185,7 +187,38 @@
 	
 	
 	
+	<!-- 
+	장환이형 구글맵 반경내 목표 포착하기
+	근처의 이용 가능한 숙소의 전체 수 알기 -->
 	
+	<resultMap type="java.util.HashMap" id="geomap2">
+		<result property="seq" 		column="seq" 		javaType="String" />
+ 		<result property="fk_snsno"  		column="FK_SNSNO" 		javaType="String" />
+ 		<result property="shyplace"  		column="SHYPLACE" 		javaType="String" />
+ 		<result property="longditude"  		column="LONGDITUDE" 		javaType="String" />
+ 		<result property="latitude"  		column="LATITUDE" 		javaType="String" />
+ 		<result property="country"  		column="COUNTRY" 		javaType="String" />
+ 		<result property="postal_code"  		column="POSTAL_CODE" 		javaType="String" />
+ 		<result property="area1"  		column="AREA1" 		javaType="String" />
+ 		<result property="locality"  		column="LOCALITY" 		javaType="String" />
+ 		<result property="route"  		column="ROUTE" 		javaType="String" />
+ 		<result property="street_number"  		column="STREET_NUMBER" 		javaType="String" />
+ 		
+ 		
+	</resultMap>
+	
+   <select id="selectNearMap" parameterType="java.util.HashMap" resultMap="geomap2">
+      select *
+      from (  select A.* , DISTNACE_SHY(substr(#{latitude}, 0, 9), substr(#{longditude}, 0, 9), latitude, longditude) as distance
+		      from tbl_geo A
+		      where (latitude between substr(to_char(to_number(#{latitude}) - 0.019), 0, 9) and substr(to_char(to_number(#{latitude}) + 0.019), 0, 9))
+		        and (longditude between substr(to_char(to_number(#{longditude}) - 0.022), 0, 9) and substr(to_char(to_number(#{longditude}) + 0.022), 0, 9))
+		   )
+	  where distance <![CDATA[<=]]> to_number(#{distance})
+	  
+    </select>
+	
+	 
 	
 	
 	

@@ -12,12 +12,12 @@ body{
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.8);
     opacity:0;
     -webkit-transition: opacity 400ms ease-in;
     -moz-transition: opacity 400ms ease-in;
     transition: opacity 400ms ease-in;
     pointer-events: none;
+    padding: 10px;
 }
 .followList:target {
     opacity:1;
@@ -26,13 +26,14 @@ body{
 }
 .followList > div{
 	position: relative;
-	top: 25%;
-	left: 25%;
-	width: 50%;
-	height: 50%;
+	top: 19%;
+    left: 17.8%;
+	width: 15%;
+	min-height: 30%;
 	padding: 16px;
-	border: 16px solid orange;
-	background-color: white;
+	background-color: #eee;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    border-radius: 5px;
 	overflow: auto;	
 }
 
@@ -69,13 +70,24 @@ body{
   background: rgba(0, 0, 0, 0.1);
 }
 /* -- Google typography ------------------------------- */
-.headline {
+.grpdeatil_headline{
   font-size: 24px;
-  font-weight: 300;
+  font-weight: 600;
   line-height: 1.1;
   color: #212121;
-  text-transform: inherit;
-  letter-spacing: inherit;
+  display: inline-block;
+}
+.grpdeatil_join{
+	color: #999;
+	background: #fff;
+	border: 1px solid #999;
+	font-size: 10pt;
+    text-align: center;
+}
+.grpdeatil_join:hover{
+	color: #C8BFE7;
+	background: #eee;
+	font-weight: 600;
 }
 .subhead {
   font-size: 16px;
@@ -117,6 +129,11 @@ body{
 
 .grpdeatil_wrapper{
   display: flex;
+}
+
+.grpdeatil_wrapper a{
+  text-decoration: none;
+  color: #000;
 }
 .grpdeatil_sidebar-stacked.open + .wrapper .constructor {
   margin-left: 280px;
@@ -502,6 +519,8 @@ body{
 
 .grpdetail_marginTop0 {
   margin-top: 0;
+  padding-bottom: 10px;
+  padding-left: 8px;
 }
 
 .grpdetail_marginTop5 {

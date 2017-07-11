@@ -37,16 +37,50 @@ public class Min_Controller {
 	
 		String geoidx = req.getParameter("geoidx");
 		
+		
+ 		
+		
+		
 		System.out.println("컨트롤에서 받은 geoidx : " + geoidx);
 		
 		HashMap<String, String> geomap = service.getgeoinfo(geoidx);
 		
 		List <HashMap<String, String>> geolist = service.getgeoList(geomap);
+
+		
+		double distance = 1.2;
+		geomap.put("distance", Double.toString(distance));
+		
+		if(geomap.get("latitude").equalsIgnoreCase("X")){
+			
+		}
+		
+		else{
+			List <HashMap<String, String>>  selectNearMap = service.nearMap(geomap);
+			selectNearMap.add(0, geomap);
+			req.setAttribute("selectNearMap", selectNearMap);
+		}
+		
+		
+		/*System.out.println("selectNearMap.size() : " + selectNearMap.size());
+		
+		
+		
+		System.out.println("selectNearMap.size() : " + selectNearMap.size());*/
+		
+		
+		
+		
+		
+		
+		
+		
 		req.setAttribute("geomap", geomap);
 		req.setAttribute("geolist", geolist);
 		
 		 
-	
+		/*System.out.println("selectNearMap[0] : " + selectNearMap.get(0).get("latitude"));*/
+		
 		return "smin/busipage.tiles";
     	
     }

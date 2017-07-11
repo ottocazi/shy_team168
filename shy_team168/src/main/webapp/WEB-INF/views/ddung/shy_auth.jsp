@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>API 로컬테스트 페이지</title>
-<link rel="stylesheet" type="text/css"
+<%-- <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/css/bootstrap.css">
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/css/bootstrap-theme.css">
@@ -14,7 +14,8 @@
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/jquery/jquery-2.2.2.min.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
-<script type="text/javascript"
+ --%>
+ <script type="text/javascript"
 	src="<%=request.getContextPath()%>/resources/fintech/ext_lib/bootstrap-3.3.6-dist/js/modal.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/resources/fintech/css/common.css">
@@ -133,11 +134,13 @@
 			return null;
 			break;
 		case '1': // 몇몇 항목을 제외한 header 값을 넘긴다.
-			return $hips.not('#Kftc-Bfop-AccessToken');
+			return null;
+		//return $hips.not('#Kftc-Bfop-AccessToken');
 			break;
 		case '2': // 몇몇 항목을 제외한 header 값을 넘긴다.
-			return $hips
-					.not('#Kftc-Bfop-UserName, #Kftc-Bfop-UserInfo, #Kftc-Bfop-UserCellNo, #Kftc-Bfop-UserEmail');
+			return null;	
+		//return $hips
+		//	.not('#Kftc-Bfop-UserName, #Kftc-Bfop-UserInfo, #Kftc-Bfop-UserCellNo, #Kftc-Bfop-UserEmail');
 			break;
 		}
 	}
