@@ -22,7 +22,7 @@
   <div class="jumbotron" style="background-color: rgba(10,10,10, 0.05);">
     <h2 class="">회원정보수정</h1>
     <h6 class=""  style="margin-top: 2em;">
-    	<span style="font-weight: bold;">${getMemberVO.name}</span>님의 회원정보입니다.<br/>
+    	<span style="font-weight: bold;">${loginuser.name}</span>님의 회원정보입니다.<br/>
     	회원정보는 개인정보처리방침에 따라 안전하게 보호되며, 회원님의 명백한 동의 없이 공개 또는 제 3자에게 제공되지 않습니다.
     	<a>개인정보처리방침</a>
     </h6>
@@ -41,13 +41,13 @@
 							<td class="text-left colname">프로필사진</td>
 							<td class="text-left">
 							
-							<c:if test="${getMemberVO.myimg!=null }">
+							<c:if test="${loginuser.myimg!=null }">
 							
-								<img class="img-responsive img-circle"  src="<%=request.getContextPath() %>/resources/images/shydb/${getMemberVO.myimg}" >
+								<img class="img-responsive img-circle"  src="<%=request.getContextPath() %>/resources/images/shydb/${loginuser.myimg}" >
 							
 							</c:if>
 							
-							<c:if test="${getMemberVO.myimg==null }">
+							<c:if test="${loginuser.myimg==null }">
 							
 								<span>현재 등록된 프로필 이미지가 없습니다.</span>
 							
@@ -57,7 +57,7 @@
 							<form name="myimgFrm" id="myimgFrm" enctype="multipart/form-data" action="myimgedit.shy" method="post">
 							<input type="file" name="myimg" />
 							<div  class="hiddenpart">   
-							<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+							<input type="hidden" name="idx" value="${loginuser.idx}" />
 							<input type="hidden" name="column_name" id="column_name" value="myimg" />
 			                
 				            </div>
@@ -75,7 +75,7 @@
 						<form name="emailFrm" id="emailFrm">
 						<tr>
 							<td class="text-left colname">이메일</td>
-							<td class="text-left">${getMemberVO.email}
+							<td class="text-left">${loginuser.email}
 				                <br/><span>아이디, 비밀번호 찾기 등 본인확인이 필요한 경우 사용할 이메일 주소입니다.</span><br/>
 				                <input type="checkbox"><span style="margin-left: 10px;">shy의 이벤트 등 프로모션 관련 안내 메일을 수신하겠습니다.</span>
 				                <br/>
@@ -88,11 +88,11 @@
 				                변경할 이메일
 				                <br/><span>변경할 이메일 주소를 입력하세요. (예: abc@gmail.com)</span><br/>
 				                
-				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="idx" value="${loginuser.idx}" />
 				                <input type="hidden" name="column_name" id="column_name" value="email"  />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="text" class="inputcol" id="id_email" name="email" value="${getMemberVO.email}" />
+				                <input type="text" class="inputcol" id="id_email" name="email" value="${loginuser.email}" />
 				                <button type="button" class="info_edit_btn">인증메일발송</button><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
@@ -107,7 +107,7 @@
 							<td class="text-left colname">사용자 이름</td>
 							<td class="text-left">
 								
-								${getMemberVO.name}
+								${loginuser.name}
 				                <br/><span style="text-decoration: line-through;">개명으로 이름이 변경된 경우에 한하여 변경이 가능합니다.</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">이름변경</button>
 				                
@@ -115,11 +115,11 @@
 				                변경할 이름
 				                <br/><span>변경할 이름을 입력하세요.</span><br/>
 				                
-				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="idx" value="${loginuser.idx}" />
 				                <input type="hidden" name="column_name" id="column_name" value="name" />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="text" class="inputcol" id="id_name" name="name" value="${getMemberVO.name}" />
+				                <input type="text" class="inputcol" id="id_name" name="name" value="${loginuser.name}" />
 				                <button type="button" class="info_edit_btn">중복확인</button><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
@@ -140,11 +140,11 @@
 				                	<br/><span><a>안전한 비밀번호로 내정보를 보호</a>하세요</span>
 				                	<br/><span><span style="color: red;">다른 아이디/사이트에서 사용한적 없는 비밀번호<br/> 이전에 사용한 적 없는 비밀번호</span>가 안전합니다.</span><br/>
 				                	
-				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                	<input type="hidden" name="idx" value="${loginuser.idx}" />
 				                	<input type="hidden" name="column_name" id="column_name"  value="pwd" />
 				                	<input type="hidden" name="edited_content" />
 				                	
-				                	<input placeholder="현재 비밀번호" type="password" value="${getMemberVO.pwd}"  tabindex="1"  autofocus style="margin-top: 30px;"> <br/>
+				                	<input placeholder="현재 비밀번호" type="password" value="${loginuser.pwd}"  tabindex="1"  autofocus style="margin-top: 30px;"> <br/>
 				                	<input placeholder="새 비밀번호" type="password" class="inputcol" id="id_pwd" name="pwd"  tabindex="2"  style="margin-top: 30px;"> <br/>
 				                	<input placeholder="새 비밀번호 확인" type="password" tabindex="2" > <br/>
 				                	<button type="button" class="info_edit_btn editend">확인</button>
@@ -157,18 +157,18 @@
 						<form name="phoneFrm" id="phoneFrm">
 						<tr>
 							<td class="text-left colname">연락처</td>
-							<td class="text-left">${getMemberVO.phone}
+							<td class="text-left">${loginuser.phone}
 				                <br/><span>아이디, 비밀번호 찾기 등 본인확인이 필요한 경우 <br/>또는 유료 결제 등 shy로부터 알림을 받을 때 사용할 휴대전화입니다.</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 				                <div class="hiddenpart" style="max-width: 80%;">
 				                변경할 연락처
 				                <br/><span>변경할 연락처를 입력하세요. (예: 01087644212)</span><br/>
 				                
-				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="idx" value="${loginuser.idx}" />
 				                <input type="hidden" name="column_name" id="column_name"  value="phone" />
 				                <input type="hidden" name="edited_content" />
 				                
-				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${getMemberVO.phone}" /><br/>
+				                <input type="text" class="inputcol" id="id_phone" name="phone" value="${loginuser.phone}" /><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>
 				                </div>
@@ -179,7 +179,7 @@
 						<form name="genderFrm" id="genderFrm">
 						<tr>
 							<td class="text-left colname">성별</td>
-							<td class="text-left">${getMemberVO.gender}
+							<td class="text-left">${loginuser.gender}
 				                <br/><span>성별이 변경된 경우에 한하여 변경이 가능합니다.</span>
 				                <br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 				                <div class="hiddenpart">
@@ -187,12 +187,12 @@
 				                <br/><span>변경할 성별을 고르세요</span><br/>
 				                <div class="gender_select_form">
 				                
-				                <input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                <input type="hidden" name="idx" value="${loginuser.idx}" />
 				                <input type="hidden" name="column_name" id="column_name" value="gender" />
 				                <input type="hidden" name="edited_content" />
 				                
 				                <select class="inputcol" id="id_gender" name="gender" style="margin-top: 30px;">
-				                	<option value="${getMemberVO.gender}" selected="selected">${getMemberVO.gender}</option>
+				                	<option value="${loginuser.gender}" selected="selected">${loginuser.gender}</option>
 				                	<option value="남">남</option>
 				                	<option value="여">여</option>
 				                	<option value="Other">Other</option>
@@ -213,18 +213,18 @@
 						<form name="myintroFrm" id="myintroFrm">
 						<tr class="lastcol" style="border-bottom:2px solid #27303e;">
 							<td class="text-left colname">자기소개</td>
-							<td class="text-left">${getMemberVO.myintro}
+							<td class="text-left">${loginuser.myintro}
 								<br/><button type="button" class="info_edit_btn show_more_btn">수정</button>
 								<div class="hiddenpart">
 				                변경할 자기소개
 				                <br/><span>변경할 자기소개를 입력하세요.</span><br/>
 				                <fieldset style="margin-top: 30px; width: 100%; height: 50px;">
 				                	
-				                	<input type="hidden" name="idx" value="${getMemberVO.idx}" />
+				                	<input type="hidden" name="idx" value="${loginuser.idx}" />
 				                	<input type="hidden" name="column_name" id="column_name"  value="myintro" />
 			               			<input type="hidden" name="edited_content" />		
 			               			
-							    	<textarea cols="35" rows="4" class="inputcol" id="id_myintro" name="myintro" tabindex="5"  style="resize: none; width: 80%;">${getMemberVO.myintro}</textarea>
+							    	<textarea cols="35" rows="4" class="inputcol" id="id_myintro" name="myintro" tabindex="5"  style="resize: none; width: 80%;">${loginuser.myintro}</textarea>
 							    </fieldset><br/>
 				                <button type="button" class="info_edit_btn editend">수정완료</button>
 				                <button type="button" class="info_edit_btn show_more_cancle_btn">수정취소</button>

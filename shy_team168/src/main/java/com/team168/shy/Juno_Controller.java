@@ -44,7 +44,7 @@ public class Juno_Controller {
     
     
     // == 마이페이지 불러오기 == 
-	@RequestMapping(value="/myInfoEdit.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/myInfoEdit.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String goMypage(HttpServletRequest req) {
     	
 		HttpSession session = req.getSession();
@@ -67,24 +67,13 @@ public class Juno_Controller {
 
     }
 	
-	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/myInfoEditEnd.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String myInfoEditEnd(HttpServletRequest req, HttpSession session) throws IOException {
-		
-	
-		
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");
-		System.out.println("loginuser의 이름 : " + loginuser.getName());
-		
 		int idx = loginuser.getIdx();
-		
 		String str_idx = req.getParameter("idx");
-		System.out.println("컨트롤에서 받은 idx : "+ str_idx);
-		
 		String column_name = req.getParameter("column_name");
-		System.out.println("컨트롤에서 받은 column_name : " + column_name);
-		
 		String edited_content = req.getParameter("edited_content");
-		System.out.println("컨트롤에서 받은 edited_content : " + edited_content);
 		
 		HashMap<String, String> map = new HashMap<String, String>();
     	map.put("idx", str_idx);
@@ -92,24 +81,25 @@ public class Juno_Controller {
     	map.put("edited_content", edited_content);
     	
 		int n = service.myInfoEditEnd(map);
-		
-		// n(정보수정 성공 또는 실패)값을 request 영역에 저장시켜서 view 단 페이지로 넘긴다.
-		// 그리고 변경되어진 정보를 보여주기 위해서 request 영역에 변경한 컬럼이름도 저장시키도록 한다.
 		req.setAttribute("n", n);
+		
 		idx = Integer.parseInt(str_idx);
 		ShyMemberVO getMemberVO = service.getMemberVO(idx);
 	       
-        req.setAttribute("getMemberVO", getMemberVO);
-	       
         
-
-		return "juno/myInfoEdit.tiles";
-    	
+        if("name".equalsIgnoreCase(column_name)) {
+        	loginuser.setName(edited_content);
+        	
+        }
+        
+        req.setAttribute("getMemberVO", getMemberVO);
+	    
+        return "juno/myInfoEdit.tiles";
     }
 	
 	
 	// 댓글 갯수 세기
-	@RequestMapping(value="/getCommentCount.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/getCommentCount.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public List<HashMap<String, Object>> getCommentCount(HttpServletRequest req) {
 
@@ -123,7 +113,7 @@ public class Juno_Controller {
 		return returnCountList;
 	}
 	
-	@RequestMapping(value="/getCommentList.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/getCommentList.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public List<HashMap<String, Object>> getCommentList(HttpServletRequest req) {
 		
@@ -134,7 +124,7 @@ public class Juno_Controller {
 	}
 	
 	 // 관리자 공지사항 페이지요청
-    @RequestMapping(value="/searchlistj.shy", method={RequestMethod.GET})
+    @RequestMapping(value="/searchlistj.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String searchlist(HttpServletRequest req, HttpSession session){
 	    
 
@@ -147,7 +137,7 @@ public class Juno_Controller {
 		    	
     }
     
-	@RequestMapping(value="/goFollow.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/goFollow.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public HashMap<String, Object> goFollow(HttpServletRequest req, HttpSession session) {
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
@@ -173,7 +163,7 @@ public class Juno_Controller {
 		return returnresult;
 	}
 	
-	@RequestMapping(value="/unFollow.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/unFollow.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public HashMap<String, Object> unFollow(HttpServletRequest req, HttpSession session) {
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
@@ -199,7 +189,7 @@ public class Juno_Controller {
 	}
 	
 	// 임시 메인라인
-	@RequestMapping(value="/mainlinej.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/mainlinej.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String mainline(HttpServletRequest req, HttpSession session) {
 
 		Object loginuser = session.getAttribute("loginuser");
@@ -264,7 +254,7 @@ public class Juno_Controller {
 	
 	// 댓글 수정
 	@ResponseBody
-	@RequestMapping(value="/goCommentEdit.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/goCommentEdit.shy", method={RequestMethod.GET,RequestMethod.POST})
     public int goCommentEdit(HttpServletRequest req, HttpSession session) throws IOException {
 		
 	
@@ -310,7 +300,7 @@ public class Juno_Controller {
 	
 	// 댓글 수정
 	@ResponseBody
-	@RequestMapping(value="/goCommentDelete.shy", method={RequestMethod.POST})
+	@RequestMapping(value="/goCommentDelete.shy", method={RequestMethod.GET,RequestMethod.POST})
     public int goCommentDelete(HttpServletRequest req, HttpSession session) throws IOException {
 		
 	
@@ -351,7 +341,7 @@ public class Juno_Controller {
     }
 	
 	// 댓글 신고
-	@RequestMapping(value="/goBlameEnd.shy", method={RequestMethod.GET})
+	@RequestMapping(value="/goBlameEnd.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public HashMap<String, Object> goBlameEnd(HttpServletRequest req, HttpSession session) {
 		ShyMemberVO loginuser = (ShyMemberVO)session.getAttribute("loginuser");	
@@ -387,7 +377,7 @@ public class Juno_Controller {
 	}
 	
 	// 임시 관리자 페이지요청
-    @RequestMapping(value="/adminj.shy", method={RequestMethod.GET})
+    @RequestMapping(value="/adminj.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String admin(HttpServletRequest req, HttpSession session){
     	
 //    	String totaluser = service.gettotaluser();   // 총 사용자수
@@ -404,7 +394,7 @@ public class Juno_Controller {
     }
     
     // 임시 관리자 페이지 GeoShy
-    @RequestMapping(value="/GeoShy.shy", method={RequestMethod.GET})
+    @RequestMapping(value="/GeoShy.shy", method={RequestMethod.GET,RequestMethod.POST})
     public String tongke(HttpServletRequest req, HttpSession session){
     	
     	String today2 = req.getParameter("today");
@@ -457,7 +447,7 @@ public class Juno_Controller {
     	return "GeoShy.notiles";
     }
     
-    @RequestMapping(value="/drawRegionsMap.shy", method={RequestMethod.GET})
+    @RequestMapping(value="/drawRegionsMap.shy", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public HashMap<String, Object> drawRegionsMap(HttpServletRequest req, HttpServletResponse res) {
 		System.out.println(" drawRegionsMap 컨트롤 시작 !");
@@ -468,4 +458,100 @@ public class Juno_Controller {
 		System.out.println("리턴값 countRegions : "+countRegions);
 		return countRegions;
 	}
+    
+    @RequestMapping(value="/geodetail.shy", method={RequestMethod.POST})
+    public String geodetail(HttpServletRequest req, HttpServletResponse res) {
+		
+    	String selectedRegion = req.getParameter("selectedRegion");
+    	String sivalue = req.getParameter("sivalue");
+    	
+    	System.out.println("selectedRegion : "+selectedRegion);
+    	System.out.println("sivalue : "+sivalue);
+    	
+    	int iselectedRegion =Integer.parseInt(selectedRegion.substring(3));
+    	System.out.println("iselectedRegion : "+iselectedRegion);
+    	
+    	@SuppressWarnings("unused")
+		double lat;
+    	@SuppressWarnings("unused")
+		double lng;
+    	@SuppressWarnings("unused")
+		int zoom = 0;
+    	String city = "";
+    	// 참고 사이트 : http://www.mapnall.com/ko/%EC%A7%80%EB%8F%84-%ED%95%9C%EA%B5%AD_1072678.html
+    	// 지역 선택 페이지 소스보기
+    	switch (iselectedRegion) {
+    	// 0.서울
+		case 11: lat = 37.583330000000000000; lng = 127.000000000000000000; zoom = 11; city="서울";
+			break;
+		// 1.부산
+		case 26: lat = 35.133330000000000000; lng = 129.050000000000000000; zoom = 11; city="부산";
+			break;
+		// 2.대구
+		case 27: lat = 35.800000000000000000; lng = 128.550000000000000000; zoom = 11; city="대구";
+			break;
+		// 3.대전
+		case 30: lat = 36.333330000000000000; lng = 127.416670000000000000; zoom = 6; city="대전";
+			break;
+		// 4.광주
+		case 29: lat = 35.166670000000000000; lng = 126.916670000000000000; zoom = 11; city="광주";
+			break;
+		// 5.인천
+		case 28: lat = 37.450000000000000000; lng = 126.416110000000000000; zoom = 11; city="인천";
+			break;
+		// 6.울산
+		case 31: lat = 35.566670000000000000; lng = 129.266670000000000000; zoom = 6; city="울산";
+			break;
+		// 7.충청북도
+		case 43: lat = 36.821530000000000000; lng = 127.656850000000000000; zoom = 8; city="충청북도";
+			break;
+		// 8.충청남도
+		case 44: lat = 36.500000000000000000; lng = 127.000000000000000000; zoom = 9; city="충청남도";
+			break;
+		// 9.강원도
+		case 42: lat = 37.750000000000000000; lng = 128.250000000000000000; zoom = 8; city="강원도";
+			break;
+		// 10.경기도
+		case 41: lat = 37.600000000000000000; lng = 127.250000000000000000; zoom = 8; city="경기도";
+			break;
+		// 11.경상북도
+		case 47: lat = 36.333330000000000000; lng = 128.750000000000000000; zoom = 8; city="경상북도";
+			break;
+		// 12.경상남도
+		case 48: lat = 35.250000000000000000; lng = 128.250000000000000000; zoom = 8; city="경상남도";
+			break;
+		// 13.제주도
+		case 49: lat = 33.416670000000000000; lng = 126.500000000000000000; zoom = 10; city="제주도";
+			break;
+		// 14.전라북도
+		case 45: lat = 35.750000000000000000; lng = 127.250000000000000000; zoom = 9; city="전라북도";
+			break;
+		// 15.전라남도
+		case 46: lat = 34.750000000000000000; lng = 127.000000000000000000; zoom = 8; city="전라남도";
+			break;
+
+		default: // 0.서울
+			lat = 37.583330000000000000; lng = 127.000000000000000000; zoom = 11;
+			break;
+		}
+    	
+    	System.out.println("lat : "+lat);
+    	System.out.println("lng : "+lng);
+    	System.out.println("zoom : "+zoom);
+    	
+    	List<HashMap<String, String>> GeoSnsnoList = service.getGeoSnsnoList(city);
+    	
+    	System.out.println("GeoSnsnoList : "+GeoSnsnoList);
+    	
+    	req.setAttribute("GeoSnsnoList", GeoSnsnoList);
+    	
+    	req.setAttribute("selectedRegion", selectedRegion);
+    	req.setAttribute("sivalue", sivalue);
+    	req.setAttribute("lat", lat);
+    	req.setAttribute("lng", lng);
+    	req.setAttribute("zoom", zoom);
+		return "testmap.notiles";
+	}
+    
+    
 }

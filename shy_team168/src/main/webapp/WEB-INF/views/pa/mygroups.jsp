@@ -56,8 +56,8 @@ $(document).ready(function(){
         var showing = newlist.filter(':visible').length;
         newlist.slice(showing - 1, showing + numToShow).fadeIn();
         var nowShowing = newlist.filter(':visible').length;
-        if (nowShowing >= numInNewList) {
-        	$("#next newGrp").hide();
+        if (nowShowing == numInNewList) {
+        	$("#newGrp").hide();
         }
     });
 
@@ -65,8 +65,8 @@ $(document).ready(function(){
         var showing = hotlist.filter(':visible').length;
         hotlist.slice(showing - 1, showing + numToShow).fadeIn();
         var nowShowing = hotlist.filter(':visible').length;
-        if (nowShowing >= numInHotList) {
-        	$("#next hotGrp").hide();
+        if (nowShowing == numInHotList) {
+        	$("#hotGrp").hide();
         }
     });
     
@@ -149,9 +149,7 @@ $(
 		   	 
 		   	 </c:if>
 		   	 <c:if test="${myGrpList==null }">
-		   	 <div class="grp_box" style="width: 100%">
 		   	 	<span style="text-align: center; font-weight: bold; font-size: 15pt;"> 내가 만든 그룹이 없습니다.</span>
-		   	 </div>
 		   	 </c:if>
 		</div>
 	
@@ -160,7 +158,7 @@ $(
 	
 	
 	
-		<div style="border: dashed; border-color:  #ff8080; width: 110%;">
+		<div style="width: 100%;">
 		<h3 class="mygrp_types" style="color:  #ff8080">HOT 그룹</h3>
 		
 		
@@ -229,7 +227,7 @@ $(
 		
 		
 		
-		<div style="border: dashed; border-color: #00b300; width: 110%;">
+		<div style="width: 100%;">
 		<h3 class="mygrp_types" style="color: #00b300">신규 그룹</h3>
 		
 		<!-- 신규 그룹 -->

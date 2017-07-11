@@ -192,6 +192,12 @@ public class PaDAO {
 		HashMap<String, Object> mymap = sqlsession.selectOne("pa.selectMyinfo",myIdx);
 		return mymap;
 	}
+
+	// ===== 팔로우상태 가져오기 ===== //
+	/*public int getFollowing(HashMap<String, Object> pafollow) {
+		int n = sqlsession.selectOne("pa.followCheck",pafollow);
+		return n;
+	}*/
 	
 
 }

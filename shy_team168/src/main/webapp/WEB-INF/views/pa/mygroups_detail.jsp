@@ -50,53 +50,30 @@ include summernote-ko-KR
 <!-- Material sidebar -->
 <aside id="grpdeatil_sidebar" class="grpdeatil_sidebar grpdeatil_sidebar-colored open" role="navigation">
     <!-- Sidebar header -->
+    <a href="<%= request.getContextPath() %>/mygroups_detail.shy?groupno=${grpvomap.GROUPNO}">
+    <c:if test="${grpvomap.GIMG!=null }">
     <div class="grpdeatil_sidebar-header header-cover" style="background-image: url(<%=request.getContextPath() %>/resources/images/shydb/${grpvomap.GIMG });">
-        <!-- Top bar -->
-        <div class="grpdeatil_top-bar"></div>
-        <!-- Sidebar toggle button -->
-        <button type="button" class="grpdeatil_sidebar-toggle">
-            <!-- <i class="icon-material-sidebar-arrow"></i> -->
-        </button>
-        <!-- Sidebar brand image -->
-        <div class="grpdeatil_sidebar-image">
-            <img src="<%=request.getContextPath() %>/resources/images/shydb/${grpvomap.MYIMG }">
-        </div>
-        <!-- Sidebar brand name -->
-        <a data-toggle="dropdown" class="grpdeatil_sidebar-brand" href="#settings-dropdown">
-             ${grpvomap.EMAIL }
-            <b class="grpdeatil_caret"></b>
-        </a>
     </div>
-
+	</c:if>
+	<c:if test="${grpvomap.GIMG==null }">
+	<div class="grpdeatil_sidebar-header header-cover" style="background-image: url('http://wallpaperpulse.com/thumb/604167.jpg');">   
+    </div>
+    </c:if>
+    </a>
     <!-- Sidebar navigation -->
     <ul class="nav grpdeatil_sidebar-nav">
-        <%-- <li class="dropdown"> 그룹장 회원정보보기 드롭다운
-            <ul id="settings-dropdown" class="dropdown-menu">
-                <li>
-                    <a href="#" tabindex="-1">
-                        ${grpvo.shymemvo.name }
-                    </a>
-                </li>
-                <li>
-                    <a href="#" tabindex="-1">
-                        ${grpvo.shymemvo.myintro}
-                    </a>
-                </li>
-                
-            </ul>
-        </li> --%>
         <li>
-            <a href="#">
+            <a href="<%=request.getContextPath() %>/mygroups_summary.shy?groupno=${grpvomap.GROUPNO }">
                 <i class="fa fa-eye" aria-hidden="true">그룹개요</i>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="<%=request.getContextPath() %>/mygroups_detail.shy?groupno=${grpvomap.GROUPNO }">
                 <i class="fa fa-pencil-square-o" aria-hidden="true">그룹게시글</i>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="<%=request.getContextPath() %>/mygroups_chat.shy?groupno=${grpvomap.GROUPNO }">
                 <i class="fa fa-commenting-o" aria-hidden="true">그룹채팅</i>
             </a>
         </li>
@@ -108,16 +85,16 @@ include summernote-ko-KR
     
     <div class="grpdeatil_constructor">
         <h2 class="grpdeatil_headline">${grpvomap.GNAME }</h2>
-        <button type="button" onclick="goGrpjoin('groupno');">그룹가입</button>
+        <button type="button" class="grpdeatil_join" onclick="goGrpjoin('groupno');">그룹가입</button>
         <input type="hidden" value="${grpvomap.GROUPNO }" name="groupno"/>
-        <p><i class="fa fa-users" aria-hidden="true"></i><a href="#open">${grpvomap.GCOUNT }</a></p>
+        <p><i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;<a href="#open">${grpvomap.GCOUNT }</a>명</p>
         <div class="followList" id="open">
         <div>
             <p>
             <c:if test="${gmemberList!=null }">
             <c:forEach var="gmember" items="${gmemberList }">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53474/atom_profile_01.jpg" style="width: 50px;height: 50px; border-radius: 50%;">
-			${gmember.NAME } ${gmember.EMAIL } <button type="button">follow</button>
+            <img src="<%=request.getContextPath() %>/resources/images/shydb/${gmember.MYIMG}" style="width: 50px;height: 50px; border-radius: 50%;">
+			${gmember.NAME } ${gmember.EMAIL } <button type="button">follow</button><br/>
 			 </c:forEach>
 			</c:if>
 			</p>
@@ -125,7 +102,7 @@ include summernote-ko-KR
         </div>
     	</div>
         <hr />
-        <p>${grpvomap.DESCRIPTION}</p>
+        <p style="font-size: 13pt;">${grpvomap.DESCRIPTION}</p>
         <hr />
         
         
@@ -133,16 +110,21 @@ include summernote-ko-KR
 		      <div class="grpdetail_padding">
 		        <section class="grpdetail_cd-container">
 		              <div class="grpdetail_cd-timeline-picture">
-		                <img src="${sessionScope.loginuser.myimg}" />
-		              </div>
-		                <h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">${sessionScope.loginuser.name}</h5>
-		                <p class="grpdetail_marginTop5 cd-author">현재시각</p>
+		              <c:if test="${sessionScope.loginuser != null}">
+		                <img src="<%=request.getContextPath() %>/resources/images/shydb/${sessionScope.loginuser.myimg}" />
+		              	<h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">${sessionScope.loginuser.name}</h5>
+		              </c:if>
+		              <c:if test="${sessionScope.loginuser == null}">  
+		                <img src="https://www.svgimages.com/svg-image/s5/man-passportsize-silhouette-icon-256x256.png">
+		 				<h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">Guest</h5>
+		              </c:if>
 		                <!-- <div id="summernote"></div> -->
-		                <textarea  id="gcontent" name="gcontent" cols="80px" rows="5px" placeholder="그룹글 쓰기!"></textarea>
+		                <textarea id="gcontent" name="gcontent" cols="80px" rows="5px" placeholder="그룹글 쓰기!"></textarea>
 		                <input type="file" name="uploadfile" style="margin: 20px;"/>
 		                <div class="inrtGrpMemo_btn" align="left">
 		                <button onclick="goGboard();">submit</button>
 		                <button onclick="">reset</button>
+		                </div>
 		              </div>
 		        </section>
 		      </div>
@@ -159,7 +141,9 @@ include summernote-ko-KR
 		                <img src="" />
 		                <h5 class="grpdetail_marginBottom0 grpdetail_marginTop0">${gboard.NAME }</h5>
 		              </div>
+		              <c:if test="${gboard.UPLOADFILE !=null}">
 		                <img src="<%=request.getContextPath() %>/resources/images/shydb/${gboard.UPLOADFILE }" style="width: 500px; height: 300px;	">
+		              </c:if>  
 		                <p class="grpdetail_marginTop5 cd-author">${gboard.LIKECNT }/${gboard.CMTCNT } on ${gboard.WRITEDATE}</p>
 		                <p class="grpdetail_timelineText">${gboard.GCONTENT }</p>
 		        </section>

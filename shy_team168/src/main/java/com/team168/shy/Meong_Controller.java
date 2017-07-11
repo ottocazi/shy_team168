@@ -30,7 +30,7 @@ public class Meong_Controller {
 
 	// 회원가입
 	@RequestMapping(value="/addregistorEnd.shy", method={RequestMethod.POST})
-    public String test(HttpServletRequest req, HttpSession session, ShyMemberVO svo) {
+    public String test(HttpServletRequest req, HttpSession session, ShyMemberVO loginuser) {
     	
 		String joinname = req.getParameter("name");
 		String joinemail = req.getParameter("email");
@@ -48,14 +48,17 @@ public class Meong_Controller {
     	
     	n = service.addregistorEnd(map);
     	
+		loginuser = service.getLoginMember(joinemail);
+		session.setAttribute("loginuser", loginuser);
+    	
 		   String msg = "";
 		   String loc = "";
 		   String type = "";	
 		   String title = "";   
 		   
 		   if(n==1) {
-			   msg = "다시한번 로그인해주십쇼~";
-			   loc = "javascript:history.back();";
+			   msg = "메인페이지로 이동합니다.";
+			   loc = "mainline.shy";
 			   type = "success";
 			   title = "Shy가입을 축하드립니다~~";
 			   // or 추가정보입력하시겠습니까?
