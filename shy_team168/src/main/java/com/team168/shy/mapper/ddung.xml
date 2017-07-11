@@ -152,9 +152,10 @@
 	<insert id="insertGeo" parameterType="java.util.HashMap">
 	INSERT INTO TBL_GEO (SEQ, FK_SNSNO, SHYPLACE, LONGDITUDE, LATITUDE, COUNTRY, POSTAL_CODE, AREA1, LOCALITY, ROUTE, STREET_NUMBER)
 	VALUES (SEQ_GEO.NEXTVAL, #{fk_snsno}, #{shyplace}, #{longditude}, 
-	#{latitude}, #{country}, #{postal_code} , #{area1}, #{locality} , #{route}, #{street_number}
-	)
+	#{latitude}, #{country}, #{postal_code} , #{area1}, #{locality} , #{route}, #{street_number})
 	</insert>
+	
+	
 </mapper>
 
  

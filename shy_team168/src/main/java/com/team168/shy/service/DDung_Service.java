@@ -71,6 +71,7 @@ public class DDung_Service {
 			dao.insertGeo(parameters);
 			
 		}
+
 		
 	
 	

@@ -169,7 +169,6 @@ public class PaService {
 	// ===== 좋아요했을시, 알람 insert  ===== //
 	public void insertAlarm(HashMap<String, String> likemap) {
 		dao.insertAlarm(likemap);
-		
 	}
 
 	// ===== 알림 가져오기 ===== //
