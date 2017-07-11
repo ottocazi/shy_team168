@@ -627,8 +627,9 @@
                         style="color: #F7786B;"></i>
                   </button>
                   <div class="dropdown-content">
-                     <a href="#">팔로워</a>  <a
-                        href="#">Link3</a>
+                    
+                        <a href="<%=request.getContextPath()%>/tutorial.shy">tutorial</a>
+                         <a href="<%=request.getContextPath()%>/applybusi.shy">사업자신청</a>
                   </div>
                </div>
 
@@ -654,7 +655,7 @@
                   <li><a href="<%=request.getContextPath()%>/auth.shy">계좌 등록/확인</a></li>
                   
                   <li class="divider"></li>
-                  <li><a href="#">api관리메뉴</a></li>
+                  <li><a href="http://192.168.10.35:8880/shy_FinTech_server/html/index.html?env=test">api관리메뉴</a></li>
                </ul></li>
                
                <c:if test="${loginuser.status==168 }">
@@ -666,7 +667,7 @@
                   <li><a href="<%=request.getContextPath()%>/admin.shy">운영자 메인</a></li>
                   <li><a href="<%=request.getContextPath()%>/tongke.shy">통계1</a></li>
                   <li><a href="<%=request.getContextPath()%>/bartongke.shy">통계2</a></li>
-                  <li><a href="<%=request.getContextPath()%>/pietongke.shy">통계2</a></li>
+                  <li><a href="<%=request.getContextPath()%>/pietongke.shy">통계3</a></li>
                   <li class="divider"></li>
                   <li><a href="<%=request.getContextPath()%>/admin.shy">회원관리</a></li>
                   <li><a href="<%=request.getContextPath()%>/adminshymemo.shy">글관리</a></li>
