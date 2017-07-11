@@ -208,7 +208,7 @@
                 
              },
              error: function() { // 에러가 발생했을 때의 콜백함수
-                 alert("getlikeError");
+                 //alert("getlikeError");
              }
          });
         
