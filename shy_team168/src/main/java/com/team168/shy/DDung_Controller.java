@@ -72,8 +72,12 @@ public class DDung_Controller {
 		
 		// 팔로워들 + 나의 샤이 가져오기 , 유저정보 가져오기(join?), 
 		List <HashMap<String, String>> shies = service.getmainshy(followlist);
+		System.out.println("shies 사이즈는!!!"+shies);
+		if(shies.size()==0){
+			shies = null;
+		}
 		
-		if(shies!=null){
+		else if(shies!=null){
 			for(int i =0 ; i<shies.size(); i++){
 				
 				
