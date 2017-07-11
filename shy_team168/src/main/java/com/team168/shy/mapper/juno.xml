@@ -171,10 +171,11 @@
 	<resultMap type="java.util.HashMap" id="getGeoSnsnoListMap">
 		<result property="FK_SNSNO" 	column="fk_snsno" 		javaType="int" />
  		<result property="LOGDITUDE" 	column="logditude" 		javaType="String" />
- 		<result property="LATITUDE" 	column="latitde" 	javaType="String" />
+ 		<result property="LATITUDE" 	column="latitde" 		javaType="String" />
+ 		<result property="SHYPLACE" 	column="shyplace" 		javaType="String" />
  	</resultMap>
 	<select id="getGeoSnsnoList" resultMap="getGeoSnsnoListMap" parameterType="String">
-		select to_char(fk_snsno) as fk_snsno, substr(longditude,0,9) as longditude, substr(latitude,0,9) as latitude 
+		select to_char(fk_snsno) as fk_snsno, substr(longditude,0,9) as longditude, substr(latitude,0,9) as latitude, shyplace
 		from tbl_geo
 		where area1 like '%'||#{city}||'%'
 	</select>
