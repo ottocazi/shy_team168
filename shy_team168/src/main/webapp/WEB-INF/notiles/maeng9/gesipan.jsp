@@ -86,7 +86,7 @@
                       <li><a href="<%= request.getContextPath() %>/general_elements.shy">일반요소</a></li>
                       <li><a href="<%= request.getContextPath() %>/icons.shy">아이콘</a></li>
                       <li><a href="<%= request.getContextPath() %>/widgets.shy">위젯</a></li>
-                      <li><a href="<%= request.getContextPath() %>/invoice.shy">송장</a></li>
+                      <li><a href="<%= request.getContextPath() %>/invoice.shy">운송장</a></li>
                     </ul>
                   </li>
                </ul>            
