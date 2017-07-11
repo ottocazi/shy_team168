@@ -33,8 +33,15 @@
 	<!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 	
+	<!-- JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	drawRegionsMap();
 
+});
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Create the chart
 google.charts.load('current', {
@@ -54,7 +61,7 @@ function drawRegionsMap() {
 		dataType: "JSON",
 		success: function(count){
 		//	alert("drawRegionsMap(); ajax success function!");
-			alert("start count.Seoul : "+count.Seoul);
+		//	alert("start count.Seoul : "+count.Seoul);
 			//alert("data.FK_SNSNO"+data.FK_SNSNO);
 			//[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
 			
@@ -150,7 +157,7 @@ function drawRegionsMap() {
 			 		var selectedRow = selection[0].row;
 			 		var selectedRegion = data.getValue(selectedRow, 0);
 			 		var sivalue = ivalue[selectedRegion];
-		 			alert("selection : "+selection+" selectedRegion : "+selectedRegion + "     sivalue : "+sivalue);
+		 		//	alert("selection : "+selection+" selectedRegion : "+selectedRegion + "     sivalue : "+sivalue);
 		 		//	alert(typeof(selection));
 		 			
 			 		detailMap(selectedRegion,sivalue);
@@ -166,7 +173,7 @@ function drawRegionsMap() {
 }
 
 function detailMap(selectedRegion,sivalue){
-	alert("detailMap() start! selectedRegion : "+selectedRegion+"  sivalue : "+sivalue);
+//	alert("detailMap() start! selectedRegion : "+selectedRegion+"  sivalue : "+sivalue);
 	var specs = "left=600,top=200,width=900,height=700"
 	var param_RS= document.param_RS;
 	var gsWin = window.open('about:blank','popupView',specs);
@@ -201,7 +208,7 @@ function drawVisualization(){
 		type: "GET",
 		dataType: "JSON",
 		success: function(data){
-			alert("drawRegionsMap(); ajax success function!");
+		//	alert("drawRegionsMap(); ajax success function!");
 		//	alert(data);
 			/* 
 			지역별 shy 수 
@@ -260,7 +267,7 @@ function drawVisualization(){
 				data.addRows([[{v:'KR-46',f:'Jeonranamdo'},15,'Click to change background color']]);
 				ivalue['KR-46'] = '#9ECAE1';
 				
-			alert("data : "+data);	// [object, Object]
+		//	alert("data : "+data);	// [object, Object]
 				
 			var options = {
 				backgroundColor: {fill:'#FFFFFF',stroke:'#FFFFFF' ,strokeWidth:0 },
@@ -512,7 +519,6 @@ function drawVisualization(){
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content" style="margin-bottom: 50px;">
-                    <div><a href="javascript:drawRegionsMap();" style="color: red;">갈비탕</a><a href="javascript:drawVisualization();"> 지겨워</a></div>
                     <form name="param_RS">
                     	<input type="hidden" name="selectedRegion"/>
                     	<input type="hidden" name="sivalue" />
